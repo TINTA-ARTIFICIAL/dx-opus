@@ -2,7 +2,7 @@
 id:          CONTEXT_EDITORIAL_PROFILE
 type:        TEMPLATE
 subsystem:   EDITORIAL_PROFILE
-version:     1.0
+version:     1.1
 status:      ACTIVE
 created:     2026-02-21
 updated:     2026-02-21
@@ -12,6 +12,7 @@ owner_chat:  editorial-profile-dev
 ## CHANGELOG
 | Version | Date | Author | Summary |
 |---------|------|--------|---------|
+| v1.1 | 2026-02-21 | JM | Added explicit filename naming rule — no version in filename, Git manages history |
 | v1.0 | 2026-02-21 | JM | Initial version |
 
 ## DEPENDENCIES
@@ -152,6 +153,18 @@ EVALUATION_RESULT:
 ### Al finalizar cada sesión
 1. Producir DL entries si se tomaron decisiones que afectan a Writing o Activation
 2. Listar artefactos modificados con su versión
+
+### Regla de naming de archivos
+
+**Ningún archivo del sistema incluye versión en el nombre.** Git gestiona el historial completo.
+
+- ✅ Correcto: `PROMPT_WRITE_CHAPTER.md`, `RESOURCE_EVALUATION_FRAMEWORK.md`
+- ❌ Incorrecto: `PROMPT_WRITE_CHAPTER_v1_3.md`, `RESOURCE_EVALUATION_FRAMEWORK_v1_0.md`
+
+La versión se documenta únicamente en:
+1. La cabecera YAML: `version: 1.1`
+2. El CHANGELOG interno del archivo
+3. El mensaje de commit: `[SUBSISTEMA] feat: create PROMPT_X (v1.0)`
 
 ### Formato de commits a GitHub
 ```
