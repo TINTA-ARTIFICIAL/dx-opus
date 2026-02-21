@@ -1,9 +1,15 @@
 # ANÁLISIS DE NAMING CONVENTION — SISTEMA D-X-OPUS
 
-**Versión:** 1.2  
+**Versión:** 1.3  
 **Fecha:** 21 febrero 2026  
 **Autor:** Prompt Engineer / AI Architect  
 **Scope:** Todos los elementos del sistema: prompts, workflows, recursos, guías, plantillas, schemas y herramientas
+
+**Changelog v1.3:**
+- Nueva regla: **ningún archivo del sistema incluye versión en el nombre**. Git gestiona el historial. La versión vive exclusivamente en la cabecera YAML (`version: X.Y`) y en el CHANGELOG interno.
+- Actualizado principio 5 de diseño
+- Actualizada sección 3.3 con la regla unificada
+- Actualizada tabla de aplicación a archivos actuales
 
 **Changelog v1.2:**
 - Añadido tipo TOOL como séptimo tipo válido de artefacto (herramientas operativas)
@@ -225,7 +231,7 @@ Antes de las reglas concretas, los principios que guían la propuesta:
 2. **Tipo siempre primero** — El prefijo de tipo permite ordenar y filtrar visualmente
 3. **Jerarquía de lo general a lo específico** — `TIPO_VERBO_OBJETO_VARIANTE_VERSION`
 4. **Un solo idioma por namespace** — Inglés para elementos técnicos del sistema; español solo en nombres propios inevitables
-5. **Versionado consistente** — Siempre `vX.Y` (dos niveles), nunca más ni menos
+5. **Versión fuera del nombre de archivo** — Ningún archivo del sistema incluye versión en el nombre. Git gestiona el historial completo. La versión siempre está en la cabecera YAML (`version: X.Y`) y en el CHANGELOG interno del archivo. En el texto y en referencias cruzadas se escribe con punto (`v1.3`); en el historial de Git se documenta en el mensaje de commit.
 6. **Sin redundancias** — El proyecto es el repositorio; no hay que repetir el nombre del sistema en cada archivo
 7. **Separador único** — Underscore `_` en nombres de archivo; punto `.` en versiones dentro del texto
 
@@ -263,58 +269,94 @@ El sistema tiene **dos namespaces distintos** que requieren convenciones diferen
 
 #### Regla de construcción
 
+**Todos los tipos — sin versión en el nombre de archivo:**
 ```
-[TIPO]_[ACCIÓN_OBJETO]_v[MAJOR.MINOR].md
+[TIPO]_[NOMBRE].md
 
-Donde:
-- TIPO: uno de los 6 prefijos anteriores
-- ACCIÓN_OBJETO: SCREAMING_SNAKE_CASE, siempre en inglés
-- Versión: siempre 2 niveles (vX.Y), separados por punto en texto y underscore en archivo
+Ejemplos:
+PROMPT_WRITE_CHAPTER.md
+WORKFLOW_RESEARCH.md
+RESOURCE_SOURCE_AUTHORITY.md
+SCHEMA_SYSTEM_ARCHITECTURE.md
+CONTEXT_RESEARCH.md
+TEMPLATE_EDITOR_PROFILE.md
+GUIDE_ANNOTATION_PHASE3.md
+TOOL_SETUP_PROJECT.gs
 ```
+
+La versión se documenta únicamente en:
+1. La cabecera YAML del archivo: `version: 1.3`
+2. El CHANGELOG interno del archivo
+3. El mensaje de commit en Git: `[RESEARCH] fix: update section refs in PROMPT_SUMMARIZE_REFERENCES (v4.0 → v4.1)`
+
+**Reglas comunes:**
+- SCREAMING_SNAKE_CASE
+- Siempre en inglés
+- Sin versión, sin nombre de proyecto, sin marca en el nombre
 
 #### Aplicación a los archivos actuales
 
-**Prompts — cambios mínimos:**
+**Prompts — renombrar eliminando versión:**
 
-| Actual | Propuesto | Cambio |
+| Actual | Propuesto | Otros cambios |
 |---|---|---|
-| PROMPT_SUMMARIZE_REFERENCES_v4_0.md | PROMPT_SUMMARIZE_REFERENCES_v4.0.md | Sin cambio de nombre (separador en texto) |
-| PROMPT_RESEARCH_DEEP_DIVE_v1_1.md | PROMPT_DEEP_DIVE_RESEARCH_v1.1.md | Verbo primero: DEEP_DIVE → verbo implícito; reordenar |
-| PROMPT_WRITE_PROLOGO_v1_0.md | PROMPT_WRITE_PROLOGUE_v1.0.md | Traducir a inglés |
-| PROMPT_CREATE_FICHA_TECNICA_v1_1.md | PROMPT_CREATE_BOOK_SHEET_v1.1.md | Traducir "ficha técnica" |
-| PROMPT_CREATE_CAST_v1_0_.md | PROMPT_CREATE_CAST_v1.0.md | Eliminar trailing underscore |
-| PROMPT_CREATE_RESEARCH_PLAN_v2_1_2.md | PROMPT_CREATE_RESEARCH_PLAN_v2.1.md | Colapsar a 2 niveles |
+| PROMPT_SUMMARIZE_REFERENCES_v4_0.md | PROMPT_SUMMARIZE_REFERENCES.md | — |
+| PROMPT_RESEARCH_DEEP_DIVE_v1_1.md | PROMPT_RESEARCH_DEEP_DIVE.md | — |
+| PROMPT_WRITE_PROLOGO_v1_0.md | PROMPT_WRITE_PROLOGUE.md | Traducir a inglés |
+| PROMPT_CREATE_FICHA_TECNICA_v1_1.md | PROMPT_CREATE_BOOK_SHEET.md | Traducir "ficha técnica" |
+| PROMPT_CREATE_CAST_v1_0_.md | PROMPT_CREATE_CAST.md | Eliminar trailing underscore |
+| PROMPT_CREATE_RESEARCH_PLAN_v2_1_2.md | PROMPT_CREATE_RESEARCH_PLAN.md | Colapsar versión a 2 niveles en YAML |
+| PROMPT_WRITE_CHAPTER_v1_3.md | PROMPT_WRITE_CHAPTER.md | — |
+| PROMPT_UPDATE_VALIDATION_CHECKLIST_v3_0.md | PROMPT_UPDATE_VALIDATION_CHECKLIST.md | — |
+| *(todos los demás PROMPT_*)* | Eliminar sufijo _vX_Y | — |
 
-**Recursos — añadir prefijo RESOURCE:**
+**Workflows — renombrar eliminando versión y sufijo de marca:**
 
-| Actual | Propuesto | Cambio |
+| Actual | Propuesto | Otros cambios |
 |---|---|---|
-| SOURCE_AUTHORITY_HIERARCHY_v2_0.md | RESOURCE_SOURCE_AUTHORITY_v2.0.md | Añadir prefijo + simplificar nombre |
-| CLAIM_VALIDATION_CRITERIA_v1_0.md | RESOURCE_CLAIM_VALIDATION_v1.0.md | Añadir prefijo + simplificar nombre |
-| ESTILO_EDITORIAL_TINTA_ARTIFICIAL_v1_0.md | RESOURCE_EDITORIAL_STYLE_v1.0.md | Añadir prefijo + traducir + eliminar marca |
-| TIPOS_LIBROS_TINTA_ARTIFICIAL_v1_2.md | RESOURCE_BOOK_TYPES_v1.2.md | Añadir prefijo + traducir + eliminar marca |
-| *(no existe)* | RESOURCE_RESEARCH_FOCUS_TYPES_v1.0.md | **Nuevo** — creado con convención correcta desde el inicio |
+| WORKFLOW_RESEARCH_SISTEMA_TINTA_ARTIFICIAL_v3_1.md | WORKFLOW_RESEARCH.md | Eliminar sufijo de marca |
+| WORKFLOW_WRITING_BOOKS_SISTEMA_TINTA_ARTIFICIAL_v1_7.md | WORKFLOW_WRITING_BOOK.md | Eliminar sufijo + singular |
+| WORKFLOW_ACTIVATION_SISTEMA_TINTA_ARTIFICIAL_v1_4.md | WORKFLOW_ACTIVATION.md | Eliminar sufijo de marca |
+| *(no existe)* | WORKFLOW_WRITING_POST.md | **Nuevo** — a diseñar |
 
-**Workflows — simplificar sufijo y aplicar decisión POST/BOOK:**
+**Recursos — renombrar añadiendo prefijo RESOURCE y eliminando versión:**
 
-| Actual | Propuesto | Cambio |
+| Actual | Propuesto | Otros cambios |
 |---|---|---|
-| WORKFLOW_RESEARCH_SISTEMA_TINTA_ARTIFICIAL_v3_1.md | WORKFLOW_RESEARCH_v3.1.md | Eliminar sufijo redundante |
-| WORKFLOW_WRITING_BOOKS_SISTEMA_TINTA_ARTIFICIAL_v1_7.md | WORKFLOW_WRITING_BOOK_v1.7.md | Eliminar sufijo + singular (solo libros) |
-| WORKFLOW_ACTIVATION_SISTEMA_TINTA_ARTIFICIAL_v1_4.md | WORKFLOW_ACTIVATION_v1.4.md | Eliminar sufijo redundante |
-| *(no existe)* | WORKFLOW_WRITING_POST_v1.0.md | **Nuevo** — posts standalone; a diseñar |
+| SOURCE_AUTHORITY_HIERARCHY_v2_0.md | RESOURCE_SOURCE_AUTHORITY.md | Añadir prefijo + simplificar |
+| CLAIM_VALIDATION_CRITERIA_v1_0.md | RESOURCE_CLAIM_VALIDATION.md | Añadir prefijo + simplificar |
+| ESTILO_EDITORIAL_TINTA_ARTIFICIAL_v1_0.md | RESOURCE_EDITORIAL_STYLE.md | Añadir prefijo + traducir |
+| TIPOS_LIBROS_TINTA_ARTIFICIAL_v1_2.md | RESOURCE_BOOK_TYPES.md | Añadir prefijo + traducir |
+| *(no existe)* | RESOURCE_RESEARCH_FOCUS_TYPES.md | **Nuevo** |
+| *(no existe)* | RESOURCE_EVALUATION_FRAMEWORK.md | **Nuevo** |
 
-**Documentación — añadir tipo + versión:**
+**Documentación de sistema — ya creados con nombre correcto (sin versión):**
 
-| Actual | Propuesto | Tipo |
+| Archivo en GitHub | Nombre objetivo | Estado |
 |---|---|---|
-| DESCRIPCION_SISTEMA_DX_OPUS_2000_PALABRAS.md | SCHEMA_SYSTEM_OVERVIEW_v1.0.md | SCHEMA |
-| PLAN_ACTIVACION_CONTENIDO_v1.md | SCHEMA_ACTIVATION_PLAN_v1.0.md | SCHEMA |
-| ARQUITECTURA_VISUAL_ACTIVACION_v1.md | SCHEMA_ACTIVATION_ARCHITECTURE_v1.0.md | SCHEMA |
-| ARQUITECTURA_VISUAL_ACTIVACION_v2.md | SCHEMA_ACTIVATION_ARCHITECTURE_v2.0.md | SCHEMA |
-| GUIA_NOTAS_DEL_EDITOR.md | GUIDE_EDITOR_NOTES_v1.0.md | GUIDE |
-| TEMPLATE_NOTAS_DEL_EDITOR.md | TEMPLATE_EDITOR_NOTES_v1.0.md | TEMPLATE |
-| EDITOR_PROFILE_TEMPLATE.md | TEMPLATE_EDITOR_PROFILE_v1.0.md | TEMPLATE |
+| MASTER_PLAN_v1_2.md | MASTER_PLAN.md | Renombrar en GitHub |
+| SCHEMA_SYSTEM_ARCHITECTURE_v1_1.md | SCHEMA_SYSTEM_ARCHITECTURE.md | Renombrar en GitHub |
+| SCHEMA_DECISION_LOG_v1_0.md | SCHEMA_DECISION_LOG.md | Renombrar en GitHub |
+| RESOURCE_ARTIFACT_HEADER_STANDARD_v1_0.md | RESOURCE_ARTIFACT_HEADER_STANDARD.md | Renombrar en GitHub |
+| NAMING_CONVENTION_ANALYSIS_v1_2.md | NAMING_CONVENTION_ANALYSIS.md | Renombrar en GitHub |
+| TEMPLATE_SUBSYSTEM_CONTEXT_v1_0.md | TEMPLATE_SUBSYSTEM_CONTEXT.md | Renombrar en GitHub |
+| TOOL_GITHUB_REPO_STRUCTURE_v1_1.md | TOOL_GITHUB_REPO_STRUCTURE.md | Renombrar en GitHub |
+| TOOL_SETUP_PROJECT_v1_0.gs | TOOL_SETUP_PROJECT.gs | Renombrar en GitHub |
+| CONTEXT_RESEARCH_v1_0.md | CONTEXT_RESEARCH.md | Renombrar en GitHub |
+| CONTEXT_KNOWLEDGE_BASE_v1_0.md | CONTEXT_KNOWLEDGE_BASE.md | Renombrar en GitHub |
+| CONTEXT_EDITORIAL_PROFILE_v1_0.md | CONTEXT_EDITORIAL_PROFILE.md | Renombrar en GitHub |
+| CONTEXT_WRITING_v1_0.md | CONTEXT_WRITING.md | Renombrar en GitHub |
+| CONTEXT_EVALUATION_v1_0.md | CONTEXT_EVALUATION.md | Renombrar en GitHub |
+| CONTEXT_ACTIVATION_v1_0.md | CONTEXT_ACTIVATION.md | Renombrar en GitHub |
+| CONTEXT_DOCS_v1_0.md | CONTEXT_DOCS.md | Renombrar en GitHub |
+
+**Guías y templates:**
+
+| Actual | Propuesto | Otros cambios |
+|---|---|---|
+| GUIA_NOTAS_DEL_EDITOR.md | GUIDE_EDITOR_NOTES.md | Traducir + añadir prefijo |
+| TEMPLATE_NOTAS_DEL_EDITOR.md | TEMPLATE_EDITOR_NOTES.md | Traducir |
+| EDITOR_PROFILE_TEMPLATE.md | TEMPLATE_EDITOR_PROFILE.md | Reordenar prefijo |
 
 ---
 

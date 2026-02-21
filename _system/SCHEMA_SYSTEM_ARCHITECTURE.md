@@ -2,7 +2,7 @@
 id:          SCHEMA_SYSTEM_ARCHITECTURE
 type:        SCHEMA
 subsystem:   SYSTEM
-version:     1.1
+version:     1.2
 status:      ACTIVE
 created:     2026-02-21
 updated:     2026-02-21
@@ -12,6 +12,7 @@ owner_chat:  system-architecture
 ## CHANGELOG
 | Version | Date | Author | Summary |
 |---------|------|--------|---------|
+| v1.2 | 2026-02-21 | JM | Removed versions from all filenames in repo tree — Git manages history |
 | v1.1 | 2026-02-21 | JM | Moved shared prompts to /writing/shared/ — Writing is owner |
 | v1.0 | 2026-02-21 | JM | Initial version |
 
@@ -284,67 +285,75 @@ Mapa de qué artefactos fluyen entre subsistemas.
 dx-opus/
 ├── README.md
 ├── _system/                    ← Subsistema 0
-│   ├── RESOURCE_ARTIFACT_HEADER_STANDARD_v1.0.md
-│   ├── SCHEMA_SYSTEM_ARCHITECTURE_v1.0.md
-│   ├── SCHEMA_DECISION_LOG_v1.0.md
-│   ├── TEMPLATE_SUBSYSTEM_CONTEXT_v1.0.md
-│   ├── NAMING_CONVENTION_ANALYSIS_v1.2.md
-│   ├── MASTER_PLAN_v1.1.md
+│   ├── RESOURCE_ARTIFACT_HEADER_STANDARD.md
+│   ├── SCHEMA_SYSTEM_ARCHITECTURE.md
+│   ├── SCHEMA_DECISION_LOG.md
+│   ├── TEMPLATE_SUBSYSTEM_CONTEXT.md
+│   ├── NAMING_CONVENTION_ANALYSIS.md
+│   ├── MASTER_PLAN.md
 │   ├── decisions/
-│   │   └── [DECISION_LOG entries por fecha]
+│   │   └── [DECISION_LOG entries: DL_YYYYMMDD_NNN.md]
 │   └── audits/
-│       ├── RESEARCH_COMPONENT_AUDIT_v1.1.md
+│       ├── RESEARCH_COMPONENT_AUDIT.md
 │       └── [futuros audits]
 │
 ├── tools/                      ← TOOLING (owned by SYSTEM)
-│   ├── TOOL_SETUP_PROJECT_v1.0.gs
-│   └── TOOL_GITHUB_REPO_STRUCTURE_v1.0.md
+│   ├── TOOL_SETUP_PROJECT.gs
+│   └── TOOL_GITHUB_REPO_STRUCTURE.md
 │
 ├── knowledge-base/             ← Subsistema 1
-│   ├── RESOURCE_SOURCE_AUTHORITY_v2.0.md
-│   ├── RESOURCE_CLAIM_VALIDATION_v1.0.md
-│   └── RESOURCE_RESEARCH_FOCUS_TYPES_v1.0.md  [pendiente]
-│       + PROMPT_UPDATE_VALIDATION_CHECKLIST_v3.1.md
+│   ├── CONTEXT_KNOWLEDGE_BASE.md
+│   ├── RESOURCE_SOURCE_AUTHORITY.md
+│   ├── RESOURCE_CLAIM_VALIDATION.md
+│   └── RESOURCE_RESEARCH_FOCUS_TYPES.md  [pendiente]
 │
 ├── research/                   ← Subsistema 2
-│   ├── WORKFLOW_RESEARCH_v3.2.md
-│   ├── PROMPT_SUMMARIZE_REFERENCES_v4.1.md
-│   ├── PROMPT_RESEARCH_DEEP_DIVE_v1.1.md
-│   ├── PROMPT_CREATE_RESEARCH_PLAN_v3.0.md
-│   └── PROMPT_EXECUTE_RESEARCH_PLAN_v1.0.md
+│   ├── CONTEXT_RESEARCH.md
+│   ├── WORKFLOW_RESEARCH.md
+│   ├── PROMPT_SUMMARIZE_REFERENCES.md
+│   ├── PROMPT_RESEARCH_DEEP_DIVE.md
+│   ├── PROMPT_CREATE_RESEARCH_PLAN.md
+│   ├── PROMPT_EXECUTE_RESEARCH_PLAN.md
+│   └── PROMPT_UPDATE_VALIDATION_CHECKLIST.md
 │
 ├── editorial-profile/          ← Subsistema 3
-│   ├── PROMPT_CREATE_EDITOR_PROFILE_v1.0.md
-│   ├── PROMPT_EVALUATE_BOOK_STYLE_v1.1.md
-│   ├── RESOURCE_EDITORIAL_STYLE_v1.0.md
-│   └── RESOURCE_BOOK_TYPES_v1.2.md
+│   ├── CONTEXT_EDITORIAL_PROFILE.md
+│   ├── PROMPT_CREATE_EDITOR_PROFILE.md
+│   ├── PROMPT_EVALUATE_BOOK_STYLE.md
+│   ├── RESOURCE_EDITORIAL_STYLE.md
+│   └── RESOURCE_BOOK_TYPES.md
 │
 ├── writing/                    ← Subsistema 4
-│   ├── WORKFLOW_WRITING_v2.0.md
+│   ├── CONTEXT_WRITING.md
+│   ├── WORKFLOW_WRITING_BOOK.md
 │   ├── book/
-│   │   ├── PROMPT_CREATE_BOOK_INDEX_v1.0.md
-│   │   ├── PROMPT_WRITE_SAMPLE_CHAPTER_v1.0.md
-│   │   ├── PROMPT_WRITE_CHAPTER_v1.3.md
-│   │   ├── PROMPT_WRITE_INTRODUCTION_v1.0.md
-│   │   ├── PROMPT_WRITE_PROLOGUE_v1.0.md
-│   │   ├── PROMPT_CONSOLIDATE_REFERENCES_v1.1.md
-│   │   └── PROMPT_CREATE_BOOK_SHEET_v1.1.md
+│   │   ├── PROMPT_CREATE_BOOK_INDEX.md
+│   │   ├── PROMPT_WRITE_SAMPLE_CHAPTER.md
+│   │   ├── PROMPT_WRITE_CHAPTER.md
+│   │   ├── PROMPT_WRITE_INTRODUCTION.md
+│   │   ├── PROMPT_WRITE_PROLOGUE.md
+│   │   ├── PROMPT_CONSOLIDATE_REFERENCES.md
+│   │   └── PROMPT_CREATE_BOOK_SHEET.md
 │   ├── post/                   [pendiente diseño]
+│   │   └── WORKFLOW_WRITING_POST.md
 │   └── shared/                 ← Owned by Writing, invoked by Activation
-│       ├── PROMPT_WRITE_POST_v1.0.md
-│       ├── PROMPT_CREATE_TIMELINE_v1.0.md
-│       └── PROMPT_CREATE_CAST_v1.0.md
+│       ├── PROMPT_WRITE_POST.md
+│       ├── PROMPT_CREATE_TIMELINE.md
+│       └── PROMPT_CREATE_CAST.md
 │
 ├── evaluation/                 ← Subsistema 5
-│   ├── RESOURCE_EVALUATION_FRAMEWORK_v1.0.md  [pendiente]
-│   ├── PROMPT_EVALUATE_RESEARCH_REPORT_v1.1.md
-│   └── PROMPT_EVALUATE_BOOK_CONTENT_v1.1.md
+│   ├── CONTEXT_EVALUATION.md
+│   ├── RESOURCE_EVALUATION_FRAMEWORK.md  [pendiente]
+│   ├── PROMPT_EVALUATE_RESEARCH_REPORT.md
+│   └── PROMPT_EVALUATE_BOOK_CONTENT.md
 │
 ├── activation/                 ← Subsistema 6
-│   ├── WORKFLOW_ACTIVATION_v1.4.md
-│   └── PROMPT_CREATE_BOOK_BRIEF_v1.0.md  [pendiente]
+│   ├── CONTEXT_ACTIVATION.md
+│   ├── WORKFLOW_ACTIVATION.md
+│   └── PROMPT_CREATE_BOOK_BRIEF.md  [pendiente]
 │
 └── docs/                       ← Subsistema 7
+    ├── CONTEXT_DOCS.md
     ├── system-design/
     ├── subsystem-docs/
     ├── editor-manuals/
