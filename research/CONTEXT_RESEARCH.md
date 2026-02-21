@@ -2,7 +2,7 @@
 id:          CONTEXT_RESEARCH
 type:        TEMPLATE
 subsystem:   RESEARCH
-version:     1.0
+version:     1.1
 status:      ACTIVE
 created:     2026-02-21
 updated:     2026-02-21
@@ -12,6 +12,7 @@ owner_chat:  research-dev
 ## CHANGELOG
 | Version | Date | Author | Summary |
 |---------|------|--------|---------|
+| v1.1 | 2026-02-21 | JM | Added explicit filename naming rule — no version in filename, Git manages history |
 | v1.0 | 2026-02-21 | JM | Initial version |
 
 ## DEPENDENCIES
@@ -288,6 +289,18 @@ Una vez resueltos los gaps críticos, todos los prompts downstream deben referen
 1. Producir DL entries por cada decisión tomada que afecte a otros subsistemas
 2. Listar artefactos modificados con su nueva versión
 3. Indicar qué tareas del sprint han quedado completadas
+
+### Regla de naming de archivos
+
+**Ningún archivo del sistema incluye versión en el nombre.** Git gestiona el historial completo.
+
+- ✅ Correcto: `PROMPT_WRITE_CHAPTER.md`, `RESOURCE_EVALUATION_FRAMEWORK.md`
+- ❌ Incorrecto: `PROMPT_WRITE_CHAPTER_v1_3.md`, `RESOURCE_EVALUATION_FRAMEWORK_v1_0.md`
+
+La versión se documenta únicamente en:
+1. La cabecera YAML: `version: 1.1`
+2. El CHANGELOG interno del archivo
+3. El mensaje de commit: `[SUBSISTEMA] feat: create PROMPT_X (v1.0)`
 
 ### Formato de commits a GitHub
 ```
