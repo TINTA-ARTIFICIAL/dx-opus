@@ -2,7 +2,7 @@
 id:          CONTEXT_KNOWLEDGE_BASE
 type:        TEMPLATE
 subsystem:   KNOWLEDGE_BASE
-version:     1.2
+version:     1.3
 status:      ACTIVE
 created:     2026-02-21
 updated:     2026-02-21
@@ -12,6 +12,8 @@ owner_chat:  knowledge-base-dev
 ## CHANGELOG
 | Version | Date | Author | Summary |
 |---------|------|--------|---------|
+| v1.3 | 2026-02-22 | JM | Added DL entry format with filename convention and subsystem code |
+
 | v1.2 | 2026-02-21 | JM | Added explicit filename naming rule |
 | v1.1 | 2026-02-21 | JM | Clarified UPDATE_VALIDATION_CHECKLIST belongs to Research, not KB. Added CREATE_RESEARCH_PLAN as reference-only file. |
 | v1.0 | 2026-02-21 | JM | Initial version |
@@ -184,6 +186,21 @@ Ejemplos:
 [KB] feat: create RESOURCE_RESEARCH_FOCUS_TYPES v1.0
 [KB] fix: update canonical schema in RESOURCE_SOURCE_AUTHORITY v2.1
 ```
+
+### Formato de DL entries
+
+Cada DL entry es un archivo independiente en GitHub `/_system/decisions/` con este nombre:
+```
+DL_YYYYMMDD_[SUBSYSTEM]_[NNN].md
+```
+
+- `SUBSYSTEM` para este chat: `KB`
+- `NNN` es numeración **global y secuencial** en todo el sistema — no se reinicia por subsistema ni por fecha
+- Antes de crear una entrada, consulta el último número usado en `/_system/decisions/` para continuar la secuencia
+
+Ejemplo: `DL_20260222_RESEARCH_014.md`
+
+El formato completo del contenido está en `SCHEMA_DECISION_LOG.md`.
 
 ### Cuándo crear una DL entry
 - Cuando se añade un nuevo focus type al recurso (afecta a Research)
