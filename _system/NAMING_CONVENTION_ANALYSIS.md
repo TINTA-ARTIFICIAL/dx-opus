@@ -1,12 +1,18 @@
 # ANÁLISIS DE NAMING CONVENTION — SISTEMA D-X-OPUS
 
-**Versión:** 1.3  
-**Fecha:** 21 febrero 2026  
+**Versión:** 1.4  
+**Fecha:** 22 febrero 2026  
 **Autor:** Prompt Engineer / AI Architect  
 **Scope:** Todos los elementos del sistema: prompts, workflows, recursos, guías, plantillas, schemas y herramientas
 
+**Changelog v1.4:**
+- Clarificada distinción de naming entre GitHub y Google Drive (DL_20260222_RESEARCH_004)
+- Principio 5 actualizado: la regla "sin versión en nombre" aplica solo a GitHub; Drive usa versión en nombre porque no tiene control de versiones nativo
+- Sección 3.3 actualizada con nota explícita sobre el espacio de trabajo
+- Sección 3.4 actualizada: confirmado que artefactos de proyecto en Drive incluyen versión en nombre
+
 **Changelog v1.3:**
-- Nueva regla: **ningún archivo del sistema incluye versión en el nombre**. Git gestiona el historial. La versión vive exclusivamente en la cabecera YAML (`version: X.Y`) y en el CHANGELOG interno.
+- Nueva regla: ningún archivo del sistema incluye versión en el nombre. Git gestiona el historial. La versión vive exclusivamente en la cabecera YAML (`version: X.Y`) y en el CHANGELOG interno.
 - Actualizado principio 5 de diseño
 - Actualizada sección 3.3 con la regla unificada
 - Actualizada tabla de aplicación a archivos actuales
@@ -231,7 +237,9 @@ Antes de las reglas concretas, los principios que guían la propuesta:
 2. **Tipo siempre primero** — El prefijo de tipo permite ordenar y filtrar visualmente
 3. **Jerarquía de lo general a lo específico** — `TIPO_VERBO_OBJETO_VARIANTE_VERSION`
 4. **Un solo idioma por namespace** — Inglés para elementos técnicos del sistema; español solo en nombres propios inevitables
-5. **Versión fuera del nombre de archivo** — Ningún archivo del sistema incluye versión en el nombre. Git gestiona el historial completo. La versión siempre está en la cabecera YAML (`version: X.Y`) y en el CHANGELOG interno del archivo. En el texto y en referencias cruzadas se escribe con punto (`v1.3`); en el historial de Git se documenta en el mensaje de commit.
+5. **Versión en el nombre según el espacio de trabajo** — La regla es distinta según dónde vive el archivo:
+   - **GitHub** (`dx-opus`): **sin versión en el nombre**. Git gestiona el historial completo. La versión vive en la cabecera YAML (`version: X.Y`) y en el CHANGELOG interno. Nombre estable entre versiones.
+   - **Google Drive** (proyectos de producción): **con versión en el nombre**. Drive no ofrece control de versiones nativo — la versión en el nombre es la única forma de distinguir iteraciones de un mismo documento. Ejemplo: `SB_R_REF_SUM_v1.0.md` vs `SB_R_REF_SUM_v2.0.md`.
 6. **Sin redundancias** — El proyecto es el repositorio; no hay que repetir el nombre del sistema en cada archivo
 7. **Separador único** — Underscore `_` en nombres de archivo; punto `.` en versiones dentro del texto
 
@@ -268,6 +276,8 @@ El sistema tiene **dos namespaces distintos** que requieren convenciones diferen
 | `TOOL` | Herramienta operativa (scripts, automatizaciones) | Infraestructura del sistema | setup_project.gs |
 
 #### Regla de construcción
+
+> **Espacio de trabajo: GitHub** — Estos archivos residen en el repositorio `dx-opus`. La regla sin versión en el nombre aplica aquí.
 
 **Todos los tipos — sin versión en el nombre de archivo:**
 ```
