@@ -5,7 +5,7 @@ subsystem:   KNOWLEDGE_BASE
 version:     1.3
 status:      ACTIVE
 created:     2026-02-21
-updated:     2026-02-21
+updated:     2026-02-22
 owner_chat:  knowledge-base-dev
 ---
 
@@ -13,7 +13,6 @@ owner_chat:  knowledge-base-dev
 | Version | Date | Author | Summary |
 |---------|------|--------|---------|
 | v1.3 | 2026-02-22 | JM | Added DL entry format with filename convention and subsystem code |
-
 | v1.2 | 2026-02-21 | JM | Added explicit filename naming rule |
 | v1.1 | 2026-02-21 | JM | Clarified UPDATE_VALIDATION_CHECKLIST belongs to Research, not KB. Added CREATE_RESEARCH_PLAN as reference-only file. |
 | v1.0 | 2026-02-21 | JM | Initial version |
@@ -55,8 +54,8 @@ D-X-OPUS es un sistema modular de escritura no-ficción asistida por IA. Cubre e
 
 **Estándares activos:**
 - Cabecera YAML obligatoria en todos los artefactos (ver `RESOURCE_ARTIFACT_HEADER_STANDARD_v1.0`)
-- Naming convention: `RESOURCE_[NOMBRE]_v[X.Y].md` (ver `NAMING_CONVENTION_ANALYSIS_v1.2`)
-- Decision log: cada decisión relevante produce una entrada `DL-YYYYMMDD-NNN`
+- Naming convention: `RESOURCE_[NOMBRE].md` sin versión en el nombre — Git gestiona el historial
+- Decision log: cada decisión relevante produce una entrada `DL_YYYYMMDD_[SUBSYSTEM]_[NNN].md`
 - Versiones: siempre `vX.Y` (dos niveles), nunca más ni menos
 
 ---
@@ -82,8 +81,8 @@ Knowledge Base mantiene los recursos globales que acumulan conocimiento entre pr
 
 | Artefacto | Destino | Descripción |
 |---|---|---|
-| RESOURCE_SOURCE_AUTHORITY (SAH) | Research | Jerarquía de autoridad de fuentes por tema |
-| RESOURCE_CLAIM_VALIDATION (CVC) | Research | Criterios de validación de claims |
+| RESOURCE_SOURCE_AUTHORITY | Research | Jerarquía de autoridad de fuentes por tema |
+| RESOURCE_CLAIM_VALIDATION | Research | Criterios de validación de claims |
 | RESOURCE_RESEARCH_FOCUS_TYPES | Research | 7 tipos de focus con configuraciones de job categories y body structure |
 
 ### Prompts compartidos que usa
@@ -95,63 +94,48 @@ Knowledge Base no invoca prompts de otros subsistemas.
 
 ### Artefactos activos
 
-| Artefacto | Versión actual | Versión objetivo | Status | Descripción |
-|---|---|---|---|---|
-| RESOURCE_SOURCE_AUTHORITY | v2.0 | v2.0 | ACTIVE | Jerarquía de autoridad de fuentes por tema y disciplina |
-| RESOURCE_CLAIM_VALIDATION | v1.0 | v1.0 | ACTIVE | Criterios y niveles de validación de claims |
+| Artefacto | Versión actual | Status | Descripción |
+|---|---|---|---|
+| RESOURCE_SOURCE_AUTHORITY | v2.1 | ACTIVE | Jerarquía de autoridad de fuentes por tema y disciplina. Incluye CANONICAL UPDATE SCHEMA. |
+| RESOURCE_CLAIM_VALIDATION | v1.1 | ACTIVE | Criterios y niveles de validación de claims. Incluye CANONICAL UPDATE SCHEMA. |
+| RESOURCE_RESEARCH_FOCUS_TYPES | v1.1 | ACTIVE | 7 tipos de focus con job categories, body structure templates y notas metodológicas. |
 
-**Nota importante sobre PROMPT_UPDATE_VALIDATION_CHECKLIST:** Este prompt **no pertenece a Knowledge Base**. Es propiedad de Research (research-dev lo desarrolla y versiona). Knowledge Base define el esquema canónico de SAH y CVC; Research ejecuta la actualización. Si Knowledge Base necesita cambiar el esquema de output de SAH o CVC, crea una DL entry notificando a research-dev para que actualice el prompt.
+**Nota sobre naming:** Los archivos en GitHub deben llamarse `RESOURCE_SOURCE_AUTHORITY.md`, `RESOURCE_CLAIM_VALIDATION.md` y `RESOURCE_RESEARCH_FOCUS_TYPES.md` — sin versión en el nombre. El renaming de SAH y CVC desde los nombres legacy (`SOURCE_AUTHORITY_HIERARCHY_v2_0.md`, `CLAIM_VALIDATION_CRITERIA_v1_0.md`) está pendiente en Fase 3 del MASTER_PLAN.
 
-**Nota sobre naming:** Los nombres actuales son `SOURCE_AUTHORITY_HIERARCHY_v2_0.md` y `CLAIM_VALIDATION_CRITERIA_v1_0.md`. Los nombres objetivo son `RESOURCE_SOURCE_AUTHORITY_v2.0.md` y `RESOURCE_CLAIM_VALIDATION_v1.0.md`. El renaming se hace en la Fase 3 del MASTER_PLAN.
+**Nota sobre PROMPT_UPDATE_VALIDATION_CHECKLIST:** No pertenece a Knowledge Base. Es propiedad de Research. KB define el esquema; Research ejecuta. Si KB cambia el esquema de SAH o CVC, notifica a research-dev via DL entry.
 
 ### Artefactos pendientes de crear
 
-| Artefacto | Prioridad | Bloqueado por |
-|---|---|---|
-| RESOURCE_RESEARCH_FOCUS_TYPES_v1.0 | 🔴 Alta | — (este chat lo crea) |
+Ninguno. Todas las tareas del MASTER_PLAN asignadas a KB en la Fase actual están completadas.
 
-### Referencia de trabajo (no artefacto propio)
+### Pendientes de acción externa
 
-| Artefacto | Origen | Para qué se usa en este chat |
+| Pendiente | Responsable | Referencia |
 |---|---|---|
-| PROMPT_CREATE_RESEARCH_PLAN_v2_1_2.md | Research | Leer y extraer secciones 1.2 y 4.1 para crear RESOURCE_RESEARCH_FOCUS_TYPES. Una vez creado el resource, este archivo puede retirarse del proyecto. |
+| Actualizar PROMPT_UPDATE_VALIDATION_CHECKLIST para referenciar CANONICAL UPDATE SCHEMA de SAH y CVC | research-dev | DL_20260222_KB_003 |
+| Migrar PROMPT_CREATE_RESEARCH_PLAN v3.0: extraer secciones 1.2 y 4.1 y referenciar RESOURCE_RESEARCH_FOCUS_TYPES | research-dev | DL_20260222_KB_002 |
+| Renaming de archivos legacy SAH y CVC en GitHub | JM (Fase 3 MASTER_PLAN) | NAMING_CONVENTION_ANALYSIS_v1.2 |
+| Asignar números globales definitivos a DL entries de esta sesión | JM | Ver `/_system/decisions/` en GitHub |
 
 ---
 
 ## SECCIÓN 4: TRABAJO ACTIVO
 
-### Tarea principal: crear RESOURCE_RESEARCH_FOCUS_TYPES v1.0
+No hay tareas activas asignadas a Knowledge Base en este momento.
 
-Esta es la única tarea activa de Knowledge Base y desbloquea el Sprint 2 de Research (CREATE_RESEARCH_PLAN v3.0).
+### DL entries producidas en la sesión 2026-02-22
 
-**Qué debe contener el recurso:**
-
-Para cada uno de los 7 focus types (A-G), definir:
-1. **Nombre canónico** del focus
-2. **Pregunta clave editorial** que responde este tipo de investigación
-3. **Distribución de job categories** (% por tipo: Foundational, Historical, Convergent, etc.)
-4. **Body structure template** — secciones del RESEARCH_REPORT para este focus
-5. **Notas específicas** del focus (consideraciones metodológicas)
-
-**Dónde están los 7 focus types actualmente:**
-Embebidos en `PROMPT_CREATE_RESEARCH_PLAN_v2_1_2.md`, disponible en el proyecto de Claude:
-- Sección 1.2 (~70 líneas): distribuciones de job categories por focus
-- Sección 4.1 (~200 líneas): body structure templates por focus
-
-El trabajo de este chat es extraer esas secciones, estructurarlas como recurso independiente con cabecera YAML estándar, y producir `RESOURCE_RESEARCH_FOCUS_TYPES_v1.0.md`.
-
-### Tareas del MASTER_PLAN
-
-| Tarea | Descripción | Prioridad |
+| DL-ID provisional | Decisión | Estado |
 |---|---|---|
-| F1-01 | Crear RESOURCE_RESEARCH_FOCUS_TYPES_v1.0 | 🔴 Alta |
+| DL_20260222_KB_002 | Creación de RESOURCE_RESEARCH_FOCUS_TYPES | Producida — número asignado |
+| DL_20260222_KB_003 | CANONICAL UPDATE SCHEMA añadido a SAH y CVC | Producida — número asignado |
 
-### DECISION_LOG entries pendientes de integrar
+### Historial de tareas completadas
 
-| DL-ID | Decisión | Acción requerida en este chat |
+| Tarea | Descripción | Completada |
 |---|---|---|
-| DL-20260221-001 | Focus types extraídos de CREATE_RESEARCH_PLAN | Crear RESOURCE_RESEARCH_FOCUS_TYPES_v1.0 |
-| DL-20260221-004 | KB define esquema canónico de SAH/CVC; Research ejecuta la actualización | Verificar que el esquema canónico de SAH y CVC está suficientemente explícito en los recursos actuales. Si no, añadir sección de especificación de esquema. |
+| F1-01 | Crear RESOURCE_RESEARCH_FOCUS_TYPES v1.0 | ✅ 2026-02-22 (v1.1) |
+| DL-20260221-004 | Verificar y explicitar esquema canónico SAH/CVC | ✅ 2026-02-22 |
 
 ---
 
@@ -159,32 +143,34 @@ El trabajo de este chat es extraer esas secciones, estructurarlas como recurso i
 
 ### Al inicio de cada sesión
 1. Confirmar con el editor la tarea objetivo
-2. Si la tarea es crear RESOURCE_RESEARCH_FOCUS_TYPES: leer PROMPT_CREATE_RESEARCH_PLAN desde el proyecto de Claude para extraer los focus types
+2. Leer los artefactos relevantes desde el proyecto de Claude
 3. Verificar si hay nuevas DL entries que afecten a Knowledge Base
 
 ### Al finalizar cada sesión
-1. Producir DL entries si se tomaron decisiones que afectan a Research (el consumidor principal)
-2. Listar artefactos creados o modificados con su versión
+1. Producir DL entries si se tomaron decisiones que afectan a Research
+2. Actualizar este documento (CONTEXT_KNOWLEDGE_BASE) para reflejar el estado real
+3. Listar artefactos creados o modificados con su versión y commits sugeridos
 
 ### Regla de naming de archivos
 
 **Ningún archivo del sistema incluye versión en el nombre.** Git gestiona el historial completo.
 
-- ✅ Correcto: `PROMPT_WRITE_CHAPTER.md`, `RESOURCE_EVALUATION_FRAMEWORK.md`
-- ❌ Incorrecto: `PROMPT_WRITE_CHAPTER_v1_3.md`, `RESOURCE_EVALUATION_FRAMEWORK_v1_0.md`
+- ✅ Correcto: `RESOURCE_SOURCE_AUTHORITY.md`, `RESOURCE_RESEARCH_FOCUS_TYPES.md`
+- ❌ Incorrecto: `RESOURCE_SOURCE_AUTHORITY_v2_1.md`, `RESOURCE_RESEARCH_FOCUS_TYPES_v1_1.md`
 
 La versión se documenta únicamente en:
 1. La cabecera YAML: `version: 1.1`
 2. El CHANGELOG interno del archivo
-3. El mensaje de commit: `[SUBSISTEMA] feat: create PROMPT_X (v1.0)`
+3. El mensaje de commit: `[KB] feat: create RESOURCE_X (v1.0)`
 
 ### Formato de commits a GitHub
 ```
 [KB] tipo: descripción corta
 
 Ejemplos:
-[KB] feat: create RESOURCE_RESEARCH_FOCUS_TYPES v1.0
-[KB] fix: update canonical schema in RESOURCE_SOURCE_AUTHORITY v2.1
+[KB] feat: create RESOURCE_RESEARCH_FOCUS_TYPES (v1.1)
+[KB] feat: add CANONICAL UPDATE SCHEMA to RESOURCE_SOURCE_AUTHORITY (v2.1)
+[KB] feat: add CANONICAL UPDATE SCHEMA to RESOURCE_CLAIM_VALIDATION (v1.1)
 ```
 
 ### Formato de DL entries
@@ -198,9 +184,7 @@ DL_YYYYMMDD_[SUBSYSTEM]_[NNN].md
 - `NNN` es numeración **global y secuencial** en todo el sistema — no se reinicia por subsistema ni por fecha
 - Antes de crear una entrada, consulta el último número usado en `/_system/decisions/` para continuar la secuencia
 
-Ejemplo: `DL_20260222_RESEARCH_014.md`
-
-El formato completo del contenido está en `SCHEMA_DECISION_LOG.md`.
+Ejemplo: `DL_20260222_KB_004.md`
 
 ### Cuándo crear una DL entry
 - Cuando se añade un nuevo focus type al recurso (afecta a Research)
