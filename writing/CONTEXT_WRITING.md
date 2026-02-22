@@ -2,7 +2,7 @@
 id:          CONTEXT_WRITING
 type:        TEMPLATE
 subsystem:   WRITING
-version:     1.1
+version:     1.2
 status:      ACTIVE
 created:     2026-02-21
 updated:     2026-02-21
@@ -12,6 +12,8 @@ owner_chat:  writing-dev
 ## CHANGELOG
 | Version | Date | Author | Summary |
 |---------|------|--------|---------|
+| v1.2 | 2026-02-22 | JM | Added DL entry format with filename convention and subsystem code |
+
 | v1.1 | 2026-02-21 | JM | Added explicit filename naming rule — no version in filename, Git manages history |
 | v1.0 | 2026-02-21 | JM | Initial version |
 
@@ -266,6 +268,21 @@ Ejemplos:
 [WRITING] feat: create PROMPT_PLAN_POST v1.0
 [WRITING] fix: update evaluation invocation in WORKFLOW_WRITING
 ```
+
+### Formato de DL entries
+
+Cada DL entry es un archivo independiente en GitHub `/_system/decisions/` con este nombre:
+```
+DL_YYYYMMDD_[SUBSYSTEM]_[NNN].md
+```
+
+- `SUBSYSTEM` para este chat: `WRITING`
+- `NNN` es numeración **global y secuencial** en todo el sistema — no se reinicia por subsistema ni por fecha
+- Antes de crear una entrada, consulta el último número usado en `/_system/decisions/` para continuar la secuencia
+
+Ejemplo: `DL_20260222_RESEARCH_014.md`
+
+El formato completo del contenido está en `SCHEMA_DECISION_LOG.md`.
 
 ### Cuándo crear una DL entry
 - Cuando se modifica cualquier prompt de `/writing/shared/` (notificar a activation-dev)
