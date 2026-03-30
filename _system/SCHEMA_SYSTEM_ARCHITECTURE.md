@@ -2,17 +2,18 @@
 id:          SCHEMA_SYSTEM_ARCHITECTURE
 type:        SCHEMA
 subsystem:   SYSTEM
-version:     1.2
+version:     1.3
 status:      ACTIVE
 created:     2026-02-21
-updated:     2026-02-21
+updated:     2026-03-30
 owner_chat:  system-architecture
 ---
 
 ## CHANGELOG
 | Version | Date | Author | Summary |
 |---------|------|--------|---------|
-| v1.2 | 2026-02-21 | JM | Removed versions from all filenames in repo tree — Git manages history |
+| v1.3 | 2026-03-30 | JM | EVALUATE_BOOK_STYLE moved from Editorial Profile to Evaluation (DL_20260330_SYSTEM_004). Updated subsystem descriptions and evaluator map. |
+| v1.2 | 2026-02-21 | JM | Removed versions from all filenames in repo tree |
 | v1.1 | 2026-02-21 | JM | Moved shared prompts to /writing/shared/ — Writing is owner |
 | v1.0 | 2026-02-21 | JM | Initial version |
 
@@ -66,8 +67,8 @@ D-X-OPUS es un sistema de escritura no-ficción asistida por IA. Cubre el proces
 ║  SAH · CVC    ║ ║  evaluación  ║ ║  EDITORIAL_STYLE    ║
 ║  FOCUS_TYPES  ║ ║              ║ ║  BOOK_TYPES         ║
 ║               ║ ║  EVAL_RSRCH  ║ ║                     ║
-║  UPDATE_      ║ ║  EVAL_BOOK_S ║ ║  Output:            ║
-║  VALIDATION   ║ ║  EVAL_BOOK_C ║ ║  EDITOR_PROFILE     ║
+║  UPDATE_      ║ ║  EVAL_BOOK_C ║ ║  Output:            ║
+║  VALIDATION   ║ ║  EVAL_BOOK_S ║ ║  EDITOR_PROFILE     ║
 ║               ║ ║  EVAL_POST*  ║ ║  activo             ║
 ║  Output:      ║ ║  EVAL_ACT*   ║ ╚═════════════════════╝
 ║  SAH+CVC      ║ ╚══════════════╝         ║
@@ -132,7 +133,7 @@ D-X-OPUS es un sistema de escritura no-ficción asistida por IA. Cubre el proces
 ## PARTE 3: DESCRIPCIÓN DE CADA SUBSISTEMA
 
 ### Subsistema 0: SYSTEM
-**Chat:** system-architecture  
+**Chat:** system-architecture
 **Rol:** Define y mantiene los estándares del sistema. No produce prompts para el editor — produce los artefactos que hacen posible el desarrollo coherente del resto.
 
 **Responsabilidades:**
@@ -153,7 +154,7 @@ D-X-OPUS es un sistema de escritura no-ficción asistida por IA. Cubre el proces
 ---
 
 ### Subsistema 1: KNOWLEDGE BASE
-**Chat:** knowledge-base-dev  
+**Chat:** knowledge-base-dev
 **Rol:** Mantiene los recursos globales que acumulan conocimiento entre proyectos. Es el único subsistema cuyos outputs crecen con cada proyecto ejecutado.
 
 **Responsabilidades:**
@@ -168,7 +169,7 @@ D-X-OPUS es un sistema de escritura no-ficción asistida por IA. Cubre el proces
 ---
 
 ### Subsistema 2: RESEARCH
-**Chat:** research-dev  
+**Chat:** research-dev
 **Rol:** Transforma referencias brutas en conocimiento validado y estructurado.
 
 **Flujo interno:**
@@ -188,45 +189,53 @@ RAMA B:    → CREATE_RESEARCH_PLAN → RESEARCH_PLAN_DETAILED
 ---
 
 ### Subsistema 3: EDITORIAL PROFILE
-**Chat:** editorial-profile-dev  
+**Chat:** editorial-profile-dev
 **Rol:** Captura y representa la identidad del autor como comunicador. Es el único subsistema que modela al humano, no al proceso.
 
 **Responsabilidades:**
 - Crear y mantener el EDITOR_PROFILE activo
 - Definir RESOURCE_EDITORIAL_STYLE (estilos disponibles en el sistema)
 - Definir RESOURCE_BOOK_TYPES (tipos de libros que el sistema soporta)
-- Evaluar adherencia al perfil (EVALUATE_BOOK_STYLE)
 
-**Nota:** EVALUATE_BOOK_STYLE pertenece a Editorial Profile, no a Evaluation, porque conoce el EDITOR_PROFILE y evalúa adherencia a él, no calidad objetiva.
+**Límite explícito:** Este subsistema no evalúa textos. La evaluación de adherencia al perfil editorial (EVALUATE_BOOK_STYLE) pertenece al Subsistema 5: EVALUATION. El ownership de un evaluador lo determina su función, no sus inputs. Ver DL_20260330_SYSTEM_004.
+
+**Output principal:** EDITOR_PROFILE activo — consumido por Writing, Activation y Evaluation.
 
 ---
 
 ### Subsistema 4: WRITING
-**Chat:** writing-dev  
+**Chat:** writing-dev
 **Rol:** Produce el texto final (libro o post) a partir de la investigación y el perfil editorial.
 
 **Bifurcación:** El editor decide al entrar si produce un libro o un post. La decisión ocurre en el WORKFLOW_WRITING antes de invocar cualquier prompt.
 
-**RAMA BOOK:** proceso completo de 12 prompts, desde el índice hasta la ficha técnica.  
+**RAMA BOOK:** proceso completo de 12 prompts, desde el índice hasta la ficha técnica.
 **RAMA POST:** proceso ligero de 3-5 prompts (pendiente de diseño).
 
 ---
 
 ### Subsistema 5: EVALUATION
-**Chat:** evaluation-dev  
-**Rol:** Evalúa la calidad de los artefactos producidos por otros subsistemas. Puede cambiar el método de evaluación sin modificar los workflows que lo invocan.
+**Chat:** evaluation-dev
+**Rol:** Es el subsistema único responsable de toda evaluación de calidad en el sistema. Puede cambiar el método de evaluación sin modificar los workflows que lo invocan.
+
+**Principio de ownership:** El ownership de un evaluador lo determina su función (evaluar), no sus inputs. Que un evaluador necesite EDITOR_PROFILE, SAH o CVC como input no lo convierte en propiedad de otro subsistema.
 
 **Contrato de evaluación:** Todos los evaluadores producen el mismo formato de output (EVALUATION_RESULT con status GREEN/YELLOW/RED). Los workflows solo leen el status y el decision_guidance.
 
-**Evaluadores existentes:** EVALUATE_RESEARCH_REPORT, EVALUATE_BOOK_CONTENT  
-**Evaluadores pendientes:** EVALUATE_POST, EVALUATE_ACTIVATION
+**Inventario de evaluadores:**
 
-**Nota:** EVALUATE_BOOK_STYLE pertenece a Editorial Profile (ver Sub 3).
+| Evaluador | Versión | Status | Artefacto evaluado |
+|---|---|---|---|
+| EVALUATE_RESEARCH_REPORT | v1.1 | ACTIVE | RESEARCH_REPORT / RESEARCH_DEEP_DIVE |
+| EVALUATE_BOOK_CONTENT | v1.1 | ACTIVE | Capítulo o libro completo |
+| EVALUATE_BOOK_STYLE | v1.0 | NEEDS UPDATE v1.1 | Adherencia al perfil editorial (necesita EDITOR_PROFILE) |
+| EVALUATE_POST | — | PENDING | Post o artículo (pendiente diseño) |
+| EVALUATE_ACTIVATION | — | PENDING | Campaña de contenido (pendiente diseño) |
 
 ---
 
 ### Subsistema 6: ACTIVATION
-**Chat:** activation-dev  
+**Chat:** activation-dev
 **Rol:** Genera contenido derivado a partir de libros o colecciones ya escritas. Puede producir posts para publicación inmediata o propuestas de nuevos libros (BOOK_BRIEF).
 
 **Loop con Research:** El BOOK_BRIEF producido por Activation alimenta opcionalmente el inicio de un nuevo ciclo de Research, creando el bucle: Research → Writing → Activation → Research...
@@ -234,7 +243,7 @@ RAMA B:    → CREATE_RESEARCH_PLAN → RESEARCH_PLAN_DETAILED
 ---
 
 ### Subsistema 7: DOCS
-**Chat:** docs-dev  
+**Chat:** docs-dev
 **Rol:** Mantiene toda la documentación del sistema actualizada. Consume DECISION_LOG entries de todos los subsistemas y produce documentación estructurada por audiencia.
 
 **Cuatro tipos de documentación:**
@@ -247,7 +256,7 @@ RAMA B:    → CREATE_RESEARCH_PLAN → RESEARCH_PLAN_DETAILED
 
 ## PARTE 4: PROMPTS COMPARTIDOS
 
-Prompts desarrollados y mantenidos por Writing pero invocados también por Activation. Viven en `/writing/shared/` del repositorio — su ubicación refleja que Writing es el subsistema owner.
+Prompts desarrollados y mantenidos por Writing pero invocados también por Activation. Viven en `/writing/shared/` del repositorio.
 
 | Prompt | Owner | Usado por |
 |---|---|---|
@@ -255,13 +264,11 @@ Prompts desarrollados y mantenidos por Writing pero invocados también por Activ
 | CREATE_TIMELINE | writing-dev | Writing Book, Activation |
 | CREATE_CAST | writing-dev | Writing Book, Activation |
 
-**Regla:** writing-dev desarrolla y versiona estos prompts. Cuando hace un cambio, notifica a activation-dev via DECISION_LOG entry antes de mergear a main. activation-dev no propone cambios directamente — los canaliza a writing-dev.
+**Regla:** writing-dev desarrolla y versiona estos prompts. Cuando hace un cambio, notifica a activation-dev via DECISION_LOG entry antes de mergear a main.
 
 ---
 
 ## PARTE 5: INTERFACES ENTRE SUBSISTEMAS
-
-Mapa de qué artefactos fluyen entre subsistemas.
 
 | Origen | Destino | Artefacto | Tipo de relación |
 |---|---|---|---|
@@ -272,6 +279,7 @@ Mapa de qué artefactos fluyen entre subsistemas.
 | RESEARCH | WRITING | RESEARCH_DEEP_DIVE | Input alternativo (RAMA A) |
 | EDITORIAL_PROFILE | WRITING | EDITOR_PROFILE | Input de contexto |
 | EDITORIAL_PROFILE | ACTIVATION | EDITOR_PROFILE | Input de contexto |
+| EDITORIAL_PROFILE | EVALUATION | EDITOR_PROFILE | Input de EVALUATE_BOOK_STYLE y EVALUATE_POST |
 | WRITING | ACTIVATION | Libro(s) completo(s) | Input de análisis |
 | ACTIVATION | RESEARCH | BOOK_BRIEF | Input orientador opcional |
 | EVALUATION | Todos | EVALUATION_RESULT | Output de evaluación |
@@ -284,7 +292,7 @@ Mapa de qué artefactos fluyen entre subsistemas.
 ```
 dx-opus/
 ├── README.md
-├── _system/                    ← Subsistema 0
+├── _system/
 │   ├── RESOURCE_ARTIFACT_HEADER_STANDARD.md
 │   ├── SCHEMA_SYSTEM_ARCHITECTURE.md
 │   ├── SCHEMA_DECISION_LOG.md
@@ -292,40 +300,39 @@ dx-opus/
 │   ├── NAMING_CONVENTION_ANALYSIS.md
 │   ├── MASTER_PLAN.md
 │   ├── decisions/
-│   │   └── [DECISION_LOG entries: DL_YYYYMMDD_NNN.md]
+│   │   └── [DL_YYYYMMDD_[SUBSYSTEM]_[NNN].md]
 │   └── audits/
-│       ├── RESEARCH_COMPONENT_AUDIT.md
-│       └── [futuros audits]
+│       └── RESEARCH_COMPONENT_AUDIT.md
 │
-├── tools/                      ← TOOLING (owned by SYSTEM)
+├── tools/
 │   ├── TOOL_SETUP_PROJECT.gs
 │   └── TOOL_GITHUB_REPO_STRUCTURE.md
 │
-├── knowledge-base/             ← Subsistema 1
+├── knowledge-base/
 │   ├── CONTEXT_KNOWLEDGE_BASE.md
 │   ├── RESOURCE_SOURCE_AUTHORITY.md
 │   ├── RESOURCE_CLAIM_VALIDATION.md
-│   └── RESOURCE_RESEARCH_FOCUS_TYPES.md  [pendiente]
+│   └── RESOURCE_RESEARCH_FOCUS_TYPES.md
 │
-├── research/                   ← Subsistema 2
+├── research/
 │   ├── CONTEXT_RESEARCH.md
 │   ├── WORKFLOW_RESEARCH.md
 │   ├── PROMPT_SUMMARIZE_REFERENCES.md
 │   ├── PROMPT_RESEARCH_DEEP_DIVE.md
 │   ├── PROMPT_CREATE_RESEARCH_PLAN.md
 │   ├── PROMPT_EXECUTE_RESEARCH_PLAN.md
-│   └── PROMPT_UPDATE_VALIDATION_CHECKLIST.md
+│   ├── PROMPT_UPDATE_VALIDATION_CHECKLIST.md
+│   └── GUIDE_ANNOTATION_PHASE3.md     [pendiente]
 │
-├── editorial-profile/          ← Subsistema 3
+├── editorial-profile/
 │   ├── CONTEXT_EDITORIAL_PROFILE.md
 │   ├── PROMPT_CREATE_EDITOR_PROFILE.md
-│   ├── PROMPT_EVALUATE_BOOK_STYLE.md
 │   ├── RESOURCE_EDITORIAL_STYLE.md
 │   └── RESOURCE_BOOK_TYPES.md
 │
-├── writing/                    ← Subsistema 4
+├── writing/
 │   ├── CONTEXT_WRITING.md
-│   ├── WORKFLOW_WRITING_BOOK.md
+│   ├── WORKFLOW_WRITING.md            [pendiente v2.0]
 │   ├── book/
 │   │   ├── PROMPT_CREATE_BOOK_INDEX.md
 │   │   ├── PROMPT_WRITE_SAMPLE_CHAPTER.md
@@ -334,25 +341,25 @@ dx-opus/
 │   │   ├── PROMPT_WRITE_PROLOGUE.md
 │   │   ├── PROMPT_CONSOLIDATE_REFERENCES.md
 │   │   └── PROMPT_CREATE_BOOK_SHEET.md
-│   ├── post/                   [pendiente diseño]
-│   │   └── WORKFLOW_WRITING_POST.md
-│   └── shared/                 ← Owned by Writing, invoked by Activation
+│   ├── post/                          [pendiente diseño]
+│   └── shared/
 │       ├── PROMPT_WRITE_POST.md
 │       ├── PROMPT_CREATE_TIMELINE.md
 │       └── PROMPT_CREATE_CAST.md
 │
-├── evaluation/                 ← Subsistema 5
+├── evaluation/
 │   ├── CONTEXT_EVALUATION.md
-│   ├── RESOURCE_EVALUATION_FRAMEWORK.md  [pendiente]
+│   ├── RESOURCE_EVALUATION_FRAMEWORK.md
 │   ├── PROMPT_EVALUATE_RESEARCH_REPORT.md
-│   └── PROMPT_EVALUATE_BOOK_CONTENT.md
+│   ├── PROMPT_EVALUATE_BOOK_CONTENT.md
+│   └── PROMPT_EVALUATE_BOOK_STYLE.md  [pendiente v1.1]
 │
-├── activation/                 ← Subsistema 6
+├── activation/
 │   ├── CONTEXT_ACTIVATION.md
 │   ├── WORKFLOW_ACTIVATION.md
-│   └── PROMPT_CREATE_BOOK_BRIEF.md  [pendiente]
+│   └── PROMPT_CREATE_BOOK_BRIEF.md    [pendiente]
 │
-└── docs/                       ← Subsistema 7
+└── docs/
     ├── CONTEXT_DOCS.md
     ├── system-design/
     ├── subsystem-docs/
@@ -363,8 +370,6 @@ dx-opus/
 ---
 
 ## PARTE 7: FLUJO COMPLETO DEL SISTEMA
-
-El flujo más completo posible (Research → Writing Book → Activation → nuevo libro):
 
 ```
 [EDITOR] aporta referencias sobre un tema
