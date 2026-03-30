@@ -9,9 +9,10 @@ Puede cambiar el método de evaluación sin modificar los workflows que lo invoc
 
 | Artefacto | Versión | Status | Descripción |
 |---|---|---|---|
-| RESOURCE_EVALUATION_FRAMEWORK | v1.0 | PENDING | Contrato de evaluación: output canónico + protocolo |
-| PROMPT_EVALUATE_RESEARCH_REPORT | v1.1 | PENDING | Evalúa reports de investigación |
-| PROMPT_EVALUATE_BOOK_CONTENT | v1.1 | PENDING | Evalúa contenido del libro |
+| RESOURCE_EVALUATION_FRAMEWORK | v1.0 | ACTIVE | Contrato de evaluación: output canónico + protocolo |
+| PROMPT_EVALUATE_RESEARCH_REPORT | v1.1 | ACTIVE | Evalúa reports de investigación (RAMA A y RAMA B) |
+| PROMPT_EVALUATE_BOOK_CONTENT | v1.1 | ACTIVE | Evalúa rigor de fuentes y claims en el texto del libro |
+| PROMPT_EVALUATE_BOOK_STYLE | v1.1 | PENDING | Evalúa adherencia al perfil editorial del autor |
 | PROMPT_EVALUATE_POST | v1.0 | PENDING | Evalúa posts (pendiente diseño) |
 | PROMPT_EVALUATE_ACTIVATION | v1.0 | PENDING | Evalúa campañas de activación (pendiente diseño) |
 
@@ -25,7 +26,16 @@ Todo evaluador produce un EVALUATION_RESULT con:
 - improvement_areas (YELLOW)
 - strengths (siempre)
 
+## Nota sobre inputs externos
+
+Algunos evaluadores necesitan inputs de otros subsistemas para funcionar:
+- EVALUATE_BOOK_STYLE y EVALUATE_POST requieren EDITOR_PROFILE (de Editorial Profile)
+- EVALUATE_RESEARCH_REPORT requiere SAH y CVC (de Knowledge Base)
+
+Esto no afecta al ownership: Evaluation desarrolla y versiona todos los evaluadores,
+independientemente de qué inputs necesite cada uno.
+
 ## Interfaces
 
-**Invocado por:** Research, Writing, Activation  
+**Invocado por:** Research, Writing, Activation
 **Entrega a:** El subsistema que lo invoca (EVALUATION_RESULT)
