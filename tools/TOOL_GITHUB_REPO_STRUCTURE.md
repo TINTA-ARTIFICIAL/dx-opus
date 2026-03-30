@@ -2,62 +2,51 @@
 id:          TOOL_GITHUB_REPO_STRUCTURE
 type:        TOOL
 subsystem:   SYSTEM
-version:     1.0
+version:     1.1
 status:      ACTIVE
 created:     2026-02-21
-updated:     2026-02-21
+updated:     2026-03-30
 owner_chat:  system-architecture
 ---
 
 ## CHANGELOG
 | Version | Date | Author | Summary |
 |---------|------|--------|---------|
+| v1.1 | 2026-03-30 | JM | Removed versions from all filenames in repo tree. Replaced MCP setup with manual upload flow (DECISIÓN-15). Fixed shared prompts location to /writing/shared/. Added current repo state. |
 | v1.0 | 2026-02-21 | JM | Initial version |
 
 ## DEPENDENCIES
-inputs:  [SCHEMA_SYSTEM_ARCHITECTURE]
+inputs:  [SCHEMA_SYSTEM_ARCHITECTURE, NAMING_CONVENTION_ANALYSIS]
 outputs: [Estructura de carpetas en repositorio GitHub dx-opus]
 calls:   []
 
 ## DESCRIPTION
-Especificación completa de la estructura del repositorio GitHub dx-opus, con el contenido de cada README y las instrucciones de inicialización. Una vez configurado el GitHub MCP, este documento es la referencia para crear el repositorio desde un chat de Claude.
+Especificación completa de la estructura del repositorio GitHub dx-opus y el flujo de trabajo para subir artefactos. El MCP de GitHub no está disponible en Plan Pro — se usa flujo manual asistido.
 
 ---
 
 # TOOL: GITHUB REPOSITORY STRUCTURE
-## Repositorio dx-opus — Especificación de Inicialización
+## Repositorio TINTA-ARTIFICIAL/dx-opus
 
 ---
 
-## PARTE 1: SETUP PREVIO (acción del editor)
+## PARTE 1: FLUJO DE TRABAJO (manual asistido)
 
-Antes de poder inicializar el repositorio desde un chat de Claude, el editor debe completar estos pasos:
+El GitHub MCP no está disponible en el Plan Pro de Claude.ai (DECISIÓN-15). El flujo de trabajo es:
 
-**Paso 1 — Crear el repositorio en GitHub:**
-1. Ir a github.com → New repository
-2. Nombre: `dx-opus`
-3. Visibilidad: Private
-4. NO inicializar con README (se creará desde el chat)
-5. Crear repositorio
+1. **Claude produce** los artefactos en el Project Knowledge con el naming correcto
+2. **Claude prepara** el paquete de subida: lista de archivos con su ruta exacta de destino
+3. **El editor sube** los archivos al repositorio via:
+   - Interfaz web de GitHub (arrastrar y soltar por carpeta)
+   - GitHub Desktop
+   - Git CLI
 
-**Paso 2 — Crear Personal Access Token:**
-1. GitHub → Settings → Developer Settings → Personal Access Tokens → Tokens (classic)
-2. Nombre: `claude-dx-opus`
-3. Permisos necesarios: `repo` (acceso completo al repositorio privado)
-4. Guardar el token de forma segura
+**Regla de naming en GitHub:** Ningún archivo incluye versión en el nombre. La versión vive en la cabecera YAML y en el historial de commits.
 
-**Paso 3 — Configurar GitHub MCP en Claude.ai:**
-1. Claude.ai → Settings → Integrations
-2. Buscar GitHub MCP Server
-3. Introducir el Personal Access Token
-4. Verificar que el MCP aparece como activo
-
-**Paso 4 — Test de integración:**
-En un chat de Claude con el MCP activo, ejecutar:
 ```
-"Lista los repositorios a los que tienes acceso"
+✅ CORRECTO:   PROMPT_WRITE_CHAPTER.md
+❌ INCORRECTO: PROMPT_WRITE_CHAPTER_v1_3.md
 ```
-Debe aparecer `dx-opus` en la lista.
 
 ---
 
@@ -66,87 +55,98 @@ Debe aparecer `dx-opus` en la lista.
 ```
 dx-opus/
 │
-├── README.md                              ← Entrada principal del sistema
+├── README.md
 │
 ├── _system/                               ← Subsistema 0: SYSTEM
 │   ├── README.md
-│   ├── RESOURCE_ARTIFACT_HEADER_STANDARD_v1.0.md
-│   ├── SCHEMA_SYSTEM_ARCHITECTURE_v1.0.md
-│   ├── SCHEMA_DECISION_LOG_v1.0.md
-│   ├── TEMPLATE_SUBSYSTEM_CONTEXT_v1.0.md
-│   ├── NAMING_CONVENTION_ANALYSIS_v1.2.md
-│   ├── MASTER_PLAN_v1.1.md
+│   ├── MASTER_PLAN.md
+│   ├── NAMING_CONVENTION_ANALYSIS.md
+│   ├── RESOURCE_ARTIFACT_HEADER_STANDARD.md
+│   ├── SCHEMA_SYSTEM_ARCHITECTURE.md
+│   ├── SCHEMA_DECISION_LOG.md
+│   ├── TEMPLATE_SUBSYSTEM_CONTEXT.md
 │   │
-│   ├── decisions/                         ← DECISION_LOG entries
-│   │   └── README.md
+│   ├── decisions/
+│   │   ├── README.md
+│   │   ├── DL_20260222_EVAL_001.md
+│   │   ├── DL_20260222_KB_002.md
+│   │   └── DL_20260222_KB_003.md
 │   │
-│   └── audits/                            ← Auditorías del sistema
+│   └── audits/
 │       ├── README.md
-│       └── RESEARCH_COMPONENT_AUDIT_v1.1.md
+│       └── RESEARCH_COMPONENT_AUDIT.md
 │
 ├── tools/                                 ← TOOLING (owned by SYSTEM)
 │   ├── README.md
-│   ├── TOOL_SETUP_PROJECT_v1.0.gs
-│   └── TOOL_GITHUB_REPO_STRUCTURE_v1.0.md
+│   ├── TOOL_SETUP_PROJECT.gs
+│   └── TOOL_GITHUB_REPO_STRUCTURE.md
 │
 ├── knowledge-base/                        ← Subsistema 1: KNOWLEDGE BASE
 │   ├── README.md
-│   ├── RESOURCE_SOURCE_AUTHORITY_v2.0.md
-│   ├── RESOURCE_CLAIM_VALIDATION_v1.0.md
-│   └── RESOURCE_RESEARCH_FOCUS_TYPES_v1.0.md    [PENDIENTE]
-│       + PROMPT_UPDATE_VALIDATION_CHECKLIST_v3.1.md [PENDIENTE v3.1]
+│   ├── CONTEXT_KNOWLEDGE_BASE.md
+│   ├── RESOURCE_SOURCE_AUTHORITY.md
+│   ├── RESOURCE_CLAIM_VALIDATION.md
+│   └── RESOURCE_RESEARCH_FOCUS_TYPES.md
 │
 ├── research/                              ← Subsistema 2: RESEARCH
 │   ├── README.md
-│   ├── WORKFLOW_RESEARCH_v3.2.md              [PENDIENTE v3.2]
-│   ├── PROMPT_SUMMARIZE_REFERENCES_v4.1.md    [PENDIENTE v4.1]
-│   ├── PROMPT_RESEARCH_DEEP_DIVE_v1.1.md
-│   ├── PROMPT_CREATE_RESEARCH_PLAN_v3.0.md    [PENDIENTE v3.0]
-│   └── PROMPT_EXECUTE_RESEARCH_PLAN_v1.0.md
+│   ├── CONTEXT_RESEARCH.md
+│   ├── WORKFLOW_RESEARCH.md
+│   ├── PROMPT_SUMMARIZE_REFERENCES.md
+│   ├── PROMPT_RESEARCH_DEEP_DIVE.md
+│   ├── PROMPT_CREATE_RESEARCH_PLAN.md
+│   ├── PROMPT_EXECUTE_RESEARCH_PLAN.md
+│   ├── PROMPT_UPDATE_VALIDATION_CHECKLIST.md
+│   └── GUIDE_ANNOTATION_PHASE3.md        ← pendiente crear
 │
 ├── editorial-profile/                     ← Subsistema 3: EDITORIAL PROFILE
 │   ├── README.md
-│   ├── PROMPT_CREATE_EDITOR_PROFILE_v1.0.md
-│   ├── PROMPT_EVALUATE_BOOK_STYLE_v1.1.md     [PENDIENTE v1.1]
-│   ├── RESOURCE_EDITORIAL_STYLE_v1.0.md
-│   └── RESOURCE_BOOK_TYPES_v1.2.md
+│   ├── CONTEXT_EDITORIAL_PROFILE.md
+│   ├── PROMPT_CREATE_EDITOR_PROFILE.md
+│   ├── PROMPT_EVALUATE_BOOK_STYLE.md
+│   ├── RESOURCE_EDITORIAL_STYLE.md
+│   └── RESOURCE_BOOK_TYPES.md
 │
 ├── writing/                               ← Subsistema 4: WRITING
 │   ├── README.md
-│   ├── WORKFLOW_WRITING_v2.0.md               [PENDIENTE v2.0]
+│   ├── CONTEXT_WRITING.md
+│   ├── WORKFLOW_WRITING.md               ← pendiente v2.0
 │   │
 │   ├── book/
 │   │   ├── README.md
-│   │   ├── PROMPT_CREATE_BOOK_INDEX_v1.0.md
-│   │   ├── PROMPT_WRITE_SAMPLE_CHAPTER_v1.0.md
-│   │   ├── PROMPT_WRITE_CHAPTER_v1.3.md
-│   │   ├── PROMPT_WRITE_INTRODUCTION_v1.0.md
-│   │   ├── PROMPT_WRITE_PROLOGUE_v1.0.md
-│   │   ├── PROMPT_CONSOLIDATE_REFERENCES_v1.1.md
-│   │   └── PROMPT_CREATE_BOOK_SHEET_v1.1.md
+│   │   ├── PROMPT_CREATE_BOOK_INDEX.md
+│   │   ├── PROMPT_WRITE_SAMPLE_CHAPTER.md
+│   │   ├── PROMPT_WRITE_CHAPTER.md
+│   │   ├── PROMPT_WRITE_INTRODUCTION.md
+│   │   ├── PROMPT_WRITE_PROLOGUE.md
+│   │   ├── PROMPT_CONSOLIDATE_REFERENCES.md
+│   │   └── PROMPT_CREATE_BOOK_SHEET.md
 │   │
-│   └── post/                                  [PENDIENTE diseño]
-│       └── README.md
+│   ├── post/                              ← pendiente diseño
+│   │   └── README.md
+│   │
+│   └── shared/                            ← owned by Writing, invocado por Activation
+│       ├── README.md
+│       ├── PROMPT_WRITE_POST.md
+│       ├── PROMPT_CREATE_TIMELINE.md
+│       └── PROMPT_CREATE_CAST.md
 │
 ├── evaluation/                            ← Subsistema 5: EVALUATION
 │   ├── README.md
-│   ├── RESOURCE_EVALUATION_FRAMEWORK_v1.0.md  [PENDIENTE]
-│   ├── PROMPT_EVALUATE_RESEARCH_REPORT_v1.1.md [PENDIENTE v1.1]
-│   └── PROMPT_EVALUATE_BOOK_CONTENT_v1.1.md   [PENDIENTE v1.1]
+│   ├── CONTEXT_EVALUATION.md
+│   ├── RESOURCE_EVALUATION_FRAMEWORK.md
+│   ├── PROMPT_EVALUATE_RESEARCH_REPORT.md
+│   └── PROMPT_EVALUATE_BOOK_CONTENT.md
 │
 ├── activation/                            ← Subsistema 6: ACTIVATION
 │   ├── README.md
-│   ├── WORKFLOW_ACTIVATION_v1.4.md
-│   └── PROMPT_CREATE_BOOK_BRIEF_v1.0.md       [PENDIENTE]
-│
-├── shared/                                ← Prompts compartidos
-│   ├── README.md
-│   ├── PROMPT_WRITE_POST_v1.0.md
-│   ├── PROMPT_CREATE_TIMELINE_v1.0.md
-│   └── PROMPT_CREATE_CAST_v1.0.md
+│   ├── CONTEXT_ACTIVATION.md
+│   ├── WORKFLOW_ACTIVATION.md
+│   └── PROMPT_CREATE_BOOK_BRIEF.md       ← pendiente crear
 │
 └── docs/                                  ← Subsistema 7: DOCS
     ├── README.md
+    ├── CONTEXT_DOCS.md
     ├── system-design/
     │   └── README.md
     ├── subsystem-docs/
@@ -159,202 +159,79 @@ dx-opus/
 
 ---
 
-## PARTE 3: CONTENIDO DE LOS README
+## PARTE 3: ESTADO ACTUAL DEL REPOSITORIO
 
-### README.md (raíz)
+Artefactos ya subidos al repositorio `TINTA-ARTIFICIAL/dx-opus` (verificar antes de re-subir):
 
-```markdown
-# D-X-OPUS — AI-Assisted Non-Fiction Writing System
+### Confirmados en repo
 
-Sistema modular de escritura no-ficción asistida por IA. Cubre el proceso completo:
-investigación profunda → planificación → escritura → evaluación → activación de contenido.
+| Carpeta | Artefactos |
+|---|---|
+| `_system/` | MASTER_PLAN, SCHEMA_SYSTEM_ARCHITECTURE, SCHEMA_DECISION_LOG, RESOURCE_ARTIFACT_HEADER_STANDARD, TEMPLATE_SUBSYSTEM_CONTEXT, NAMING_CONVENTION_ANALYSIS |
+| `_system/decisions/` | DL_20260222_EVAL_001, DL_20260222_KB_002, DL_20260222_KB_003, README |
+| `_system/audits/` | README |
+| `tools/` | TOOL_SETUP_PROJECT.gs, TOOL_GITHUB_REPO_STRUCTURE.md, README |
+| `knowledge-base/` | CONTEXT_KNOWLEDGE_BASE, RESOURCE_SOURCE_AUTHORITY, RESOURCE_CLAIM_VALIDATION, RESOURCE_RESEARCH_FOCUS_TYPES, README |
+| `research/` | CONTEXT_RESEARCH, WORKFLOW_RESEARCH, PROMPT_SUMMARIZE_REFERENCES, PROMPT_CREATE_RESEARCH_PLAN, PROMPT_UPDATE_VALIDATION_CHECKLIST, README |
+| `editorial-profile/` | CONTEXT_EDITORIAL_PROFILE, README |
+| `writing/` | CONTEXT_WRITING, README + subcarpetas book/, post/, shared/ con READMEs |
+| `evaluation/` | CONTEXT_EVALUATION, RESOURCE_EVALUATION_FRAMEWORK, PROMPT_EVALUATE_RESEARCH_REPORT, PROMPT_EVALUATE_BOOK_CONTENT, README |
+| `activation/` | CONTEXT_ACTIVATION, README |
+| `docs/` | CONTEXT_DOCS, README + subcarpetas |
+| raíz | README.md |
 
-## Subsistemas
+### Pendientes de subir (paquete Sprint 2)
 
-| # | Subsistema | Carpeta | Chat de desarrollo |
-|---|---|---|---|
-| 0 | SYSTEM | `/_system/` | system-architecture |
-| 1 | KNOWLEDGE BASE | `/knowledge-base/` | knowledge-base-dev |
-| 2 | RESEARCH | `/research/` | research-dev |
-| 3 | EDITORIAL PROFILE | `/editorial-profile/` | editorial-profile-dev |
-| 4 | WRITING | `/writing/` | writing-dev |
-| 5 | EVALUATION | `/evaluation/` | evaluation-dev |
-| 6 | ACTIVATION | `/activation/` | activation-dev |
-| 7 | DOCS | `/docs/` | docs-dev |
-
-## Documentación de referencia
-
-- Arquitectura del sistema: `/_system/SCHEMA_SYSTEM_ARCHITECTURE_v1.0.md`
-- Naming convention: `/_system/NAMING_CONVENTION_ANALYSIS_v1.2.md`
-- Plan de trabajo: `/_system/MASTER_PLAN_v1.1.md`
-- Estándar de cabecera: `/_system/RESOURCE_ARTIFACT_HEADER_STANDARD_v1.0.md`
-
-## Setup de proyectos de escritura
-
-Los artefactos de producción (research reports, capítulos, posts) viven en Google Drive,
-no en este repositorio. Para crear la estructura de carpetas de un nuevo proyecto:
-`/tools/TOOL_SETUP_PROJECT_v1.0.gs`
-
-## Convención de commits
-
-```
-[SUBSISTEMA] tipo: descripción corta
-
-Tipos: feat | fix | refactor | docs | chore
-Subsistemas: SYSTEM | KB | RESEARCH | EDITORIAL | WRITING | EVAL | ACTIVATION | DOCS | SHARED
-```
-```
-
----
-
-### _system/README.md
-
-```markdown
-# Subsistema 0: SYSTEM
-
-Arquitectura, estándares, naming convention, decisiones globales y herramientas operativas (TOOLING).
-
-**Chat de desarrollo:** system-architecture  
-**Owner:** Este subsistema es propietario de sí mismo.
-
-## Artefactos activos
-
-| Artefacto | Versión | Descripción |
+| Archivo | Destino en repo | Origen |
 |---|---|---|
-| RESOURCE_ARTIFACT_HEADER_STANDARD | v1.0 | Especificación de cabecera YAML |
-| SCHEMA_SYSTEM_ARCHITECTURE | v1.0 | Mapa completo del sistema |
-| SCHEMA_DECISION_LOG | v1.0 | Formato de registro de decisiones |
-| TEMPLATE_SUBSYSTEM_CONTEXT | v1.0 | Plantilla para contextos de chats |
-| NAMING_CONVENTION_ANALYSIS | v1.2 | Convención de naming del sistema |
-| MASTER_PLAN | v1.1 | Plan completo de trabajo |
-
-## Subcarpetas
-
-- `decisions/` — DECISION_LOG entries (una por decisión arquitectónica)
-- `audits/` — Auditorías de componentes por subsistema
-```
-
----
-
-### knowledge-base/README.md
-
-```markdown
-# Subsistema 1: KNOWLEDGE BASE
-
-Recursos globales acumulativos que crecen con cada proyecto ejecutado.
-Son la "memoria" del sistema entre proyectos.
-
-**Chat de desarrollo:** knowledge-base-dev
-
-## Artefactos activos
-
-| Artefacto | Versión | Descripción |
-|---|---|---|
-| RESOURCE_SOURCE_AUTHORITY | v2.0 | Jerarquía de fuentes por tema |
-| RESOURCE_CLAIM_VALIDATION | v1.0 | Criterios de validación de claims |
-| RESOURCE_RESEARCH_FOCUS_TYPES | v1.0 [PENDIENTE] | 7 tipos de focus de investigación |
-| PROMPT_UPDATE_VALIDATION_CHECKLIST | v3.1 [PENDIENTE] | Actualiza SAH y CVC con cada proyecto |
-
-## Interfaces
-
-**Entrega a:** Research (SAH, CVC, FOCUS_TYPES como inputs)  
-**Recibe de:** Research (outputs actualizados de UPDATE_VALIDATION_CHECKLIST)
-```
-
----
-
-### research/README.md
-
-```markdown
-# Subsistema 2: RESEARCH
-
-Transforma referencias brutas en conocimiento validado y estructurado.
-
-**Chat de desarrollo:** research-dev
-
-## Flujo interno
-
-```
-Referencias → SUMMARIZE_REFERENCES → REFERENCE_SUMMARY + RESEARCH_PLAN + NARRATIVE_BRIDGE
-           → UPDATE_VALIDATION_CHECKLIST (KB) → SAH/CVC actualizados
-           → [Editor anota — sin IA]
-           → [RAMA A] RESEARCH_DEEP_DIVE
-           → [RAMA B] CREATE_RESEARCH_PLAN → EXECUTE_RESEARCH_PLAN → RESEARCH_REPORT(s)
-           → EVALUATE_RESEARCH_REPORT (EVAL)
-```
-
-## Gaps abiertos
-
-Ver: `/_system/audits/RESEARCH_COMPONENT_AUDIT_v1.1.md`
-
-## Interfaces
-
-**Recibe de:** Knowledge Base (SAH, CVC, FOCUS_TYPES), Activation (BOOK_BRIEF — opcional)  
-**Entrega a:** Writing (RESEARCH_REPORT(s) o RESEARCH_DEEP_DIVE)
-```
-
----
-
-### shared/README.md
-
-```markdown
-# Prompts compartidos
-
-Prompts usados por más de un subsistema. Owner principal indicado en cada artefacto.
-
-| Prompt | Owner | Usado por |
-|---|---|---|
-| PROMPT_WRITE_POST | writing-dev | Writing (Post), Activation |
-| PROMPT_CREATE_TIMELINE | writing-dev | Writing (Book), Activation |
-| PROMPT_CREATE_CAST | writing-dev | Writing (Book), Activation |
-
-**Regla de cambios:** El chat owner notifica a todos los subsistemas afectados via
-DECISION_LOG entry antes de mergear cambios a main.
-```
+| MASTER_PLAN.md (v1.3) | `/_system/` | Producido Sprint 2 |
+| decisions/README.md (corregido) | `/_system/decisions/` | Producido Sprint 2 |
+| TOOL_GITHUB_REPO_STRUCTURE.md (v1.1) | `/tools/` | Producido Sprint 2 |
+| READMEs actualizados | múltiples carpetas | Producido Sprint 2 |
+| GUIDE_ANNOTATION_PHASE3.md | `/research/` | Pendiente producir |
+| PROMPT_CREATE_RESEARCH_PLAN.md (v3.0) | `/research/` | Pendiente producir |
+| PROMPT_EVALUATE_BOOK_STYLE.md (v1.1) | `/editorial-profile/` | Pendiente producir |
 
 ---
 
 ## PARTE 4: CONFIGURACIÓN DE BRANCHES
 
-Una vez creado el repositorio con la estructura:
-
-**Branch main:** Código de producción. Protegido — requiere PR para mergear.
+**Branch main:** Producción. El editor aprueba los merges.
 
 **Branches de desarrollo** (crear cuando se activa cada chat):
 ```
-kb/dev          ← knowledge-base-dev
-research/dev    ← research-dev  
-editorial/dev   ← editorial-profile-dev
-writing/dev     ← writing-dev
-evaluation/dev  ← evaluation-dev
-activation/dev  ← activation-dev
-docs/dev        ← docs-dev
+kb/dev
+research/dev
+editorial/dev
+writing/dev
+evaluation/dev
+activation/dev
+docs/dev
 ```
 
-**Flujo de trabajo:**
+**Flujo:**
 ```
-Chat trabaja en su branch → crea PR → editor revisa y aprueba → merge a main
+Chat trabaja en su branch → crea PR → editor aprueba → merge a main
 ```
 
-Con un solo desarrollador activo, el editor puede optar por hacer merge directo a main para agilizar. Se recomienda mantener el flujo de PR cuando haya más de un desarrollador.
+Con un solo desarrollador activo, se puede hacer merge directo a main para agilizar.
 
 ---
 
-## PARTE 5: INSTRUCCIONES PARA INICIALIZAR DESDE CLAUDE
-
-Una vez configurado el GitHub MCP, ejecutar en un chat de Claude:
+## PARTE 5: CONVENCIÓN DE COMMITS
 
 ```
-"Usando el GitHub MCP, inicializa el repositorio dx-opus con la estructura 
-definida en TOOL_GITHUB_REPO_STRUCTURE_v1.0.md. Crea todas las carpetas 
-con sus README y sube los artefactos de Fase 0 que ya están preparados."
-```
+[SUBSISTEMA] tipo: descripción corta
 
-Claude ejecutará la secuencia:
-1. Crear carpetas con `create_or_update_file` para cada README
-2. Subir los 6 artefactos de Fase 0 a sus rutas correctas
-3. Crear las branches de desarrollo
-4. Confirmar estructura completa con `get_file_contents`
+Tipos: feat | fix | refactor | docs | chore
+Subsistemas: SYSTEM | KB | RESEARCH | EDITORIAL | WRITING | EVAL | ACTIVATION | DOCS
+
+Ejemplos:
+[SYSTEM] chore: update MASTER_PLAN to v1.3
+[RESEARCH] feat: create GUIDE_ANNOTATION_PHASE3 v1.0
+[RESEARCH] refactor: externalize focus types in CREATE_RESEARCH_PLAN v3.0
+[EVAL] fix: adopt evaluation contract in EVALUATE_BOOK_STYLE v1.1
+```
 
 ---
 
