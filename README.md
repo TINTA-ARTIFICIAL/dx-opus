@@ -18,18 +18,29 @@ investigación profunda → planificación → escritura → evaluación → act
 
 ## Documentación de referencia
 
-- Arquitectura del sistema: `/_system/SCHEMA_SYSTEM_ARCHITECTURE_v1.1.md`
-- Naming convention: `/_system/NAMING_CONVENTION_ANALYSIS_v1.2.md`
-- Plan de trabajo: `/_system/MASTER_PLAN_v1.2.md`
-- Estándar de cabecera: `/_system/RESOURCE_ARTIFACT_HEADER_STANDARD_v1.0.md`
+- Arquitectura del sistema: `/_system/SCHEMA_SYSTEM_ARCHITECTURE.md`
+- Naming convention: `/_system/NAMING_CONVENTION_ANALYSIS.md`
+- Plan de trabajo: `/_system/MASTER_PLAN.md`
+- Estándar de cabecera: `/_system/RESOURCE_ARTIFACT_HEADER_STANDARD.md`
+
+## Regla de naming en este repositorio
+
+**Ningún archivo incluye versión en el nombre.** Git gestiona el historial completo.
+La versión vive en la cabecera YAML de cada archivo (`version: X.Y`) y en el CHANGELOG interno.
+
+```
+✅ PROMPT_WRITE_CHAPTER.md
+❌ PROMPT_WRITE_CHAPTER_v1_3.md
+```
 
 ## Setup de proyectos de escritura
 
 Los artefactos de producción (research reports, capítulos, posts) viven en Google Drive,
 no en este repositorio. Para crear la estructura de carpetas de un nuevo proyecto:
-`/tools/TOOL_SETUP_PROJECT_v1.0.gs`
+`/tools/TOOL_SETUP_PROJECT.gs`
 
 ## Convención de commits
+
 ```
 [SUBSISTEMA] tipo: descripción corta
 
