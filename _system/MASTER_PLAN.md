@@ -2,19 +2,27 @@
 id:          MASTER_PLAN
 type:        SCHEMA
 subsystem:   SYSTEM
-version:     1.2
+version:     1.3
 status:      ACTIVE
 created:     2026-02-21
-updated:     2026-02-21
+updated:     2026-03-30
 owner_chat:  system-architecture
 ---
 
 # MASTER PLAN — SISTEMA D-X-OPUS
 ## Consolidación de decisiones y trabajo pendiente
 
-**Versión:** 1.2  
-**Fecha:** 21 febrero 2026  
-**Scope:** Todas las decisiones arquitectónicas tomadas en el chat de diseño del sistema
+**Versión:** 1.3
+**Fecha:** 30 marzo 2026
+**Scope:** Estado real del sistema tras Sprint 1 y Sprint 2 parcial
+
+**Changelog v1.3:**
+- Añadida DECISIÓN-15: GitHub MCP no disponible en Plan Pro — flujo manual asistido
+- Actualizado estado de artefactos en PARTE 2: N-01, N-02, N-03, N-09, N-10, N-11, N-12, N-13 completados
+- Actualizado estado en PARTE 3.2: F2-01 a F2-04 completados, F3-02 parcialmente completado
+- Actualizado estado en PARTE 4: repositorio creado, CONTEXT docs completados
+- Actualizado PARTE 5: FASE 0 y FASE 2 completadas, FASE 1 parcial, FASE 3 parcial
+- Añadida PARTE 6: backlog real del Sprint 2
 
 **Changelog v1.2:**
 - Actualizada DECISIÓN-07: prompts compartidos en `/writing/shared/` (Writing es owner explícito)
@@ -30,9 +38,6 @@ owner_chat:  system-architecture
 ---
 
 ## PARTE 1: DECISIONES TOMADAS
-
-Registro de todas las decisiones arquitectónicas confirmadas en esta sesión.
-Ordenadas por área, no por orden cronológico.
 
 ---
 
@@ -56,13 +61,10 @@ Ordenadas por área, no por orden cronológico.
 ### 1.2 Decisiones sobre Writing
 
 **DECISIÓN-02:** Writing es un subsistema unificado con bifurcación editorial al inicio.
-El editor decide al entrar al workflow si produce un libro o un post. A partir de ahí los prompts son completamente distintos (0% compartidos entre ramas).
 
 **Ramas:**
 - RAMA BOOK: 12 prompts existentes
 - RAMA POST: 4-5 prompts pendientes de diseño
-
-**Motivo:** Con un desarrollador es más manejable. La modularidad interna permite separar en chats distintos en el futuro sin reescribir nada.
 
 ---
 
@@ -81,111 +83,59 @@ EVALUATION_RESULT:
   strengths:         [...] (siempre)
 ```
 
-Los workflows referencian evaluadores por nombre. No conocen su implementación interna. Si cambia el método de evaluación, los workflows no se tocan — solo el evaluador y el RESOURCE_EVALUATION_FRAMEWORK.
+**Evaluadores activos (adoptan el contrato):**
+- PROMPT_EVALUATE_RESEARCH_REPORT v1.1 ✅
+- PROMPT_EVALUATE_BOOK_CONTENT v1.1 ✅
 
-**Evaluadores existentes** (a migrar al contrato):
-- PROMPT_EVALUATE_RESEARCH_REPORT v1.0
-- PROMPT_EVALUATE_BOOK_STYLE v1.0
-- PROMPT_EVALUATE_BOOK_CONTENT v1.0
-
-**Evaluadores pendientes de diseño:**
-- PROMPT_EVALUATE_POST
-- PROMPT_EVALUATE_ACTIVATION
+**Evaluadores pendientes:**
+- PROMPT_EVALUATE_BOOK_STYLE v1.1 (adoptar contrato — owner: Editorial Profile)
+- PROMPT_EVALUATE_POST v1.0 (diseñar)
+- PROMPT_EVALUATE_ACTIVATION v1.0 (diseñar)
 
 ---
 
 ### 1.4 Decisiones sobre Knowledge Base
 
-**DECISIÓN-04:** UPDATE_VALIDATION_CHECKLIST pertenece al subsistema RESEARCH (lo invoca, lo desarrolla), pero KNOWLEDGE BASE define el esquema canónico de SAH y CVC. Si cambia el esquema, Knowledge Base notifica a Research.
+**DECISIÓN-04:** UPDATE_VALIDATION_CHECKLIST pertenece al subsistema RESEARCH, pero KNOWLEDGE BASE define el esquema canónico de SAH y CVC.
 
-**DECISIÓN-05:** Los focus types de Research se extraen de CREATE_RESEARCH_PLAN a un recurso independiente: RESOURCE_RESEARCH_FOCUS_TYPES_v1.0. CREATE_RESEARCH_PLAN pasa a v3.0.
-
-**Motivo:** 17% del prompt (270 líneas) son configuración de focus. El 83% restante es proceso compartido. Extraer permite añadir un Focus H sin tocar la lógica del prompt.
+**DECISIÓN-05:** Los focus types de Research se extraen de CREATE_RESEARCH_PLAN a un recurso independiente: RESOURCE_RESEARCH_FOCUS_TYPES. ✅ Completado (v1.1)
 
 ---
 
 ### 1.5 Decisiones sobre Activation → Book
 
-**DECISIÓN-06:** Activation puede proponer 3-4 ideas para un nuevo libro (BOOK_BRIEF). El BOOK_BRIEF no sustituye al Research — lo orienta. El flujo es:
+**DECISIÓN-06:** Activation puede proponer 3-4 ideas para un nuevo libro (BOOK_BRIEF). El flujo es:
 
 ```
-ACTIVATION → BOOK_BRIEF
-                 ↓
-           [editor decide]
-                 ↓
-           RESEARCH (orientado por el brief como input opcional en Fase 0)
-                 ↓
-           WRITING BOOK
+ACTIVATION → BOOK_BRIEF → [editor decide] → RESEARCH (input opcional en Fase 0) → WRITING BOOK
 ```
-
-**Pendiente de diseño:** El prompt PROMPT_CREATE_BOOK_BRIEF y la integración del BOOK_BRIEF como input opcional en el workflow de Research.
 
 ---
 
 ### 1.6 Decisiones sobre prompts compartidos
 
-**DECISIÓN-07:** Los prompts usados por más de un subsistema son propiedad del subsistema que tiene criterio para desarrollarlos. Viven en `/[subsistema_owner]/shared/` del repositorio.
+**DECISIÓN-07:** Los prompts usados por más de un subsistema viven en `/writing/shared/`. Owner: writing-dev.
 
-**Prompts compartidos identificados y su ubicación:**
-- `WRITE_POST` — `/writing/shared/` — owner: writing-dev — invocado por: Writing (Post), Activation
-- `CREATE_TIMELINE` — `/writing/shared/` — owner: writing-dev — invocado por: Writing Book, Activation
-- `CREATE_CAST` — `/writing/shared/` — owner: writing-dev — invocado por: Writing Book, Activation
-
-**Regla de ownership:** Writing los desarrolla porque tiene criterio para mejorarlos (calidad de escritura, voz, estructura literaria). Activation los invoca pero no los desarrolla. Cuando writing-dev hace un cambio, notifica a activation-dev via DECISION_LOG entry antes de mergear.
+**Prompts compartidos:**
+- `WRITE_POST` — owner: writing-dev — invocado por: Writing (Post), Activation
+- `CREATE_TIMELINE` — owner: writing-dev — invocado por: Writing Book, Activation
+- `CREATE_CAST` — owner: writing-dev — invocado por: Writing Book, Activation
 
 ---
 
 ### 1.7 Decisiones sobre nomenclatura
 
-**DECISIÓN-08:** Convención de naming unificada aprobada. Ver NAMING_CONVENTION_ANALYSIS_v1.1 para el detalle completo.
+**DECISIÓN-08:** Naming convention unificada. Ver NAMING_CONVENTION_ANALYSIS para detalle.
 
-**Resumen de reglas:**
-```
-Archivos del sistema:   [TIPO]_[ACCION_OBJETO]_v[X.Y].md
-Artefactos de proyecto: [COD]_[WF]_[TIPO]_[VARIANTE]_v[X.Y].md
-```
-
-**Tipos de archivo del sistema:** PROMPT, WORKFLOW, RESOURCE, GUIDE, TEMPLATE, SCHEMA
-
-**Workflows definitivos:**
-- WORKFLOW_RESEARCH_v3.1 (existente, renombrar)
-- WORKFLOW_WRITING_v1.7 (existente, renombrar + bifurcación interna)
-- WORKFLOW_ACTIVATION_v1.4 (existente, renombrar)
-
-**Nota:** Se elimina el sufijo `_SISTEMA_TINTA_ARTIFICIAL` de todos los workflows.
-**Nota:** `WORKFLOW_WRITING_BOOKS` pasa a `WORKFLOW_WRITING` (unificado, con bifurcación interna).
+**Regla crítica por espacio de trabajo:**
+- **GitHub:** Sin versión en el nombre de archivo. Git gestiona el historial. La versión vive solo en la cabecera YAML y en el CHANGELOG interno.
+- **Google Drive:** Con versión en el nombre (`_v1.0.md`). Drive no tiene control de versiones nativo.
 
 ---
 
 ### 1.8 Decisiones sobre cabecera estándar de artefactos
 
-**DECISIÓN-09:** Todos los artefactos del sistema incluyen cabecera YAML estándar.
-
-```yaml
----
-id:          [NOMBRE_SIN_VERSION]
-type:        PROMPT | WORKFLOW | RESOURCE | GUIDE | TEMPLATE | SCHEMA
-subsystem:   SYSTEM | KNOWLEDGE_BASE | RESEARCH | EDITORIAL_PROFILE | 
-             WRITING | EVALUATION | ACTIVATION | DOCS | SHARED
-version:     X.Y
-status:      DRAFT | ACTIVE | DEPRECATED
-created:     YYYY-MM-DD
-updated:     YYYY-MM-DD
-owner_chat:  [nombre-del-chat-de-desarrollo]
----
-
-## CHANGELOG
-| Version | Date | Author | Summary |
-...
-
-## DEPENDENCIES
-inputs:  [lista de artefactos que necesita como entrada]
-outputs: [lista de artefactos que produce]
-calls:   [lista de prompts que invoca durante ejecución]
-
-## DESCRIPTION
-[Una línea describiendo función y cuándo usar]
-```
+**DECISIÓN-09:** Todos los artefactos del sistema incluyen cabecera YAML estándar. Ver RESOURCE_ARTIFACT_HEADER_STANDARD.
 
 ---
 
@@ -193,288 +143,260 @@ calls:   [lista de prompts que invoca durante ejecución]
 
 **DECISIÓN-10:** GitHub para el sistema, Google Drive para los proyectos de escritura.
 
-- **GitHub `dx-opus`:** Todos los artefactos del sistema (prompts, workflows, recursos, guías, templates, schemas). Repositorio privado.
-- **Google Drive:** Artefactos de producción por proyecto (RESEARCH_REPORTs, capítulos, posts). Estructura de carpetas estandarizada por proyecto.
+**DECISIÓN-11 (revisada por DECISIÓN-15):** ~~Integración con GitHub vía MCP Server oficial.~~ Ver DECISIÓN-15.
 
-**DECISIÓN-11:** Integración con GitHub vía MCP Server oficial. Claude puede leer, modificar, hacer commit y crear PRs directamente desde el chat. El usuario aprueba los merges.
-
-**DECISIÓN-12:** Setup de proyectos en Drive mediante Google Apps Script almacenado en GitHub (`/tools/setup_project.gs`). El editor ejecuta el script una vez por proyecto con el código de proyecto como parámetro.
+**DECISIÓN-12:** Setup de proyectos en Drive mediante Google Apps Script (`TOOL_SETUP_PROJECT`).
 
 ---
 
 ### 1.10 Decisiones sobre DOCS
 
-**DECISIÓN-13:** DOCS es un subsistema activo, no un repositorio pasivo.
-
-**Mecanismo de sincronización:** DECISION_LOG entries. Cada chat de desarrollo produce entradas con el formato:
-```
-fecha:              YYYY-MM-DD
-subsistema_afectado:
-decision:
-rationale:          (una línea)
-impacto_en_docs:    [qué sección de qué manual necesita actualización]
-estado:             PENDIENTE | INTEGRADO
-```
-
-**Cuatro tipos de documentación:**
-1. System Design Docs (audiencia: arquitectos) — pull desde SYSTEM
-2. Subsystem Implementation Docs (audiencia: desarrolladores del subsistema) — pull desde cada subsistema
-3. Editor Manuals (audiencia: usuarios del sistema) — push desde DOCS
-4. Developer Manuals (audiencia: nuevos desarrolladores) — push desde DOCS
+**DECISIÓN-13:** DOCS es un subsistema activo con DECISION_LOG como mecanismo de sincronización.
 
 ---
 
 ### 1.11 Decisiones sobre TOOLING
 
-**DECISIÓN-14:** Las herramientas operativas (scripts, automatizaciones, infraestructura) son propiedad de SYSTEM mientras sean pocas y simples. No justifican un subsistema propio en este momento.
+**DECISIÓN-14:** Las herramientas operativas pertenecen a SYSTEM mientras sean menos de 3. Tipo de artefacto: `TOOL`.
 
-**Artefactos de TOOLING** viven en SYSTEM bajo una sección "Operational Tools" explícita:
-- `setup_project.gs` — script para crear estructura de proyecto en Drive
-- Estructura del repositorio GitHub (carpetas + READMEs)
-- Futuros scripts de automatización
+---
 
-**Criterio de extracción:** Cuando haya más de 3 herramientas activas, o cuando alguna requiera desarrollo iterativo propio, se crea un subsistema TOOLING independiente con su chat de desarrollo. Este criterio queda registrado para que sea evaluado en revisiones futuras del sistema.
+### 1.12 Decisiones sobre integración con GitHub
 
-**Tipo de artefacto para herramientas operativas:** `TOOL` — añadido como séptimo tipo válido junto a PROMPT, WORKFLOW, RESOURCE, GUIDE, TEMPLATE, SCHEMA.
+**DECISIÓN-15 (nueva — 30/03/2026):** El GitHub MCP Server no está disponible en el Plan Pro de Claude.ai. La integración directa Claude → GitHub no es posible en este contexto.
 
-```yaml
-# Ejemplo de cabecera para herramienta operativa
-id:       TOOL_SETUP_PROJECT
-type:     TOOL
-subsystem: SYSTEM
-```
+**Flujo de trabajo adoptado — manual asistido:**
+- Claude produce artefactos en el Project Knowledge (este proyecto de Claude)
+- El editor descarga los archivos y los sube manualmente al repositorio `TINTA-ARTIFICIAL/dx-opus` via interfaz web de GitHub o GitHub Desktop
+- Claude prepara los archivos con el naming correcto y la ruta de destino especificada
+
+**Impacto en tareas G-02 y G-03 del MASTER_PLAN:**
+- G-02 (configurar MCP): conectado via OAuth pero sin herramientas funcionales en Plan Pro — tarea cerrada como no ejecutable en este plan
+- G-03 (test de integración): no aplica
+
+**Revisión futura:** Reevaluar si Anthropic habilita MCP en Plan Pro o si se migra a un plan Team/Enterprise.
 
 ---
 
 ## PARTE 2: ARTEFACTOS A CREAR
 
-Nuevos artefactos que no existen y deben crearse.
+Estado actualizado al 30/03/2026.
 
-| # | Artefacto | Tipo | Subsistema | Prioridad | Descripción |
+| # | Artefacto | Tipo | Subsistema | Estado | Versión |
 |---|---|---|---|---|---|
-| N-01 | RESOURCE_RESEARCH_FOCUS_TYPES_v1.0 | RESOURCE | KNOWLEDGE_BASE | 🔴 Alta | 7 focus types extraídos de CREATE_RESEARCH_PLAN |
-| N-02 | RESOURCE_EVALUATION_FRAMEWORK_v1.0 | RESOURCE | EVALUATION | 🔴 Alta | Contrato de evaluación: output canónico + protocolo de invocación |
-| N-03 | RESOURCE_ARTIFACT_HEADER_STANDARD_v1.0 | RESOURCE | SYSTEM | 🔴 Alta | Especificación formal de la cabecera YAML incluyendo tipo TOOL |
-| N-04 | GUIDE_ANNOTATION_PHASE3_v1.0 | GUIDE | RESEARCH | 🟠 Media | Guía específica de anotación Fase 3 (TASK/LINE/COMMENT) |
-| N-05 | PROMPT_CREATE_BOOK_BRIEF_v1.0 | PROMPT | ACTIVATION | 🟡 Baja | Genera 3-4 propuestas de libro desde colección existente |
-| N-06 | PROMPT_EVALUATE_POST_v1.0 | PROMPT | EVALUATION | 🟡 Baja | Evaluador de posts según contrato de evaluación |
-| N-07 | PROMPT_EVALUATE_ACTIVATION_v1.0 | PROMPT | EVALUATION | 🟡 Baja | Evaluador de campañas de activación |
-| N-08 | WORKFLOW_WRITING_v1.0* | WORKFLOW | WRITING | 🟠 Media | Workflow unificado Book+Post con bifurcación editorial |
-| N-09 | SCHEMA_SYSTEM_ARCHITECTURE_v1.0 | SCHEMA | SYSTEM | 🟠 Media | Mapa completo del sistema con 8 subsistemas y sus interfaces |
-| N-10 | SCHEMA_DECISION_LOG_v1.0 | SCHEMA | SYSTEM | 🟠 Media | Formato estándar de DECISION_LOG entries |
-| N-11 | TEMPLATE_SUBSYSTEM_CONTEXT_v1.0 | TEMPLATE | SYSTEM | 🟠 Media | Plantilla para documentos de contexto de chats de desarrollo |
-| N-12 | TOOL_SETUP_PROJECT_v1.0 | TOOL | SYSTEM | 🟠 Media | Google Apps Script para crear estructura de proyecto en Drive |
-| N-13 | TOOL_GITHUB_REPO_STRUCTURE_v1.0 | TOOL | SYSTEM | 🟠 Media | Árbol de carpetas + README por subsistema para inicializar el repo |
-
-*WORKFLOW_WRITING v1.0 es una refactorización del WORKFLOW_WRITING_BOOKS_SISTEMA_TINTA_ARTIFICIAL_v1.7, no un rediseño completo.
+| N-01 | RESOURCE_RESEARCH_FOCUS_TYPES | RESOURCE | KNOWLEDGE_BASE | ✅ Completado | v1.1 |
+| N-02 | RESOURCE_EVALUATION_FRAMEWORK | RESOURCE | EVALUATION | ✅ Completado | v1.0 |
+| N-03 | RESOURCE_ARTIFACT_HEADER_STANDARD | RESOURCE | SYSTEM | ✅ Completado | v1.0 |
+| N-04 | GUIDE_ANNOTATION_PHASE3 | GUIDE | RESEARCH | ❌ Pendiente | — |
+| N-05 | PROMPT_CREATE_BOOK_BRIEF | PROMPT | ACTIVATION | ❌ Pendiente | — |
+| N-06 | PROMPT_EVALUATE_POST | PROMPT | EVALUATION | ❌ Pendiente | — |
+| N-07 | PROMPT_EVALUATE_ACTIVATION | PROMPT | EVALUATION | ❌ Pendiente | — |
+| N-08 | WORKFLOW_WRITING | WORKFLOW | WRITING | ❌ Pendiente | — |
+| N-09 | SCHEMA_SYSTEM_ARCHITECTURE | SCHEMA | SYSTEM | ✅ Completado | v1.2 |
+| N-10 | SCHEMA_DECISION_LOG | SCHEMA | SYSTEM | ✅ Completado | v2.0 |
+| N-11 | TEMPLATE_SUBSYSTEM_CONTEXT | TEMPLATE | SYSTEM | ✅ Completado | v1.0 |
+| N-12 | TOOL_SETUP_PROJECT | TOOL | SYSTEM | ✅ Completado | v1.0 |
+| N-13 | TOOL_GITHUB_REPO_STRUCTURE | TOOL | SYSTEM | ⚠️ Actualización pendiente | v1.0 → v1.1 |
 
 ---
 
 ## PARTE 3: ARTEFACTOS A MODIFICAR
 
-Artefactos existentes que necesitan cambios.
+### 3.1 Cambios de naming
 
-### 3.1 Cambios de naming (renombrar + añadir cabecera YAML)
+Pendientes de ejecutar cuando los archivos se suban al repositorio GitHub. Los archivos en Drive conservan la versión en el nombre; en GitHub se suben sin versión.
 
-| Archivo actual | Archivo propuesto | Cambio adicional |
+| Archivo legacy (Drive) | Nombre en GitHub | Estado |
 |---|---|---|
-| WORKFLOW_RESEARCH_SISTEMA_TINTA_ARTIFICIAL_v3_1.md | WORKFLOW_RESEARCH_v3.1.md | + cabecera YAML |
-| WORKFLOW_WRITING_BOOKS_SISTEMA_TINTA_ARTIFICIAL_v1_7.md | WORKFLOW_WRITING_v1.7.md | + cabecera YAML + bifurcación interna |
-| WORKFLOW_ACTIVATION_SISTEMA_TINTA_ARTIFICIAL_v1_4.md | WORKFLOW_ACTIVATION_v1.4.md | + cabecera YAML |
-| SOURCE_AUTHORITY_HIERARCHY_v2_0.md | RESOURCE_SOURCE_AUTHORITY_v2.0.md | + cabecera YAML |
-| CLAIM_VALIDATION_CRITERIA_v1_0.md | RESOURCE_CLAIM_VALIDATION_v1.0.md | + cabecera YAML |
-| ESTILO_EDITORIAL_TINTA_ARTIFICIAL_v1_0.md | RESOURCE_EDITORIAL_STYLE_v1.0.md | + cabecera YAML |
-| TIPOS_LIBROS_TINTA_ARTIFICIAL_v1_2.md | RESOURCE_BOOK_TYPES_v1.2.md | + cabecera YAML |
-| GUIA_NOTAS_DEL_EDITOR.md | GUIDE_EDITOR_NOTES_v1.0.md | + cabecera YAML + versión |
-| TEMPLATE_NOTAS_DEL_EDITOR.md | TEMPLATE_EDITOR_NOTES_v1.0.md | + cabecera YAML + versión |
-| EDITOR_PROFILE_TEMPLATE.md | TEMPLATE_EDITOR_PROFILE_v1.0.md | + cabecera YAML + versión |
-| DESCRIPCION_SISTEMA_DX_OPUS_2000_PALABRAS.md | SCHEMA_SYSTEM_OVERVIEW_v1.0.md | + cabecera YAML |
-| PROMPT_CREATE_CAST_v1_0_.md | PROMPT_CREATE_CAST_v1.0.md | Eliminar trailing underscore |
-| PROMPT_WRITE_PROLOGO_v1_0.md | PROMPT_WRITE_PROLOGUE_v1.0.md | Traducir a inglés |
-| PROMPT_CREATE_FICHA_TECNICA_v1_1.md | PROMPT_CREATE_BOOK_SHEET_v1.1.md | Traducir "ficha técnica" |
-
-**Todos los demás prompts** (los que no están en la tabla): añadir cabecera YAML sin cambio de nombre.
+| WORKFLOW_RESEARCH_SISTEMA_TINTA_ARTIFICIAL_v3_1.md | WORKFLOW_RESEARCH.md | ✅ Subir versión v3.2 |
+| WORKFLOW_WRITING_BOOKS_SISTEMA_TINTA_ARTIFICIAL_v1_7.md | WORKFLOW_WRITING.md | ❌ Pendiente v2.0 |
+| WORKFLOW_ACTIVATION_SISTEMA_TINTA_ARTIFICIAL_v1_4.md | WORKFLOW_ACTIVATION.md | ❌ Pendiente subir |
+| SOURCE_AUTHORITY_HIERARCHY_v2_0.md | RESOURCE_SOURCE_AUTHORITY.md | ✅ Subir versión v2.1 |
+| CLAIM_VALIDATION_CRITERIA_v1_0.md | RESOURCE_CLAIM_VALIDATION.md | ✅ Subir versión v1.1 |
+| ESTILO_EDITORIAL_TINTA_ARTIFICIAL_v1_0.md | RESOURCE_EDITORIAL_STYLE.md | ❌ Pendiente subir |
+| TIPOS_LIBROS_TINTA_ARTIFICIAL_v1_2.md | RESOURCE_BOOK_TYPES.md | ❌ Pendiente subir |
+| GUIA_NOTAS_DEL_EDITOR.md | GUIDE_EDITOR_NOTES.md | ❌ Pendiente subir |
+| TEMPLATE_NOTAS_DEL_EDITOR.md | TEMPLATE_EDITOR_NOTES.md | ❌ Pendiente subir |
+| EDITOR_PROFILE_TEMPLATE.md | TEMPLATE_EDITOR_PROFILE.md | ❌ Pendiente subir |
+| PROMPT_CREATE_CAST_v1_0_.md | PROMPT_CREATE_CAST.md | ❌ Pendiente subir |
+| PROMPT_WRITE_PROLOGO_v1_0.md | PROMPT_WRITE_PROLOGUE.md | ❌ Pendiente subir |
+| PROMPT_CREATE_FICHA_TECNICA_v1_1.md | PROMPT_CREATE_BOOK_SHEET.md | ❌ Pendiente subir |
 
 ### 3.2 Cambios de contenido
 
-| Artefacto | Versión actual → nueva | Cambios requeridos | Prioridad |
+| Artefacto | Versión anterior → actual | Estado | Versión objetivo |
 |---|---|---|---|
-| PROMPT_CREATE_RESEARCH_PLAN | v2.1.2 → v3.0 | Externalizar focus types a RESOURCE_RESEARCH_FOCUS_TYPES. Leer el resource en Step 0. | 🔴 Alta |
-| PROMPT_SUMMARIZE_REFERENCES | v4.0 → v4.1 | Añadir SAH y CVC como recursos del sistema en inputs. Corregir título interno (eliminar SBSTK_). | 🔴 Alta |
-| PROMPT_UPDATE_VALIDATION_CHECKLIST | v3.0 → v3.1 | Corregir referencias a secciones erróneas (GAP-R01, GAP-R02, GAP-R05). | 🔴 Alta |
-| WORKFLOW_RESEARCH | v3.1 → v3.2 | Adoptar estructuras canónicas de REFERENCE_SUMMARY y RESEARCH_PLAN (GAP-R01, GAP-R02). Añadir RESOURCE_RESEARCH_FOCUS_TYPES como input de Fase 4B. Añadir BOOK_BRIEF como input opcional de Fase 0. | 🔴 Alta |
-| PROMPT_EVALUATE_RESEARCH_REPORT | v1.0 → v1.1 | Clarificar cobertura de RAMA A (GAP-R07). Adoptar contrato de evaluación. | 🟠 Media |
-| PROMPT_EVALUATE_BOOK_STYLE | v1.0 → v1.1 | Adoptar contrato de evaluación. | 🟠 Media |
-| PROMPT_EVALUATE_BOOK_CONTENT | v1.0 → v1.1 | Adoptar contrato de evaluación. | 🟠 Media |
-| WORKFLOW_WRITING | v1.7 → v2.0* | Añadir bifurcación Book/Post. Añadir prompts Rama Post cuando estén diseñados. | 🟠 Media |
-
-*El salto a v2.0 refleja cambio arquitectónico significativo (bifurcación unificada).
+| PROMPT_SUMMARIZE_REFERENCES | v4.0 → v4.1 | ✅ Completado | — |
+| PROMPT_UPDATE_VALIDATION_CHECKLIST | v3.0 → v3.1 | ✅ Completado | — |
+| PROMPT_CREATE_RESEARCH_PLAN | v2.1.2 → v2.2 | ✅ Completado | v3.0 pendiente (externalizar focus types) |
+| WORKFLOW_RESEARCH | v3.1 → v3.2 | ✅ Completado | — |
+| PROMPT_EVALUATE_RESEARCH_REPORT | v1.0 → v1.1 | ✅ Completado | — |
+| PROMPT_EVALUATE_BOOK_CONTENT | v1.0 → v1.1 | ✅ Completado | — |
+| RESOURCE_SOURCE_AUTHORITY | v2.0 → v2.1 | ✅ Completado | — |
+| RESOURCE_CLAIM_VALIDATION | v1.0 → v1.1 | ✅ Completado | — |
+| PROMPT_EVALUATE_BOOK_STYLE | v1.0 | ❌ Pendiente | v1.1 (adoptar contrato evaluación) |
+| WORKFLOW_WRITING | v1.7 | ❌ Pendiente | v2.0 (bifurcación Book/Post) |
+| TOOL_GITHUB_REPO_STRUCTURE | v1.0 | ❌ Pendiente | v1.1 (corregir naming + flujo manual) |
 
 ---
 
-## PARTE 4: SETUP TÉCNICO PENDIENTE
-
-Tareas de infraestructura necesarias antes o en paralelo al desarrollo.
+## PARTE 4: SETUP TÉCNICO
 
 ### 4.1 GitHub
 
-| # | Tarea | Dependencias | Responsable |
-|---|---|---|---|
-| G-01 | Crear cuenta/organización GitHub y repositorio `dx-opus` (privado) | — | Editor |
-| G-02 | Configurar GitHub MCP Server en Claude.ai (Settings → Integrations → GitHub PAT) | G-01 | Editor |
-| G-03 | Test de integración: desde un chat con MCP activo, leer y escribir un archivo | G-02 | Editor + Claude |
-| G-04 | Crear estructura de carpetas del repositorio con README por subsistema | G-03 | Claude (ejecutable desde chat) |
-| G-05 | Migrar artefactos actuales desde Drive a GitHub con naming corregido | G-04 | Claude + Editor |
-| G-06 | Configurar branch protection en main (requiere PR para mergear) | G-04 | Editor |
-| G-07 | Crear ramas iniciales por subsistema | G-06 | Claude |
+| # | Tarea | Estado |
+|---|---|---|
+| G-01 | Crear repositorio `dx-opus` (privado) en TINTA-ARTIFICIAL | ✅ Completado |
+| G-02 | Configurar GitHub en Claude.ai | ✅ OAuth conectado — MCP no disponible en Plan Pro (DECISIÓN-15) |
+| G-03 | Test de integración | ❌ No aplica (ver DECISIÓN-15) |
+| G-04 | Crear estructura de carpetas del repositorio con READMEs | ⏳ Pendiente — subida manual (I-01) |
+| G-05 | Subir artefactos existentes con naming correcto | ⏳ Pendiente — subida manual (I-01) |
+| G-06 | Configurar branch protection en main | ❌ Pendiente — acción del editor |
+| G-07 | Crear ramas de desarrollo por subsistema | ❌ Pendiente |
 
 ### 4.2 Google Drive
 
-| # | Tarea | Dependencias | Responsable |
-|---|---|---|---|
-| D-01 | Crear `setup_project.gs` en Google Apps Script | — | Claude (listo para entregar) |
-| D-02 | Almacenar `setup_project.gs` en GitHub bajo `/tools/` | G-04 | Claude |
-| D-03 | Test: ejecutar script en un proyecto real | D-01 | Editor |
+| # | Tarea | Estado |
+|---|---|---|
+| D-01 | Crear TOOL_SETUP_PROJECT | ✅ Completado |
+| D-02 | Almacenar en GitHub bajo `/tools/` | ⏳ Pendiente (I-01) |
+| D-03 | Test: ejecutar script en un proyecto real | ❌ Pendiente |
 
 ### 4.3 Documentos de contexto para chats de desarrollo
 
-| # | Chat | Estado |
-|---|---|---|
-| C-01 | SYSTEM (este chat) | Implícito — es este documento |
-| C-02 | KNOWLEDGE BASE | ❌ Pendiente crear |
-| C-03 | RESEARCH | ❌ Pendiente crear |
-| C-04 | EDITORIAL PROFILE | ❌ Pendiente crear |
-| C-05 | WRITING | ❌ Pendiente crear |
-| C-06 | EVALUATION | ❌ Pendiente crear |
-| C-07 | ACTIVATION | ❌ Pendiente crear |
-| C-08 | DOCS | ❌ Pendiente crear |
-
-Todos siguen la misma TEMPLATE_SUBSYSTEM_CONTEXT (artefacto N-11 pendiente de crear).
+| Chat | Estado |
+|---|---|
+| CONTEXT_SYSTEM (este chat) | ✅ MASTER_PLAN como contexto implícito |
+| CONTEXT_KNOWLEDGE_BASE | ✅ Completado v1.3 |
+| CONTEXT_RESEARCH | ✅ Completado v1.2 |
+| CONTEXT_EDITORIAL_PROFILE | ✅ Completado v1.2 |
+| CONTEXT_WRITING | ✅ Completado v1.2 |
+| CONTEXT_EVALUATION | ✅ Completado v1.2 |
+| CONTEXT_ACTIVATION | ✅ Completado v1.2 |
+| CONTEXT_DOCS | ✅ Completado v1.2 |
 
 ---
 
 ## PARTE 5: PLAN DE EJECUCIÓN
 
-Secuencia recomendada que maximiza valor por unidad de esfuerzo y respeta dependencias.
+### FASE 0 — Fundamentos ✅ COMPLETADA
 
-### FASE 0 — Fundamentos (antes de tocar ningún prompt)
-*Objetivo: tener los estándares y herramientas definidos antes de aplicarlos.*
-
-| # | Tarea | Artefacto resultante | Bloqueado por |
-|---|---|---|---|
-| F0-01 | Crear RESOURCE_ARTIFACT_HEADER_STANDARD | N-03 | — |
-| F0-02 | Crear SCHEMA_SYSTEM_ARCHITECTURE | N-09 | — |
-| F0-03 | Crear SCHEMA_DECISION_LOG | N-10 | — |
-| F0-04 | Crear TEMPLATE_SUBSYSTEM_CONTEXT | N-11 | N-09 |
-| F0-05 | Crear TOOL_SETUP_PROJECT (Google Apps Script) | N-12 | — |
-| F0-06 | Crear TOOL_GITHUB_REPO_STRUCTURE | N-13 | N-09 |
-| F0-07 | Setup GitHub: crear repo + configurar MCP (tareas G-01 a G-03) | — | Editor |
-
-*Estimación: F0-01 a F0-06 completables en este chat en una sesión. F0-07 requiere acción del editor.*
-
----
-
-### FASE 1 — Nuevos recursos del sistema
-*Objetivo: crear los recursos que desbloquean modificaciones en prompts existentes.*
-
-| # | Tarea | Artefacto resultante | Bloqueado por |
-|---|---|---|---|
-| F1-01 | Crear RESOURCE_RESEARCH_FOCUS_TYPES | N-01 | F0-01 |
-| F1-02 | Crear RESOURCE_EVALUATION_FRAMEWORK | N-02 | F0-01 |
-| F1-03 | Crear GUIDE_ANNOTATION_PHASE3 | N-04 | F0-01 |
-| F1-04 | Crear setup_project.gs | D-01 | — |
-
-*Estos se desarrollan en sus chats de subsistema una vez creados los contextos (F0-04).*
-
----
-
-### FASE 2 — Correcciones críticas en Research
-*Objetivo: resolver los 4 GAPs críticos identificados en la auditoría.*
-
-| # | Tarea | Artefacto resultante | Bloqueado por | GAP resuelto |
-|---|---|---|---|---|
-| F2-01 | Actualizar WORKFLOW_RESEARCH estructura canónica | WORKFLOW_RESEARCH_v3.2 | F0-01 | R01, R02 |
-| F2-02 | Corregir referencias en UPDATE_VALIDATION_CHECKLIST | PROMPT_UPDATE_VALIDATION_CHECKLIST_v3.1 | F2-01 | R05 |
-| F2-03 | Actualizar referencias en CREATE_RESEARCH_PLAN | PROMPT_CREATE_RESEARCH_PLAN_v2.2* | F2-01 | R01, R02 |
-| F2-04 | Añadir SAH+CVC a SUMMARIZE_REFERENCES | PROMPT_SUMMARIZE_REFERENCES_v4.1 | F0-01 | R04 |
-
-*F2-03 produce v2.2, no v3.0 — las correcciones de referencias son MINOR. La externalización de focus types (que sí es v3.0) va en Fase 3.*
-
----
-
-### FASE 3 — Refactors arquitectónicos
-*Objetivo: implementar las decisiones arquitectónicas que requieren crear antes de modificar.*
-
-| # | Tarea | Artefacto resultante | Bloqueado por |
-|---|---|---|---|
-| F3-01 | Externalizar focus types de CREATE_RESEARCH_PLAN | PROMPT_CREATE_RESEARCH_PLAN_v3.0 | F1-01 |
-| F3-02 | Adoptar contrato de evaluación en evaluadores existentes | EVALUATE_*_v1.1 (×3) | F1-02 |
-| F3-03 | Clarificar EVALUATE_RESEARCH_REPORT para RAMA A | PROMPT_EVALUATE_RESEARCH_REPORT_v1.1 | F1-02 |
-| F3-04 | Migrar artefactos a GitHub con naming corregido | — | G-04 |
-| F3-05 | Crear documentos de contexto para 7 chats de desarrollo | C-02 a C-08 | N-11, N-09 |
-
----
-
-### FASE 4 — Nuevos componentes
-*Objetivo: diseñar los prompts y workflows pendientes.*
-
-| # | Tarea | Artefacto resultante | Bloqueado por | Chat responsable |
-|---|---|---|---|---|
-| F4-01 | Diseñar WORKFLOW_WRITING con bifurcación | WORKFLOW_WRITING_v2.0 | F3-05 | writing-dev |
-| F4-02 | Diseñar Rama Post de Writing | PROMPT_PLAN_POST, PROMPT_WRITE_POST_v1.0... | F4-01 | writing-dev |
-| F4-03 | Diseñar PROMPT_CREATE_BOOK_BRIEF | N-05 | F3-05 | activation-dev |
-| F4-04 | Diseñar PROMPT_EVALUATE_POST | N-06 | F1-02 | evaluation-dev |
-| F4-05 | Diseñar PROMPT_EVALUATE_ACTIVATION | N-07 | F1-02 | evaluation-dev |
-| F4-06 | Diseñar estructura de DOCS y primeros documentos | — | F3-05 | docs-dev |
-
----
-
-### FASE 5 — Menor prioridad
-*Objetivo: correcciones menores que no bloquean nada.*
-
-| # | Tarea | Notas |
+| # | Tarea | Estado |
 |---|---|---|
-| F5-01 | Decisión sobre secciones 4-6 de NARRATIVE_BRIDGE (GAP-R09) | Mantener o eliminar — requiere decisión editorial |
-| F5-02 | Decisión sobre "Practical Applications" sin consumidor (GAP-R08) | Requiere decisión editorial |
-| F5-03 | Renombrar todos los prompts según naming convention | Fase 5 porque impacta más referencias cruzadas |
+| F0-01 | Crear RESOURCE_ARTIFACT_HEADER_STANDARD | ✅ v1.0 |
+| F0-02 | Crear SCHEMA_SYSTEM_ARCHITECTURE | ✅ v1.2 |
+| F0-03 | Crear SCHEMA_DECISION_LOG | ✅ v2.0 |
+| F0-04 | Crear TEMPLATE_SUBSYSTEM_CONTEXT | ✅ v1.0 |
+| F0-05 | Crear TOOL_SETUP_PROJECT | ✅ v1.0 |
+| F0-06 | Crear TOOL_GITHUB_REPO_STRUCTURE | ✅ v1.0 (actualización a v1.1 pendiente) |
+| F0-07 | Setup GitHub | ✅ Repositorio creado — MCP no disponible, flujo manual (DECISIÓN-15) |
 
 ---
 
-## PARTE 6: TRABAJO PREPARABLE EN ESTE CHAT HOY
+### FASE 1 — Nuevos recursos del sistema ✅ COMPLETADA
 
-Sin esperar setup de GitHub, los siguientes artefactos pueden producirse en esta sesión y descargarse para uso inmediato o subida manual:
-
-| # | Artefacto | ID en Plan | Notas |
-|---|---|---|---|
-| H-01 | RESOURCE_ARTIFACT_HEADER_STANDARD_v1.0 | N-03 | Define cabecera YAML incluyendo tipo TOOL |
-| H-02 | SCHEMA_SYSTEM_ARCHITECTURE_v1.0 | N-09 | Mapa completo de 8 subsistemas e interfaces |
-| H-03 | SCHEMA_DECISION_LOG_v1.0 | N-10 | Formato estándar para DECISION_LOG entries |
-| H-04 | TEMPLATE_SUBSYSTEM_CONTEXT_v1.0 | N-11 | Plantilla para documentos de contexto de chats |
-| H-05 | TOOL_SETUP_PROJECT_v1.0 | N-12 | Google Apps Script listo para usar |
-| H-06 | TOOL_GITHUB_REPO_STRUCTURE_v1.0 | N-13 | Árbol de carpetas + README por subsistema |
+| # | Tarea | Estado |
+|---|---|---|
+| F1-01 | Crear RESOURCE_RESEARCH_FOCUS_TYPES | ✅ v1.1 |
+| F1-02 | Crear RESOURCE_EVALUATION_FRAMEWORK | ✅ v1.0 |
+| F1-03 | Crear GUIDE_ANNOTATION_PHASE3 | ❌ Pendiente Sprint 2 |
+| F1-04 | Crear TOOL_SETUP_PROJECT | ✅ v1.0 |
 
 ---
 
-## PARTE 7: RESUMEN DE GAPS DE RESEARCH PENDIENTES
+### FASE 2 — Correcciones críticas en Research ✅ COMPLETADA
 
-Para referencia: estado de los 11 gaps identificados en la auditoría de Research.
-
-| ID | Descripción | Severidad | Fase de resolución |
+| # | Tarea | Estado | GAP resuelto |
 |---|---|---|---|
-| GAP-R01 | Estructura REFERENCE_SUMMARY: prompt vs workflow | 🔴 CRÍTICO | Fase 2 (F2-01) |
-| GAP-R02 | Estructura RESEARCH_PLAN: prompt vs workflow | 🔴 CRÍTICO | Fase 2 (F2-01) |
-| GAP-R04 | SUMMARIZE_REFERENCES sin SAH ni CVC | 🔴 CRÍTICO | Fase 2 (F2-04) |
-| GAP-R05 | UPDATE_VALIDATION_CHECKLIST referencia sección inexistente | 🔴 CRÍTICO | Fase 2 (F2-02) |
-| GAP-R03 | Estructura NARRATIVE_BRIDGE: prompt vs workflow | 🟠 IMPORTANTE | Fase 2 (F2-01) |
-| GAP-R06 | Fase 3 sin soporte ni guía estructurada | 🟠 IMPORTANTE | Fase 1 (F1-03) |
-| GAP-R07 | EVALUATE no cubre RESEARCH_DEEP_DIVE | 🟠 IMPORTANTE | Fase 3 (F3-03) |
-| GAP-R11 | Focus types embebidos en CREATE_RESEARCH_PLAN | 🟠 IMPORTANTE | Fase 3 (F3-01) |
-| GAP-R08 | "Practical Applications" sin consumidor | 🟡 MENOR | Fase 5 (F5-02) |
-| GAP-R09 | NB secciones 4-6 sin consumidor | 🟡 MENOR | Fase 5 (F5-01) |
-| GAP-R10 | Naming inconsistente SUMMARIZE_REFERENCES | 🟡 MENOR | Fase 3 (F3-04, renaming global) |
+| F2-01 | WORKFLOW_RESEARCH estructura canónica | ✅ v3.2 | R01, R02, R03 |
+| F2-02 | Corregir UPDATE_VALIDATION_CHECKLIST | ✅ v3.1 | R05 |
+| F2-03 | Actualizar CREATE_RESEARCH_PLAN referencias | ✅ v2.2 | R01, R02 |
+| F2-04 | Añadir SAH+CVC a SUMMARIZE_REFERENCES | ✅ v4.1 | R04 |
+
+---
+
+### FASE 3 — Refactors arquitectónicos 🔄 EN CURSO
+
+| # | Tarea | Estado |
+|---|---|---|
+| F3-01 | Externalizar focus types → CREATE_RESEARCH_PLAN v3.0 | ❌ Pendiente Sprint 2 |
+| F3-02 | Adoptar contrato de evaluación en evaluadores | ✅ EVALUATE_RESEARCH_REPORT v1.1, EVALUATE_BOOK_CONTENT v1.1 / ❌ EVALUATE_BOOK_STYLE v1.1 pendiente |
+| F3-03 | Clarificar EVALUATE_RESEARCH_REPORT para RAMA A | ✅ Incluido en v1.1 |
+| F3-04 | Subir artefactos a GitHub con naming correcto | ❌ Pendiente Sprint 2 (flujo manual) |
+| F3-05 | Crear documentos de contexto para 7 chats | ✅ Todos completados v1.2 |
+
+---
+
+### FASE 4 — Nuevos componentes ❌ PENDIENTE
+
+| # | Tarea | Bloqueado por |
+|---|---|---|
+| F4-01 | WORKFLOW_WRITING v2.0 con bifurcación | — |
+| F4-02 | Rama Post de Writing | F4-01 |
+| F4-03 | PROMPT_CREATE_BOOK_BRIEF | — |
+| F4-04 | PROMPT_EVALUATE_POST | F4-02 |
+| F4-05 | PROMPT_EVALUATE_ACTIVATION | — |
+| F4-06 | Estructura de DOCS y primeros documentos | — |
+
+---
+
+### FASE 5 — Menor prioridad ❌ PENDIENTE
+
+| # | Tarea |
+|---|---|
+| F5-01 | Decisión sobre secciones 4-6 de NARRATIVE_BRIDGE (GAP-R09) |
+| F5-02 | Decisión sobre "Practical Applications" sin consumidor (GAP-R08) |
+| F5-03 | Renaming global de prompts legacy en Drive |
+
+---
+
+## PARTE 6: BACKLOG SPRINT 2 (activo)
+
+Estado del sprint en curso al 30/03/2026.
+
+### Deuda técnica — prioridad máxima
+
+| ID | Tarea | Artefacto | Estado |
+|---|---|---|---|
+| D-01 | Actualizar TOOL_GITHUB_REPO_STRUCTURE | v1.0 → v1.1 | ❌ En curso |
+| D-02 | Actualizar READMEs desactualizados | múltiples subsistemas | ❌ Pendiente |
+| D-03 | Corregir README de decisions (naming incorrecto) | _system/decisions/README.md | ❌ Pendiente |
+| D-04 | Actualizar MASTER_PLAN | v1.2 → v1.3 | ✅ Este documento |
+
+### Desarrollo pendiente
+
+| ID | Tarea | Artefacto | Bloqueado por |
+|---|---|---|---|
+| S2-A | Crear GUIDE_ANNOTATION_PHASE3 | v1.0 nuevo | — |
+| S2-B | Externalizar focus types | PROMPT_CREATE_RESEARCH_PLAN v2.2 → v3.0 | — (RESOURCE ya existe) |
+| S2-C | Adoptar contrato evaluación | PROMPT_EVALUATE_BOOK_STYLE v1.0 → v1.1 | — (FRAMEWORK ya existe) |
+
+### Infraestructura
+
+| ID | Tarea | Estado |
+|---|---|---|
+| I-01 | Subir todos los artefactos al repositorio GitHub (manual asistido) | ❌ Pendiente final de sprint |
+
+---
+
+## PARTE 7: RESUMEN DE GAPS DE RESEARCH
+
+Estado actualizado al 30/03/2026.
+
+| ID | Descripción | Severidad | Estado |
+|---|---|---|---|
+| GAP-R01 | Estructura REFERENCE_SUMMARY: inconsistencia prompt/workflow | 🔴 CRÍTICO | ✅ Resuelto (WORKFLOW v3.2) |
+| GAP-R02 | Estructura RESEARCH_PLAN: inconsistencia prompt/workflow | 🔴 CRÍTICO | ✅ Resuelto (WORKFLOW v3.2) |
+| GAP-R04 | SUMMARIZE_REFERENCES sin SAH ni CVC | 🔴 CRÍTICO | ✅ Resuelto (v4.1) |
+| GAP-R05 | UPDATE_VALIDATION_CHECKLIST referencia sección inexistente | 🔴 CRÍTICO | ✅ Resuelto (v3.1) |
+| GAP-R03 | Estructura NARRATIVE_BRIDGE: inconsistencia prompt/workflow | 🟠 IMPORTANTE | ✅ Resuelto (WORKFLOW v3.2) |
+| GAP-R07 | EVALUATE no cubre RESEARCH_DEEP_DIVE (RAMA A) | 🟠 IMPORTANTE | ✅ Resuelto (EVALUATE v1.1) |
+| GAP-R11 | Focus types embebidos en CREATE_RESEARCH_PLAN | 🟠 IMPORTANTE | ⏳ Pendiente Sprint 2 (S2-B) |
+| GAP-R06 | Fase 3 sin soporte ni guía estructurada | 🟠 IMPORTANTE | ⏳ Pendiente Sprint 2 (S2-A) |
+| GAP-R08 | "Practical Applications" sin consumidor | 🟡 MENOR | ❌ Pendiente Fase 5 |
+| GAP-R09 | NARRATIVE_BRIDGE secciones 4-6 sin consumidor | 🟡 MENOR | ❌ Pendiente Fase 5 |
+| GAP-R10 | Naming inconsistente SUMMARIZE_REFERENCES | 🟡 MENOR | ❌ Pendiente Fase 5 |
 
 ---
 
 **FIN DEL DOCUMENTO**
-
-*Próxima acción recomendada: producir los artefactos de Parte 6 (H-01 a H-06) en esta sesión.*
