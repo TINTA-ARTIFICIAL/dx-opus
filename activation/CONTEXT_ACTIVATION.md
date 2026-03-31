@@ -2,23 +2,23 @@
 id:          CONTEXT_ACTIVATION
 type:        TEMPLATE
 subsystem:   ACTIVATION
-version:     1.2
+version:     1.3
 status:      ACTIVE
 created:     2026-02-21
-updated:     2026-02-21
+updated:     2026-03-31
 owner_chat:  activation-dev
 ---
 
 ## CHANGELOG
 | Version | Date | Author | Summary |
 |---------|------|--------|---------|
+| v1.3 | 2026-03-31 | JM | Cabecera actualizada, dependencias sin versión en nombre, formato DL corregido, PROMPT_EVALUATE_ACTIVATION desbloqueado (RESOURCE_EVALUATION_FRAMEWORK v1.0 disponible), artefactos pendientes sin versión en nombre, nota de workflow naming actualizada |
 | v1.2 | 2026-02-22 | JM | Added DL entry format with filename convention and subsystem code |
-
 | v1.1 | 2026-02-21 | JM | Added explicit filename naming rule — no version in filename, Git manages history |
 | v1.0 | 2026-02-21 | JM | Initial version |
 
 ## DEPENDENCIES
-inputs:  [SCHEMA_SYSTEM_ARCHITECTURE_v1.1, MASTER_PLAN_v1.2]
+inputs:  [SCHEMA_SYSTEM_ARCHITECTURE, MASTER_PLAN]
 outputs: []
 calls:   []
 
@@ -53,9 +53,9 @@ D-X-OPUS es un sistema modular de escritura no-ficción asistida por IA. Cubre e
 - **Google Drive `[COD]_[Proyecto]`:** artefactos de producción — específicos por libro
 
 **Estándares activos:**
-- Cabecera YAML obligatoria en todos los artefactos (ver `RESOURCE_ARTIFACT_HEADER_STANDARD_v1.0`)
-- Naming convention: ver `NAMING_CONVENTION_ANALYSIS_v1.2`
-- Decision log: cada decisión relevante produce una entrada `DL-YYYYMMDD-NNN`
+- Cabecera YAML obligatoria en todos los artefactos (ver `RESOURCE_ARTIFACT_HEADER_STANDARD`)
+- Naming convention: ver `NAMING_CONVENTION_ANALYSIS`
+- Decision log: cada decisión relevante produce una entrada `DL_YYYYMMDD_[SUBSYSTEM]_[NNN].md`
 - Versiones: siempre `vX.Y` (dos niveles), nunca más ni menos
 
 ---
@@ -96,11 +96,11 @@ El BOOK_BRIEF no sustituye al Research — lo orienta. El editor llega a Researc
 | BOOK_BRIEF | Research | 3-4 propuestas de nuevo libro — input orientador opcional |
 
 ### Prompts de `/writing/shared/` que usa
-Activation invoca estos prompts pero **no los desarrolla ni los versiona**. Si necesita un cambio en alguno de ellos, lo canaliza a writing-dev.
+Activation invoca estos prompts pero **no los desarrolla ni los versiona**. Si necesita un cambio en alguno de ellos, lo canaliza a writing-dev via DL entry.
 
 | Prompt | Owner | Cómo solicitar cambios |
 |---|---|---|
-| PROMPT_WRITE_POST | writing-dev | Crear DL entry describiendo el cambio necesario y notificar a writing-dev |
+| PROMPT_WRITE_POST | writing-dev | Crear DL entry describiendo el cambio necesario |
 | PROMPT_CREATE_TIMELINE | writing-dev | Idem |
 | PROMPT_CREATE_CAST | writing-dev | Idem |
 
@@ -112,22 +112,22 @@ Activation invoca estos prompts pero **no los desarrolla ni los versiona**. Si n
 
 | Artefacto | Versión actual | Versión objetivo | Status | Descripción |
 |---|---|---|---|---|
-| WORKFLOW_ACTIVATION | v1.4 | v1.4 | ACTIVE | Workflow completo del proceso de activación |
+| WORKFLOW_ACTIVATION | v1.4 (legacy) | v1.4 | ACTIVE | Workflow completo del proceso de activación |
 
-**Nota sobre naming:** El archivo actual se llama `WORKFLOW_ACTIVATION_SISTEMA_TINTA_ARTIFICIAL_v1_4.md`. El nombre objetivo es `WORKFLOW_ACTIVATION_v1.4.md`. El renaming se hace en la Fase 3 del MASTER_PLAN.
+**Nota sobre naming:** El archivo en GitHub tiene nombre legacy (`WORKFLOW_ACTIVATION_SISTEMA_TINTA_ARTIFICIAL_v1_4.md`). El nombre objetivo es `WORKFLOW_ACTIVATION.md`. El renaming se ejecuta en la Fase 3 del MASTER_PLAN junto con el resto de archivos legacy.
 
 ### Artefactos pendientes de crear
 
 | Artefacto | Prioridad | Bloqueado por |
 |---|---|---|
-| PROMPT_CREATE_BOOK_BRIEF_v1.0 | 🟡 Baja | — |
-| PROMPT_EVALUATE_ACTIVATION_v1.0 | 🟡 Baja | RESOURCE_EVALUATION_FRAMEWORK (evaluation-dev) |
+| PROMPT_CREATE_BOOK_BRIEF | 🟡 Baja | — |
+| PROMPT_EVALUATE_ACTIVATION | 🟡 Baja | — ✅ RESOURCE_EVALUATION_FRAMEWORK v1.0 disponible |
 
 ---
 
 ## SECCIÓN 4: DISEÑO DE PROMPT_CREATE_BOOK_BRIEF
 
-Este es el único prompt nuevo que debe crear este subsistema. Cuando se diseñe, debe contemplar:
+Este es el único prompt nuevo que debe crear este subsistema en Fase 4. Cuando se diseñe, debe contemplar:
 
 **Input:**
 - Colección de libros ya escritos (resúmenes o fichas técnicas)
@@ -151,18 +151,18 @@ El BOOK_BRIEF se entrega al editor, quien decide si lanzar un nuevo proyecto. Si
 
 ### Tareas del MASTER_PLAN
 
-| Tarea | Descripción | Prioridad | Bloqueado por |
+| Tarea | Descripción | Prioridad | Estado |
 |---|---|---|---|
-| F4-03 | Diseñar PROMPT_CREATE_BOOK_BRIEF_v1.0 | 🟡 Baja | — |
-| F4-05 | Diseñar PROMPT_EVALUATE_ACTIVATION_v1.0 | 🟡 Baja | RESOURCE_EVALUATION_FRAMEWORK |
+| F4-03 | Diseñar PROMPT_CREATE_BOOK_BRIEF | 🟡 Baja | ❌ Pendiente Fase 4 |
+| F4-05 | Diseñar PROMPT_EVALUATE_ACTIVATION | 🟡 Baja | ❌ Pendiente Fase 4 — desbloqueado |
 
 ### DECISION_LOG entries pendientes de integrar
 
 | DL-ID | Decisión | Acción requerida en este chat |
 |---|---|---|
-| DL-20260221-005 | BOOK_BRIEF orienta Research sin sustituirlo | Implementar en PROMPT_CREATE_BOOK_BRIEF: el output debe ser orientador, no un plan de investigación completo |
-| DL-20260221-006 | Prompts shared en /writing/shared/ — Writing es owner | No proponer cambios directos a WRITE_POST, CREATE_TIMELINE, CREATE_CAST — canalizarlos a writing-dev |
-| DL-20260221-003 | Contrato de evaluación estándar | Cuando RESOURCE_EVALUATION_FRAMEWORK esté disponible, diseñar EVALUATE_ACTIVATION con ese output |
+| DL_20260221_SYSTEM_005 | BOOK_BRIEF orienta Research sin sustituirlo | Implementar en PROMPT_CREATE_BOOK_BRIEF: el output debe ser orientador, no un plan de investigación completo |
+| DL_20260221_SYSTEM_006 | Prompts shared en /writing/shared/ — Writing es owner | No proponer cambios directos a WRITE_POST, CREATE_TIMELINE, CREATE_CAST — canalizarlos a writing-dev via DL entry |
+| DL_20260221_SYSTEM_003 | Contrato de evaluación estándar | RESOURCE_EVALUATION_FRAMEWORK v1.0 disponible — diseñar EVALUATE_ACTIVATION con ese output canónico |
 
 ---
 
@@ -170,9 +170,8 @@ El BOOK_BRIEF se entrega al editor, quien decide si lanzar un nuevo proyecto. Si
 
 ### Al inicio de cada sesión
 1. Confirmar con el editor el objetivo: ¿diseñar BOOK_BRIEF, revisar el workflow, o diseñar EVALUATE_ACTIVATION?
-2. Si se trabaja en el workflow: leer `WORKFLOW_ACTIVATION_SISTEMA_TINTA_ARTIFICIAL_v1_4.md` desde el proyecto de Claude
-3. Verificar si evaluation-dev ha publicado RESOURCE_EVALUATION_FRAMEWORK (desbloquea EVALUATE_ACTIVATION)
-4. Verificar si writing-dev ha modificado algún prompt de /writing/shared/ (via DL entries)
+2. Si se trabaja en el workflow: leer `WORKFLOW_ACTIVATION` desde el proyecto de Claude
+3. Verificar si writing-dev ha modificado algún prompt de `/writing/shared/` (via DL entries)
 
 ### Al finalizar cada sesión
 1. Producir DL entries si se tomaron decisiones que afectan a Research (interfaz BOOK_BRIEF) o Writing (uso de shared prompts)
@@ -182,13 +181,13 @@ El BOOK_BRIEF se entrega al editor, quien decide si lanzar un nuevo proyecto. Si
 
 **Ningún archivo del sistema incluye versión en el nombre.** Git gestiona el historial completo.
 
-- ✅ Correcto: `PROMPT_WRITE_CHAPTER.md`, `RESOURCE_EVALUATION_FRAMEWORK.md`
-- ❌ Incorrecto: `PROMPT_WRITE_CHAPTER_v1_3.md`, `RESOURCE_EVALUATION_FRAMEWORK_v1_0.md`
+- ✅ Correcto: `PROMPT_CREATE_BOOK_BRIEF.md`, `WORKFLOW_ACTIVATION.md`
+- ❌ Incorrecto: `PROMPT_CREATE_BOOK_BRIEF_v1_0.md`, `WORKFLOW_ACTIVATION_SISTEMA_TINTA_ARTIFICIAL_v1_4.md`
 
 La versión se documenta únicamente en:
-1. La cabecera YAML: `version: 1.1`
+1. La cabecera YAML: `version: 1.0`
 2. El CHANGELOG interno del archivo
-3. El mensaje de commit: `[SUBSISTEMA] feat: create PROMPT_X (v1.0)`
+3. El mensaje de commit: `[ACTIVATION] feat: create PROMPT_CREATE_BOOK_BRIEF (v1.0)`
 
 ### Formato de commits a GitHub
 ```
@@ -196,28 +195,24 @@ La versión se documenta únicamente en:
 
 Ejemplos:
 [ACTIVATION] feat: create PROMPT_CREATE_BOOK_BRIEF v1.0
-[ACTIVATION] fix: adopt evaluation contract in EVALUATE_ACTIVATION v1.0
+[ACTIVATION] feat: create PROMPT_EVALUATE_ACTIVATION v1.0
 [ACTIVATION] docs: update WORKFLOW_ACTIVATION with book brief loop
 ```
 
 ### Formato de DL entries
 
-Cada DL entry es un archivo independiente en GitHub `/_system/decisions/` con este nombre:
 ```
-DL_YYYYMMDD_[SUBSYSTEM]_[NNN].md
+DL_YYYYMMDD_ACTIVATION_[NNN].md
 ```
 
-- `SUBSYSTEM` para este chat: `ACTIVATION`
 - `NNN` es numeración **global y secuencial** en todo el sistema — no se reinicia por subsistema ni por fecha
 - Antes de crear una entrada, consulta el último número usado en `/_system/decisions/` para continuar la secuencia
-
-Ejemplo: `DL_20260222_RESEARCH_014.md`
 
 El formato completo del contenido está en `SCHEMA_DECISION_LOG.md`.
 
 ### Cuándo crear una DL entry
 - Cuando se define el formato del BOOK_BRIEF (afecta a Research — debe saber cómo consumirlo)
-- Cuando se identifica una necesidad de cambio en un prompt de /writing/shared/ (notificar a writing-dev)
+- Cuando se identifica una necesidad de cambio en un prompt de `/writing/shared/` (notificar a writing-dev)
 - Cuando se añade o modifica cualquier artefacto del subsistema
 
 ---
