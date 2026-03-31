@@ -2,23 +2,23 @@
 id:          CONTEXT_WRITING
 type:        TEMPLATE
 subsystem:   WRITING
-version:     1.2
+version:     1.3
 status:      ACTIVE
 created:     2026-02-21
-updated:     2026-02-21
+updated:     2026-03-31
 owner_chat:  writing-dev
 ---
 
 ## CHANGELOG
 | Version | Date | Author | Summary |
 |---------|------|--------|---------|
+| v1.3 | 2026-03-31 | JM | Cabecera actualizada a v1.3, dependencias sin versión en nombre, formato DL corregido, F3-02 desbloqueado (RESOURCE_EVALUATION_FRAMEWORK ya disponible v1.0), artefactos pendientes sin versión en nombre, DL entries fundacionales actualizadas |
 | v1.2 | 2026-02-22 | JM | Added DL entry format with filename convention and subsystem code |
-
 | v1.1 | 2026-02-21 | JM | Added explicit filename naming rule — no version in filename, Git manages history |
 | v1.0 | 2026-02-21 | JM | Initial version |
 
 ## DEPENDENCIES
-inputs:  [SCHEMA_SYSTEM_ARCHITECTURE_v1.1, MASTER_PLAN_v1.2]
+inputs:  [SCHEMA_SYSTEM_ARCHITECTURE, MASTER_PLAN]
 outputs: []
 calls:   []
 
@@ -53,9 +53,9 @@ D-X-OPUS es un sistema modular de escritura no-ficción asistida por IA. Cubre e
 - **Google Drive `[COD]_[Proyecto]`:** artefactos de producción — específicos por libro
 
 **Estándares activos:**
-- Cabecera YAML obligatoria en todos los artefactos (ver `RESOURCE_ARTIFACT_HEADER_STANDARD_v1.0`)
-- Naming convention: ver `NAMING_CONVENTION_ANALYSIS_v1.2`
-- Decision log: cada decisión relevante produce una entrada `DL-YYYYMMDD-NNN`
+- Cabecera YAML obligatoria en todos los artefactos (ver `RESOURCE_ARTIFACT_HEADER_STANDARD`)
+- Naming convention: ver `NAMING_CONVENTION_ANALYSIS`
+- Decision log: cada decisión relevante produce una entrada `DL_YYYYMMDD_[SUBSYSTEM]_[NNN].md`
 - Versiones: siempre `vX.Y` (dos niveles), nunca más ni menos
 
 ---
@@ -72,6 +72,7 @@ El editor decide al entrar al WORKFLOW_WRITING si produce un libro o un post. La
 - No hace la investigación — recibe RESEARCH_REPORTs o RESEARCH_DEEP_DIVE de Research
 - No define la voz del autor — recibe EDITOR_PROFILE de Editorial Profile
 - No evalúa calidad objetiva del texto producido — invoca EVALUATE_BOOK_CONTENT de Evaluation
+- No evalúa adherencia al perfil editorial — invoca EVALUATE_BOOK_STYLE de Evaluation
 - No genera contenido de activación (posts de campaña) — eso es Activation. Aunque Activation usa WRITE_POST, el prompt es de Writing.
 
 ### Interfaces de entrada
@@ -91,8 +92,7 @@ El editor decide al entrar al WORKFLOW_WRITING si produce un libro o un post. La
 | Post publicable | Publicación directa | Output final de RAMA POST |
 
 ### Prompts shared — owned by Writing, invocados por Activation
-
-Estos prompts viven en `/writing/shared/` del repositorio. Writing los desarrolla y versiona. Cuando se modifican, se notifica a activation-dev via DECISION_LOG entry.
+Estos prompts viven en `/writing/shared/` del repositorio. Writing los desarrolla y versiona. Cuando se modifican, se notifica a activation-dev via DL entry.
 
 | Prompt | Invocado también por | Criterio de evolución |
 |---|---|---|
@@ -136,18 +136,18 @@ Estos prompts viven en `/writing/shared/` del repositorio. Writing los desarroll
 
 | Artefacto | Versión actual | Versión objetivo | Status |
 |---|---|---|---|
-| WORKFLOW_WRITING | v1.7 (WORKFLOW_WRITING_BOOKS) | v2.0 | NEEDS REFACTOR |
+| WORKFLOW_WRITING | v1.7 (legacy) | v2.0 | NEEDS REFACTOR |
 
-**Nota sobre el workflow actual:** El archivo existente se llama `WORKFLOW_WRITING_BOOKS_SISTEMA_TINTA_ARTIFICIAL_v1_7.md`. La versión objetivo (v2.0) añade la bifurcación Book/Post y elimina la marca del nombre.
+**Nota sobre el workflow actual:** El archivo en GitHub tiene nombre legacy (`WORKFLOW_WRITING_BOOKS_SISTEMA_TINTA_ARTIFICIAL_v1_7.md`). La versión objetivo (v2.0) añade la bifurcación Book/Post y adopta naming estándar. Pendiente Fase 4.
 
 ### Artefactos pendientes de crear
 
 | Artefacto | Prioridad | Bloqueado por |
 |---|---|---|
-| PROMPT_PLAN_POST_v1.0 | 🟠 Media | WORKFLOW_WRITING v2.0 |
-| PROMPT_WRITE_ARTICLE_v1.0 | 🟠 Media | WORKFLOW_WRITING v2.0 |
-| PROMPT_WRITE_THREAD_v1.0 | 🟠 Media | WORKFLOW_WRITING v2.0 |
-| WORKFLOW_WRITING_v2.0 | 🟠 Media | — |
+| PROMPT_PLAN_POST | 🟠 Media | WORKFLOW_WRITING v2.0 |
+| PROMPT_WRITE_ARTICLE | 🟠 Media | WORKFLOW_WRITING v2.0 |
+| PROMPT_WRITE_THREAD | 🟠 Media | WORKFLOW_WRITING v2.0 |
+| WORKFLOW_WRITING | 🟠 Media (v2.0) | — |
 
 ---
 
@@ -165,6 +165,7 @@ WRITE_SAMPLE_CHAPTER
          → SAMPLE_CHAPTER (capítulo de muestra)
          ↓
 [Checkpoint: editor aprueba voz y estructura]
+[EVALUATE_BOOK_STYLE — invoca Evaluation]
          ↓
 WRITE_CHAPTER × N (un prompt por capítulo)
          → CHAPTER_01_FINAL ... CHAPTER_N_FINAL
@@ -178,7 +179,6 @@ CREATE_CAST      [shared]
 CONSOLIDATE_REFERENCES
          → BIBLIOGRAPHY_FINAL
          ↓
-[EVALUATE_BOOK_STYLE — invoca Editorial Profile]
 [EVALUATE_BOOK_CONTENT — invoca Evaluation]
          ↓
 CREATE_BOOK_SHEET
@@ -207,31 +207,30 @@ Output: post publicable
 
 ### Tarea principal: WORKFLOW_WRITING v2.0
 
-El workflow actual (`WORKFLOW_WRITING_BOOKS_SISTEMA_TINTA_ARTIFICIAL_v1_7.md`) solo cubre la RAMA BOOK. La versión 2.0 debe:
+El workflow actual solo cubre la RAMA BOOK. La versión 2.0 debe:
 
 1. Añadir la bifurcación editorial al inicio (decisión Book vs Post)
 2. Documentar la RAMA BOOK existente con la nomenclatura actualizada
 3. Añadir la RAMA POST (pendiente de diseño de los prompts)
-4. Eliminar el sufijo `_SISTEMA_TINTA_ARTIFICIAL` del nombre
+4. Adoptar naming estándar (sin sufijo legacy ni versión en el nombre)
 5. Añadir cabecera YAML estándar
 
 **Orden recomendado:** Diseñar primero el WORKFLOW_WRITING v2.0 con la bifurcación, luego diseñar los prompts de RAMA POST basándose en la estructura del workflow.
 
 ### Tareas del MASTER_PLAN
 
-| Tarea | Descripción | Prioridad | Bloqueado por |
+| Tarea | Descripción | Prioridad | Estado |
 |---|---|---|---|
-| F4-01 | Diseñar WORKFLOW_WRITING v2.0 con bifurcación | 🟠 Media | — |
-| F4-02 | Diseñar prompts Rama Post | 🟠 Media | F4-01 |
-| F3-02 | Adoptar contrato de evaluación en evaluadores | 🟠 Media | RESOURCE_EVALUATION_FRAMEWORK (evaluation-dev) |
+| F4-01 | Diseñar WORKFLOW_WRITING v2.0 con bifurcación | 🟠 Media | ❌ Pendiente Fase 4 |
+| F4-02 | Diseñar prompts Rama Post | 🟠 Media | ❌ Pendiente — bloqueado por F4-01 |
 
 ### DECISION_LOG entries pendientes de integrar
 
 | DL-ID | Decisión | Acción requerida en este chat |
 |---|---|---|
-| DL-20260221-002 | Writing unificado con bifurcación Book/Post | Diseñar WORKFLOW_WRITING v2.0 |
-| DL-20260221-006 | Prompts compartidos en /writing/shared/ | Los 3 shared prompts ya están ahí — mantener al desarrollarlos |
-| DL-20260221-003 | Contrato de evaluación estándar | Cuando RESOURCE_EVALUATION_FRAMEWORK esté disponible, verificar que los workflows invocan evaluadores con la firma correcta |
+| DL_20260221_SYSTEM_002 | Writing unificado con bifurcación Book/Post | Diseñar WORKFLOW_WRITING v2.0 (Fase 4) |
+| DL_20260221_SYSTEM_006 | Prompts compartidos en /writing/shared/ | Los 3 shared prompts ya están — mantener al desarrollarlos |
+| DL_20260221_SYSTEM_003 | Contrato de evaluación estándar | RESOURCE_EVALUATION_FRAMEWORK v1.0 ya disponible — verificar que los workflows invocan evaluadores con la firma correcta al desarrollar v2.0 |
 
 ---
 
@@ -240,8 +239,7 @@ El workflow actual (`WORKFLOW_WRITING_BOOKS_SISTEMA_TINTA_ARTIFICIAL_v1_7.md`) s
 ### Al inicio de cada sesión
 1. Confirmar con el editor el objetivo: ¿WORKFLOW v2.0, diseño RAMA POST, o mejora de un prompt existente?
 2. Si se trabaja en prompts de RAMA BOOK: leer el artefacto actual desde el proyecto de Claude
-3. Verificar si evaluation-dev ha publicado RESOURCE_EVALUATION_FRAMEWORK
-4. Verificar si hay nuevas DL entries que afecten a Writing
+3. Verificar si hay nuevas DL entries que afecten a Writing
 
 ### Al finalizar cada sesión
 1. Si se modificaron prompts shared: crear DL entry notificando a activation-dev
@@ -251,13 +249,13 @@ El workflow actual (`WORKFLOW_WRITING_BOOKS_SISTEMA_TINTA_ARTIFICIAL_v1_7.md`) s
 
 **Ningún archivo del sistema incluye versión en el nombre.** Git gestiona el historial completo.
 
-- ✅ Correcto: `PROMPT_WRITE_CHAPTER.md`, `RESOURCE_EVALUATION_FRAMEWORK.md`
-- ❌ Incorrecto: `PROMPT_WRITE_CHAPTER_v1_3.md`, `RESOURCE_EVALUATION_FRAMEWORK_v1_0.md`
+- ✅ Correcto: `PROMPT_WRITE_CHAPTER.md`, `WORKFLOW_WRITING.md`
+- ❌ Incorrecto: `PROMPT_WRITE_CHAPTER_v1_3.md`, `WORKFLOW_WRITING_BOOKS_SISTEMA_TINTA_ARTIFICIAL_v1_7.md`
 
 La versión se documenta únicamente en:
-1. La cabecera YAML: `version: 1.1`
+1. La cabecera YAML: `version: 1.3`
 2. El CHANGELOG interno del archivo
-3. El mensaje de commit: `[SUBSISTEMA] feat: create PROMPT_X (v1.0)`
+3. El mensaje de commit: `[WRITING] feat: create PROMPT_X (v1.0)`
 
 ### Formato de commits a GitHub
 ```
@@ -271,16 +269,12 @@ Ejemplos:
 
 ### Formato de DL entries
 
-Cada DL entry es un archivo independiente en GitHub `/_system/decisions/` con este nombre:
 ```
-DL_YYYYMMDD_[SUBSYSTEM]_[NNN].md
+DL_YYYYMMDD_WRITING_[NNN].md
 ```
 
-- `SUBSYSTEM` para este chat: `WRITING`
 - `NNN` es numeración **global y secuencial** en todo el sistema — no se reinicia por subsistema ni por fecha
 - Antes de crear una entrada, consulta el último número usado en `/_system/decisions/` para continuar la secuencia
-
-Ejemplo: `DL_20260222_RESEARCH_014.md`
 
 El formato completo del contenido está en `SCHEMA_DECISION_LOG.md`.
 
