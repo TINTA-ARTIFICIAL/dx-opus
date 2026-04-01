@@ -2,21 +2,22 @@
 id:          TEMPLATE_SUBSYSTEM_CONTEXT
 type:        TEMPLATE
 subsystem:   SYSTEM
-version:     1.0
+version:     1.1
 status:      ACTIVE
 created:     2026-02-21
-updated:     2026-02-21
+updated:     2026-03-31
 owner_chat:  system-architecture
 ---
 
 ## CHANGELOG
 | Version | Date | Author | Summary |
 |---------|------|--------|---------|
+| v1.1 | 2026-03-31 | JM | Added commit message as mandatory output at session close (item 4 in "Al finalizar cada sesión") |
 | v1.0 | 2026-02-21 | JM | Initial version |
 
 ## DEPENDENCIES
 inputs:  [SCHEMA_SYSTEM_ARCHITECTURE, SCHEMA_DECISION_LOG]
-outputs: [CONTEXT_[SUBSYSTEM_NAME]_v1.0.md — uno por chat de desarrollo]
+outputs: [CONTEXT_[SUBSYSTEM_NAME] — uno por chat de desarrollo]
 calls:   []
 
 ## DESCRIPTION
@@ -80,13 +81,13 @@ D-X-OPUS es un sistema modular de escritura no-ficción asistida por IA. Cubre e
 | 7 | DOCS | Documentación del sistema |
 
 **Dos espacios de trabajo:**
-- **GitHub `dx-opus`:** artefactos del sistema (prompts, workflows, recursos) — reutilizables
+- **GitHub `dx-opus` (github.com/TINTA-ARTIFICIAL/dx-opus):** artefactos del sistema — reutilizables
 - **Google Drive `[COD]_[Proyecto]`:** artefactos de producción — específicos por libro
 
 **Estándares activos:**
-- Naming convention: `RESOURCE_ARTIFACT_HEADER_STANDARD_v1.0`
-- Cabecera YAML: obligatoria en todos los artefactos desde su creación
-- Decision log: cada decisión relevante produce una entrada `DL-YYYYMMDD-NNN`
+- Cabecera YAML obligatoria en todos los artefactos (ver `RESOURCE_ARTIFACT_HEADER_STANDARD`)
+- Naming convention: ver `NAMING_CONVENTION_ANALYSIS`
+- Decision log: cada decisión relevante produce una entrada `DL_YYYYMMDD_[SUBSYSTEM]_[NNN].md`
 - Versiones: siempre `vX.Y` (dos niveles), nunca más ni menos
 
 ---
@@ -94,45 +95,37 @@ D-X-OPUS es un sistema modular de escritura no-ficción asistida por IA. Cubre e
 ## SECCIÓN 2: ESTE SUBSISTEMA
 
 ### Rol
-[Descripción en 2-3 frases de qué hace este subsistema y cuál es su valor en el sistema.]
+[Descripción del rol del subsistema en el sistema D-X-OPUS.]
 
 ### Límites — qué NO gestiona este subsistema
-[Lista de responsabilidades que podrían confundirse como propias pero no lo son.]
-- [Límite 1]
-- [Límite 2]
+[Lista explícita de responsabilidades que pertenecen a otros subsistemas.]
 
 ### Interfaces de entrada
-[Qué recibe este subsistema de otros, y de quién.]
 
 | Artefacto | Origen | Descripción |
 |---|---|---|
-| [ARTEFACTO] | [Subsistema origen] | [Para qué se usa] |
+| [ARTEFACTO] | [Subsistema origen] | [Descripción] |
 
 ### Interfaces de salida
-[Qué entrega este subsistema a otros, y a quién.]
 
 | Artefacto | Destino | Descripción |
 |---|---|---|
-| [ARTEFACTO] | [Subsistema destino] | [Qué aporta] |
+| [ARTEFACTO] | [Subsistema destino] | [Descripción] |
 
 ### Prompts compartidos que usa
-[Prompts de /shared/ que este subsistema invoca pero no es owner.]
-
-| Prompt | Owner | Acción si necesita cambio |
-|---|---|---|
-| [PROMPT_X] | [writing-dev] | Notificar a [owner-chat] |
+[Lista de prompts de /writing/shared/ que invoca, o "Ninguno".]
 
 ---
 
 ## SECCIÓN 3: INVENTARIO DE ARTEFACTOS
 
-Lista completa de artefactos que este subsistema posee y desarrolla.
+### Artefactos activos
 
 | Artefacto | Versión | Status | Descripción |
 |---|---|---|---|
 | [NOMBRE] | v[X.Y] | ACTIVE / DRAFT / DEPRECATED | [Una línea] |
 
-**Artefactos pendientes de crear:**
+### Artefactos pendientes de crear
 
 | Artefacto | Prioridad | Bloqueado por |
 |---|---|---|
@@ -161,7 +154,7 @@ Lista completa de artefactos que este subsistema posee y desarrolla.
 
 | DL-ID | Decisión | Acción requerida |
 |---|---|---|
-| [DL-20260221-001] | [descripción] | [qué debe hacer este chat] |
+| [DL_20260221_SYSTEM_001] | [descripción] | [qué debe hacer este chat] |
 
 ---
 
@@ -174,17 +167,20 @@ Lista completa de artefactos que este subsistema posee y desarrolla.
 
 ### Al finalizar cada sesión
 1. Producir DL entries por cada decisión arquitectónica o funcional tomada
-2. Actualizar el status de las tareas completadas en el MASTER_PLAN
-3. Listar los artefactos modificados con su nueva versión
+2. Listar los artefactos modificados con su nueva versión
+3. Producir el mensaje de commit para cada artefacto subido a GitHub
 
 ### Formato de commits a GitHub
 ```
 [SUBSISTEMA] tipo: descripción corta
 
+Tipos: feat | fix | refactor | docs | chore
+
 Ejemplos:
 [RESEARCH] fix: corrected section references in UPDATE_VALIDATION_CHECKLIST v3.1
 [WRITING] feat: added POST branch to WORKFLOW_WRITING v2.0
 [SYSTEM] docs: updated SCHEMA_SYSTEM_ARCHITECTURE with Activation loop
+[EVAL] feat: adopt evaluation contract in PROMPT_EVALUATE_BOOK_STYLE v1.1
 ```
 
 ### Cuándo crear una DL entry
@@ -192,6 +188,17 @@ Ejemplos:
 - Cuando se añade, elimina o cambia el nombre de un artefacto
 - Cuando cambia el formato de un output que otros subsistemas consumen
 - Cuando se identifica un gap o problema que requiere acción fuera de este chat
+
+### Formato de DL entries
+
+```
+DL_YYYYMMDD_[SUBSYSTEM]_[NNN].md
+```
+
+- `NNN` es numeración **global y secuencial** en todo el sistema — no se reinicia por subsistema ni por fecha
+- Antes de crear una entrada, consultar el último número usado en `/_system/decisions/README.md`
+
+El formato completo del contenido está en `SCHEMA_DECISION_LOG.md`.
 
 ---
 
