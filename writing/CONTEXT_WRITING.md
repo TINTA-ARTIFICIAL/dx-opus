@@ -2,7 +2,7 @@
 id:          CONTEXT_WRITING
 type:        TEMPLATE
 subsystem:   WRITING
-version:     1.3
+version:     1.4
 status:      ACTIVE
 created:     2026-02-21
 updated:     2026-04-11
@@ -13,6 +13,7 @@ owner_chat:  writing-dev
 
 | Version | Date | Author | Summary |
 |---------|------|--------|---------|
+| v1.4 | 2026-04-11 | writing-dev | Sprint 3 complete: all RAMA POST artifacts now ACTIVE. WORKFLOW_WRITING v2.0 ACTIVE. Work active updated to Sprint 4. |
 | v1.3 | 2026-04-11 | JM | Sprint 3: full RAMA POST inventory added (10 prompts + 5 support artifacts). WRITING_CONTEXT and POST_SEED added as canonical artifacts. DL entries 015–020 and 023 added. Work active section updated with Sprint 3 tasks and implementation notes. |
 | v1.2 | 2026-02-22 | JM | Added DL entry format with filename convention and subsystem code |
 | v1.1 | 2026-02-21 | JM | Added explicit filename naming rule — no version in filename, Git manages history |
@@ -135,7 +136,7 @@ Estos prompts viven en `/writing/shared/`. Writing los desarrolla y versiona. Cu
 | PROMPT_CONSOLIDATE_REFERENCES | v1.1 | ACTIVE | Consolida y formatea la bibliografía |
 | PROMPT_CREATE_BOOK_SHEET | v1.1 | ACTIVE | Genera la ficha técnica del libro |
 
-### RAMA POST — artefactos Sprint 3 (todos en desarrollo)
+### RAMA POST — artefactos activos (Sprint 3)
 
 **Secuencia del workflow:**
 
@@ -148,9 +149,9 @@ PROMPT_SUMMARIZE_REF
       ↓
 PROMPT_VERIFY_RESEARCH
       ↓
-PROMPT_QA_IDEAS         ← siempre, salvo skip explícito del editor
+PROMPT_QA_IDEAS         ← siempre activo salvo skip explícito del editor
       ↓
-PROMPT_POST_ANGLES      ← siempre, trabaja sobre material completo post-Q&A
+PROMPT_POST_ANGLES
       ↓
 PROMPT_PLAN_POST
       ↓
@@ -163,39 +164,39 @@ PROMPT_SPLIT_POST       ← invocable en cualquier fase
 
 | Artefacto | Versión | Status | Descripción |
 |---|---|---|---|
-| PROMPT_POST_BRIEF | v1.0 | PENDING | Punto de entrada. Carga/crea WRITING_CONTEXT. Detecta texto previo. Gestiona skip de Q&A con aviso. |
-| PROMPT_POST_EXPLORE | v1.0 | PENDING | Exploración cuando el input es escaso. Propone ángulos, hace research inicial. |
-| PROMPT_SUMMARIZE_REF | v1.0 | PENDING | Procesa fuentes. Distingue fuente-de-ejemplo vs fuente-de-argumento. Marca material personal del editor como intocable. |
-| PROMPT_VERIFY_RESEARCH | v1.0 | PENDING | Verifica puntualmente afirmaciones del editor. Produce mapa de estado visible. |
-| PROMPT_QA_IDEAS | v1.0 | PENDING | Q&A secuencial. Siempre activo salvo skip. Marca 🔴 MATERIAL PARA EL POST y 📘 SEÑAL DE APRENDIZAJE. Produce INVENTARIO_IDEAS. |
-| PROMPT_POST_ANGLES | v1.0 | PENDING | Propone enfoques, ángulos y narrative seeds sobre material completo post-Q&A. |
-| PROMPT_PLAN_POST | v1.0 | PENDING | Fija arquitectura del post: pregunta central, movimiento narrativo, secciones, presupuesto de palabras. |
-| PROMPT_WRITE_POST | v2.0 | NEEDS UPDATE | Input canónico cambia a POST_SEED. Modo híbrido por declaración explícita. Usa formulaciones literales sin modificación. |
-| PROMPT_SPLIT_POST | v1.0 | PENDING | Divide post en dos. Identifica corte natural según WRITING_CONTEXT y EDITOR_PROFILE. |
+| PROMPT_POST_BRIEF | v1.0 | ACTIVE | Punto de entrada. Carga/crea WRITING_CONTEXT. Detecta texto previo. Gestiona skip de Q&A con aviso. |
+| PROMPT_POST_EXPLORE | v1.0 | ACTIVE | Exploración cuando el input es escaso. Propone ángulos, genera material de partida. |
+| PROMPT_SUMMARIZE_REF | v1.0 | ACTIVE | Procesa fuentes. Distingue fuente-de-ejemplo vs fuente-de-argumento. Marca material personal del editor como intocable. |
+| PROMPT_VERIFY_RESEARCH | v1.0 | ACTIVE | Verifica puntualmente afirmaciones del editor. Produce mapa de estado visible. |
+| PROMPT_QA_IDEAS | v1.0 | ACTIVE | Q&A secuencial. Siempre activo salvo skip. Marca 🔴 MATERIAL PARA EL POST y 📘 SEÑAL DE APRENDIZAJE. Produce INVENTARIO_IDEAS. |
+| PROMPT_POST_ANGLES | v1.0 | ACTIVE | Propone enfoques, ángulos y narrative seeds sobre material completo post-Q&A. |
+| PROMPT_PLAN_POST | v1.0 | ACTIVE | Fija arquitectura del post: pregunta central, movimiento narrativo, secciones, presupuesto de palabras. Produce POST_SEED. |
+| PROMPT_WRITE_POST | v2.0 | ACTIVE | Input canónico: POST_SEED. Modo híbrido por declaración explícita. Usa formulaciones literales sin modificación. |
+| PROMPT_SPLIT_POST | v1.0 | ACTIVE | Divide post en dos. Identifica corte natural según WRITING_CONTEXT y EDITOR_PROFILE. |
 
-### Recursos y templates — Sprint 3
+### Recursos y templates — RAMA POST
 
 | Artefacto | Versión | Status | Descripción |
 |---|---|---|---|
-| RESOURCE_WRITING_CONTEXT | v1.0 | PENDING | Esquema canónico: EDITOR_PROFILE + PUBLICATION_PROFILE + tipo de texto. Campo default. |
-| RESOURCE_PUBLICATION_PROFILE | v1.0 | PENDING | Entidad independiente del EDITOR_PROFILE. Identificador único por publicación. |
-| TEMPLATE_POST_SEED | v1.0 | PENDING | Estructura canónica del POST_SEED — input unificado de PROMPT_WRITE_POST. |
-| TEMPLATE_POST_BRIEFING | v1.0 | PENDING | Briefing de continuación: fijado / abierto / en riesgo. |
-| SPEC_LEARNING_SIGNALS | v1.0 | PENDING | Especificación de las tres señales de aprendizaje del EDITOR_PROFILE. Prerequisito Sprint 4. |
+| RESOURCE_WRITING_CONTEXT | v1.0 | ACTIVE | Esquema canónico: EDITOR_PROFILE + PUBLICATION_PROFILE + tipo de texto. Campo default. |
+| RESOURCE_PUBLICATION_PROFILE | v1.0 | ACTIVE | Entidad independiente del EDITOR_PROFILE. Identificador único por publicación. |
+| TEMPLATE_POST_SEED | v1.0 | ACTIVE | Estructura canónica del POST_SEED — input unificado de PROMPT_WRITE_POST. |
+| TEMPLATE_POST_BRIEFING | v1.0 | ACTIVE | Briefing de continuación: fijado / abierto / en riesgo. |
+| SPEC_LEARNING_SIGNALS | v1.0 | ACTIVE | Especificación de las tres señales de aprendizaje del EDITOR_PROFILE. Prerequisito Sprint 4. |
 
 ### Shared — owned by Writing
 
 | Artefacto | Versión | Status | Invocado por |
 |---|---|---|---|
-| PROMPT_WRITE_POST | v1.0 → v2.0 | NEEDS UPDATE | Writing (Post), Activation |
+| PROMPT_WRITE_POST | v2.0 | ACTIVE | Writing (Post), Activation |
 | PROMPT_CREATE_TIMELINE | v1.0 | ACTIVE | Writing (Book), Activation |
 | PROMPT_CREATE_CAST | v1.0 | ACTIVE | Writing (Book), Activation |
 
 ### Workflow
 
-| Artefacto | Versión actual | Versión objetivo | Status |
-|---|---|---|---|
-| WORKFLOW_WRITING | v1.7 | v2.0 | NEEDS REFACTOR — Sprint 3 |
+| Artefacto | Versión | Status |
+|---|---|---|
+| WORKFLOW_WRITING | v2.0 | ACTIVE |
 
 ---
 
@@ -256,62 +257,26 @@ Output: post publicable + LEARNING_SIGNALS + POST_BRIEFING
 
 ---
 
-## SECCIÓN 5: TRABAJO ACTIVO — SPRINT 3
+## SECCIÓN 5: TRABAJO ACTIVO — SPRINT 4
 
-### Orden de ejecución recomendado
+Sprint 3 completado el 2026-04-11. Todos los artefactos de RAMA POST están en status ACTIVE.
 
-El orden importa — hay dependencias entre artefactos.
+### Tareas pendientes para Sprint 4
 
-**Paso 1 — Recursos y templates (prerequisitos):**
-- `RESOURCE_WRITING_CONTEXT` v1.0
-- `RESOURCE_PUBLICATION_PROFILE` v1.0
-- `TEMPLATE_POST_SEED` v1.0
-- `TEMPLATE_POST_BRIEFING` v1.0
+| ID | Artefacto | Descripción | Bloqueado por |
+|---|---|---|---|
+| S4-01 | TEMPLATE_POST_SEED v1.1 | Añadir campo `corrections_log` para captura de Señal 2 | SPEC_LEARNING_SIGNALS v1.0 |
+| S4-02 | Mecanismo de actualización EDITOR_PROFILE | Diseño del flujo de procesamiento de learning signals | Coordinación con editorial-profile-dev y evaluation-dev |
+| S4-03 | Captura delta borrador/publicado | Mecanismo para Señal 3 de SPEC_LEARNING_SIGNALS | Coordinación con evaluation-dev |
+| F3-02 | Adoptar contrato de evaluación en evaluadores | Cuando RESOURCE_EVALUATION_FRAMEWORK esté disponible | RESOURCE_EVALUATION_FRAMEWORK (evaluation-dev) |
 
-**Paso 2 — Workflow (desbloquea toda la cadena):**
-- `WORKFLOW_WRITING` v2.0
+### Notificaciones pendientes a otros chats
 
-**Paso 3 — Prompts en orden de workflow:**
-- `PROMPT_POST_BRIEF` v1.0
-- `PROMPT_POST_EXPLORE` v1.0
-- `PROMPT_SUMMARIZE_REF` v1.0
-- `PROMPT_VERIFY_RESEARCH` v1.0
-- `PROMPT_QA_IDEAS` v1.0
-- `PROMPT_POST_ANGLES` v1.0
-- `PROMPT_PLAN_POST` v1.0
-- `PROMPT_WRITE_POST` v2.0 (actualización)
-- `PROMPT_SPLIT_POST` v1.0
-
-**Paso 4 — Cierre:**
-- `SPEC_LEARNING_SIGNALS` v1.0
-- `CONTEXT_WRITING` v1.3 (este documento — ya actualizado)
-
-### Tareas del MASTER_PLAN
-
-| ID | Artefacto | Prioridad |
+| Chat | Artefacto | Acción requerida |
 |---|---|---|
-| S3-01 | RESOURCE_WRITING_CONTEXT v1.0 | 🔴 Alta — prerequisito |
-| S3-02 | RESOURCE_PUBLICATION_PROFILE v1.0 | 🔴 Alta — prerequisito |
-| S3-03 | TEMPLATE_POST_SEED v1.0 | 🔴 Alta — prerequisito |
-| S3-04 | TEMPLATE_POST_BRIEFING v1.0 | 🔴 Alta |
-| S3-05 | WORKFLOW_WRITING v2.0 | 🔴 Alta — bloquea prompts |
-| S3-06 a S3-14 | Prompts RAMA POST (9 prompts) | 🔴 Alta |
-| S3-13 | PROMPT_WRITE_POST v2.0 | 🔴 Alta |
-| S3-16 | SPEC_LEARNING_SIGNALS v1.0 | 🟠 Media |
-| S3-20 | CONTEXT_WRITING v1.3 | 🟠 Media — cierre |
-
-### DECISION_LOG entries pendientes de integrar
-
-| DL-ID | Decisión | Acción requerida en este chat |
-|---|---|---|
-| DL_20260411_WRITING_015 | Q&A siempre activo salvo skip explícito | Implementar en PROMPT_POST_BRIEF (gestión skip) y PROMPT_QA_IDEAS (sin lógica condicional) |
-| DL_20260411_WRITING_016 | POST_SEED como artefacto canónico | Crear TEMPLATE_POST_SEED; actualizar PROMPT_WRITE_POST v2.0 para recibir POST_SEED |
-| DL_20260411_WRITING_017 | WRITING_CONTEXT como artefacto canónico | Crear RESOURCE_WRITING_CONTEXT; implementar en PROMPT_POST_BRIEF |
-| DL_20260411_WRITING_018 | PUBLICATION_PROFILE como entidad independiente | Crear RESOURCE_PUBLICATION_PROFILE sin herencia del EDITOR_PROFILE |
-| DL_20260411_WRITING_019 | PROMPT_SPLIT_POST como prompt independiente | Crear PROMPT_SPLIT_POST en /writing/post/ |
-| DL_20260411_WRITING_020 | Modo híbrido por declaración explícita | Implementar en PROMPT_POST_BRIEF (detección + pregunta) y PROMPT_WRITE_POST v2.0 |
-| DL_20260411_SYSTEM_021 | Enriquecimiento EDITOR_PROFILE por aprendizaje | Crear SPEC_LEARNING_SIGNALS; implementar marcado en PROMPT_QA_IDEAS y captura en PROMPT_EVALUATE_POST (coordination con evaluation-dev) |
-| DL_20260411_WRITING_023 | PROMPT_POST_ANGLES después del Q&A | Crear PROMPT_POST_ANGLES; posicionar correctamente en WORKFLOW_WRITING v2.0 |
+| activation-dev | DL_20260411_WRITING_024 | Adaptar WORKFLOW_ACTIVATION para producir POST_SEED antes de invocar PROMPT_WRITE_POST v2.0 |
+| evaluation-dev | SPEC_LEARNING_SIGNALS v1.0 | Coordinar captura de Señal 3 (delta borrador/publicado) en Sprint 4 |
+| editorial-profile-dev | SPEC_LEARNING_SIGNALS v1.0 | Coordinar mecanismo de actualización EDITOR_PROFILE en Sprint 4 |
 
 ---
 
@@ -333,7 +298,7 @@ Extraídas del DEVELOPER_NOTES_RAMA_POST. Críticas para la especificación de l
 ### PROMPT_QA_IDEAS
 - Presentar inventario completo de ideas antes de empezar. El editor puede descartar antes de que empiecen las preguntas.
 - Secuencial: una idea a la vez, 1-3 preguntas relacionadas. No avanzar hasta respuesta o descarte explícito.
-- Ideas no contestadas: permanecen en INVENTARIO_IDEAS como "pendiente". Solo se eliminan si el editor lo declara explícitamente o edita el documento.
+- Ideas no contestadas: permanecen en INVENTARIO_IDEAS como "pendiente". Solo se eliminan si el editor lo declara explícitamente.
 - Formulaciones con precisión y ritmo publicable: marcar `🔴 MATERIAL PARA EL POST` en el momento y registrar en INVENTARIO_IDEAS con estatus "citable literal".
 - Patrones estructurales generalizables: marcar `📘 SEÑAL DE APRENDIZAJE`.
 
@@ -348,7 +313,7 @@ Extraídas del DEVELOPER_NOTES_RAMA_POST. Críticas para la especificación de l
 - Estado del post (secciones escritas / en progreso / pendientes) es parámetro explícito, no inferencia de contexto.
 - Material marcado como "citable literal" en INVENTARIO_IDEAS: usar sin modificación. Solo puede añadirse frase de transición.
 - Si el post es de serie: leer post anterior publicado para detectar promesas hechas al lector que este post debe cumplir.
-- Rol de escritor, no asistente. Audiencia primaria es el lector del post. Coherente con PROMPT_WRITE_CHAPTER.
+- Rol de escritor, no asistente. Audiencia primaria es el lector del post.
 
 ### PROMPT_SPLIT_POST
 - Determinar punto de corte natural según WRITING_CONTEXT (longitud del medio) y EDITOR_PROFILE (longitud habitual del editor).
@@ -388,7 +353,6 @@ Extraídas del DEVELOPER_NOTES_RAMA_POST. Críticas para la especificación de l
 Tipos: feat | fix | refactor | docs | chore
 
 Ejemplos:
-[WRITING] feat: add POST branch to WORKFLOW_WRITING v2.0
 [WRITING] feat: create PROMPT_POST_BRIEF v1.0
 [WRITING] feat: create RESOURCE_WRITING_CONTEXT v1.0
 [WRITING] feat: update PROMPT_WRITE_POST v1.0 → v2.0
@@ -400,7 +364,7 @@ Ejemplos:
 DL_YYYYMMDD_WRITING_[NNN].md
 ```
 
-Último número usado en el sistema: **023**. Próxima entrada de writing-dev: **024**.
+Último número usado en el sistema: **024**. Próxima entrada de writing-dev: **025**.
 
 ### Cuándo crear una DL entry
 
