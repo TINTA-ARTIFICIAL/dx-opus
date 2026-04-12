@@ -1,15 +1,53 @@
+---
+id:          WORKFLOW_ACTIVATION
+type:        WORKFLOW
+subsystem:   ACTIVATION
+version:     1.5
+status:      ACTIVE
+created:     2026-02-10
+updated:     2026-04-12
+owner_chat:  activation-dev
+---
+
+## CHANGELOG
+
+| Version | Date | Author | Summary |
+|---------|------|--------|---------|
+| v1.5 | 2026-04-12 | JM | Q&A de posicionamiento (PROMPT_QA_IDEAS) añadido en Fase 4 antes de escritura. POST_SEED como input canónico de PROMPT_WRITE_POST. Skip declarable por el editor. Referencias a CONTEXT_WRITING y TEMPLATE_POST_SEED. Cabecera YAML estándar añadida. Implementa DL_20260411_ACTIVATION_022. |
+| v1.4 | 2026-02-12 | JM | NICHOS LITERARIOS integrados en FASE 0. Objetivos de activación integrados en ANALYZE_COLLECTION v1.4. |
+| v1.3 | 2026-02-10 | JM | Instrucciones de parada añadidas en cada SUBFASE de FASE 0. |
+| v1.2 | 2026-02-10 | JM | FASE 0 dividida en 5 SUBFASES con checkpoints secuenciales. |
+| v1.1 | 2026-02-10 | JM | ACTIVATION_CONTEXT se genera siempre, con o sin RESEARCH_REPORTs. |
+| v1.0 | 2026-02-10 | JM | Workflow inicial completo con 5 fases definidas. |
+
+## DEPENDENCIES
+
+inputs:  [CONTEXT_WRITING, TEMPLATE_POST_SEED, EDITOR_PROFILE, libro(s) completo(s)]
+outputs: [posts/artículos/threads publicables, BOOK_BRIEF]
+calls:   [PROMPT_QA_IDEAS, PROMPT_WRITE_POST, PROMPT_CREATE_TIMELINE, PROMPT_CREATE_CAST]
+
+---
+
 # WORKFLOW: CONTENT ACTIVATION - SISTEMA TINTA ARTIFICIAL
 
 **Proyecto:** Tinta Artificial
-**Versión:** 1.4
+**Versión:** 1.5
 **Fecha:** 12 febrero 2026
-**Última actualización:** 12 febrero 2026
+**Última actualización:** 12 abril 2026
 **Alcance:** Desde libro(s) completo(s) hasta campaña de activación de contenido
 **Tipo:** Workflow específico para ACTIVACIÓN DE CONTENIDO (posts, artículos, threads)
 
 ---
 
-## CHANGELOG
+## CHANGELOG LEGADO (formato narrativo)
+
+**v1.5 (12 abril 2026):**
+- ✅ **Q&A DE POSICIONAMIENTO:** `PROMPT_QA_IDEAS` (Writing/shared) añadido en FASE 4 antes de escritura
+- ✅ **POST_SEED como input canónico:** combina contenido del libro + voz posicionada del editor
+- ✅ Skip declarable por el editor con mismo mecanismo que en RAMA POST autónoma
+- ✅ Añadidas referencias a `CONTEXT_WRITING` y `TEMPLATE_POST_SEED` (Writing/shared)
+- ✅ Cabecera YAML estándar añadida
+- ✅ Implementa `DL_20260411_ACTIVATION_022`
 
 **v1.4 (12 febrero 2026):**
 - ✅ **NICHOS LITERARIOS:** Identificación de recursos literarios integrada en FASE 0
@@ -181,6 +219,8 @@ WORKFLOW RESEARCH
    - Libro completo es input principal
    - EDITOR_PROFILE puede reutilizarse si existe
    - TIMELINE y CAST pueden reutilizarse si existen
+   - **FASE 4:** Activation invoca `PROMPT_QA_IDEAS` y `PROMPT_WRITE_POST` de Writing/shared
+   - Ver `CONTEXT_WRITING` para documentación completa de estos prompts
 
 3. **Independiente:**
    - Puede activar libros externos sin pasar por RESEARCH/WRITING
@@ -217,7 +257,7 @@ WORKFLOW RESEARCH
                          │
                          ▼
          EJECUTAR SIEMPRE:
-         ANALYZE_COLLECTION_FOR_ACTIVATION v1.2
+         ANALYZE_COLLECTION_FOR_ACTIVATION v1.4
          (1-4 horas)
                          │
                          ▼
@@ -402,21 +442,37 @@ WORKFLOW RESEARCH
                            ↓
 ┌────────────────────────────────────────────────────────────────┐
 │ FASE 4: PRODUCCIÓN DE CONTENIDO (SECUENCIAL)                  │
-│ Herramientas: WRITE_POST, WRITE_ARTICLE, WRITE_THREAD         │
-│                [DISEÑAR 3 PROMPTS]                             │
-│ Actor: IA escribe, Editor valida                               │
-│ Tiempo: 1-3 horas por pieza (IA) + 30-60 min (Editor)         │
+│ Herramientas: PROMPT_QA_IDEAS [Writing/shared] +              │
+│               WRITE_POST, WRITE_ARTICLE, WRITE_THREAD         │
+│               [DISEÑAR 3 PROMPTS]                             │
+│ Actor: Editor + IA (Q&A) → IA escribe, Editor valida          │
+│ Tiempo: 30-60 min Q&A + 1-3h escritura + 30-60 min rev.       │
 └────────────────────────────────────────────────────────────────┘
                            ↓
          [ITERACIÓN SECUENCIAL: Pieza N = 1 hasta 15-30]
                            ↓
-                    INPUT (Pieza N):
+                    INPUT PIEZA N (al Q&A):
                     - POST_PLAN_[N] (aprobado)
                     - LIBRO_COMPLETO
                     - ACTIVATION_CONTEXT
                     - PERFIL_ACTIVO
                     - PIEZAS 1 a N-1 (ya escritas)
                            ↓
+         ⭐ PASO 4.1: PROMPT_QA_IDEAS — Q&A de posicionamiento
+         ¿Editor declara skip?
+                    /           \
+                  NO             SÍ (declarar razón)
+                  │              │
+         [Q&A ejecutado]  [Skip documentado]
+                  │              │
+                  └──────┬───────┘
+                         │
+                         ▼
+         POST_SEED generado
+         (combina contenido del libro + voz posicionada del editor)
+         Template: TEMPLATE_POST_SEED — ver CONTEXT_WRITING
+                         │
+                         ▼
          [IA escribe pieza N según formato:]
                     /           |           \
               POST             ARTÍCULO        THREAD
@@ -584,7 +640,7 @@ IA genera, Editor valida paso a paso
                             ↓
 ┌────────────────────────────────────────────────────────────────┐
 │ SUBFASE 0.1: ACTIVATION_CONTEXT                               │
-│ Herramienta: ANALYZE_COLLECTION v1.2                          │
+│ Herramienta: ANALYZE_COLLECTION v1.4                          │
 │ Tiempo: 1-4h                                                    │
 └────────────────────────────────────────────────────────────────┘
                             ↓
@@ -747,8 +803,6 @@ conceptos, Y recursos literarios).
 
 **Tiempo:** 1-4 horas (según número de libros y si hay RR)
 
-**Referencia completa:** Ver `PROMPT_ANALYZE_COLLECTION_FOR_ACTIVATION_v1_4.md`
-
 ---
 
 ### ⛔ PUNTO DE PARADA OBLIGATORIO - SUBFASE 0.1
@@ -805,7 +859,7 @@ conceptos, Y recursos literarios).
 **Actividades:**
 
 **1. Verificar existencia de archivo**
-```bash
+```
 [ ] Archivo ACTIVATION_CONTEXT_[PROYECTO].md existe físicamente
 [ ] Archivo se puede abrir correctamente
 [ ] Tamaño apropiado (≥3,000 palabras)
@@ -913,8 +967,6 @@ Generar cronología EXHAUSTIVA de eventos relevantes para activación.
 
 **Tiempo:** 1-2 horas
 
-**Referencia completa:** Ver `/mnt/project/PROMPT_CREATE_TIMELINE_v1_0.md`
-
 ---
 
 ### ⛔ PUNTO DE PARADA OBLIGATORIO - SUBFASE 0.2
@@ -969,7 +1021,7 @@ Generar cronología EXHAUSTIVA de eventos relevantes para activación.
 **Actividades:**
 
 **1. Verificar existencia de archivo**
-```bash
+```
 [ ] Archivo TIMELINE_[PROYECTO].md existe físicamente
 [ ] Archivo se puede abrir correctamente
 ```
@@ -1069,8 +1121,6 @@ Generar catálogo EXHAUSTIVO de actores relevantes para activación.
 
 **Tiempo:** 1-2 horas
 
-**Referencia completa:** Ver `/mnt/project/PROMPT_CREATE_CAST_v1_0_.md`
-
 ---
 
 ### ⛔ PUNTO DE PARADA OBLIGATORIO - SUBFASE 0.3
@@ -1125,7 +1175,7 @@ Generar catálogo EXHAUSTIVO de actores relevantes para activación.
 **Actividades:**
 
 **1. Verificar existencia de archivo**
-```bash
+```
 [ ] Archivo CAST_OF_CHARACTERS_[PROYECTO].md existe físicamente
 [ ] Archivo se puede abrir correctamente
 ```
@@ -1222,8 +1272,6 @@ Crear perfil editorial que captura voz y estilo del autor o colección.
 
 **Tiempo:** 2-4 horas
 
-**Referencia completa:** Ver `/mnt/project/PROMPT_CREATE_EDITOR_PROFILE_v1_0.md`
-
 ---
 
 ### ⛔ PUNTO DE PARADA OBLIGATORIO - SUBFASE 0.4
@@ -1279,7 +1327,7 @@ Crear perfil editorial que captura voz y estilo del autor o colección.
 **Actividades:**
 
 **1. Verificar existencia de archivo**
-```bash
+```
 [ ] Archivo EDITOR_PROFILE_[...].md existe físicamente
 [ ] Archivo se puede abrir correctamente
 [ ] Tamaño apropiado (≥5,000 palabras)
@@ -1469,7 +1517,7 @@ Validado por: [Editor]
 **Actividades:**
 
 **1. Verificar selección**
-```bash
+```
 [ ] Decisión de perfil está clara
 [ ] PERFIL_ACTIVO identificado
 [ ] Documento PERFIL_ACTIVO_SELECCION_[PROYECTO].md creado
@@ -1580,7 +1628,7 @@ ESTADO: [✅ READY / ⚠️ READY CON LIMITACIONES / ❌ NOT READY]
 
 ---
 
-## Escenarios de Tiempo FASE 0 (Actualizado v1.2)
+## Escenarios de Tiempo FASE 0
 
 ### ESCENARIO A: Libro Tinta Artificial (óptimo)
 
@@ -1593,7 +1641,7 @@ Fuentes existentes:
 ✅ EDITOR_PROFILE
 
 Acciones FASE 0:
-├─ SUBFASE 0.1: ANALYZE_COLLECTION v1.2 con RR enriquecido (1-2h)
+├─ SUBFASE 0.1: ANALYZE_COLLECTION v1.4 con RR enriquecido (1-2h)
 │   └─ CHECKPOINT 0.1: Validar (30-45 min)
 ├─ SUBFASE 0.2: Validar TIMELINE existente (15 min)
 │   └─ CHECKPOINT 0.2: Aprobar (15 min)
@@ -1617,7 +1665,7 @@ Fuentes existentes:
 Acciones FASE 0:
 ├─ Convertir PDF a markdown (30 min)
 ├─ Crear OBJETIVOS_ACTIVACION.md (30 min)
-├─ SUBFASE 0.1: ANALYZE_COLLECTION v1.2 desde libro (1-2h)
+├─ SUBFASE 0.1: ANALYZE_COLLECTION v1.4 desde libro (1-2h)
 │   └─ CHECKPOINT 0.1: Validar (30-45 min)
 ├─ SUBFASE 0.2: CREATE_TIMELINE v1.0 exhaustivo (1-2h)
 │   └─ CHECKPOINT 0.2: Validar (15-30 min)
@@ -1642,7 +1690,7 @@ Fuentes existentes:
 
 Acciones FASE 0:
 ├─ Crear OBJETIVOS_ACTIVACION.md (30 min)
-├─ SUBFASE 0.1: ANALYZE_COLLECTION v1.2 desde libro + papers (1-2h)
+├─ SUBFASE 0.1: ANALYZE_COLLECTION v1.4 desde libro + papers (1-2h)
 │   └─ CHECKPOINT 0.1: Validar (30-45 min)
 ├─ SUBFASE 0.2: Validar y completar TIMELINE parcial (30 min-1h)
 │   └─ CHECKPOINT 0.2: Validar (15-30 min)
@@ -1665,7 +1713,7 @@ Fuentes existentes:
 
 Acciones FASE 0:
 ├─ Crear OBJETIVOS_ACTIVACION.md (30 min)
-├─ SUBFASE 0.1: ANALYZE_COLLECTION v1.2 múltiples libros (3-4h)
+├─ SUBFASE 0.1: ANALYZE_COLLECTION v1.4 múltiples libros (3-4h)
 │   └─ CHECKPOINT 0.1: Validar (45-60 min)
 ├─ SUBFASE 0.2: CREATE_TIMELINE v1.0 exhaustivo síntesis (2-3h)
 │   └─ CHECKPOINT 0.2: Validar (20-40 min)
@@ -1680,7 +1728,7 @@ Acciones FASE 0:
 Tiempo total: 10-17 horas
 ```
 
-### ESCENARIO E: Revista/Publicación Periódica ⭐ NUEVO
+### ESCENARIO E: Revista/Publicación Periódica
 
 ```
 Fuentes existentes:
@@ -1688,7 +1736,7 @@ Fuentes existentes:
 
 Acciones FASE 0:
 ├─ Crear OBJETIVOS_ACTIVACION.md (30 min)
-├─ SUBFASE 0.1: ANALYZE_COLLECTION v1.2 (revista, doble perspectiva) (4-6h)
+├─ SUBFASE 0.1: ANALYZE_COLLECTION v1.4 (revista, doble perspectiva) (4-6h)
 │   └─ CHECKPOINT 0.1: Validar (60-90 min)
 ├─ SUBFASE 0.2: CREATE_TIMELINE v1.0 exhaustivo (200-1000 eventos) (3-5h)
 │   └─ CHECKPOINT 0.2: Validar (30-60 min)
@@ -1705,7 +1753,9 @@ Tiempo total: 13-21 horas
 
 ---
 
-**FIN DE FASE 0 - WORKFLOW ACTIVATION v1.2**
+**FIN DE FASE 0 - WORKFLOW ACTIVATION v1.5**
+
+---
 
 ## FASE 1: ANÁLISIS PARA ACTIVACIÓN
 
@@ -1911,8 +1961,6 @@ CLUSTER 3: "Debates y Controversias"
 
 ---
 
-### TEMA 2-N: [...]
-
 [Repetir estructura para cada tema de alta prioridad]
 
 ---
@@ -1940,10 +1988,6 @@ CLUSTER 3: "Debates y Controversias"
 - Cerrar con: Tema Z (aplicación)
 
 **Timeline sugerido:** [Semana 1, 2, 3]
-
----
-
-### CLUSTER 2-N: [...]
 
 ---
 
@@ -2181,9 +2225,7 @@ Si LinkedIn + Twitter son prioritarias:
 ## RESUMEN EJECUTIVO
 
 **Objetivo principal:** [Del OBJETIVOS_ACTIVACION]
-
 **Audiencia:** [Del OBJETIVOS_ACTIVACION]
-
 **Plataformas:** [Lista en orden de prioridad]
 
 **Mix de formatos:**
@@ -2193,7 +2235,6 @@ Si LinkedIn + Twitter son prioritarias:
 - Threads (8-15 tweets): [N] ([%])
 
 **Clusters temáticos activados:** [N]
-
 **Series planificadas:** [N]
 
 ---
@@ -2215,13 +2256,6 @@ Si LinkedIn + Twitter son prioritarias:
 - Objetivo: [Enganchar audiencia nueva]
 - KPI: [500 reads, 50 likes, 20 shares]
 
-**2. [Título del Post 2]**
-[Misma estructura]
-
----
-
-### SEMANA 2-N: [...]
-
 [Repetir para cada semana]
 
 ---
@@ -2238,10 +2272,6 @@ Si LinkedIn + Twitter son prioritarias:
 3. Semana X+2: [Título] - Aplicación práctica
 
 **Narrativa del cluster:** [Cómo se conectan los posts]
-
----
-
-### CLUSTER 2-N: [...]
 
 ---
 
@@ -2274,38 +2304,9 @@ Si LinkedIn + Twitter son prioritarias:
 - Newsletter a suscriptores
 - Cross-posting adaptado en otras plataformas
 
-**Calendario Substack:**
-- Semana 1: [Títulos]
-- Semana 2: [Títulos]
-- [...]
-
----
-
-### LINKEDIN (30% del contenido)
-
-[Misma estructura]
-
----
-
-### TWITTER/X (20% del contenido)
-
-**Piezas asignadas:** [N threads]
-
-**Estrategia:**
-- Threads originales
-- Promoción de posts largos
-- Engagement con comunidad
-
 ---
 
 ## MÉTRICAS Y KPIS
-
-### Objetivos Cuantitativos
-
-**Reads totales esperados:** [N]
-**Engagement promedio:** [% de reads que interactúan]
-**Conversión a libro:** [% de audiencia que compra/lee libro]
-**Crecimiento de suscriptores:** [+N suscriptores en X meses]
 
 ### KPIs por Tipo de Contenido
 
@@ -2315,19 +2316,6 @@ Si LinkedIn + Twitter son prioritarias:
 | Post medio | 500-800 | 50-80 | 20-40 | 10-20 |
 | Artículo largo | 300-600 | 40-70 | 15-30 | 15-30 |
 | Thread | 2K-5K imp | 50-100 | 20-50 | 10-20 |
-
----
-
-## ESTRATEGIA DE PROMOCIÓN
-
-### Promoción Pre-Publicación
-- Teaser 1 día antes en redes sociales
-- Email a lista si contenido en Substack
-
-### Promoción Post-Publicación
-- Compartir en redes 2-3 veces durante semana
-- Responder a comentarios activamente
-- Cross-promoción entre piezas relacionadas
 
 ---
 
@@ -2442,126 +2430,55 @@ OPCIONALES:
 
 **PASO 3.1: Generación de Títulos**
 
-**Por cada pieza, generar 3 opciones de título:**
+Por cada pieza, generar 3 opciones de título:
 
-**Opción A: Directo**
-- Claro y descriptivo
-- Dice exactamente de qué trata
-- Ejemplo: "Cómo los Sesgos Cognitivos Afectan tus Decisiones"
-
-**Opción B: Intrigante**
-- Genera curiosidad
-- No revela todo
-- Ejemplo: "Por qué tu Cerebro te Engaña (y cómo evitarlo)"
-
-**Opción C: Provocativo**
-- Desafía creencia común
-- Puede ser controversial
-- Ejemplo: "Todo lo que Sabes sobre Decisiones Está Mal"
-
-**Editor elige:** Una de las 3 opciones (o propone cuarta)
+**Opción A: Directo** — claro y descriptivo
+**Opción B: Intrigante** — genera curiosidad sin revelar todo
+**Opción C: Provocativo** — desafía creencia común
 
 ---
 
 **PASO 3.2: Diseño de Hook/Opening**
 
-**Primeros 2-3 párrafos del post:**
-
-**Funciones del hook:**
-1. Capturar atención inmediatamente
-2. Establecer relevancia (¿por qué importa?)
-3. Prometer valor (¿qué aprenderán?)
-
-**Tipos de hooks según contenido:**
+Primeros 2-3 párrafos del post. Tipos:
 - **Anécdota:** Historia corta relacionada
 - **Estadística sorprendente:** Dato contraintuitivo
 - **Pregunta provocativa:** Pregunta que hace pensar
 - **Escenario:** "Imagina que..."
 - **Declaración audaz:** Claim fuerte que se desarrollará
 
-**Proponer hook específico** (no genérico)
-
 ---
 
 **PASO 3.3: Estructura/Outline**
 
-**Diseñar estructura de 3-5 secciones:**
-
-**Sección 1: Introducción/Hook**
-- [Ya diseñado en PASO 3.2]
-
-**Sección 2: Contexto/Background**
-- Qué necesita saber la audiencia
-- Definiciones clave
-- 150-300 palabras
-
-**Sección 3: Contenido Principal**
-- Subdividir en 2-4 subsecciones
-- Cada subsección: 200-400 palabras
-- Key points específicos
-
-**Sección 4: Aplicación/Implicaciones**
-- ¿Qué hacer con esta información?
-- Ejemplos prácticos
-- 150-250 palabras
-
-**Sección 5: Cierre/CTA**
-- Resumen de takeaway principal
-- Call to action
-- 100-150 palabras
+Diseñar estructura de 3-5 secciones:
+- Sección 1: Introducción/Hook
+- Sección 2: Contexto/Background (150-300 palabras)
+- Sección 3: Contenido Principal (2-4 subsecciones, 200-400 palabras c/u)
+- Sección 4: Aplicación/Implicaciones (150-250 palabras)
+- Sección 5: Cierre/CTA (100-150 palabras)
 
 ---
 
 **PASO 3.4: Key Points**
 
-**Identificar 3-5 key points principales:**
-
-Cada key point debe:
-- Ser sustantivo (no genérico)
-- Estar sustentado en el libro
-- Ser memorable
-- Conectar con audiencia
-
-**Formato:**
-```
-KEY POINT 1: [Enunciado]
-└─ Fuente: Capítulo X, páginas Y-Z
-└─ Evidencia: [Cita o dato específico]
-
-KEY POINT 2: [Enunciado]
-[...]
-```
+Identificar 3-5 key points principales. Cada uno:
+- Sustantivo (no genérico)
+- Sustentado en el libro
+- Memorable
+- Conecta con audiencia
 
 ---
 
 **PASO 3.5: Fuentes a Citar**
 
-**Del libro/ACTIVATION_CONTEXT, seleccionar:**
-- 3-7 citas/referencias específicas
-- Capítulos/secciones relevantes
-- Autores/estudios mencionados en el libro
-
-**Evitar:**
-- Inventar fuentes no en el libro
-- Citar genéricamente sin especificidad
+Del libro/ACTIVATION_CONTEXT: 3-7 citas/referencias específicas. No inventar fuentes.
 
 ---
 
 **PASO 3.6: CTA (Call to Action)**
 
-**Proponer CTA apropiado:**
-
-**Si objetivo es vender libro:**
-- "Lee [Título Libro] para profundizar en [tema]"
-
-**Si objetivo es engagement:**
-- "¿Qué piensas? Comenta tu experiencia con [tema]"
-
-**Si objetivo es construcción de audiencia:**
-- "Suscríbete para más análisis sobre [tema]"
-
-**Si objetivo es aplicación:**
-- "Prueba [framework] esta semana y comparte resultados"
+Proponer CTA apropiado según objetivo: leer libro / engagement / construcción audiencia / aplicación.
 
 ---
 
@@ -2569,147 +2486,44 @@ KEY POINT 2: [Enunciado]
 
 **Por cada pieza N:** `POST_PLAN_[N]_[TITULO_ABREVIADO].md`
 
-**Estructura:**
+**Estructura del archivo:**
 
 ```markdown
-# POST PLAN [N]: [Título Abreviado]
-
-**Fecha de creación:** [Fecha]
-**Generado por:** DESIGN_POST_PLAN v1.0
-**Tema:** [Nombre del tema de TEMAS_ACTIVABLES]
-**Formato:** [Post corto / Post medio / Artículo largo / Thread]
-**Extensión objetivo:** [X palabras] o [X tweets]
-**Plataforma:** [LinkedIn / Substack / Twitter / Medium]
-**Publicación programada:** [Semana X, Día Y]
-
+---
+title:       [Título elegido]
+format:      [post_estandar | post_largo | hilo]
+platform:    [LinkedIn / Substack / Twitter / Medium]
+word_count:  [X palabras] o [X tweets]
+publication: [Semana X, Día Y]
 ---
 
+# POST PLAN [N]: [Título Abreviado]
+
 ## OPCIONES DE TÍTULO
-
-### OPCIÓN A: Directo
-[Título opción A]
-
-### OPCIÓN B: Intrigante
-[Título opción B]
-
-### OPCIÓN C: Provocativo
-[Título opción C]
+### OPCIÓN A: Directo — [título]
+### OPCIÓN B: Intrigante — [título]
+### OPCIÓN C: Provocativo — [título]
 
 **SELECCIÓN EDITOR:** [ A / B / C / Otro: _______ ]
 
----
-
 ## HOOK / OPENING
-
 [Primeros 2-3 párrafos escritos completos]
-
-**Tipo de hook:** [Anécdota / Estadística / Pregunta / Escenario / Declaración]
-
----
+**Tipo de hook:** [tipo]
 
 ## ESTRUCTURA / OUTLINE
-
-### SECCIÓN 1: Introducción (Hook)
-- [Ya incluido arriba]
-- Extensión: [X palabras]
-
-### SECCIÓN 2: Contexto/Background
-**Objetivo:** [Qué se establece en esta sección]
-
-**Puntos a cubrir:**
-- [Punto 1]
-- [Punto 2]
-- [Punto 3]
-
-**Extensión:** 150-300 palabras
-
-### SECCIÓN 3: Contenido Principal
-**Objetivo:** [Qué se desarrolla]
-
-**Subsección 3.1: [Título subsección]**
-- [Key point 1]
-- [Desarrollo]
-- Extensión: 200-300 palabras
-
-**Subsección 3.2: [Título subsección]**
-- [Key point 2]
-- [Desarrollo]
-- Extensión: 200-300 palabras
-
-**Subsección 3.3: [Título subsección]** (si aplica)
-- [Key point 3]
-- [Desarrollo]
-- Extensión: 200-300 palabras
-
-### SECCIÓN 4: Aplicación/Implicaciones
-**Objetivo:** [Qué hace la audiencia con esto]
-
-**Puntos a cubrir:**
-- [Aplicación 1]
-- [Aplicación 2]
-- [Ejemplo práctico]
-
-**Extensión:** 150-250 palabras
-
-### SECCIÓN 5: Cierre/CTA
-- Resumen de takeaway: [1 oración]
-- Call to action: [Ver abajo]
-- Extensión: 100-150 palabras
-
----
+[Secciones con objetivos y extensiones]
 
 ## KEY POINTS (3-5)
-
-**KEY POINT 1:** [Enunciado del punto principal]
-- **Fuente:** Capítulo X del libro, páginas Y-Z
-- **Evidencia:** [Cita o dato específico del libro]
-- **Por qué importa:** [Relevancia para audiencia]
-
-**KEY POINT 2:** [...]
-
-**KEY POINT 3:** [...]
-
----
+[Con fuente y evidencia del libro para cada uno]
 
 ## FUENTES A CITAR
-
-**Del libro:**
-1. Capítulo X, Sección Y: [Tema/cita]
-2. Capítulo Z, página W: [Dato/estadística]
-3. Referencia a [Autor]: [Concepto]
-
-**Del ACTIVATION_CONTEXT:**
-- Debate sobre [tema]: [Referencia]
-- Timeline evento [fecha]: [Relevancia]
-
-**Otros (del libro):**
-- [Lista de autores citados en el libro que usaremos]
-
----
+[Referencias específicas del libro]
 
 ## CALL TO ACTION
-
-**CTA propuesto:** [Texto específico del CTA]
-
-**Tipo:** [Venta libro / Engagement / Suscripción / Aplicación]
-
-**Posicionamiento:** [Final del post / Mitad del post]
-
----
+[Texto del CTA, tipo, posicionamiento]
 
 ## CONSIDERACIONES ESPECIALES
-
-**Tono:** [Según PERFIL_ACTIVO]
-
-**Complejidad:** [Accesible / Medio / Técnico]
-
-**Sensibilidades:** [Si tema requiere cuidado especial]
-
-**Cross-references:** [Si conecta con otros posts de la campaña]
-
----
-
-**FIN DEL PLAN**
+[Tono, complejidad, sensibilidades, cross-references]
 ```
 
 ---
@@ -2753,9 +2567,7 @@ KEY POINT 2: [Enunciado]
    - ¿Referencias son precisas?
 
 4. **Ajustar si necesario**
-   - Cambiar títulos
-   - Modificar estructura
-   - Añadir/quitar secciones
+   - Cambiar títulos, modificar estructura, añadir/quitar secciones
 
 **Decisión:**
 ```
@@ -2774,41 +2586,32 @@ KEY POINT 2: [Enunciado]
 Escribir todas las piezas de contenido según planes aprobados.
 
 ### Actor
-IA escribe, Editor valida
+Editor + IA (Q&A de posicionamiento) → IA escribe, Editor valida
 
 ### Duración Estimada
-- Por pieza (IA): 1-3 horas
-- Por pieza (Editor): 30-60 minutos
-- **Total para 15-30 piezas: 25-100 horas**
+- Por pieza Q&A (Editor + IA): 30-60 minutos
+- Por pieza escritura (IA): 1-3 horas
+- Por pieza revisión (Editor): 30-60 minutos
+- **Total para 15-30 piezas: 30-130 horas**
 
 ### Herramientas
-- **`WRITE_POST v1.0`** [PENDIENTE DISEÑO] (posts cortos y medianos)
-- **`WRITE_ARTICLE v1.0`** [PENDIENTE DISEÑO] (artículos largos)
-- **`WRITE_THREAD v1.0`** [PENDIENTE DISEÑO] (threads de Twitter)
+
+**Q&A de posicionamiento (NUEVO en v1.5):**
+- ✅ **`PROMPT_QA_IDEAS`** — Writing/shared, owner: Writing
+  Ver documentación completa en `CONTEXT_WRITING`
+
+**Escritura (por formato):**
+- ⚠️ **`WRITE_POST v1.0`** — [PENDIENTE DISEÑO]
+- ⚠️ **`WRITE_ARTICLE v1.0`** — [PENDIENTE DISEÑO]
+- ⚠️ **`WRITE_THREAD v1.0`** — [PENDIENTE DISEÑO]
+
+**Artefacto de interfaz:**
+- ✅ **`TEMPLATE_POST_SEED`** — Writing/shared, owner: Writing
+  Input canónico de PROMPT_WRITE_POST. Ver `CONTEXT_WRITING`.
 
 ---
 
-### Input
-
-```
-OBLIGATORIOS (por cada pieza N):
-├─ POST_PLAN_[N] (aprobado)
-├─ LIBRO_COMPLETO.md
-├─ ACTIVATION_CONTEXT_[PROYECTO].md
-├─ PERFIL_ACTIVO
-└─ PIEZAS 1 a N-1 (ya escritas y validadas)
-
-OPCIONALES:
-├─ TIMELINE (para referencias temporales)
-├─ CAST (para menciones de actores)
-└─ RESEARCH_REPORT(s) (si existen, para contexto adicional)
-```
-
----
-
-### Proceso
-
-**CRÍTICO: Producción SECUENCIAL**
+### Principio Fundamental: Producción SECUENCIAL
 
 Las piezas se escriben **una a la vez**, no todas simultáneamente.
 
@@ -2820,133 +2623,144 @@ Las piezas se escriben **una a la vez**, no todas simultáneamente.
 
 ---
 
-**Iteración: Para cada pieza N = 1 hasta 15-30**
+### Input por Pieza
 
-**PASO 4.1: Lectura de Contexto**
+```
+INPUT AL Q&A (PASO 4.1):
+├─ POST_PLAN_[N] (aprobado en CHECKPOINT 4)
+├─ LIBRO_COMPLETO.md (o secciones relevantes)
+├─ ACTIVATION_CONTEXT_[PROYECTO].md
+├─ PERFIL_ACTIVO
+└─ PIEZAS 1 a N-1 (ya escritas y aprobadas)
 
-Antes de escribir pieza N, leer:
-- POST_PLAN_[N] (estructura y key points)
-- PIEZAS 1 a N-1 (evitar repeticiones)
-- Secciones relevantes del LIBRO
-- Sección relevante del ACTIVATION_CONTEXT
+INPUT A LA ESCRITURA (PASOS 4.3-4.7):
+└─ POST_SEED_[N] (output del Q&A — input canónico de WRITE_POST)
+   Template: TEMPLATE_POST_SEED (Writing/shared)
+```
 
 ---
 
-**PASO 4.2: Selección de Herramienta**
+### Iteración: Para cada pieza N = 1 hasta 15-30
+
+---
+
+**PASO 4.1: Q&A de Posicionamiento** ⭐ NUEVO EN v1.5
+
+**Herramienta:** `PROMPT_QA_IDEAS` (Writing/shared — ver `CONTEXT_WRITING`)
+
+**Objetivo:** Capturar la posición del editor sobre el contenido del POST_PLAN antes de escribir. El POST_PLAN contiene estructura y contenido del libro, pero no la posición del editor sobre ese contenido. Sin este paso, el post puede sonar correcto en forma pero carecer de la voz real del editor.
+
+**Proceso:**
+1. Cargar POST_PLAN_[N] como contexto
+2. Ejecutar PROMPT_QA_IDEAS: el prompt hace preguntas de posicionamiento al editor
+3. Editor responde con sus ideas, distinciones y posición real sobre el tema
+4. El prompt captura el material y detecta señales de aprendizaje (`📘 SEÑAL DE APRENDIZAJE`)
+
+**Mecanismo de skip:**
+El editor puede declarar skip con el mismo mecanismo que en RAMA POST autónoma (declarar razón explícita). El skip se documenta en el POST_SEED.
+
+```
+¿Editor declara skip?
+├─ NO → Ejecutar Q&A completo
+│       └─ Capturar material citable literal + ideas desarrolladas
+│
+└─ SÍ → Documentar razón en POST_SEED
+        └─ qa_executed: false
+           qa_skipped_reason: [razón]
+```
+
+**Output:** Inventario de ideas del editor (material citable literal + ideas desarrolladas + ideas descartadas + señales de aprendizaje)
+
+---
+
+**PASO 4.2: Generación del POST_SEED**
+
+**Herramienta:** `TEMPLATE_POST_SEED` (Writing/shared — ver `CONTEXT_WRITING`)
+
+**Objetivo:** Construir el artefacto POST_SEED que combina:
+- Contenido del libro (estructura y key points del POST_PLAN)
+- Voz posicionada del editor (material del Q&A)
+
+**El POST_SEED es el input canónico de PROMPT_WRITE_POST.** Sustituye al POST_PLAN como documento de referencia para la escritura.
+
+**Campos obligatorios del POST_SEED:**
+- Contexto (writing_context, format, word_count_target)
+- Núcleo narrativo (pregunta central, movimiento narrativo, orden de argumentos)
+- Estructura de secciones (tabla con secciones, palabras, estado)
+- Inventario de ideas (del Q&A: material citable, ideas desarrolladas, descartadas)
+- Fuentes verificadas
+- Estado del post (qa_executed, qa_skipped_reason, hybrid_mode)
+
+**El editor revisa y aprueba el POST_SEED antes de continuar a escritura.**
+
+---
+
+**PASO 4.3: Selección de Herramienta de Escritura**
 
 Según formato de la pieza:
 
 ```
-Si formato = "Post corto" o "Post medio":
+Si formato = "post_estandar" o "post_largo":
 └─ Usar: WRITE_POST v1.0
 
-Si formato = "Artículo largo":
+Si formato = "artículo largo":
 └─ Usar: WRITE_ARTICLE v1.0
 
-Si formato = "Thread":
+Si formato = "hilo":
 └─ Usar: WRITE_THREAD v1.0
 ```
 
 ---
 
-**PASO 4.3: Escritura Según Formato**
+**PASO 4.4: Escritura Según Formato**
+
+**Input obligatorio:** POST_SEED_[N] (aprobado por editor)
 
 **A) WRITE_POST v1.0** (Posts cortos y medianos)
 
-**Input específico:**
-- POST_PLAN_[N]
-- Extensión: 600-800 (corto) o 1,000-1,500 (medio)
-- Plataforma: LinkedIn / Substack / Medium
-
-**Proceso:**
-1. Usar hook del plan (puede refinarse)
-2. Seguir estructura del outline
-3. Desarrollar cada key point con evidencia
-4. Incluir citas del libro apropiadamente
-5. Aplicar voz del PERFIL_ACTIVO
-6. Incluir CTA del plan
-7. Optimizar para plataforma (formato, párrafos, etc.)
-
-**Output:** `CONTENT_[N]_POST_v1.0.md`
-
----
+- Input: POST_SEED_[N] + PERFIL_ACTIVO
+- Extensión: 600-800 (post_estandar) o 1,000-1,500 (post_largo)
+- Proceso: Seguir estructura del POST_SEED sección a sección; usar material citable literal sin modificar; integrar ideas desarrolladas con libertad de forma; señalar afirmaciones sin verificar con `[⚠ VERIFICAR]`
+- Output: `CONTENT_[N]_POST_v1.0.md`
 
 **B) WRITE_ARTICLE v1.0** (Artículos largos)
 
-**Input específico:**
-- POST_PLAN_[N]
+- Input: POST_SEED_[N] + PERFIL_ACTIVO
 - Extensión: 1,500-3,000 palabras
-- Plataforma: Típicamente Substack / Medium
-
-**Proceso:**
-1. Estructura más elaborada (5-7 secciones)
-2. Mayor profundidad en cada key point
-3. Incluir subsecciones con headers
-4. Más ejemplos y casos
-5. Citas más abundantes (5-10)
-6. Puede incluir bullet points / listas
-7. CTA más elaborado
-
-**Output:** `CONTENT_[N]_ARTICLE_v1.0.md`
-
----
+- Proceso: Estructura 5-7 secciones; mayor profundidad; 5-10 citas; puede incluir subsecciones con headers
+- Output: `CONTENT_[N]_ARTICLE_v1.0.md`
 
 **C) WRITE_THREAD v1.0** (Threads de Twitter)
 
-**Input específico:**
-- POST_PLAN_[N]
+- Input: POST_SEED_[N] + PERFIL_ACTIVO
 - Extensión: 8-15 tweets
-- Plataforma: Twitter/X
-
-**Proceso:**
-1. Tweet 1: Hook fuerte (standalone)
-2. Tweets 2-3: Contexto/setup
-3. Tweets 4-10: Desarrollo de key points (1 punto por 1-2 tweets)
-4. Tweets 11-14: Implicaciones/aplicación
-5. Tweet final: Resumen + CTA
-6. Formato: 1-3 oraciones por tweet
-7. Usar emojis estratégicamente (no excesivo)
-8. Numerar tweets [X/Y]
-
-**Output:** `CONTENT_[N]_THREAD_v1.0.md`
+- Proceso: Tweet 1 standalone (hook); tweets 2-3 contexto; tweets 4-10 key points (1 punto por 1-2 tweets); tweet final resumen + CTA; numerar [X/Y]
+- Output: `CONTENT_[N]_THREAD_v1.0.md`
 
 ---
 
-**PASO 4.4: Aplicación de Estilo (PERFIL_ACTIVO)**
+**PASO 4.5: Aplicación de Estilo (PERFIL_ACTIVO)**
 
-**Todos los formatos deben:**
+Todos los formatos deben:
 - Reflejar voz del perfil activo
 - Usar vocabulario característico
 - Mantener tono consistente
 - Respetar preferencias estilísticas
 
-**Ejemplos:**
-- Si perfil es "académico accesible" → Rigor + claridad
-- Si perfil es "provocativo" → Desafiar + cuestionar
-- Si perfil es "práctico" → Aplicaciones + ejemplos
+---
+
+**PASO 4.6: Evitar Repeticiones**
+
+Verificar contra piezas anteriores:
+- ¿Key point ya mencionado en pieza X? → Mencionar brevemente + link / Si NO: desarrollar completamente
+- ¿Cita ya usada en pieza Y? → Usar cita diferente o parafrasear
+- ¿Ejemplo ya dado en pieza Z? → Dar ejemplo diferente
 
 ---
 
-**PASO 4.5: Evitar Repeticiones**
+**PASO 4.7: Citación de Fuentes**
 
-**Verificar contra piezas anteriores:**
-- ¿Este key point ya se mencionó en pieza X?
-  → Si SÍ: Mencionar brevemente + link a pieza X
-  → Si NO: Desarrollar completamente
-
-- ¿Esta cita ya se usó en pieza Y?
-  → Si SÍ: Usar cita diferente o parafrasear
-  → Si NO: Usar la cita
-
-- ¿Este ejemplo ya se dio en pieza Z?
-  → Si SÍ: Dar ejemplo diferente
-  → Si NO: Usar el ejemplo
-
----
-
-**PASO 4.6: Citación de Fuentes**
-
-**Formato de citas según plataforma:**
+Formato por plataforma:
 
 **LinkedIn/Substack/Medium:**
 ```
@@ -2958,50 +2772,42 @@ Según [Autor] en [Título del Libro], [claim/cita].
 [Claim/cita] - [Autor], [Título Libro]
 ```
 
-**NO inventar citas o fuentes no en el libro.**
+NO inventar citas o fuentes no presentes en el libro.
 
 ---
 
-### Output
-
-**Por cada pieza N:**
+### Output por Pieza
 
 **Archivo:** `CONTENT_[N]_[TIPO]_v1.0.md`
 
 **Metadata del archivo:**
 ```markdown
 ---
-title: [Título elegido]
-author: [Según PERFIL_ACTIVO]
-date: [Fecha de escritura]
-format: [Post / Article / Thread]
-platform: [LinkedIn / Substack / Twitter / Medium]
-word_count: [X palabras] o [X tweets]
-planned_publication: [Semana X, Día Y]
-status: [DRAFT v1.0]
+title:              [Título elegido]
+format:             [post | article | thread]
+platform:           [LinkedIn / Substack / Twitter / Medium]
+word_count:         [X palabras] o [X tweets]
+planned_publication:[Semana X, Día Y]
+status:             DRAFT v1.0
+post_seed:          POST_SEED_[N]
+qa_executed:        [true | false]
 ---
 ```
 
 **Contenido:**
 [Texto completo del post/artículo/thread]
 
-**Final del archivo:**
+**Notas de producción al final del archivo:**
 ```markdown
 ---
 ## NOTAS DE PRODUCCIÓN
 
-**Fuentes del libro citadas:**
-- [Lista de capítulos/secciones usados]
-
-**Key points cubiertos:**
-- [Lista de key points del plan]
-
-**Cross-references a otras piezas:**
-- [Si menciona/linkea a otras piezas]
-
+**Fuentes del libro citadas:** [Lista]
+**Key points cubiertos:** [Lista]
+**Cross-references:** [Otras piezas mencionadas o linkeadas]
 **Longitud final:** [X palabras] o [X tweets]
-
-**Desviaciones del plan:** [Si hubo cambios respecto al plan]
+**Desviaciones del POST_SEED:** [Si hubo cambios justificados]
+**Señales de aprendizaje del Q&A:** [IDs de señales pendientes de integrar en EDITOR_PROFILE]
 ---
 ```
 
@@ -3016,82 +2822,50 @@ status: [DRAFT v1.0]
 **Actividades:**
 
 1. **Leer pieza completa**
-   - ¿Sigue el plan aprobado?
+   - ¿Sigue el POST_SEED aprobado?
    - ¿Calidad de escritura es alta?
    - ¿Voz es consistente con perfil?
 
-2. **Verificar key points**
+2. **Verificar material del Q&A**
+   - ¿Material citable literal aparece sin modificar?
+   - ¿Ideas desarrolladas están bien integradas?
+   - ¿Ideas descartadas no reaparecen?
+
+3. **Verificar key points y fuentes**
    - ¿Todos los key points están cubiertos?
-   - ¿Están bien desarrollados?
+   - ¿Citas son precisas y del libro?
+   - ¿Afirmaciones marcadas `[⚠ VERIFICAR]` están resueltas o pendientes?
 
-3. **Validar fuentes**
-   - ¿Citas son precisas?
-   - ¿Fuentes son del libro?
-
-4. **Verificar extensión**
-   - ¿Está en rango objetivo?
-
-5. **Detectar errores**
+4. **Detectar errores**
    - Gramática/ortografía
    - Lógica/coherencia
-   - Repeticiones internas
+   - Repeticiones con piezas anteriores
 
 **Decisión por pieza:**
 ```
 ¿Pieza N necesita correcciones?
 ├─ NO → APROBAR como v1.0 FINAL
-│       └─ Pasar a formar parte del contexto para pieza N+1
+│       └─ Pieza pasa a contexto para escribir pieza N+1
 │
-└─ SÍ → ANOTAR correcciones
-        ├─ Correcciones menores (editor hace directamente)
-        │   └─ Marcar como v1.1 FINAL_EDITED
-        │
-        └─ Correcciones mayores (IA debe reescribir)
-            └─ Anotar: "REWRITE: [razón]"
-            └─ IA genera v2.0
-            └─ Editor valida v2.0
-            └─ Si OK → v2.0 FINAL
-```
-
----
-
-### Iteración Completa
-
-**Flujo completo por pieza:**
-```
-Escribir pieza N
-    ↓
-Editor valida
-    ↓
-¿Correcciones?
-    ├─ Menores → Editor edita → v1.1 FINAL_EDITED
-    └─ Mayores → IA reescribe → v2.0 → ¿OK? → v2.0 FINAL
-    ↓
-Pieza N FINAL pasa a contexto
-    ↓
-Escribir pieza N+1
-[Repetir hasta completar todas las piezas]
+└─ SÍ → ANOTAR correcciones:
+        ├─ Correcciones menores → Editor edita directamente → v1.1 FINAL_EDITED
+        └─ Correcciones mayores → IA reescribe → v2.0 → Editor valida → v2.0 FINAL
 ```
 
 ---
 
 ### Jerarquía de Versiones
 
-**Por cada pieza:**
 ```
-v1.0: Primera versión de la IA
+v1.0: Primera versión de la IA (desde POST_SEED aprobado)
 v1.1: Edición menor del editor sobre v1.0
 v2.0: Reescritura completa de la IA
 v2.1: Edición menor del editor sobre v2.0
-[...]
 
-FINAL: Versión aprobada sin edición del editor
+FINAL:        Versión aprobada sin edición del editor
 FINAL_EDITED: Versión aprobada CON edición del editor
-```
 
-**Prioridad:**
-```
-FINAL_EDITED > FINAL > v2.1 > v2.0 > v1.1 > v1.0
+Prioridad: FINAL_EDITED > FINAL > v2.1 > v2.0 > v1.1 > v1.0
 ```
 
 ---
@@ -3104,6 +2878,7 @@ FINAL_EDITED > FINAL > v2.1 > v2.0 > v1.1 > v1.0
 [ ] Hook atractivo (primeros 2 párrafos)
 [ ] Estructura clara (3-5 secciones)
 [ ] 3-5 key points desarrollados
+[ ] Material citable literal del Q&A presente sin modificar
 [ ] 3-7 citas/referencias del libro
 [ ] CTA claro
 [ ] Voz consistente con perfil
@@ -3116,12 +2891,11 @@ FINAL_EDITED > FINAL > v2.1 > v2.0 > v1.1 > v1.0
 [ ] Extensión 1,500-3,000 palabras
 [ ] Estructura elaborada (5-7 secciones)
 [ ] Profundidad en cada punto
+[ ] Material del Q&A bien integrado
 [ ] 5-10 citas/referencias
 [ ] Subsecciones con headers
-[ ] Ejemplos/casos desarrollados
 [ ] CTA elaborado
 [ ] Voz consistente
-[ ] Formato largo apropiado (Substack/Medium)
 ```
 
 **THREAD:**
@@ -3134,7 +2908,6 @@ FINAL_EDITED > FINAL > v2.1 > v2.0 > v1.1 > v1.0
 [ ] Numeración [X/Y]
 [ ] Emojis estratégicos (no excesivo)
 [ ] Tweet final con resumen + CTA
-[ ] Formato Twitter (1-3 oraciones/tweet)
 ```
 
 ---
@@ -3194,85 +2967,25 @@ OPCIONALES:
 
 **PASO 5.2: Detección de Repeticiones**
 
-**Across piezas, detectar:**
-- Key points repetidos (mencionados en 3+ piezas)
-- Citas repetidas (usadas en 3+ piezas)
-- Ejemplos repetidos
-- Frases/construcciones repetitivas
-
-**Generar reporte:**
-```
-REPETICIONES DETECTADAS:
-
-Key Point: "[Enunciado]"
-├─ Pieza 3: [Contexto]
-├─ Pieza 7: [Contexto]
-└─ Pieza 12: [Contexto]
-ACCIÓN: [Conservar en 1-2 piezas, eliminar/reescribir en otras]
-
-Cita: "[Cita del libro]"
-├─ Pieza 5: [Contexto]
-├─ Pieza 9: [Contexto]
-└─ Pieza 15: [Contexto]
-ACCIÓN: [Usar en 1 pieza, parafrasear en otras]
-```
+Across piezas, detectar key points, citas o ejemplos repetidos en 3+ piezas. Generar reporte con acciones recomendadas.
 
 ---
 
 **PASO 5.3: Validación de Fuentes**
 
-**Verificar que:**
+Verificar que:
 - Todas las citas son del libro (no inventadas)
 - Referencias a capítulos son precisas
 - Atribuciones de autores/estudios son correctas
-- No hay citas de "research reports" si libro es externo
-
-**Generar lista:**
-```
-FUENTES VERIFICADAS:
-
-Pieza N: [Título]
-├─ Cita 1: ✅ Capítulo X, página Y
-├─ Cita 2: ✅ Capítulo Z
-├─ Referencia a [Autor]: ✅ Mencionado en bibliografía
-└─ ESTADO: Todas verificadas
-
-Pieza M: [Título]
-├─ Cita 1: ⚠️ No encontrada en libro
-└─ ACCIÓN REQUERIDA: Revisar o eliminar
-```
 
 ---
 
 **PASO 5.4: Evaluación de Engagement Potencial**
 
-**Por cada pieza, predecir:**
+Por cada pieza, calcular Engagement Score (1-10) combinando:
+- Hook strength / Topic relevance / Clarity / Actionability / Shareability
 
-**Engagement Score (1-10):**
-- Hook strength: [1-10]
-- Topic relevance: [1-10]
-- Clarity: [1-10]
-- Actionability: [1-10]
-- Shareability: [1-10]
-
-**Promedio → Engagement Score**
-
-**Generar ranking:**
-```
-TOP 5 PIEZAS (Mayor Engagement Potencial):
-1. Pieza 7: [Título] - Score: 9.2
-2. Pieza 3: [Título] - Score: 8.8
-3. Pieza 12: [Título] - Score: 8.5
-4. Pieza 1: [Título] - Score: 8.3
-5. Pieza 15: [Título] - Score: 8.0
-
-BOTTOM 5 PIEZAS (Menor Engagement Potencial):
-1. Pieza 9: [Título] - Score: 5.2
-2. Pieza 14: [Título] - Score: 5.8
-[...]
-
-RECOMENDACIÓN: Considerar reescribir o eliminar piezas con score < 6.0
-```
+Generar ranking completo con recomendación de publicar, revisar o reescribir.
 
 ---
 
@@ -3280,61 +2993,20 @@ RECOMENDACIÓN: Considerar reescribir o eliminar piezas con score < 6.0
 
 **A) Formateo por Plataforma**
 
-**Por cada pieza, generar versiones:**
-
-**LinkedIn:**
-- Formato: Párrafos cortos (2-3 oraciones)
-- Añadir line breaks entre párrafos
-- Hashtags al final (3-5 relevantes)
-- @ mentions si aplica
-
-**Substack:**
-- Formato: Markdown o HTML
-- Headers para secciones
-- Imágenes si aplica (featured image)
-- Footer con CTA
-
-**Twitter/X:**
-- Formato: Thread (ya estructurado)
-- Verificar límite de caracteres por tweet
-- Añadir imágenes si mejora engagement
-
-**Medium:**
-- Formato: Medium editor (similar a Substack)
-- Tags (5 máximo)
-- Featured image
-
----
+- **LinkedIn:** Párrafos cortos (2-3 oraciones), line breaks, hashtags (3-5), @ mentions
+- **Substack:** Markdown/HTML, headers, CTA en footer
+- **Twitter/X:** Verificar límite de caracteres, imágenes si aplica
+- **Medium:** Tags (5 máximo), featured image
 
 **B) Generación de Metadata**
 
-**Por cada pieza:**
-```markdown
-METADATA: Pieza [N]
-
-Title: [Título]
-Author: [Según PERFIL_ACTIVO o cuenta]
-Description: [Meta description 150-160 caracteres]
-Tags/Keywords: [Lista de 5-10 tags]
-Featured_Image: [URL o archivo si aplica]
-Canonical_URL: [Si publica en múltiples sitios]
-Social_Share_Text: [Texto para compartir en redes]
-  ├─ LinkedIn: [Texto específico]
-  ├─ Twitter: [Texto específico]
-  └─ Other: [Texto genérico]
-```
-
----
+Por cada pieza: title, description (150-160 chars), tags/keywords, social_share_text por plataforma.
 
 **C) Calendario de Publicación**
-
-**Exportar calendario en formato tabular:**
 
 | # | Título | Formato | Plataforma | Fecha | Hora | Status |
 |---|--------|---------|------------|-------|------|--------|
 | 1 | [...] | Post | LinkedIn | 2026-03-01 | 09:00 | Ready |
-| 2 | [...] | Thread | Twitter | 2026-03-03 | 14:00 | Ready |
-| 3 | [...] | Article | Substack | 2026-03-05 | 10:00 | Ready |
 | [...] | [...] | [...] | [...] | [...] | [...] | [...] |
 
 ---
@@ -3343,139 +3015,19 @@ Social_Share_Text: [Texto para compartir en redes]
 
 **`CONTENT_PACKAGE_[PROYECTO].zip`**
 
-**Contenido del package:**
 ```
 CONTENT_PACKAGE_[PROYECTO]/
-├─ README.md (instrucciones de uso)
-├─ EVALUATION_REPORT.md (de PASO 5.1-5.4)
-├─ PUBLICATION_CALENDAR.csv (calendario exportado)
+├─ README.md
+├─ EVALUATION_REPORT.md
+├─ PUBLICATION_CALENDAR.csv
 ├─ POSTS/
 │  ├─ LINKEDIN/
-│  │  ├─ post_001_formatted.md
-│  │  ├─ post_003_formatted.md
-│  │  └─ [...]
 │  ├─ SUBSTACK/
-│  │  ├─ article_002_formatted.md
-│  │  ├─ article_005_formatted.md
-│  │  └─ [...]
 │  ├─ TWITTER/
-│  │  ├─ thread_004_formatted.txt
-│  │  ├─ thread_008_formatted.txt
-│  │  └─ [...]
 │  └─ MEDIUM/
-│     └─ [...]
 └─ METADATA/
    ├─ post_001_metadata.json
-   ├─ post_002_metadata.json
    └─ [...]
-```
-
----
-
-**`EVALUATION_REPORT.md`**
-
-**Estructura:**
-```markdown
-# EVALUATION REPORT: [Nombre del Proyecto]
-
-**Fecha:** [Fecha]
-**Generado por:** EVALUATE_ACTIVATION_CONTENT v1.0
-**Total de piezas:** [N]
-
----
-
-## RESUMEN EJECUTIVO
-
-**Coherencia de voz:** [✅ Excelente / ⚠️ Aceptable / ❌ Inconsistente]
-**Coherencia narrativa:** [✅ Excelente / ⚠️ Aceptable / ❌ Fragmentada]
-**Calidad promedio:** [Score X/10]
-
-**Repeticiones detectadas:** [N]
-**Fuentes verificadas:** [% validadas]
-**Engagement score promedio:** [X/10]
-
-**Piezas listas para publicar:** [N] / [N total]
-**Piezas que requieren revisión:** [N]
-
----
-
-## COHERENCIA DE VOZ
-
-[Análisis de consistencia de voz]
-
-**Piezas con desviaciones:**
-- Pieza X: [Descripción de desviación]
-- [...]
-
-**Recomendación:** [...]
-
----
-
-## COHERENCIA NARRATIVA
-
-[Análisis de flujo narrativo]
-
-**Clusters que funcionan bien:**
-- Cluster X: [...]
-- [...]
-
-**Clusters que requieren ajuste:**
-- Cluster Y: [...]
-- [...]
-
----
-
-## REPETICIONES DETECTADAS
-
-[Lista completa de repeticiones del PASO 5.2]
-
-**Acciones recomendadas:**
-[Lista de correcciones específicas]
-
----
-
-## VALIDACIÓN DE FUENTES
-
-**Estadísticas:**
-- Total de citas: [N]
-- Citas verificadas: [N] ([%])
-- Citas no encontradas: [N] ([%])
-
-**Piezas con problemas:**
-[Lista de piezas que requieren revisión de fuentes]
-
----
-
-## ENGAGEMENT POTENCIAL
-
-**Ranking completo:**
-[Tabla con todas las piezas rankeadas]
-
-**Recomendaciones estratégicas:**
-- Publicar piezas Top 5 primero para generar momentum
-- Considerar reescribir piezas Bottom 3
-- [...]
-
----
-
-## ESTADO POR PIEZA
-
-| # | Título | Status | Issues | Acción |
-|---|--------|--------|--------|--------|
-| 1 | [...] | ✅ Ready | None | Publicar |
-| 2 | [...] | ⚠️ Review | Repeticiones | Revisar |
-| 3 | [...] | ❌ Rewrite | Engagement bajo | Reescribir |
-| [...] | [...] | [...] | [...] | [...] |
-
----
-
-## RECOMENDACIONES FINALES
-
-[Lista de acciones antes de publicar]
-
----
-
-**FIN DEL REPORTE**
 ```
 
 ---
@@ -3496,16 +3048,13 @@ CONTENT_PACKAGE_[PROYECTO]/
 2. **Validar CONTENT_PACKAGE**
    - ¿Todos los archivos están presentes?
    - ¿Formatos son correctos por plataforma?
-   - ¿Metadata es completa?
 
 3. **Revisar PUBLICATION_CALENDAR**
    - ¿Fechas son realistas?
    - ¿Secuenciación tiene sentido?
 
 4. **Decisión sobre piezas con issues**
-   - ¿Cuáles reescribir?
-   - ¿Cuáles eliminar?
-   - ¿Cuáles publicar con ajustes menores?
+   - ¿Cuáles reescribir? ¿Cuáles eliminar? ¿Cuáles publicar con ajustes menores?
 
 **Decisión Final:**
 ```
@@ -3517,7 +3066,6 @@ CONTENT_PACKAGE_[PROYECTO]/
         ├─ Reescribir piezas problemáticas
         ├─ Ajustar calendario
         └─ Re-generar package
-        └─ Re-evaluar en CHECKPOINT 5
 ```
 
 ---
@@ -3541,40 +3089,58 @@ CONTENT_PACKAGE_[PROYECTO]/
 ### Herramientas (Prompts)
 
 **FASE 0: Preparación**
-1. ✅ `ANALYZE_COLLECTION_FOR_ACTIVATION v1.2` - DISEÑADO
-2. ✅ `CREATE_TIMELINE v1.0` - EXISTENTE (reutilizado)
-3. ✅ `CREATE_CAST v1.0` - EXISTENTE (reutilizado)
-4. ✅ `CREATE_EDITOR_PROFILE v1.0` - EXISTENTE (reutilizado)
+1. ✅ `ANALYZE_COLLECTION_FOR_ACTIVATION v1.4` — DISEÑADO (owner: Activation)
+2. ✅ `CREATE_TIMELINE v1.0` — EXISTENTE, shared (owner: Writing)
+3. ✅ `CREATE_CAST v1.0` — EXISTENTE, shared (owner: Writing)
+4. ✅ `CREATE_EDITOR_PROFILE v1.0` — EXISTENTE (owner: Editorial Profile)
 
 **FASE 1: Análisis**
-5. ⚠️ `ANALYZE_BOOK_FOR_ACTIVATION v1.0` - PENDIENTE DISEÑO
+5. ⚠️ `ANALYZE_BOOK_FOR_ACTIVATION v1.0` — PENDIENTE DISEÑO
 
 **FASE 2: Estrategia**
-6. ⚠️ `CREATE_CONTENT_STRATEGY v1.0` - PENDIENTE DISEÑO
+6. ⚠️ `CREATE_CONTENT_STRATEGY v1.0` — PENDIENTE DISEÑO
 
 **FASE 3: Plan**
-7. ⚠️ `DESIGN_POST_PLAN v1.0` - PENDIENTE DISEÑO
+7. ⚠️ `DESIGN_POST_PLAN v1.0` — PENDIENTE DISEÑO
 
 **FASE 4: Producción**
-8. ⚠️ `WRITE_POST v1.0` - PENDIENTE DISEÑO
-9. ⚠️ `WRITE_ARTICLE v1.0` - PENDIENTE DISEÑO
-10. ⚠️ `WRITE_THREAD v1.0` - PENDIENTE DISEÑO
+8. ✅ `PROMPT_QA_IDEAS` — EXISTENTE, shared (owner: Writing) ⭐ NUEVO EN v1.5
+   Ver: `CONTEXT_WRITING`
+9. ⚠️ `WRITE_POST v1.0` — PENDIENTE DISEÑO (shared, owner: Writing)
+10. ⚠️ `WRITE_ARTICLE v1.0` — PENDIENTE DISEÑO
+11. ⚠️ `WRITE_THREAD v1.0` — PENDIENTE DISEÑO
 
 **FASE 5: Validación**
-11. ⚠️ `EVALUATE_ACTIVATION_CONTENT v1.0` - PENDIENTE DISEÑO
+12. ⚠️ `EVALUATE_ACTIVATION_CONTENT v1.0` — PENDIENTE DISEÑO (bloqueado por RESOURCE_EVALUATION_FRAMEWORK)
 
-**Total de prompts:** 11 (4 existentes reutilizados + 7 nuevos)
+**Total de prompts:** 12 (5 existentes reutilizados + 7 nuevos pendientes de diseño)
+
+---
+
+### Artefactos de Interfaz con Writing (shared, owner: Writing)
+
+| Artefacto | Tipo | Versión | Descripción |
+|-----------|------|---------|-------------|
+| `TEMPLATE_POST_SEED` | TEMPLATE | v1.0 | Input canónico de PROMPT_WRITE_POST. Combina estructura del POST_PLAN + voz posicionada del Q&A. ⭐ NUEVO EN v1.5 |
+| `PROMPT_QA_IDEAS` | PROMPT | — | Q&A de posicionamiento. Captura la posición del editor sobre el contenido antes de escribir. ⭐ NUEVO EN v1.5 |
+| `PROMPT_WRITE_POST` | PROMPT | v1.0 | Escritura del post. Input: POST_SEED. |
+| `PROMPT_CREATE_TIMELINE` | PROMPT | v1.0 | Cronología exhaustiva. |
+| `PROMPT_CREATE_CAST` | PROMPT | v1.0 | Catálogo de actores. |
+
+**Nota:** Activation invoca estos artefactos pero no los desarrolla ni los versiona. Cambios necesarios se canalizan a writing-dev via DL entry.
+
+**Documentación completa:** Ver `CONTEXT_WRITING`
 
 ---
 
 ### Outputs del Sistema
 
 **FASE 0:**
-- `ACTIVATION_CONTEXT_[PROYECTO].md` (si generado)
-- `TIMELINE_[PROYECTO].md` (si generado)
-- `CAST_OF_CHARACTERS_[PROYECTO].md` (si generado)
-- `EDITOR_PROFILE_[AUTOR/COLECCION].md` (si generado)
-- `PERFIL_ACTIVO_SELECCIONADO.md` (decisión documentada)
+- `ACTIVATION_CONTEXT_[PROYECTO].md`
+- `TIMELINE_[PROYECTO].md`
+- `CAST_OF_CHARACTERS_[PROYECTO].md`
+- `EDITOR_PROFILE_[AUTOR/COLECCION].md`
+- `PERFIL_ACTIVO_SELECCIONADO.md`
 
 **FASE 1:**
 - `TEMAS_ACTIVABLES_[PROYECTO].md`
@@ -3586,15 +3152,12 @@ CONTENT_PACKAGE_[PROYECTO]/
 - `POST_PLAN_[N]_[TITULO].md` (uno por cada pieza)
 
 **FASE 4:**
+- `POST_SEED_[N].md` (output del Q&A, input canónico de escritura) ⭐ NUEVO EN v1.5
 - `CONTENT_[N]_[TIPO]_v1.0.md` (o v2.0, FINAL, FINAL_EDITED)
 
 **FASE 5:**
 - `EVALUATION_REPORT.md`
 - `CONTENT_PACKAGE_[PROYECTO].zip`
-  - Posts formateados por plataforma
-  - Metadata por pieza
-  - Calendario de publicación
-  - README con instrucciones
 
 ---
 
@@ -3605,16 +3168,16 @@ CONTENT_PACKAGE_[PROYECTO]/
 **FASE 0: Preparación**
 ```
 Tiempo objetivo:
-- Escenario A (Tinta Artificial): 30-60 min ✅
-- Escenario B (Externo mínimo): 6-10 horas ✅
-- Escenario C (Externo parcial): 3-6 horas ✅
-- Escenario D (Múltiples libros): 8-15 horas ✅
+- Escenario A (Tinta Artificial): 2-3.5 horas ✅
+- Escenario B (Externo mínimo): 6-12 horas ✅
+- Escenario C (Externo parcial): 5-9 horas ✅
+- Escenario D (Múltiples libros): 10-17 horas ✅
 
 Calidad:
 - Todas las fuentes mínimas presentes: ✅
-- ACTIVATION_CONTEXT (si generado): 3-5k palabras ✅
-- TIMELINE: 15-50 eventos ✅
-- CAST: 10-30 perfiles ✅
+- ACTIVATION_CONTEXT: 3-5k palabras ✅
+- TIMELINE: según tipo (30-1,000 eventos) ✅
+- CAST: según tipo (20-500 perfiles) ✅
 - EDITOR_PROFILE: 5-12k palabras ✅
 - PERFIL_ACTIVO seleccionado: ✅
 ```
@@ -3656,14 +3219,20 @@ Calidad (por plan):
 - CTA apropiado: ✅
 ```
 
-**FASE 4: Producción**
+**FASE 4: Producción** ⭐ ACTUALIZADO EN v1.5
 ```
-Tiempo objetivo: 25-100 horas (15-30 piezas) ✅
+Tiempo objetivo: 30-130 horas (15-30 piezas) ✅
 
-Calidad (por pieza):
+Calidad del Q&A (por pieza):
+- POST_SEED generado y aprobado: ✅
+- Material citable literal capturado (si Q&A ejecutado): ✅
+- Ideas desarrolladas documentadas: ✅
+- Señales de aprendizaje registradas: ✅
+
+Calidad de escritura (por pieza):
 - Extensión en rango: ✅
-- Estructura del plan seguida: ✅
-- Key points desarrollados: ✅
+- Estructura del POST_SEED seguida: ✅
+- Material citable literal presente sin modificar: ✅
 - Fuentes citadas correctamente: ✅
 - Voz consistente con perfil: ✅
 - Sin repeticiones de piezas anteriores: ✅
@@ -3689,26 +3258,27 @@ Calidad:
 **Tiempo total estimado:**
 ```
 Escenario óptimo (Tinta Artificial):
-- FASE 0: 2-3h
+- FASE 0: 2-3.5h
 - FASE 1: 4h
 - FASE 2: 3h
 - FASE 3: 5h
-- FASE 4: 50h (promedio para 20 piezas)
+- FASE 4: 60h (promedio para 20 piezas, incluye Q&A)
 - FASE 5: 4h
-TOTAL: ~68-69 horas
+TOTAL: ~78-79.5 horas
 
 Escenario mínimo (Libro externo):
 - FASE 0: 8h
 - FASE 1: 4h
 - FASE 2: 3h
 - FASE 3: 5h
-- FASE 4: 50h
+- FASE 4: 60h
 - FASE 5: 4h
-TOTAL: ~74 horas
+TOTAL: ~84 horas
 ```
 
 **Outputs totales:**
 ```
+- POST_SEEDs: 15-30 (uno por pieza)
 - Piezas de contenido: 15-30
 - Formatos por plataforma: 2-4 plataformas
 - Metadata generada: Por cada pieza
@@ -3731,9 +3301,9 @@ TOTAL: ~74 horas
 **Estas métricas se miden DESPUÉS de publicar:**
 
 **Engagement real (vs predicho):**
-- Reads reales vs esperados: [Comparar]
-- Likes/shares reales vs esperados: [Comparar]
-- Comments reales vs esperados: [Comparar]
+- Reads reales vs esperados
+- Likes/shares reales vs esperados
+- Comments reales vs esperados
 
 **Conversión:**
 - % audiencia que compra/lee libro
@@ -3754,15 +3324,13 @@ TOTAL: ~74 horas
 
 ## FIN DEL WORKFLOW
 
-**Versión:** 1.3
-**Estado:** Completo con instrucciones de PARADA secuencial
-**Próxima evolución:** v1.4 (después de diseñar prompts pendientes FASE 1-5)
+**Versión:** 1.5
+**Estado:** Activo — Q&A de posicionamiento integrado en FASE 4
+**DL implementada:** DL_20260411_ACTIVATION_022
 
 ---
 
-**REFERENCIAS CRUZADAS:**
-- Ver: `WORKFLOW_RESEARCH_SISTEMA_TINTA_ARTIFICIAL_v3_1.md`
-- Ver: `WORKFLOW_WRITING_BOOKS_SISTEMA_TINTA_ARTIFICIAL_v1_7.md`
-- Ver: `PLAN_ACTIVACION_CONTENIDO_v1.md`
-- Ver: `PROMPT_ANALYZE_COLLECTION_FOR_ACTIVATION_v1_3.md`
-- Ver: `GUIA_EJECUCION_FASE_0_v1_0.md` ⭐ NUEVO
+**REFERENCIAS:**
+- Ver: `CONTEXT_WRITING` (documentación de PROMPT_QA_IDEAS, TEMPLATE_POST_SEED, PROMPT_WRITE_POST)
+- Ver: `CONTEXT_ACTIVATION` (contexto del subsistema)
+- Ver: `SCHEMA_DECISION_LOG` (formato de DL entries)
