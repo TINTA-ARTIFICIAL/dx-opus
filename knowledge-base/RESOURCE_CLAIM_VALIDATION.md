@@ -1,3 +1,24 @@
+---
+id:          RESOURCE_CLAIM_VALIDATION
+type:        RESOURCE
+subsystem:   KNOWLEDGE_BASE
+version:     1.2
+status:      ACTIVE
+created:     2026-01-24
+updated:     2026-04-16
+owner_chat:  knowledge-base-dev
+---
+
+## CHANGELOG
+
+| Version | Date | Author | Summary |
+|---------|------|--------|---------|
+| v1.0 | 2026-01-24 | JM | Initial creation. Separated from SOURCE_AUTHORITY_HIERARCHY, created universal validation framework, topic-specific criteria, decision tree and confidence scoring system. |
+| v1.1 | 2026-02-22 | JM | Added CANONICAL UPDATE SCHEMA section: document architecture (Universal vs Topic-Specific layers), field specification for topic sections, procedures A–D (add section, update section, deprecate item, Universal Framework protocol), KB-dev notification triggers, SAH↔CVC alignment table. |
+| v1.2 | 2026-04-16 | JM | Add YAML header. Content unchanged. |
+
+---
+
 # **CLAIM VALIDATION CRITERIA**
 
 **Version:** 1.1  

@@ -1,3 +1,25 @@
+---
+id:          RESOURCE_SOURCE_AUTHORITY
+type:        RESOURCE
+subsystem:   KNOWLEDGE_BASE
+version:     2.2
+status:      ACTIVE
+created:     2025-09-01
+updated:     2026-04-16
+owner_chat:  knowledge-base-dev
+---
+
+## CHANGELOG
+
+| Version | Date | Author | Summary |
+|---------|------|--------|---------|
+| v1.0 | 2025-09-01 | JM | Initial creation. Living repository of authoritative sources organized by research topic. |
+| v2.0 | 2026-01-24 | JM | Complete restructure: separated from CLAIM_VALIDATION_CRITERIA, added explicit Tier Classification Criteria, Search Strategy sections, Evidence Sufficiency Guidelines, enhanced metadata and review triggers, AI-executable criteria. All topics restructured. |
+| v2.1 | 2026-02-22 | JM | Added CANONICAL UPDATE SCHEMA section: field specification for source entries (mandatory/optional fields, controlled Type vocabulary), procedures A–D (add source, add topic, reclassify, deprecate), KB-dev notification triggers. Schema only — no topic content changed. |
+| v2.2 | 2026-04-16 | JM | Add YAML header. Content unchanged. |
+
+---
+
 # **SOURCE AUTHORITY HIERARCHY**
 
 **Version:** 2.1  

@@ -2,23 +2,24 @@
 id:          CONTEXT_KNOWLEDGE_BASE
 type:        TEMPLATE
 subsystem:   KNOWLEDGE_BASE
-version:     1.3
+version:     1.4
 status:      ACTIVE
 created:     2026-02-21
-updated:     2026-02-22
+updated:     2026-04-16
 owner_chat:  knowledge-base-dev
 ---
 
 ## CHANGELOG
 | Version | Date | Author | Summary |
 |---------|------|--------|---------|
+| v1.4 | 2026-04-16 | JM | Sprint cierre R1 closure: inventario actualizado (SAH v2.2, CVC v1.2), version pins eliminados de DEPENDENCIES (DOC-01), sección trabajo activo Sprint cierre R1 añadida, backlog Sprint 4 indicado como vacío. |
 | v1.3 | 2026-02-22 | JM | Added DL entry format with filename convention and subsystem code |
 | v1.2 | 2026-02-21 | JM | Added explicit filename naming rule |
 | v1.1 | 2026-02-21 | JM | Clarified UPDATE_VALIDATION_CHECKLIST belongs to Research, not KB. Added CREATE_RESEARCH_PLAN as reference-only file. |
 | v1.0 | 2026-02-21 | JM | Initial version |
 
 ## DEPENDENCIES
-inputs:  [SCHEMA_SYSTEM_ARCHITECTURE_v1.1, MASTER_PLAN_v1.2]
+inputs:  [SCHEMA_SYSTEM_ARCHITECTURE, MASTER_PLAN]
 outputs: []
 calls:   []
 
@@ -96,8 +97,8 @@ Knowledge Base no invoca prompts de otros subsistemas.
 
 | Artefacto | Versión actual | Status | Descripción |
 |---|---|---|---|
-| RESOURCE_SOURCE_AUTHORITY | v2.1 | ACTIVE | Jerarquía de autoridad de fuentes por tema y disciplina. Incluye CANONICAL UPDATE SCHEMA. |
-| RESOURCE_CLAIM_VALIDATION | v1.1 | ACTIVE | Criterios y niveles de validación de claims. Incluye CANONICAL UPDATE SCHEMA. |
+| RESOURCE_SOURCE_AUTHORITY | v2.2 | ACTIVE | Jerarquía de autoridad de fuentes por tema y disciplina. Incluye CANONICAL UPDATE SCHEMA. |
+| RESOURCE_CLAIM_VALIDATION | v1.2 | ACTIVE | Criterios y niveles de validación de claims. Incluye CANONICAL UPDATE SCHEMA. |
 | RESOURCE_RESEARCH_FOCUS_TYPES | v1.1 | ACTIVE | 7 tipos de focus con job categories, body structure templates y notas metodológicas. |
 
 **Nota sobre naming:** Los archivos en GitHub deben llamarse `RESOURCE_SOURCE_AUTHORITY.md`, `RESOURCE_CLAIM_VALIDATION.md` y `RESOURCE_RESEARCH_FOCUS_TYPES.md` — sin versión en el nombre. El renaming de SAH y CVC desde los nombres legacy (`SOURCE_AUTHORITY_HIERARCHY_v2_0.md`, `CLAIM_VALIDATION_CRITERIA_v1_0.md`) está pendiente en Fase 3 del MASTER_PLAN.
@@ -106,7 +107,7 @@ Knowledge Base no invoca prompts de otros subsistemas.
 
 ### Artefactos pendientes de crear
 
-Ninguno. Todas las tareas del MASTER_PLAN asignadas a KB en la Fase actual están completadas.
+Ninguno. Todas las tareas del MASTER_PLAN asignadas a KB están completadas para Release 1.
 
 ### Pendientes de acción externa
 
@@ -121,7 +122,18 @@ Ninguno. Todas las tareas del MASTER_PLAN asignadas a KB en la Fase actual está
 
 ## SECCIÓN 4: TRABAJO ACTIVO
 
-No hay tareas activas asignadas a Knowledge Base en este momento.
+### Sprint cierre R1 — tareas completadas (2026-04-16)
+
+| Tarea | Descripción | Estado |
+|---|---|---|
+| KB-01 | YAML header añadido a RESOURCE_SOURCE_AUTHORITY (v2.1 → v2.2) | ✅ Completado 2026-04-16 |
+| KB-02 | YAML header añadido a RESOURCE_CLAIM_VALIDATION (v1.1 → v1.2) | ✅ Completado 2026-04-16 |
+| KB-03 | README knowledge-base/ actualizado — inventario R1, interfaces, nota DOC-01 | ✅ Completado 2026-04-16 |
+| KB-04 | CONTEXT_KNOWLEDGE_BASE actualizado — inventario v post KB-01/02, DOC-01 aplicado, cierre R1 documentado | ✅ Completado 2026-04-16 |
+
+### Backlog Sprint 4
+
+No hay backlog activo para Knowledge Base. El subsistema está completo para Release 1. No se han identificado tareas pendientes para Sprint 4.
 
 ### DL entries producidas en la sesión 2026-02-22
 
@@ -134,6 +146,10 @@ No hay tareas activas asignadas a Knowledge Base en este momento.
 
 | Tarea | Descripción | Completada |
 |---|---|---|
+| KB-01 | YAML header RESOURCE_SOURCE_AUTHORITY v2.1 → v2.2 | ✅ 2026-04-16 |
+| KB-02 | YAML header RESOURCE_CLAIM_VALIDATION v1.1 → v1.2 | ✅ 2026-04-16 |
+| KB-03 | README knowledge-base/ actualizado cierre R1 | ✅ 2026-04-16 |
+| KB-04 | CONTEXT_KNOWLEDGE_BASE v1.3 → v1.4 | ✅ 2026-04-16 |
 | F1-01 | Crear RESOURCE_RESEARCH_FOCUS_TYPES v1.0 | ✅ 2026-02-22 (v1.1) |
 | DL-20260221-004 | Verificar y explicitar esquema canónico SAH/CVC | ✅ 2026-02-22 |
 
