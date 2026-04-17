@@ -5,7 +5,7 @@ subsystem:   ACTIVATION
 version:     1.5
 status:      ACTIVE
 created:     2026-02-10
-updated:     2026-04-12
+updated:     2026-04-16
 owner_chat:  activation-dev
 ---
 
@@ -13,7 +13,7 @@ owner_chat:  activation-dev
 
 | Version | Date | Author | Summary |
 |---------|------|--------|---------|
-| v1.5 | 2026-04-12 | JM | Q&A de posicionamiento (PROMPT_QA_IDEAS) añadido en Fase 4 antes de escritura. POST_SEED como input canónico de PROMPT_WRITE_POST. Skip declarable por el editor. Referencias a CONTEXT_WRITING y TEMPLATE_POST_SEED. Cabecera YAML estándar añadida. Implementa DL_20260411_ACTIVATION_022. |
+| v1.5 | 2026-04-16 | JM | Q&A de posicionamiento (PROMPT_QA_IDEAS) añadido en Fase 4 antes de escritura. POST_SEED como input canónico de PROMPT_WRITE_POST. Skip declarable por el editor. Referencias a CONTEXT_WRITING y TEMPLATE_POST_SEED. Cabecera YAML estándar añadida. PROMPT_WRITE_POST v2.0 confirmado como existente en /writing/shared/. WRITE_POST/WRITE_ARTICLE/WRITE_THREAD eliminados como pendientes. WRITING_CONTEXT añadido como artefacto de configuración requerido (writing/post/RESOURCE_WRITING_CONTEXT.md). Nota de scope R1: flujo completo /writing/post/ no compartido con Activation; generación POST_SEED propio de Activation pendiente Sprint 4. Implementa DL_20260411_ACTIVATION_022, DL_20260416_SYSTEM_025. |
 | v1.4 | 2026-02-12 | JM | NICHOS LITERARIOS integrados en FASE 0. Objetivos de activación integrados en ANALYZE_COLLECTION v1.4. |
 | v1.3 | 2026-02-10 | JM | Instrucciones de parada añadidas en cada SUBFASE de FASE 0. |
 | v1.2 | 2026-02-10 | JM | FASE 0 dividida en 5 SUBFASES con checkpoints secuenciales. |
@@ -33,7 +33,7 @@ calls:   [PROMPT_QA_IDEAS, PROMPT_WRITE_POST, PROMPT_CREATE_TIMELINE, PROMPT_CRE
 **Proyecto:** Tinta Artificial
 **Versión:** 1.5
 **Fecha:** 12 febrero 2026
-**Última actualización:** 12 abril 2026
+**Última actualización:** 16 abril 2026
 **Alcance:** Desde libro(s) completo(s) hasta campaña de activación de contenido
 **Tipo:** Workflow específico para ACTIVACIÓN DE CONTENIDO (posts, artículos, threads)
 
@@ -41,7 +41,16 @@ calls:   [PROMPT_QA_IDEAS, PROMPT_WRITE_POST, PROMPT_CREATE_TIMELINE, PROMPT_CRE
 
 ## CHANGELOG LEGADO (formato narrativo)
 
-**v1.5 (12 abril 2026):**
+**v1.5 (16 abril 2026 — actualización DL_20260416_SYSTEM_025):**
+- ✅ **PROMPT_WRITE_POST v2.0 CONFIRMADO:** ya existe en `/writing/shared/` — no es pendiente de diseño
+- ✅ `WRITE_POST v1.0`, `WRITE_ARTICLE v1.0`, `WRITE_THREAD v1.0` eliminados como herramientas pendientes
+- ✅ **PROMPT_WRITE_POST v2.0** maneja todos los formatos (post_estandar, post_largo, hilo)
+- ✅ **`WRITING_CONTEXT`** añadido como artefacto de configuración requerido — definido en `writing/post/RESOURCE_WRITING_CONTEXT.md`
+- ✅ **Nota de scope R1 (DL_20260416_SYSTEM_025):** flujo completo `/writing/post/` NO compartido con Activation en R1
+- ✅ Mecanismo de generación del POST_SEED propio de Activation: **pendiente diseño Sprint 4**
+- ✅ Fecha de actualización: 2026-04-16
+
+**v1.5 (12 abril 2026 — DL_20260411_ACTIVATION_022):**
 - ✅ **Q&A DE POSICIONAMIENTO:** `PROMPT_QA_IDEAS` (Writing/shared) añadido en FASE 4 antes de escritura
 - ✅ **POST_SEED como input canónico:** combina contenido del libro + voz posicionada del editor
 - ✅ Skip declarable por el editor con mismo mecanismo que en RAMA POST autónoma
@@ -443,8 +452,8 @@ WORKFLOW RESEARCH
 ┌────────────────────────────────────────────────────────────────┐
 │ FASE 4: PRODUCCIÓN DE CONTENIDO (SECUENCIAL)                  │
 │ Herramientas: PROMPT_QA_IDEAS [Writing/shared] +              │
-│               WRITE_POST, WRITE_ARTICLE, WRITE_THREAD         │
-│               [DISEÑAR 3 PROMPTS]                             │
+│               PROMPT_WRITE_POST v2.0 [Writing/shared]         │
+│ Configuración: WRITING_CONTEXT (/writing/post/)               │
 │ Actor: Editor + IA (Q&A) → IA escribe, Editor valida          │
 │ Tiempo: 30-60 min Q&A + 1-3h escritura + 30-60 min rev.       │
 └────────────────────────────────────────────────────────────────┘
@@ -2600,10 +2609,24 @@ Editor + IA (Q&A de posicionamiento) → IA escribe, Editor valida
 - ✅ **`PROMPT_QA_IDEAS`** — Writing/shared, owner: Writing
   Ver documentación completa en `CONTEXT_WRITING`
 
-**Escritura (por formato):**
-- ⚠️ **`WRITE_POST v1.0`** — [PENDIENTE DISEÑO]
-- ⚠️ **`WRITE_ARTICLE v1.0`** — [PENDIENTE DISEÑO]
-- ⚠️ **`WRITE_THREAD v1.0`** — [PENDIENTE DISEÑO]
+**Escritura (todos los formatos):**
+- ✅ **`PROMPT_WRITE_POST v2.0`** — EXISTENTE, Writing/shared (owner: Writing)
+  Maneja todos los formatos: `post_estandar`, `post_largo`, `hilo`.
+  Input canónico: POST_SEED. Documentación completa: `writing/shared/PROMPT_WRITE_POST.md`
+
+**Artefacto de configuración:**
+- ✅ **`WRITING_CONTEXT`** — Definido en `writing/post/RESOURCE_WRITING_CONTEXT.md`
+  Combina EDITOR_PROFILE + publicación de destino + formato de texto.
+  Activation lo prepara en el paso de Q&A de posicionamiento o manualmente.
+
+> **Nota de scope R1 (DL_20260416_SYSTEM_025):** Solo `PROMPT_WRITE_POST` es shared con
+> Activation. El flujo completo de `/writing/post/` (Q&A de ideas, planificación, división
+> de posts) **no se comparte** con Activation en R1. Activation opera con material de un
+> libro ya investigado — caso de uso distinto que no requiere el flujo completo en R1.
+> El mecanismo exacto por el que Activation genera el POST_SEED propio (distinto al
+> POST_SEED del flujo Writing autónomo) está **pendiente de diseño en Sprint 4**. Por ahora,
+> Activation produce el POST_SEED manualmente o mediante los prompts propios del workflow
+> de análisis de colección.
 
 **Artefacto de interfaz:**
 - ✅ **`TEMPLATE_POST_SEED`** — Writing/shared, owner: Writing
@@ -2697,45 +2720,46 @@ El editor puede declarar skip con el mismo mecanismo que en RAMA POST autónoma 
 
 **PASO 4.3: Selección de Herramienta de Escritura**
 
-Según formato de la pieza:
+`PROMPT_WRITE_POST v2.0` (Writing/shared) maneja todos los formatos. El formato se
+especifica en el campo `format` del WRITING_CONTEXT:
 
 ```
-Si formato = "post_estandar" o "post_largo":
-└─ Usar: WRITE_POST v1.0
-
-Si formato = "artículo largo":
-└─ Usar: WRITE_ARTICLE v1.0
-
-Si formato = "hilo":
-└─ Usar: WRITE_THREAD v1.0
+format: post_estandar  → Post estándar (600–1.500 palabras)
+format: post_largo     → Post largo / artículo (1.500–3.000 palabras)
+format: hilo           → Hilo (8–15 unidades)
 ```
+
+No se requiere seleccionar entre herramientas distintas: siempre se usa
+`PROMPT_WRITE_POST v2.0` con el WRITING_CONTEXT apropiado.
 
 ---
 
-**PASO 4.4: Escritura Según Formato**
+**PASO 4.4: Escritura con PROMPT_WRITE_POST v2.0**
 
-**Input obligatorio:** POST_SEED_[N] (aprobado por editor)
+**Input obligatorio:** POST_SEED_[N] (aprobado por editor) + WRITING_CONTEXT
 
-**A) WRITE_POST v1.0** (Posts cortos y medianos)
+**Herramienta:** `PROMPT_WRITE_POST v2.0` (Writing/shared — ver `writing/shared/PROMPT_WRITE_POST.md`)
 
-- Input: POST_SEED_[N] + PERFIL_ACTIVO
-- Extensión: 600-800 (post_estandar) o 1,000-1,500 (post_largo)
-- Proceso: Seguir estructura del POST_SEED sección a sección; usar material citable literal sin modificar; integrar ideas desarrolladas con libertad de forma; señalar afirmaciones sin verificar con `[⚠ VERIFICAR]`
-- Output: `CONTENT_[N]_POST_v1.0.md`
+El prompt escribe el post sección a sección desde el POST_SEED como input canónico.
+El WRITING_CONTEXT determina el formato, la extensión objetivo y la publicación de destino.
+El EDITOR_PROFILE (referenciado en el WRITING_CONTEXT) define la voz.
 
-**B) WRITE_ARTICLE v1.0** (Artículos largos)
+**Comportamiento por formato (determinado por WRITING_CONTEXT.format):**
 
-- Input: POST_SEED_[N] + PERFIL_ACTIVO
-- Extensión: 1,500-3,000 palabras
-- Proceso: Estructura 5-7 secciones; mayor profundidad; 5-10 citas; puede incluir subsecciones con headers
-- Output: `CONTENT_[N]_ARTICLE_v1.0.md`
+- **`post_estandar`** — Post estándar
+  - Extensión: 600–800 (corto) o 1.000–1.500 (mediano) palabras
+  - Proceso: sección a sección desde POST_SEED; material citable literal sin modificar; señalar afirmaciones sin verificar con `[⚠ VERIFICAR]`
+  - Output: `CONTENT_[N]_POST_v1.0.md`
 
-**C) WRITE_THREAD v1.0** (Threads de Twitter)
+- **`post_largo`** — Artículo largo
+  - Extensión: 1.500–3.000 palabras
+  - Proceso: estructura 5-7 secciones; mayor profundidad; puede incluir subsecciones con headers
+  - Output: `CONTENT_[N]_ARTICLE_v1.0.md`
 
-- Input: POST_SEED_[N] + PERFIL_ACTIVO
-- Extensión: 8-15 tweets
-- Proceso: Tweet 1 standalone (hook); tweets 2-3 contexto; tweets 4-10 key points (1 punto por 1-2 tweets); tweet final resumen + CTA; numerar [X/Y]
-- Output: `CONTENT_[N]_THREAD_v1.0.md`
+- **`hilo`** — Hilo (Twitter/X u otras plataformas de microblogging)
+  - Extensión: 8–15 unidades
+  - Proceso: unidad 1 standalone (hook); unidades 2-3 contexto; unidades 4-10 key points (1 punto por 1-2 unidades); unidad final resumen + CTA; numerar [X/Y]
+  - Output: `CONTENT_[N]_THREAD_v1.0.md`
 
 ---
 
@@ -3106,14 +3130,13 @@ CONTENT_PACKAGE_[PROYECTO]/
 **FASE 4: Producción**
 8. ✅ `PROMPT_QA_IDEAS` — EXISTENTE, shared (owner: Writing) ⭐ NUEVO EN v1.5
    Ver: `CONTEXT_WRITING`
-9. ⚠️ `WRITE_POST v1.0` — PENDIENTE DISEÑO (shared, owner: Writing)
-10. ⚠️ `WRITE_ARTICLE v1.0` — PENDIENTE DISEÑO
-11. ⚠️ `WRITE_THREAD v1.0` — PENDIENTE DISEÑO
+9. ✅ `PROMPT_WRITE_POST v2.0` — EXISTENTE, shared (owner: Writing) ⭐ ACTUALIZADO EN v1.5
+   Ver: `writing/shared/PROMPT_WRITE_POST.md`. Maneja todos los formatos (post_estandar, post_largo, hilo).
 
 **FASE 5: Validación**
 12. ⚠️ `EVALUATE_ACTIVATION_CONTENT v1.0` — PENDIENTE DISEÑO (bloqueado por RESOURCE_EVALUATION_FRAMEWORK)
 
-**Total de prompts:** 12 (5 existentes reutilizados + 7 nuevos pendientes de diseño)
+**Total de prompts:** 10 (6 existentes reutilizados + 4 nuevos pendientes de diseño)
 
 ---
 
@@ -3123,7 +3146,8 @@ CONTENT_PACKAGE_[PROYECTO]/
 |-----------|------|---------|-------------|
 | `TEMPLATE_POST_SEED` | TEMPLATE | v1.0 | Input canónico de PROMPT_WRITE_POST. Combina estructura del POST_PLAN + voz posicionada del Q&A. ⭐ NUEVO EN v1.5 |
 | `PROMPT_QA_IDEAS` | PROMPT | — | Q&A de posicionamiento. Captura la posición del editor sobre el contenido antes de escribir. ⭐ NUEVO EN v1.5 |
-| `PROMPT_WRITE_POST` | PROMPT | v1.0 | Escritura del post. Input: POST_SEED. |
+| `PROMPT_WRITE_POST` | PROMPT | v2.0 | Escritura del post. Input canónico: POST_SEED. Maneja todos los formatos. ⭐ ACTUALIZADO EN v1.5 |
+| `WRITING_CONTEXT` | RESOURCE | v1.0 | Artefacto de configuración: EDITOR_PROFILE + publicación de destino + formato. Definido en `writing/post/RESOURCE_WRITING_CONTEXT.md`. ⭐ NUEVO EN v1.5 |
 | `PROMPT_CREATE_TIMELINE` | PROMPT | v1.0 | Cronología exhaustiva. |
 | `PROMPT_CREATE_CAST` | PROMPT | v1.0 | Catálogo de actores. |
 
