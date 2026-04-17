@@ -1,19 +1,19 @@
 ---
-id: CONTEXT_EVALUATION
-type: TEMPLATE
-subsystem: EVALUATION
-version: 1.4
-status: ACTIVE
-created: 2026-02-21
-updated: 2026-04-13
-owner_chat: evaluation-dev
+id:          CONTEXT_EVALUATION
+type:        TEMPLATE
+subsystem:   EVALUATION
+version:     1.4
+status:      ACTIVE
+created:     2026-02-21
+updated:     2026-04-16
+owner_chat:  evaluation-dev
 ---
 
 ## CHANGELOG
 
 | Version | Date | Author | Summary |
-|---|---|---|---|
-| v1.4 | 2026-04-13 | evaluation-dev | PROMPT_EVALUATE_POST v1.0 publicado (Sprint 3). Actualizado inventario y tareas del MASTER_PLAN. |
+|---------|------|--------|---------|
+| v1.4 | 2026-04-16 | JM | Sprint closure R1: EVALUATE_BOOK_STYLE updated to v1.1 ACTIVE. EVALUATE_POST v1.0 ACTIVE (created 2026-04-12). RESOURCE_EVALUATION_FRAMEWORK updated to v1.1. Inventory reflects current repo state. |
 | v1.3 | 2026-03-30 | JM | EVALUATE_BOOK_STYLE incorporated as owned artifact (DL_20260330_SYSTEM_004). Updated inventory, interfaces, and execution order. Clarified principle: ownership determined by function, not by inputs. |
 | v1.2 | 2026-02-22 | JM | Added DL entry format with filename convention and subsystem code |
 | v1.1 | 2026-02-21 | JM | Added explicit filename naming rule |
@@ -82,36 +82,25 @@ El ownership de un evaluador lo determina su **función** (evaluar), no sus **in
 
 * No define el EDITOR_PROFILE — eso es Editorial Profile. Solo lo consume como input.
 * No define SAH ni CVC — eso es Knowledge Base. Solo los consume como inputs.
-* No decide si el proyecto continúa o se detiene — eso es el editor, ayudado por `decision_guidance`
-* No produce texto ni investigación — solo evalúa artefactos producidos por otros subsistemas
+* No decide si el proyecto continúa o se detiene — eso es el editor, ayudado por `decision_guidance`.
+* No produce texto ni investigación — solo evalúa artefactos producidos por otros subsistemas.
 
 ### Interfaces de entrada
 
-| Artefacto | Origen | Usado por |
+| Artefacto | Origen | Descripción |
 |---|---|---|
-| RESEARCH_REPORT o RESEARCH_DEEP_DIVE | Research | EVALUATE_RESEARCH_REPORT |
-| Capítulo o libro completo | Writing | EVALUATE_BOOK_CONTENT |
-| EDITOR_PROFILE | Editorial Profile | EVALUATE_BOOK_STYLE, EVALUATE_POST |
-| Post o artículo | Writing | EVALUATE_POST |
-| POST_SEED | Writing | EVALUATE_POST (opcional) |
-| Campaña de contenido | Activation | EVALUATE_ACTIVATION (pendiente) |
-| SAH, CVC | Knowledge Base | EVALUATE_RESEARCH_REPORT |
+| EDITOR_PROFILE | Editorial Profile | Input de EVALUATE_BOOK_STYLE y EVALUATE_POST |
+| RESOURCE_SOURCE_AUTHORITY (SAH) | Knowledge Base | Input de EVALUATE_RESEARCH_REPORT |
+| RESOURCE_CLAIM_VALIDATION (CVC) | Knowledge Base | Input de EVALUATE_RESEARCH_REPORT |
+| RESEARCH_REPORT / RESEARCH_DEEP_DIVE | Research | Artefacto evaluado por EVALUATE_RESEARCH_REPORT |
+| Capítulos / libro completo | Writing | Artefacto evaluado por EVALUATE_BOOK_CONTENT y EVALUATE_BOOK_STYLE |
+| Post / artículo | Writing | Artefacto evaluado por EVALUATE_POST |
 
 ### Interfaces de salida
 
-Todos los evaluadores producen el mismo formato (contrato de evaluación):
-
-```
-EVALUATION_RESULT:
-  status:            GREEN | YELLOW | RED
-  score:             X/100
-  decision_guidance: [instrucción concreta para el editor]
-  blocking_issues:   [...] (obligatorio en RED; vacío en GREEN y YELLOW)
-  improvement_areas: [...] (obligatorio en YELLOW; vacío en GREEN)
-  strengths:         [...] (siempre presente, mínimo 2 items)
-```
-
-Los workflows que invocan evaluadores **solo leen `status` y `decision_guidance`**.
+| Artefacto | Destino | Descripción |
+|---|---|---|
+| EVALUATION_RESULT | Todos los subsistemas | Output canónico de cualquier evaluador (GREEN/YELLOW/RED) |
 
 ---
 
@@ -121,82 +110,86 @@ Los workflows que invocan evaluadores **solo leen `status` y `decision_guidance`
 
 | Artefacto | Versión | Status | Descripción |
 |---|---|---|---|
-| RESOURCE_EVALUATION_FRAMEWORK | v1.0 | ACTIVE | Contrato canónico: output, protocolo de invocación, filosofía |
-| PROMPT_EVALUATE_RESEARCH_REPORT | v1.1 | ACTIVE | Evalúa RESEARCH_REPORT y RESEARCH_DEEP_DIVE (RAMA A y RAMA B) |
-| PROMPT_EVALUATE_BOOK_CONTENT | v1.1 | ACTIVE | Evalúa rigor de fuentes y claims en el texto del libro |
-| PROMPT_EVALUATE_BOOK_STYLE | v1.0 | NEEDS UPDATE | Evalúa adherencia al perfil editorial del autor. Requiere adoptar contrato canónico → v1.1 |
-| PROMPT_EVALUATE_POST | v1.0 | ACTIVE | Evalúa calidad y voz de posts. Evaluador unificado: calidad de contenido + adherencia al EDITOR_PROFILE |
+| RESOURCE_EVALUATION_FRAMEWORK | v1.1 | ACTIVE | Contrato de evaluación: formato EVALUATION_RESULT, protocolo de invocación, inventario de evaluadores |
+| PROMPT_EVALUATE_RESEARCH_REPORT | v1.1 | ACTIVE | Evaluador de RESEARCH_REPORT y RESEARCH_DEEP_DIVE. 4 dimensiones: fuentes, claims, cobertura, metodología |
+| PROMPT_EVALUATE_BOOK_CONTENT | v1.1 | ACTIVE | Evaluador de contenido de libros. 2 dimensiones: fuentes y claims en prosa |
+| PROMPT_EVALUATE_BOOK_STYLE | v1.1 | ACTIVE | Evaluador de adherencia al perfil editorial del autor. 9 dimensiones de estilo |
+| PROMPT_EVALUATE_POST | v1.0 | ACTIVE | Evaluador de posts y artículos. 5 dimensiones: núcleo narrativo, estructura, voz, rigor, completitud editorial |
+| CONTEXT_EVALUATION | v1.4 | ACTIVE | Este documento |
 
-### Artefactos pendientes de crear
+### Artefactos pendientes
 
 | Artefacto | Prioridad | Bloqueado por |
 |---|---|---|
 | PROMPT_EVALUATE_ACTIVATION | 🟡 Baja | — |
 
-### Nota sobre EVALUATE_BOOK_STYLE
+---
 
-Incorporado a este subsistema el 30/03/2026 (DL_20260330_SYSTEM_004). El prompt venía de Editorial Profile — el archivo existe pero necesita:
+## SECCIÓN 4: CONTRATO DE EVALUACIÓN
 
-1. Moverse físicamente de `/editorial-profile/` a `/evaluation/` en el repositorio
-2. Actualizarse a v1.1 adoptando el contrato canónico del RESOURCE_EVALUATION_FRAMEWORK
+Todos los evaluadores producen el mismo output canónico:
+
+```
+EVALUATION_RESULT:
+  status:            GREEN | YELLOW | RED
+  score:             X/100
+  decision_guidance: [instrucción concreta para el editor]
+  blocking_issues:   [...] (solo en RED)
+  improvement_areas: [...] (solo en YELLOW)
+  strengths:         [...] (siempre, mínimo 2 items)
+```
+
+**Los workflows solo leen `status` y `decision_guidance`.** El resto del output es para el editor.
+
+Ver `RESOURCE_EVALUATION_FRAMEWORK` para especificación completa del contrato.
 
 ---
 
-## SECCIÓN 4: TRABAJO ACTIVO
+## SECCIÓN 5: TRABAJO ACTIVO
 
-### Orden de ejecución recomendado
+### Sprint cierre R1 — completado
 
-**Paso 1 — Completado:** RESOURCE_EVALUATION_FRAMEWORK v1.0 ✅
-
-**Paso 2 — Completado:** EVALUATE_RESEARCH_REPORT v1.1 ✅
-
-**Paso 3 — Completado:** EVALUATE_BOOK_CONTENT v1.1 ✅
-
-**Paso 4 — Completado:** EVALUATE_BOOK_STYLE v1.0 → v1.1 ✅ *(pendiente publicar en repo)*
-
-**Paso 5 — Completado:** EVALUATE_POST v1.0 ✅
-
-**Paso 6 — Pendiente:** EVALUATE_ACTIVATION v1.0
-
-### Tareas del MASTER_PLAN
-
-| Tarea | Descripción | Estado |
+| Tarea | Resultado | Fecha |
 |---|---|---|
-| F1-02 | Crear RESOURCE_EVALUATION_FRAMEWORK | ✅ v1.0 |
-| F3-02 | Adoptar contrato en evaluadores existentes | ✅ EVALUATE_RESEARCH_REPORT + EVALUATE_BOOK_CONTENT / ❌ EVALUATE_BOOK_STYLE v1.1 pendiente |
-| F3-03 | Clarificar cobertura RAMA A en EVALUATE_RESEARCH_REPORT | ✅ Incluido en v1.1 |
-| F4-04 | Diseñar EVALUATE_POST | ✅ v1.0 |
-| F4-05 | Diseñar EVALUATE_ACTIVATION | ❌ Pendiente |
+| EV-01: PROMPT_EVALUATE_BOOK_STYLE v1.1 | Contrato adoptado, YAML header, ownership correcto | 2026-04-16 |
+| EV-02: RESOURCE_EVALUATION_FRAMEWORK v1.1 | EVALUATE_POST ACTIVE, ownership BOOK_STYLE corregido | 2026-04-16 |
+| EV-03: CONTEXT_EVALUATION v1.4 | Inventario actualizado | 2026-04-16 |
 
-### DECISION_LOG entries
+### Sprint 4 — pendiente
 
-| DL-ID | Decisión | Estado |
+| Tarea | Artefacto | Prioridad |
 |---|---|---|
-| DL_20260222_EVAL_001 | Publicación RESOURCE_EVALUATION_FRAMEWORK v1.0 | ✅ |
-| DL_20260330_SYSTEM_004 | EVALUATE_BOOK_STYLE movido a Evaluation | Actualizar v1.0 → v1.1 pendiente |
-| DL_20260413_EVAL_002 | Publicación EVALUATE_POST v1.0 | ✅ |
+| Diseñar PROMPT_EVALUATE_ACTIVATION | v1.0 nuevo | 🟡 Baja |
 
 ---
 
-## SECCIÓN 5: PROTOCOLO DE TRABAJO
+## SECCIÓN 6: PROTOCOLO DE TRABAJO
 
 ### Al inicio de cada sesión
 
-1. Confirmar con el editor el objetivo
-2. Leer los artefactos relevantes desde el proyecto de Claude
+1. Confirmar con el editor el objetivo de la sesión
+2. Leer el artefacto a trabajar desde el proyecto de Claude
 3. Verificar si hay nuevas DL entries que afecten a Evaluation
 
 ### Al finalizar cada sesión
 
-1. Si se publicó o modificó un evaluador: crear DL entry notificando a los subsistemas que lo invocan
-2. Listar artefactos creados o modificados con su versión
+1. Si se publicó RESOURCE_EVALUATION_FRAMEWORK: crear DL entry notificando a Research, Writing y Editorial Profile
+2. Si se modificó un evaluador existente: crear DL entry indicando cambio de versión
+3. Listar artefactos creados o modificados con su versión
+4. Producir el mensaje de commit para cada artefacto
 
 ### Regla de naming de archivos
 
 **Ningún archivo del sistema incluye versión en el nombre.** Git gestiona el historial completo.
 
-* ✅ Correcto: `PROMPT_EVALUATE_POST.md`, `RESOURCE_EVALUATION_FRAMEWORK.md`
-* ❌ Incorrecto: `PROMPT_EVALUATE_POST_v1_0.md`
+* ✅ Correcto: `PROMPT_EVALUATE_BOOK_STYLE.md`, `RESOURCE_EVALUATION_FRAMEWORK.md`
+* ❌ Incorrecto: `PROMPT_EVALUATE_BOOK_STYLE_v1_1.md`
+
+La versión se documenta únicamente en:
+
+1. La cabecera YAML: `version: 1.1`
+2. El CHANGELOG interno del archivo
+3. El mensaje de commit: `[EVAL] feat: adopt evaluation contract in EVALUATE_BOOK_STYLE v1.1`
 
 ### Formato de commits a GitHub
 
@@ -204,9 +197,9 @@ Incorporado a este subsistema el 30/03/2026 (DL_20260330_SYSTEM_004). El prompt 
 [EVAL] tipo: descripción corta
 
 Ejemplos:
-[EVAL] feat: create PROMPT_EVALUATE_POST v1.0
-[EVAL] feat: move and update EVALUATE_BOOK_STYLE v1.1 (from editorial-profile)
-[EVAL] chore: update CONTEXT_EVALUATION v1.4
+[EVAL] feat: adopt evaluation contract in EVALUATE_BOOK_STYLE v1.1
+[EVAL] fix: update RESOURCE_EVALUATION_FRAMEWORK inventory v1.1
+[EVAL] feat: create PROMPT_EVALUATE_ACTIVATION v1.0
 ```
 
 ### Formato de DL entries
@@ -215,11 +208,14 @@ Ejemplos:
 DL_YYYYMMDD_EVAL_[NNN].md
 ```
 
+* `NNN` es numeración **global y secuencial** en todo el sistema
+* Antes de crear una entrada, consultar el último número usado en `/_system/decisions/`
+
 ### Cuándo crear una DL entry
 
-* Cuando se publica o modifica un evaluador (afecta al subsistema que lo invoca)
-* Cuando cambia el contrato de evaluación (afecta a todos los subsistemas)
-* Cuando se añade o elimina un evaluador del inventario
+* Cuando se publica RESOURCE_EVALUATION_FRAMEWORK (afecta a Research, Writing, Editorial Profile)
+* Cuando cambia el contrato de evaluación (afecta a todos los workflows)
+* Cuando se añade un nuevo evaluador (afecta al subsistema que lo invocará)
 
 ---
 
