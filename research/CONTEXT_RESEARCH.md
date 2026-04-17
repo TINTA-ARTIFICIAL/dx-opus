@@ -1,16 +1,17 @@
 | id | CONTEXT_RESEARCH |
 | type | TEMPLATE |
 | subsystem | RESEARCH |
-| version | 1.3 |
+| version | 1.4 |
 | status | ACTIVE |
 | created | 2026-02-21 |
-| updated | 2026-03-31 |
+| updated | 2026-04-16 |
 | owner_chat | research-dev |
 
 ## CHANGELOG
 
 | Version | Date | Author | Summary |
 |---------|------|--------|---------|
+| v1.4 | 2026-04-16 | JM | Sprint cierre R1 completed: YAML headers added to 6 legacy artefacts; PROMPT_RESEARCH_DEEP_DIVE v1.1 and PROMPT_EXECUTE_RESEARCH_PLAN v1.0 uploaded to repo; PROMPT_CREATE_RESEARCH_PLAN v3.0 uploaded; stale ref in WORKFLOW_RESEARCH changelog fixed (v2.1.2 → v2.2); README and CONTEXT updated; DEPENDENCIES version suffixes removed |
 | v1.3 | 2026-03-31 | JM | Sprint 2 completed: GUIDE_ANNOTATION_PHASE3 v1.0 added (GAP-R06 resolved); CREATE_RESEARCH_PLAN updated to v3.0 (GAP-R11 resolved); EVALUATE_RESEARCH_REPORT updated to v1.1 (GAP-R07 resolved by evaluation-dev); RESOURCE_RESEARCH_FOCUS_TYPES marked ACTIVE; Sprint 2 tasks marked completed |
 | v1.2 | 2026-02-22 | JM | Added DL entry format with filename convention and subsystem code |
 | v1.1 | 2026-02-21 | JM | Added explicit filename naming rule — no version in filename, Git manages history |
@@ -18,7 +19,7 @@
 
 ## DEPENDENCIES
 
-inputs: [SCHEMA_SYSTEM_ARCHITECTURE_v1.1, MASTER_PLAN_v1.2, RESEARCH_COMPONENT_AUDIT_v1.1]
+inputs: [SCHEMA_SYSTEM_ARCHITECTURE, MASTER_PLAN, RESEARCH_COMPONENT_AUDIT]
 outputs: []
 calls: []
 
@@ -195,7 +196,7 @@ Todos los gaps críticos han sido resueltos en Sprint 1.
 | GAP-R07 | EVALUATE_RESEARCH_REPORT no cubría explícitamente RESEARCH_DEEP_DIVE (RAMA A) | ✅ RESOLVED — PROMPT_EVALUATE_RESEARCH_REPORT v1.1 (evaluation-dev, Sprint 2) |
 | GAP-R11 | Focus types embebidos en CREATE_RESEARCH_PLAN (17% del prompt) | ✅ RESOLVED — PROMPT_CREATE_RESEARCH_PLAN v3.0 (Sprint 2) |
 
-### Gaps menores (pendientes)
+### Gaps menores (pendientes — backlog Sprint 4)
 
 | GAP ID | Descripción |
 |---|---|
@@ -224,11 +225,33 @@ Todos los gaps críticos han sido resueltos en Sprint 1.
 | S2-B | Externalizar focus types de CREATE_RESEARCH_PLAN al resource | PROMPT_CREATE_RESEARCH_PLAN v3.0 | R11 | ✅ DONE |
 | F3-02 | Adoptar contrato de evaluación en EVALUATE_RESEARCH_REPORT | PROMPT_EVALUATE_RESEARCH_REPORT v1.1 | R07 | ✅ DONE — completado por evaluation-dev |
 
+### Sprint cierre R1 — Cierre de Release 1 ✅ COMPLETADO
+
+| Tarea | Descripción | Artefacto resultante | Status |
+|---|---|---|---|
+| RE-01 | Subir PROMPT_RESEARCH_DEEP_DIVE v1.1 al repo | PROMPT_RESEARCH_DEEP_DIVE.md | ✅ DONE |
+| RE-01 | Subir PROMPT_EXECUTE_RESEARCH_PLAN v1.0 al repo | PROMPT_EXECUTE_RESEARCH_PLAN.md | ✅ DONE |
+| RE-02 | Subir PROMPT_CREATE_RESEARCH_PLAN v3.0 con YAML header y DEPENDENCIES | PROMPT_CREATE_RESEARCH_PLAN.md | ✅ DONE |
+| RE-03 | Añadir YAML header a WORKFLOW_RESEARCH v3.2 | WORKFLOW_RESEARCH.md | ✅ DONE |
+| RE-03 | Añadir YAML header a PROMPT_SUMMARIZE_REFERENCES v4.1 | PROMPT_SUMMARIZE_REFERENCES.md | ✅ DONE |
+| RE-03 | Añadir YAML header a PROMPT_UPDATE_VALIDATION_CHECKLIST v3.1 | PROMPT_UPDATE_VALIDATION_CHECKLIST.md | ✅ DONE |
+| RE-04 | Corregir stale ref en WORKFLOW_RESEARCH changelog (v2.1.2 → v2.2) | WORKFLOW_RESEARCH.md | ✅ DONE |
+| RE-05 | Actualizar README del subsistema al cierre de R1 | README.md | ✅ DONE |
+| RE-06 | Actualizar CONTEXT_RESEARCH al cierre de R1 | CONTEXT_RESEARCH.md (este archivo) | ✅ DONE |
+
 ### Sprint 3 — Decisiones editoriales pendientes
 
 | Tarea | Descripción | Artefacto resultante | Bloqueado por |
 |---|---|---|---|
 | F5-01 | Decidir si mantener secciones 4-6 del NARRATIVE_BRIDGE | PROMPT_SUMMARIZE_REFERENCES (si se reducen) | Decisión editorial |
+
+### Backlog Sprint 4
+
+| GAP | Descripción | Tarea pendiente |
+|---|---|---|
+| GAP-R08 | "Practical Applications" sin consumidor definido | Decidir uso downstream o eliminar sección |
+| GAP-R09 | NARRATIVE_BRIDGE secciones 4-6 sin consumidor definido | Decisión editorial — Sprint 3 primero |
+| GAP-R10 | Prefijo `SBSTK_` no estándar en SUMMARIZE_REFERENCES | Renombrar título interno del prompt |
 
 ### DECISION_LOG entries producidas
 
@@ -334,7 +357,7 @@ Tipos: feat | fix | refactor | docs | chore
 Ejemplos:
 [RESEARCH] feat: create GUIDE_ANNOTATION_PHASE3 (v1.0) — resolves GAP-R06
 [RESEARCH] refactor: externalize focus types to resource in CREATE_RESEARCH_PLAN (v3.0) — resolves GAP-R11
-[RESEARCH] docs: update CONTEXT_RESEARCH to v1.3 — Sprint 2 completed
+[RESEARCH] docs: update CONTEXT_RESEARCH to v1.4 — R1 closure
 ```
 
 ### Formato de DL entries

@@ -1,3 +1,26 @@
+---
+id:          PROMPT_SUMMARIZE_REFERENCES
+type:        PROMPT
+subsystem:   RESEARCH
+version:     4.1
+status:      ACTIVE
+created:     2025-09-01
+updated:     2026-04-16
+owner_chat:  research-dev
+---
+
+## CHANGELOG
+
+| Version | Date | Author | Summary |
+|---------|------|--------|---------|
+| v1.0–v1.5 | 2025-09-01 | JM | Initial versions |
+| v2.0 | 2025-11-01 | JM | Optimized structure, clarified instructions |
+| v3.0 | 2026-01-01 | JM | Separated outputs, improved specifications |
+| v3.1 | 2026-01-01 | JM | Pragmatic formatting policy; recalibrated effort distribution; added NARRATIVE_BRIDGE output |
+| v4.0 | 2026-01-01 | JM | Complete restructure: modular architecture, workflow clarity, working document emphasis, detailed output specifications, enhanced gap analysis framework |
+| v4.1 | 2026-02-22 | JM | Added SOURCE_AUTHORITY_HIERARCHY and CLAIM_VALIDATION_CRITERIA as explicit inputs; integrated SAH consultation into Phase 1; integrated CVC consultation into Phase 3; added SAH/CVC checks to pre-delivery checklist — resolves GAP-R04 |
+| v4.1+header | 2026-04-16 | JM | Add YAML header. Content unchanged. |
+
 # **PROMPT FOR INITIAL REFERENCE ANALYSIS**
 
 **Title:** SBSTK\_PROMPT\_SUMMARIZE\_REFERENCES  

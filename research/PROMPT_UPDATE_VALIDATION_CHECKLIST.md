@@ -1,3 +1,24 @@
+---
+id:          PROMPT_UPDATE_VALIDATION_CHECKLIST
+type:        PROMPT
+subsystem:   RESEARCH
+version:     3.1
+status:      ACTIVE
+created:     2025-09-01
+updated:     2026-04-16
+owner_chat:  research-dev
+---
+
+## CHANGELOG
+
+| Version | Date | Author | Summary |
+|---------|------|--------|---------|
+| v1.0–v1.5 | 2025-09-01 | JM | Initial versions |
+| v2.0 | 2025-11-01 | JM | Optimized structure, clarified instructions |
+| v3.0 | 2026-01-24 | JM | Complete restructure: explicit integration with REFERENCE_SUMMARY and RESEARCH_PLAN; systematic source classification using Tier Criteria; derivation of validation criteria from research insights; VALIDATION_REPORT as mandatory intermediate output; support for NEW/UPDATE/SUBTOPIC modes; conflict resolution framework; editor approval workflow |
+| v3.1 | 2026-02-22 | JM | Fixed section references to match canonical structures: REFERENCE_SUMMARY sections 4 (Historical Perspective) and 9 (Complete Reference List) corrected; Key Actors updated to Section 7; RESEARCH_PLAN Section 6 "Relevant Actors" replaced by Section 3 "Field Context" subsection 3.2 — resolves GAP-R05 |
+| v3.1+header | 2026-04-16 | JM | Add YAML header. Content unchanged. |
+
 # **PROMPT FOR UPDATING THE VALIDATION SYSTEM**
 
 **Title:** SBSTK\_PROMPT\_UPDATE\_VALIDATION\_SYSTEM  

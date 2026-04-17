@@ -1,3 +1,22 @@
+---
+id:          WORKFLOW_RESEARCH
+type:        WORKFLOW
+subsystem:   RESEARCH
+version:     3.2
+status:      ACTIVE
+created:     2026-01-25
+updated:     2026-04-16
+owner_chat:  research-dev
+---
+
+## CHANGELOG
+
+| Version | Date | Author | Summary |
+|---------|------|--------|---------|
+| v3.1 | 2026-01-25 | JM | RAMA A updated: RESEARCH_DEEP_DIVE_PROMPT v1.1 implemented; added Timeline and Cast of Characters section; added 7 Research Focus types list; updated artefacts section |
+| v3.2 | 2026-02-22 | JM | Structural outputs aligned with PROMPT_SUMMARIZE_REFERENCES v4.0; section references in Checkpoint 1 corrected; RESEARCH_PLAN added as Fase 2 input; BOOK_BRIEF added as optional Fase 0 input; RAMA A diagram corrected — resolves GAP-R01, GAP-R02, GAP-R03 (partial) |
+| v3.2+header | 2026-04-16 | JM | Add YAML header; fix stale ref in inline changelog (v2.1.2 → v2.2). Content otherwise unchanged. |
+
 # WORKFLOW: SISTEMA DE INVESTIGACIÓN TINTA ARTIFICIAL
 
 **Proyecto:** Tinta Artificial  
@@ -13,7 +32,7 @@
 - ✅ RESEARCH_PLAN añadido como input de Fase 2 (alineación con UPDATE_VALIDATION_CHECKLIST)
 - ✅ BOOK_BRIEF de Activation añadido como input opcional en Fase 0 (DL-20260221-005)
 - ✅ Diagrama de Fase 4 RAMA A corregido: [PENDIENTE DISEÑO] → RESEARCH_DEEP_DIVE_PROMPT v1.1
-- ✅ Versión de CREATE_RESEARCH_PLAN corregida a v2.1.2 en sección Artefactos
+- ✅ Versión de CREATE_RESEARCH_PLAN corregida a v2.2 en sección Artefactos
 
 **Changelog v3.1:**
 - ✅ RAMA A actualizada: [PENDIENTE] → RESEARCH_DEEP_DIVE_PROMPT v1.1 implementado

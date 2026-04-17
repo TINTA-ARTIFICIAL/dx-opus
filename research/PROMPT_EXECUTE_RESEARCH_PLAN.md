@@ -1,3 +1,21 @@
+---
+id:          PROMPT_EXECUTE_RESEARCH_PLAN
+type:        PROMPT
+subsystem:   RESEARCH
+version:     1.0
+status:      ACTIVE
+created:     2026-01-24
+updated:     2026-04-16
+owner_chat:  research-dev
+---
+
+## CHANGELOG
+
+| Version | Date | Author | Summary |
+|---------|------|--------|---------|
+| v1.0 | 2026-01-24 | JM | Initial version — complete execution system separated from planning; three-task structure (Execute/Synthesize/Write); rigorous validation protocol; detailed writing guidance; quality checkpoints throughout |
+| v1.0+header | 2026-04-16 | JM | Add YAML header. Content unchanged. |
+
 # EXECUTE_RESEARCH_PLAN: DEEP RESEARCH EXECUTION SYSTEM
 
 **Version:** 1.0  

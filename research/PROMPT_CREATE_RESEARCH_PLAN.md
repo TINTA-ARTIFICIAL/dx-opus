@@ -1,3 +1,34 @@
+---
+id:          PROMPT_CREATE_RESEARCH_PLAN
+type:        PROMPT
+subsystem:   RESEARCH
+version:     3.0
+status:      ACTIVE
+created:     2025-08-01
+updated:     2026-04-16
+owner_chat:  research-dev
+---
+
+## CHANGELOG
+
+| Version | Date | Author | Summary |
+|---------|------|--------|---------|
+| v1.0 | 2025-08-01 | JM | Initial version |
+| v2.0 | 2026-01-01 | JM | Complete redesign: separated from execution; integrated with previous phase artifacts (SOURCE_AUTHORITY_HIERARCHY, NARRATIVE_BRIDGE); structured research job template; body structure templates by focus; explicit research focus selection; adapted writing instructions generation |
+| v2.1 | 2026-01-25 | JM | Added Research Focus 7: Seminal Concept Analysis (TIPO G); updated to support 7 types of research reports/books |
+| v2.2 | 2026-02-22 | JM | Fixed section references to match canonical output structures: REFERENCE_SUMMARY section 4 (Historical Perspective), section 3 name "Convergence and Divergence Analysis"; RESEARCH_PLAN section 2 (Gap Analysis) — resolves GAP-R01, GAP-R02 |
+| v3.0 | 2026-03-31 | JM | Externalized Research Focus type definitions to RESOURCE_RESEARCH_FOCUS_TYPES v1.1; Step 0 updated to read resource before presenting focus options; RESOURCE_RESEARCH_FOCUS_TYPES added as mandatory input (section 2.1 item 8) — resolves GAP-R11 |
+| v3.0+header | 2026-04-16 | JM | Add YAML header and DEPENDENCIES section. Content unchanged. |
+
+## DEPENDENCIES
+
+```
+inputs:  [ANNOTATED_REFERENCE_SUMMARY, ANNOTATED_RESEARCH_PLAN, NARRATIVE_BRIDGE,
+          RESOURCE_SOURCE_AUTHORITY, RESOURCE_CLAIM_VALIDATION, RESOURCE_RESEARCH_FOCUS_TYPES]
+outputs: [RESEARCH_PLAN_DETAILED, WRITING_INSTRUCTIONS_ADAPTED]
+calls:   []
+```
+
 # CREATE_RESEARCH_PLAN: DEEP RESEARCH PLANNING SYSTEM
 
 **Version:** 3.0  

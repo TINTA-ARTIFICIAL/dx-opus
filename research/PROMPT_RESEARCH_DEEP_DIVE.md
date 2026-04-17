@@ -1,3 +1,22 @@
+---
+id:          PROMPT_RESEARCH_DEEP_DIVE
+type:        PROMPT
+subsystem:   RESEARCH
+version:     1.1
+status:      ACTIVE
+created:     2026-01-26
+updated:     2026-04-16
+owner_chat:  research-dev
+---
+
+## CHANGELOG
+
+| Version | Date | Author | Summary |
+|---------|------|--------|---------|
+| v1.0 | 2026-01-24 | JM | Initial version |
+| v1.1 | 2026-01-26 | JM | Added Timeline and Cast of Characters (section N+1); aligned structure with WRITING_INSTRUCTIONS_RESEARCH_REPORT v2.1; updated quality checklists; renumbered sections (Methodology → N+2, Implications → N+3) |
+| v1.1+header | 2026-04-16 | JM | Add YAML header. Content unchanged. |
+
 # RESEARCH_DEEP_DIVE: INVESTIGACIÓN PROFUNDA ORIENTADA A POST
 
 **Version:** 1.1  
