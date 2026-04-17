@@ -2,10 +2,10 @@
 id:          CONTEXT_WRITING
 type:        TEMPLATE
 subsystem:   WRITING
-version:     1.4
+version:     1.5
 status:      ACTIVE
 created:     2026-02-21
-updated:     2026-04-11
+updated:     2026-04-16
 owner_chat:  writing-dev
 ---
 
@@ -13,6 +13,7 @@ owner_chat:  writing-dev
 
 | Version | Date | Author | Summary |
 |---------|------|--------|---------|
+| v1.5 | 2026-04-16 | JM | Add DL_20260416_SYSTEM_026 note and future design note on workflow location. |
 | v1.4 | 2026-04-11 | writing-dev | Sprint 3 complete: all RAMA POST artifacts now ACTIVE. WORKFLOW_WRITING v2.0 ACTIVE. Work active updated to Sprint 4. |
 | v1.3 | 2026-04-11 | JM | Sprint 3: full RAMA POST inventory added (10 prompts + 5 support artifacts). WRITING_CONTEXT and POST_SEED added as canonical artifacts. DL entries 015–020 and 023 added. Work active section updated with Sprint 3 tasks and implementation notes. |
 | v1.2 | 2026-02-22 | JM | Added DL entry format with filename convention and subsystem code |
@@ -194,9 +195,13 @@ PROMPT_SPLIT_POST       ← invocable en cualquier fase
 
 ### Workflow
 
-| Artefacto | Versión | Status |
-|---|---|---|
-| WORKFLOW_WRITING | v2.0 | ACTIVE |
+| Artefacto | Versión | Ubicación | Status |
+|---|---|---|---|
+| WORKFLOW_WRITING | v2.0 | `writing/WORKFLOW_WRITING.md` | ACTIVE |
+
+**Decisión de ubicación (DL_20260416_SYSTEM_026):** El workflow vive en la raíz de `writing/` como archivo unificado que documenta ambas ramas (Book y Post) con bifurcación interna. El archivo fue movido desde `writing/book/WORKFLOW_WRITING_BOOK.md` en el sprint de cierre R1; el id interno `WORKFLOW_WRITING` y la versión 2.0 ya eran correctos antes del movimiento.
+
+**Nota de diseño futuro:** En Sprint 4 o posterior, evaluar si la evolución divergente de las ramas Book y Post justifica separar en dos workflows independientes (`WORKFLOW_WRITING_BOOK.md` en `writing/book/` y `WORKFLOW_WRITING_POST.md` en `writing/post/`). Criterio de decisión: cuando el mantenimiento del workflow unificado genere más fricción que tener dos documentos separados, típicamente cuando las ramas tengan ciclos de versión desacoplados. Ver DL_20260416_SYSTEM_026.
 
 ---
 

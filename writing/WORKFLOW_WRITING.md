@@ -13,6 +13,7 @@ owner_chat:  writing-dev
 
 | Versión | Fecha | Autor | Resumen |
 |---------|-------|-------|---------|
+| v2.0.1 | 2026-04-16 | JM | Moved from writing/book/WORKFLOW_WRITING_BOOK.md to writing/WORKFLOW_WRITING.md per DL_20260416_SYSTEM_026. Content unchanged. |
 | v2.0 | 2026-04-11 | writing-dev | Bifurcación Book/Post; nomenclatura actualizada; cabecera YAML; eliminado sufijo marca |
 | v1.7 | 2026-01-31 | JM | CONSOLIDATE_REFERENCES; sistema completo al 100% |
 | v1.6 | 2026-01-27 | JM | WRITE_INTRODUCTION, WRITE_PROLOGO, CREATE_TIMELINE, CREATE_CAST |
