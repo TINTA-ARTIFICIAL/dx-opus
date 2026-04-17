@@ -1,3 +1,21 @@
+---
+id:          PROMPT_WRITE_SAMPLE_CHAPTER
+type:        PROMPT
+subsystem:   WRITING
+version:     1.0
+status:      ACTIVE
+created:     2026-01-26
+updated:     2026-04-16
+owner_chat:  writing-dev
+---
+
+## CHANGELOG
+
+| Version | Date | Author | Summary |
+|---------|------|--------|---------|
+| v1.0 | 2026-01-26 | JM | Initial version. |
+| v1.0 | 2026-04-16 | JM | Add YAML header. Content unchanged. |
+
 # WRITE_SAMPLE_CHAPTER v1.0
 
 **Proyecto:** Tinta Artificial  

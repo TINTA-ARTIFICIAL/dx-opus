@@ -1,3 +1,21 @@
+---
+id:          PROMPT_CREATE_BOOK_SHEET
+type:        PROMPT
+subsystem:   WRITING
+version:     1.1
+status:      ACTIVE
+created:     2026-01-26
+updated:     2026-04-16
+owner_chat:  writing-dev
+---
+
+## CHANGELOG
+
+| Version | Date | Author | Summary |
+|---------|------|--------|---------|
+| v1.1 | 2026-01-26 | JM | Separated evaluation step; text written in ESTILO_EDITORIAL. |
+| v1.1 | 2026-04-16 | JM | Add YAML header. Content unchanged. |
+
 # CREATE_BOOK_SHEET v1.1
 
 **Proyecto:** Tinta Artificial  

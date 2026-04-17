@@ -1,3 +1,21 @@
+---
+id:          PROMPT_WRITE_PROLOGUE
+type:        PROMPT
+subsystem:   WRITING
+version:     1.0
+status:      ACTIVE
+created:     2026-01-27
+updated:     2026-04-16
+owner_chat:  writing-dev
+---
+
+## CHANGELOG
+
+| Version | Date | Author | Summary |
+|---------|------|--------|---------|
+| v1.0 | 2026-01-27 | JM | Initial version. |
+| v1.0 | 2026-04-16 | JM | Add YAML header. Content unchanged. |
+
 # WRITE_PROLOGO v1.0
 
 **Proyecto:** Tinta Artificial  

@@ -1,3 +1,21 @@
+---
+id:          PROMPT_CONSOLIDATE_REFERENCES
+type:        PROMPT
+subsystem:   WRITING
+version:     1.1
+status:      ACTIVE
+created:     2026-01-31
+updated:     2026-04-16
+owner_chat:  writing-dev
+---
+
+## CHANGELOG
+
+| Version | Date | Author | Summary |
+|---------|------|--------|---------|
+| v1.1 | 2026-01-31 | JM | Initial version. |
+| v1.1 | 2026-04-16 | JM | Add YAML header. Content unchanged. |
+
 # CONSOLIDATE_REFERENCES v1.0
 
 **Proyecto:** Tinta Artificial  

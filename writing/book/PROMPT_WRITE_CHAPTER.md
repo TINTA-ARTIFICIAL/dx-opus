@@ -1,3 +1,21 @@
+---
+id:          PROMPT_WRITE_CHAPTER
+type:        PROMPT
+subsystem:   WRITING
+version:     1.3
+status:      ACTIVE
+created:     2026-01-26
+updated:     2026-04-16
+owner_chat:  writing-dev
+---
+
+## CHANGELOG
+
+| Version | Date | Author | Summary |
+|---------|------|--------|---------|
+| v1.3 | 2026-01-26 | JM | WRITE_CHAPTER v1.3; simplified chapter-detection; two invocation modes. |
+| v1.3 | 2026-04-16 | JM | Add YAML header. Content unchanged. |
+
 # WRITE_CHAPTER v1.3
 
 **Proyecto:** Tinta Artificial  
