@@ -1,3 +1,22 @@
+---
+id:          PROMPT_CREATE_CAST
+type:        PROMPT
+subsystem:   WRITING
+version:     1.0
+status:      ACTIVE
+created:     2026-01-27
+updated:     2026-04-16
+owner_chat:  writing-dev
+invoked_by:  writing-dev (RAMA BOOK), activation-dev
+---
+
+## CHANGELOG
+
+| Version | Date | Author | Summary |
+|---------|------|--------|---------|
+| v1.0 | 2026-01-27 | JM | Initial version. |
+| v1.0 | 2026-04-16 | JM | Add YAML header. Content unchanged. |
+
 # CREATE_CAST v1.0
 
 **Proyecto:** Tinta Artificial  
