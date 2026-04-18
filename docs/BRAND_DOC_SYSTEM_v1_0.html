@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BRAND_DOC_SYSTEM — Tinta Artificial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Gentium+Plus:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ta-tinta:    #0A0A0A;
+    --ta-carbon:   #434343;
+    --ta-grafito:  #595959;
+    --ta-papel:    #E8E4D9;
+    --ta-blanco:   #FFFFFF;
+    --ta-cian:     #00D4D4;
+    --ta-rojo:     #FF2D2C;
+    --ta-pizarra:  #78909C;
+    --ta-ambar:    #FFAB40;
+
+    --font-display: 'Bebas Neue', Arial, sans-serif;
+    --font-body:    'Gentium Plus', Georgia, serif;
+    --font-mono:    'JetBrains Mono', 'Courier New', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--ta-blanco);
+    color: var(--ta-tinta);
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    background: var(--ta-tinta);
+    padding: 60px 60px 48px;
+    position: relative;
+  }
+  .cover-rule {
+    width: 48px;
+    height: 3px;
+    background: var(--ta-cian);
+    margin-bottom: 28px;
+  }
+  .cover-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ta-cian);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .cover-title {
+    font-family: var(--font-display);
+    font-size: 72px;
+    color: var(--ta-blanco);
+    line-height: 0.95;
+    letter-spacing: 0.01em;
+    margin-bottom: 16px;
+  }
+  .cover-subtitle {
+    font-family: var(--font-body);
+    font-size: 17px;
+    color: var(--ta-papel);
+    font-style: italic;
+    margin-bottom: 48px;
+    opacity: 0.85;
+  }
+  .cover-meta {
+    display: flex;
+    gap: 40px;
+    border-top: 0.5px solid #2a2a2a;
+    padding-top: 20px;
+  }
+  .cover-meta-item strong {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ta-grafito);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .cover-meta-item span {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ta-papel);
+  }
+
+  /* ── BODY ── */
+  .body-wrap { padding: 48px 60px; }
+
+  /* ── SECTION HEADERS ── */
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ta-cian);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  h1.doc-h1 {
+    font-family: var(--font-display);
+    font-size: 36px;
+    color: var(--ta-tinta);
+    letter-spacing: 0.02em;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .h1-rule {
+    height: 2px;
+    background: var(--ta-cian);
+    margin-bottom: 28px;
+    width: 100%;
+  }
+  h2.doc-h2 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    color: var(--ta-carbon);
+    letter-spacing: 0.04em;
+    margin: 36px 0 10px;
+  }
+  h3.doc-h3 {
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ta-tinta);
+    margin: 24px 0 8px;
+  }
+
+  /* ── BODY TEXT ── */
+  p {
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--ta-tinta);
+    margin-bottom: 14px;
+  }
+  p.lead {
+    font-size: 17px;
+    color: var(--ta-carbon);
+  }
+
+  /* ── DIVIDER ── */
+  .section-divider {
+    height: 0.5px;
+    background: var(--ta-papel);
+    margin: 48px 0;
+  }
+
+  /* ── COLOR PALETTE ── */
+  .palette-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .swatch {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 0.5px solid rgba(0,0,0,0.08);
+  }
+  .swatch-block { height: 60px; }
+  .swatch-info { padding: 8px 10px; background: #F9F8F5; }
+  .swatch-name {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--ta-tinta);
+    display: block;
+  }
+  .swatch-hex {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ta-grafito);
+    display: block;
+    margin-top: 2px;
+  }
+  .swatch-role {
+    font-family: var(--font-body);
+    font-size: 10px;
+    color: var(--ta-pizarra);
+    display: block;
+    margin-top: 2px;
+    font-style: italic;
+  }
+
+  /* ── TYPOGRAPHY SAMPLES ── */
+  .type-sample {
+    padding: 20px 24px;
+    border: 0.5px solid var(--ta-papel);
+    border-radius: 8px;
+    margin-bottom: 16px;
+    background: #FDFCFA;
+  }
+  .type-sample-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ta-pizarra);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 10px;
+  }
+  .type-meta-row {
+    display: flex;
+    gap: 20px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+  .type-meta-item {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ta-grafito);
+  }
+  .type-meta-item strong { color: var(--ta-carbon); }
+
+  /* ── CALLOUT ── */
+  .callout {
+    border-left: 3px solid var(--ta-cian);
+    padding: 14px 18px;
+    background: #F0FAFA;
+    border-radius: 0 6px 6px 0;
+    margin: 20px 0;
+  }
+  .callout p { margin: 0; font-style: italic; font-size: 15px; }
+  .callout.callout-warn { border-left-color: var(--ta-ambar); background: #FFFBF0; }
+  .callout.callout-alert { border-left-color: var(--ta-rojo); background: #FFF5F5; }
+
+  /* ── CODE ── */
+  .code-block {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    background: var(--ta-tinta);
+    color: var(--ta-cian);
+    padding: 16px 20px;
+    border-radius: 6px;
+    margin: 16px 0;
+    display: block;
+    white-space: pre;
+    overflow-x: auto;
+    line-height: 1.6;
+  }
+  code.inline {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    background: var(--ta-papel);
+    color: var(--ta-carbon);
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+
+  /* ── BADGES ── */
+  .badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    padding: 3px 9px;
+    border-radius: 4px;
+    margin-right: 4px;
+    letter-spacing: 0.04em;
+  }
+  .badge-cian    { background: var(--ta-cian); color: #003333; }
+  .badge-rojo    { background: var(--ta-rojo); color: #FFFFFF; }
+  .badge-papel   { background: var(--ta-papel); color: var(--ta-carbon); }
+  .badge-tinta   { background: var(--ta-tinta); color: var(--ta-blanco); }
+  .badge-ambar   { background: var(--ta-ambar); color: #4A2900; }
+  .badge-pizarra { background: var(--ta-pizarra); color: #FFFFFF; }
+
+  /* ── TABLES ── */
+  table.doc-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-body);
+    font-size: 14px;
+    margin: 16px 0;
+  }
+  table.doc-table th {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ta-grafito);
+    border-bottom: 1.5px solid var(--ta-cian);
+    padding: 8px 12px;
+    text-align: left;
+    background: #FDFCFA;
+  }
+  table.doc-table td {
+    padding: 10px 12px;
+    border-bottom: 0.5px solid var(--ta-papel);
+    color: var(--ta-tinta);
+    vertical-align: top;
+  }
+  table.doc-table tr:last-child td { border-bottom: none; }
+
+  /* ── DOCUMENT TEMPLATE PREVIEW ── */
+  .template-preview {
+    border: 1px solid var(--ta-papel);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 20px 0;
+  }
+  .template-cover-mini {
+    background: var(--ta-tinta);
+    padding: 28px 32px 24px;
+  }
+  .template-body-mini {
+    background: var(--ta-blanco);
+    padding: 24px 32px;
+  }
+
+  /* ── SPACING SCALE ── */
+  .spacing-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 10px;
+  }
+  .spacing-block {
+    background: var(--ta-cian);
+    opacity: 0.5;
+    height: 10px;
+    flex-shrink: 0;
+  }
+  .spacing-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ta-grafito);
+    min-width: 80px;
+  }
+  .spacing-use {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--ta-pizarra);
+    font-style: italic;
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    body { max-width: 100%; }
+    .cover { padding: 40px; }
+    .body-wrap { padding: 32px 40px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════ COVER -->
+<div class="cover">
+  <div class="cover-rule"></div>
+  <div class="cover-eyebrow">Sistema D-X-OPUS · Documentación oficial</div>
+  <div class="cover-title">BRAND DOC<br>SYSTEM</div>
+  <div class="cover-subtitle">Identidad visual y estilo documental de Tinta Artificial</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><strong>Versión</strong><span>v1.0</span></div>
+    <div class="cover-meta-item"><strong>Release</strong><span>R1 · 2026</span></div>
+    <div class="cover-meta-item"><strong>Subsistema</strong><span>7 — DOCS</span></div>
+    <div class="cover-meta-item"><strong>Audiencia</strong><span>Todos</span></div>
+    <div class="cover-meta-item"><strong>Estado</strong><span>ACTIVE</span></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════ BODY -->
+<div class="body-wrap">
+
+  <!-- ── 1. INTRODUCCIÓN -->
+  <div class="section-label">01</div>
+  <h1 class="doc-h1">Propósito de este documento</h1>
+  <div class="h1-rule"></div>
+  <p class="lead">Este documento define el sistema visual y tipográfico oficial de toda la documentación del sistema D-X-OPUS. Es la fuente única de verdad para colores, tipografías, componentes y estructura de cualquier documento producido bajo la marca Tinta Artificial.</p>
+  <p>Cualquier documento del paquete de Release 1 —guías de usuario, specs de subsistema, notas de release o roadmap— debe seguir los estándares aquí definidos sin excepción.</p>
+
+  <div class="callout">
+    <p>La coherencia visual no es estética: es credibilidad editorial. Un sistema que produce libros con rigor debe documentarse con el mismo rigor.</p>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ── 2. PALETA DE COLOR -->
+  <div class="section-label">02</div>
+  <h1 class="doc-h1">Paleta de color</h1>
+  <div class="h1-rule"></div>
+  <p>La paleta se organiza en dos grupos: <strong>neutros estructurales</strong> (base del sistema) y <strong>acentos de marca</strong> (Cian y Rojo como colores identitarios primarios).</p>
+
+  <h2 class="doc-h2">Neutros estructurales</h2>
+  <div class="palette-grid">
+    <div class="swatch">
+      <div class="swatch-block" style="background:#0A0A0A;"></div>
+      <div class="swatch-info">
+        <span class="swatch-name">Tinta</span>
+        <span class="swatch-hex">#0A0A0A</span>
+        <span class="swatch-role">Texto principal, portadas</span>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-block" style="background:#434343;"></div>
+      <div class="swatch-info">
+        <span class="swatch-name">Carbón</span>
+        <span class="swatch-hex">#434343</span>
+        <span class="swatch-role">Subtítulos, H2</span>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-block" style="background:#595959;"></div>
+      <div class="swatch-info">
+        <span class="swatch-name">Grafito</span>
+        <span class="swatch-hex">#595959</span>
+        <span class="swatch-role">Metadata, captions</span>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-block" style="background:#78909C;"></div>
+      <div class="swatch-info">
+        <span class="swatch-name">Pizarra</span>
+        <span class="swatch-hex">#78909C</span>
+        <span class="swatch-role">Notas, hint text</span>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-block" style="background:#E8E4D9; border-top: 0.5px solid #ccc;"></div>
+      <div class="swatch-info">
+        <span class="swatch-name">Papel</span>
+        <span class="swatch-hex">#E8E4D9</span>
+        <span class="swatch-role">Fondos cálidos, superficies</span>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-block" style="background:#FFFFFF; border-top: 0.5px solid #ddd;"></div>
+      <div class="swatch-info">
+        <span class="swatch-name">Blanco</span>
+        <span class="swatch-hex">#FFFFFF</span>
+        <span class="swatch-role">Fondo de cuerpo de doc</span>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="doc-h2">Acentos de marca</h2>
+  <div class="palette-grid">
+    <div class="swatch">
+      <div class="swatch-block" style="background:#00D4D4;"></div>
+      <div class="swatch-info">
+        <span class="swatch-name">Cian ★</span>
+        <span class="swatch-hex">#00D4D4</span>
+        <span class="swatch-role">Acento primario. Reglas H1, callouts info, badges</span>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-block" style="background:#FF2D2C;"></div>
+      <div class="swatch-info">
+        <span class="swatch-name">Rojo ★</span>
+        <span class="swatch-hex">#FF2D2C</span>
+        <span class="swatch-role">Acento secundario. Alertas, énfasis, estado CRITICAL</span>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-block" style="background:#FFAB40;"></div>
+      <div class="swatch-info">
+        <span class="swatch-name">Ámbar</span>
+        <span class="swatch-hex">#FFAB40</span>
+        <span class="swatch-role">Estado WARNING, callouts de precaución</span>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-block" style="background:#78909C;"></div>
+      <div class="swatch-info">
+        <span class="swatch-name">Pizarra</span>
+        <span class="swatch-hex">#78909C</span>
+        <span class="swatch-role">Estado pendiente, elementos neutros</span>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="doc-h2">Uso semántico del color</h2>
+  <table class="doc-table">
+    <thead><tr><th>Contexto</th><th>Color</th><th>Hex</th><th>Ejemplo de uso</th></tr></thead>
+    <tbody>
+      <tr><td>Acento estructural / Info</td><td>Cian</td><td><code class="inline">#00D4D4</code></td><td>Reglas H1, bordes callout, badges INFO, links</td></tr>
+      <tr><td>Alerta / Error / CRITICAL</td><td>Rojo</td><td><code class="inline">#FF2D2C</code></td><td>Warnings de breaking change, estado BLOCKED</td></tr>
+      <tr><td>Precaución / WARNING</td><td>Ámbar</td><td><code class="inline">#FFAB40</code></td><td>Notas de deuda técnica, items pendientes</td></tr>
+      <tr><td>Neutro / Pendiente</td><td>Pizarra</td><td><code class="inline">#78909C</code></td><td>Estado PENDING, referencias a definir</td></tr>
+      <tr><td>Texto sobre fondo oscuro</td><td>Papel</td><td><code class="inline">#E8E4D9</code></td><td>Subtítulos en portada, texto secundario oscuro</td></tr>
+      <tr><td>Portadas / Covers</td><td>Tinta</td><td><code class="inline">#0A0A0A</code></td><td>Fondo de cover, fondos de code blocks</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-divider"></div>
+
+  <!-- ── 3. TIPOGRAFÍA -->
+  <div class="section-label">03</div>
+  <h1 class="doc-h1">Sistema tipográfico</h1>
+  <div class="h1-rule"></div>
+  <p>El sistema usa tres fuentes con roles estrictamente definidos. No deben intercambiarse ni sustituirse por fuentes del sistema.</p>
+
+  <div class="type-sample">
+    <div class="type-sample-label">Bebas Neue — Display / Headings</div>
+    <div style="font-family:'Bebas Neue',sans-serif; font-size:48px; color:#0A0A0A; letter-spacing:0.02em; line-height:1;">TINTA ARTIFICIAL</div>
+    <div style="font-family:'Bebas Neue',sans-serif; font-size:28px; color:#434343; letter-spacing:0.03em; margin-top:8px;">Sistema D-X-OPUS — Release 1</div>
+    <div class="type-meta-row">
+      <span class="type-meta-item"><strong>Uso:</strong> H1 docs (36px), H2 docs (22px), portadas (48–72px)</span>
+      <span class="type-meta-item"><strong>Google Font:</strong> Bebas Neue</span>
+      <span class="type-meta-item"><strong>Fallback:</strong> Arial, sans-serif</span>
+      <span class="type-meta-item"><strong>Peso único:</strong> 400 (la fuente ya es bold por diseño)</span>
+    </div>
+  </div>
+
+  <div class="type-sample">
+    <div class="type-sample-label">Gentium Plus — Cuerpo editorial</div>
+    <div style="font-family:'Gentium Plus',Georgia,serif; font-size:17px; color:#0A0A0A; line-height:1.8; margin-bottom:8px;">Para escribir hay que entender, y para entender hay que investigar con humildad. La prosa del sistema D-X-OPUS vive en Gentium Plus: legible, editorial, serif clásico.</div>
+    <div style="font-family:'Gentium Plus',Georgia,serif; font-size:15px; color:#595959; line-height:1.7; font-style:italic;">Texto secundario y notas al pie en estilo itálica a 15px y color Grafito.</div>
+    <div class="type-meta-row">
+      <span class="type-meta-item"><strong>Uso:</strong> Párrafos (15px), lead text (17px), captions (13px), citas (itálica)</span>
+      <span class="type-meta-item"><strong>Google Font:</strong> Gentium Plus</span>
+      <span class="type-meta-item"><strong>Fallback:</strong> Georgia, serif</span>
+      <span class="type-meta-item"><strong>Pesos:</strong> 400 regular, 700 bold, 400 italic</span>
+    </div>
+  </div>
+
+  <div class="type-sample">
+    <div class="type-sample-label">JetBrains Mono — Técnico / Código</div>
+    <div style="font-family:'JetBrains Mono',monospace; font-size:13px; color:#0A0A0A; line-height:1.6; margin-bottom:6px;">PROMPT_WRITE_CHAPTER · v1.3 · subsystem: writing · status: ACTIVE</div>
+    <div style="font-family:'JetBrains Mono',monospace; font-size:11px; color:#595959;">id: MASTER_PLAN · type: SCHEMA · created: 2026-02-21 · owner_chat: system-architecture</div>
+    <div class="type-meta-row">
+      <span class="type-meta-item"><strong>Uso:</strong> IDs artefactos, metadata YAML, code blocks, versiones, labels</span>
+      <span class="type-meta-item"><strong>Google Font:</strong> JetBrains Mono</span>
+      <span class="type-meta-item"><strong>Fallback:</strong> Courier New, monospace</span>
+      <span class="type-meta-item"><strong>Pesos:</strong> 400 regular, 500 medium</span>
+    </div>
+  </div>
+
+  <h2 class="doc-h2">Escala tipográfica</h2>
+  <table class="doc-table">
+    <thead><tr><th>Elemento</th><th>Fuente</th><th>Tamaño</th><th>Peso</th><th>Color</th></tr></thead>
+    <tbody>
+      <tr><td>Cover title</td><td>Bebas Neue</td><td>48–72px</td><td>400</td><td>#FFFFFF sobre #0A0A0A</td></tr>
+      <tr><td>Cover subtitle</td><td>Gentium Plus italic</td><td>17px</td><td>400i</td><td>#E8E4D9</td></tr>
+      <tr><td>Cover metadata</td><td>JetBrains Mono</td><td>10–12px</td><td>400</td><td>#595959 / #E8E4D9</td></tr>
+      <tr><td>H1 (sección principal)</td><td>Bebas Neue</td><td>36px</td><td>400</td><td>#0A0A0A + regla cian</td></tr>
+      <tr><td>H2 (subsección)</td><td>Bebas Neue</td><td>22px</td><td>400</td><td>#434343</td></tr>
+      <tr><td>H3 (apartado)</td><td>Gentium Plus bold</td><td>16px</td><td>700</td><td>#0A0A0A</td></tr>
+      <tr><td>Lead paragraph</td><td>Gentium Plus</td><td>17px</td><td>400</td><td>#434343</td></tr>
+      <tr><td>Body text</td><td>Gentium Plus</td><td>15px</td><td>400</td><td>#0A0A0A</td></tr>
+      <tr><td>Caption / nota</td><td>Gentium Plus italic</td><td>13px</td><td>400i</td><td>#595959</td></tr>
+      <tr><td>Section label (eyebrow)</td><td>JetBrains Mono</td><td>10px</td><td>400</td><td>#00D4D4</td></tr>
+      <tr><td>Code inline</td><td>JetBrains Mono</td><td>12px</td><td>400</td><td>#434343 sobre #E8E4D9</td></tr>
+      <tr><td>Code block</td><td>JetBrains Mono</td><td>12px</td><td>400</td><td>#00D4D4 sobre #0A0A0A</td></tr>
+      <tr><td>Badge / label</td><td>JetBrains Mono</td><td>10px</td><td>500</td><td>Según tipo</td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-divider"></div>
+
+  <!-- ── 4. COMPONENTES -->
+  <div class="section-label">04</div>
+  <h1 class="doc-h1">Componentes documentales</h1>
+  <div class="h1-rule"></div>
+
+  <h2 class="doc-h2">Callouts</h2>
+  <p>Tres variantes según el tipo de mensaje. El borde izquierdo de 3px determina la variante.</p>
+
+  <div class="callout">
+    <p><strong>Callout informativo (Cian).</strong> Para notas conceptuales, definiciones clave o contexto importante que el lector debe retener.</p>
+  </div>
+  <div class="callout callout-warn">
+    <p><strong>Callout de precaución (Ámbar).</strong> Para advertencias de deuda técnica, comportamientos temporales o elementos pendientes de revisión.</p>
+  </div>
+  <div class="callout callout-alert">
+    <p><strong>Callout de alerta (Rojo).</strong> Para breaking changes, incompatibilidades o errores conocidos que afectan al flujo.</p>
+  </div>
+
+  <h2 class="doc-h2">Code blocks</h2>
+  <p>Para referencias de artefactos, comandos, IDs o secuencias de prompts.</p>
+  <code class="code-block">WORKFLOW_RESEARCH → PROMPT_CREATE_RESEARCH_PLAN v3.2
+                   → PROMPT_SUMMARIZE_REFERENCES v4.1
+                   → PROMPT_EVALUATE_RESEARCH_REPORT v1.1</code>
+
+  <h2 class="doc-h2">Badges de estado y tipo</h2>
+  <p>Se usan en tablas de inventario, cabeceras de artefacto y listas de tareas.</p>
+  <div style="margin: 16px 0; display:flex; flex-wrap:wrap; gap:8px; align-items:center;">
+    <span class="badge badge-cian">ACTIVE</span>
+    <span class="badge badge-rojo">CRITICAL</span>
+    <span class="badge badge-ambar">PENDING</span>
+    <span class="badge badge-pizarra">DRAFT</span>
+    <span class="badge badge-tinta">DEPRECATED</span>
+    <span class="badge badge-papel">SCHEMA</span>
+    <span class="badge badge-cian">WORKFLOW</span>
+    <span class="badge badge-cian">PROMPT</span>
+    <span class="badge badge-papel">RESOURCE</span>
+    <span class="badge badge-tinta">TOOL</span>
+  </div>
+
+  <h2 class="doc-h2">Tablas</h2>
+  <p>Encabezados en JetBrains Mono mayúsculas, separados del cuerpo por una regla Cian de 1.5px. Filas con separador Papel de 0.5px.</p>
+  <table class="doc-table">
+    <thead><tr><th>Artefacto</th><th>Versión</th><th>Subsistema</th><th>Estado</th></tr></thead>
+    <tbody>
+      <tr><td>WORKFLOW_RESEARCH</td><td><code class="inline">v3.2</code></td><td>Research</td><td><span class="badge badge-cian">ACTIVE</span></td></tr>
+      <tr><td>PROMPT_WRITE_CHAPTER</td><td><code class="inline">v1.3</code></td><td>Writing</td><td><span class="badge badge-cian">ACTIVE</span></td></tr>
+      <tr><td>PROMPT_CREATE_BOOK_BRIEF</td><td><code class="inline">—</code></td><td>Activation</td><td><span class="badge badge-ambar">PENDING</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-divider"></div>
+
+  <!-- ── 5. ESTRUCTURA DE DOCUMENTO -->
+  <div class="section-label">05</div>
+  <h1 class="doc-h1">Estructura canónica de documento</h1>
+  <div class="h1-rule"></div>
+  <p>Todo documento del sistema sigue esta estructura en el mismo orden. Los campos marcados con ★ son obligatorios.</p>
+
+  <table class="doc-table">
+    <thead><tr><th>Bloque</th><th>Componente</th><th>Contenido</th></tr></thead>
+    <tbody>
+      <tr><td>Cover ★</td><td>Eyebrow</td><td><code class="inline">Sistema D-X-OPUS · Subsistema N — Nombre</code></td></tr>
+      <tr><td>Cover ★</td><td>Título principal</td><td>Nombre del documento en Bebas Neue, 2 líneas máx.</td></tr>
+      <tr><td>Cover ★</td><td>Subtítulo</td><td>Descripción breve en Gentium Plus itálica</td></tr>
+      <tr><td>Cover ★</td><td>Metadata</td><td>Versión · Release · Subsistema · Audiencia · Estado</td></tr>
+      <tr><td>Body ★</td><td>H1 + regla cian</td><td>Una sección por capítulo numerado</td></tr>
+      <tr><td>Body ★</td><td>Lead paragraph</td><td>Resumen de la sección a 17px / Gentium Plus</td></tr>
+      <tr><td>Body</td><td>H2, H3</td><td>Subsecciones y apartados según jerarquía</td></tr>
+      <tr><td>Body</td><td>Callouts</td><td>Notas, advertencias o alertas según variante</td></tr>
+      <tr><td>Body</td><td>Tablas, code blocks</td><td>Según contenido del documento</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="doc-h2">Metadata obligatoria en cabecera YAML (ficheros .md del repo)</h2>
+  <code class="code-block">---
+id:          NOMBRE_DOCUMENTO
+type:        SCHEMA | WORKFLOW | PROMPT | RESOURCE | GUIDE | TEMPLATE | TOOL
+subsystem:   SYSTEM | KB | RESEARCH | EDITORIAL | WRITING | EVALUATION | ACTIVATION | DOCS
+version:     1.0
+status:      ACTIVE | DRAFT | DEPRECATED
+created:     YYYY-MM-DD
+updated:     YYYY-MM-DD
+audience:    developer | editor | architect | all
+---</code>
+
+  <div class="section-divider"></div>
+
+  <!-- ── 6. REGLAS DE USO -->
+  <div class="section-label">06</div>
+  <h1 class="doc-h1">Reglas de uso y anti-patrones</h1>
+  <div class="h1-rule"></div>
+
+  <h3 class="doc-h3">Sí — Hacer siempre</h3>
+  <p>Usar Bebas Neue para todos los títulos de sección H1 y H2. Aplicar la regla cian de 2px inmediatamente debajo de cada H1. Usar JetBrains Mono para cualquier referencia a un ID de artefacto, versión o campo de metadata. Escribir el cuerpo siempre en Gentium Plus. Incluir metadata YAML completa en todo artefacto del repositorio.</p>
+
+  <h3 class="doc-h3">No — Evitar siempre</h3>
+  <p>No usar Arial o fuentes del sistema para títulos visibles al lector final. No aplicar el color Rojo fuera de contextos de alerta o error. No omitir la regla cian en los H1. No mezclar Gentium Plus y Bebas Neue en el cuerpo de texto. No crear variantes de badge con colores ad hoc fuera de los ocho definidos. No usar cursiva para metadatos técnicos (exclusivamente JetBrains Mono).</p>
+
+  <div class="callout callout-warn">
+    <p>Los documentos generados por IA deben aplicar esta plantilla antes de su revisión humana. La conformidad visual es parte del proceso de QA documental.</p>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ── FOOTER -->
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-top:40px; padding-top:16px; border-top: 0.5px solid #E8E4D9;">
+    <div style="font-family:'Bebas Neue',sans-serif; font-size:20px; color:#0A0A0A; letter-spacing:0.05em;">TINTA ARTIFICIAL</div>
+    <div style="font-family:'JetBrains Mono',monospace; font-size:10px; color:#595959;">BRAND_DOC_SYSTEM · v1.0 · R1 · 2026</div>
+  </div>
+
+</div>
+</body>
+</html>
