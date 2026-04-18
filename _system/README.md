@@ -28,9 +28,9 @@ Directorio raíz del subsistema SYSTEM. Contiene los artefactos fundacionales qu
 
 Registro de decisiones arquitectónicas del sistema. Una entrada por decisión, en formato `DL_YYYYMMDD_[SUBSYSTEM]_[NNN].md`. Ver `decisions/README.md` para el inventario completo y el próximo número disponible.
 
-**Entradas activas al cierre de R1:** 15 archivos (001–004 de Sprints 0-2, 015–023 de Sprint 3, 025–026 de Sprint cierre R1).
+**Entradas activas al cierre de R1:** 34 archivos. Ver `decisions/README.md` para inventario completo.
 
-**Próximo número disponible:** 027
+**Nota:** El esquema de numeración global tiene colisiones entre subsistemas. Pendiente de resolución en Sprint 4 (issue #1 del backlog de auditoría R1).
 
 ### `audits/`
 
