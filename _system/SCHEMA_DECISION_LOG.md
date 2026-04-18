@@ -2,10 +2,10 @@
 id:          SCHEMA_DECISION_LOG
 type:        SCHEMA
 subsystem:   SYSTEM
-version:     2.1
+version:     2.2
 status:      ACTIVE
 created:     2026-02-21
-updated:     2026-04-16
+updated:     2026-04-18
 owner_chat:  system-architecture
 ---
 
@@ -13,8 +13,9 @@ owner_chat:  system-architecture
 
 | Version | Date | Author | Summary |
 |---------|------|--------|---------|
-| v2.1 | 2026-04-16 | JM | SC-06: Update status of 13 foundational entries in PARTE 7 from OPEN to INTEGRATED — all decisions fully operational since Sprint 0. SC-02: Add numbering clarification note in PARTE 7 — foundational IDs (001–013) are provisional internal labels; individual files will receive new global numbers starting at 027. |
-| v2.0 | 2026-02-22 | JM | New filename format: DL_YYYYMMDD_[SUBSYSTEM]_[NNN].md with global sequential numbering. Updated dl_id format accordingly. |
+| v2.2 | 2026-04-18 | JM | DL-NUM audit fix: changed NNN from global to per-subsystem. Updated PARTE 2 numbering rule and examples. Updated PARTE 7 to mark DL_013 as superseded by DL_20260418_SYSTEM_027. |
+| v2.1 | 2026-04-16 | JM | SC-06: Update status of 13 foundational entries in PARTE 7 from OPEN to INTEGRATED. SC-02: Add numbering clarification note in PARTE 7. |
+| v2.0 | 2026-02-22 | JM | New filename format: DL_YYYYMMDD_[SUBSYSTEM]_[NNN].md. Updated dl_id format accordingly. |
 | v1.0 | 2026-02-21 | JM | Initial version |
 
 ## DEPENDENCIES
@@ -59,7 +60,7 @@ DL_YYYYMMDD_[SUBSYSTEM]_[NNN].md
 
 - `YYYYMMDD` — fecha en que se toma la decisión
 - `SUBSYSTEM` — subsistema de origen (ver tabla)
-- `NNN` — número secuencial **global**, de 3 dígitos, continuo entre todos los subsistemas
+- `NNN` — número secuencial de 3 dígitos, **único por subsistema**
 
 ### Valores válidos de SUBSYSTEM
 
@@ -74,19 +75,24 @@ DL_YYYYMMDD_[SUBSYSTEM]_[NNN].md
 | `ACTIVATION` | activation-dev |
 | `DOCS` | docs-dev |
 
-### Numeración global
+### Numeración por subsistema
 
-El número NNN es secuencial a nivel de sistema — no se reinicia por subsistema ni por fecha. La primera entrada es `001`, la segunda es `002`, independientemente de qué subsistema la produzca o en qué fecha.
+El número NNN es secuencial dentro del namespace de cada subsistema — no es global. Cada subsistema mantiene su propio contador independiente que empieza en 001.
 
-Esto garantiza que cada DL entry tiene un identificador único en todo el sistema y puede referenciarse sin ambigüedad: "ver DL_003" identifica una única entrada.
+El identificador único canónico de una decisión es el **nombre completo del archivo**: `DL_YYYYMMDD_SUBSYSTEM_NNN`. Dos subsistemas pueden compartir el mismo NNN sin colisión porque el identificador completo siempre es único.
+
+Antes de crear una nueva entrada, consultar `/_system/decisions/README.md` para ver el próximo número disponible del subsistema correspondiente.
+
+**Referencia:** DL_20260418_SYSTEM_027
 
 ### Ejemplos
 
 ```
-DL_20260221_SYSTEM_001.md    ← primera decisión del sistema
-DL_20260221_RESEARCH_002.md  ← segunda decisión del sistema (mismo día, otro subsistema)
-DL_20260222_EVAL_003.md      ← tercera decisión del sistema (otro día)
-DL_20260222_KB_004.md        ← cuarta decisión del sistema
+DL_20260221_SYSTEM_001.md    ← primera decisión del subsistema SYSTEM
+DL_20260222_KB_002.md        ← segunda decisión del subsistema KB
+DL_20260222_KB_003.md        ← tercera decisión del subsistema KB
+DL_20260331_RESEARCH_015.md  ← décimoquinta decisión del subsistema RESEARCH
+DL_20260411_WRITING_015.md   ← décimoquinta decisión del subsistema WRITING (sin colisión)
 ```
 
 ---
@@ -159,122 +165,53 @@ Ejemplo: `DL_20260221_RESEARCH_002`
 
 Lista solo los subsistemas que necesitan actuar. Si la decisión es interna al subsistema y no afecta a otros, escribir `None`.
 
-### `ARTIFACTS AFFECTED`
-
-Para cada artefacto, indicar la acción:
-
-- `CREATE` — nuevo artefacto a crear, con versión inicial
-- `MODIFY vX.Y → vZ.W` — versión actual y versión resultado del cambio
-- `DEPRECATE` — artefacto que deja de usarse
-- `RENAME` — cambio de nombre, indicar nombre anterior y nuevo
-- `NONE` — el artefacto existe y se referencia en la decisión pero no cambia
-
-### `DOCS IMPACT`
-
-Los cuatro tipos de documentación en DOCS:
-
-- `System Design` — documentos de arquitectura (audiencia: arquitectos)
-- `Subsystem Doc` — documentación de implementación del subsistema (audiencia: desarrolladores)
-- `Editor Manual` — guías para el usuario del sistema (audiencia: editores)
-- `Developer Manual` — guías para nuevos desarrolladores (audiencia: incorporaciones)
-
 ---
 
 ## PARTE 5: CICLO DE VIDA DE UNA ENTRADA
 
 ```
-Chat toma una decisión relevante
-        │
-        ▼
-Produce DL entry con status: OPEN
-Nombre: DL_YYYYMMDD_[SUBSYSTEM]_[NNN].md
-Sube a GitHub /_system/decisions/
-        │
-        ▼
-Notifica a chats afectados
-(incluye la DL entry al inicio de la próxima sesión de cada chat)
-Actualiza status: NOTIFIED
-        │
-        ▼
-DOCS procesa la entrada
-Actualiza todos los documentos listados en DOCS IMPACT
-Actualiza status: INTEGRATED
+Chat toma decisión
+        ↓
+Crea DL_YYYYMMDD_[SUB]_[NNN].md  (status: OPEN)
+        ↓
+Notifica a chats afectados vía contexto de sesión  (status: NOTIFIED)
+        ↓
+DOCS actualiza documentación afectada  (status: INTEGRATED)
 ```
 
-### ¿Cuándo produce una DL entry un chat?
+El chat que produce la entrada es responsable de:
+1. Crear el archivo con el formato correcto
+2. Incluir todos los artefactos y docs afectados
+3. Notificar a los chats afectados en su próxima sesión
 
-- Cuando cambia el formato de output de un artefacto (afecta a quien lo consume)
-- Cuando cambia el ownership de un artefacto
-- Cuando se crea o depreca un artefacto del sistema
-- Cuando se toma una decisión arquitectónica que afecta a más de un subsistema
-- Cuando se resuelve un gap identificado en una auditoría
-
-### ¿Cuándo NO produce una DL entry?
-
-- Mejoras internas de un prompt que no cambian su interfaz (inputs/outputs)
-- Correcciones de redacción o estilo dentro de un artefacto
-- Decisiones de proceso interno del chat que no afectan a otros subsistemas
+DOCS es responsable de:
+1. Detectar entradas en status OPEN o NOTIFIED
+2. Actualizar los documentos listados en DOCS IMPACT
+3. Cambiar status a INTEGRATED
 
 ---
 
-## PARTE 6: EJEMPLO COMPLETO
+## PARTE 6: CUÁNDO CREAR UNA ENTRADA
 
-```markdown
----
-dl_id:       DL_20260221_SYSTEM_001
-date:        2026-02-21
-author:      JM
-origin_chat: system-architecture
-status:      OPEN
----
+**Sí crear una entrada cuando:**
+- Se cambia el formato de un artefacto que otros subsistemas consumen (e.g., EDITOR_PROFILE, SAH, POST_SEED)
+- Se mueve un artefacto de un subsistema a otro (cambia el ownership)
+- Se añade o elimina un prompt de `/writing/shared/`
+- Se toma una decisión de arquitectura que afecta a más de un subsistema
+- Se depreca un artefacto que otros subsistemas referenciaban
 
-# DECISION LOG ENTRY: DL_20260221_SYSTEM_001
-
-## DECISION
-Los 7 tipos de Research Focus (A-G) se extraen de PROMPT_CREATE_RESEARCH_PLAN
-a un nuevo recurso independiente: RESOURCE_RESEARCH_FOCUS_TYPES.
-
-## RATIONALE
-El 17% del prompt son configuraciones de focus. Embebidos en el prompt,
-añadir un nuevo focus requiere editar 1.620 líneas. Extraídos a un recurso,
-solo se añade una entrada al recurso sin tocar la lógica del proceso.
-
-## AFFECTED SUBSYSTEMS
-- KNOWLEDGE_BASE: nuevo recurso a crear y mantener (RESOURCE_RESEARCH_FOCUS_TYPES)
-- RESEARCH: PROMPT_CREATE_RESEARCH_PLAN debe leer el recurso en Step 0
-
-## ARTIFACTS AFFECTED
-
-| Artifact | Action | Notes |
-|----------|--------|-------|
-| RESOURCE_RESEARCH_FOCUS_TYPES | CREATE v1.0 | Extraer de secciones 1.2 y 4.1 de PROMPT_CREATE_RESEARCH_PLAN |
-| PROMPT_CREATE_RESEARCH_PLAN | MODIFY v2.2 → v3.0 | Step 0: leer RESOURCE_RESEARCH_FOCUS_TYPES. Eliminar secciones 1.2 y 4.1 hardcodeadas |
-| PROMPT_EXECUTE_RESEARCH_PLAN | NONE | Agnóstico al focus — no cambia |
-
-## DOCS IMPACT
-
-| Doc Type | Document | Section | Action |
-|----------|----------|---------|--------|
-| System Design | SCHEMA_SYSTEM_ARCHITECTURE | Parte 3: KB | Añadir RESOURCE_RESEARCH_FOCUS_TYPES al inventario |
-| Subsystem Doc | SUBSYSTEM_DOC_RESEARCH | Sección inputs | Añadir RESOURCE_RESEARCH_FOCUS_TYPES como input de Fase 4B |
-| Subsystem Doc | SUBSYSTEM_DOC_KNOWLEDGE_BASE | Sección recursos | Añadir nuevo recurso con descripción |
-
-## OPEN QUESTIONS
-- None
-
-## INTEGRATION NOTES
-[pendiente]
-```
+**No crear una entrada cuando:**
+- El cambio es interno al subsistema y no afecta a otros (e.g., mejorar la lógica interna de un prompt sin cambiar su interfaz)
+- Es una corrección menor de documentación sin impacto en otros chats
 
 ---
 
 ## PARTE 7: REGISTRO DE DECISIONES FUNDACIONALES
 
-Decisiones tomadas en la sesión fundacional (21/02/2026) en system-architecture. Pendientes de crear como archivos individuales en `/_system/decisions/`.
+Decisiones tomadas en Sprint 0 (2026-02-21) que configuran el sistema base.
+Todas tienen status INTEGRATED — llevan operativas desde Sprint 0.
 
-**Nota sobre numeración (SC-02, 16/04/2026):** Los IDs que aparecen en esta tabla (`DL_20260221_SYSTEM_001` a `DL_20260221_SYSTEM_013`) son etiquetas internas provisionales asignadas en la sesión fundacional antes de que el sistema de numeración global quedara formalizado. El rango NNN 001–013 en el namespace SYSTEM entra en conflicto con los archivos reales ya existentes en el repo (`DL_20260222_EVAL_001`, `DL_20260222_KB_002`, `DL_20260222_KB_003`). Cuando estas decisiones fundacionales se creen como archivos individuales, recibirán **nuevos números globales** a partir del próximo disponible en el momento de creación (actualmente: **027**). Sus IDs provisionales dejarán de usarse.
-
-| DL ID provisional | Decisión | Status |
+| DL ID | Decisión | Status |
 |---|---|---|
 | DL_20260221_SYSTEM_001 | Focus types extraídos a RESOURCE_RESEARCH_FOCUS_TYPES | INTEGRATED |
 | DL_20260221_SYSTEM_002 | Writing unificado con bifurcación editorial Book/Post | INTEGRATED |
@@ -282,13 +219,14 @@ Decisiones tomadas en la sesión fundacional (21/02/2026) en system-architecture
 | DL_20260221_SYSTEM_004 | UPDATE_VALIDATION_CHECKLIST owned by Research; KB define esquema canónico | INTEGRATED |
 | DL_20260221_SYSTEM_005 | BOOK_BRIEF de Activation orienta Research sin sustituirlo | INTEGRATED |
 | DL_20260221_SYSTEM_006 | Prompts compartidos en /writing/shared/ — Writing es owner | INTEGRATED |
-| DL_20260221_SYSTEM_007 | Naming convention: sin versión en nombre de archivo — Git gestiona historial | INTEGRATED |
+| DL_20260221_SYSTEM_007 | Naming convention: sin versión en nombre de archivo en GitHub | INTEGRATED |
 | DL_20260221_SYSTEM_008 | Cabecera YAML estándar obligatoria en todos los artefactos | INTEGRATED |
 | DL_20260221_SYSTEM_009 | GitHub para sistema, Drive para proyectos de producción | INTEGRATED |
 | DL_20260221_SYSTEM_010 | DOCS como subsistema activo con DECISION_LOG como mecanismo de sync | INTEGRATED |
 | DL_20260221_SYSTEM_011 | TOOLING en SYSTEM mientras menos de 3 herramientas activas | INTEGRATED |
 | DL_20260221_SYSTEM_012 | Subsistema 3 se llama EDITORIAL PROFILE | INTEGRATED |
-| DL_20260221_SYSTEM_013 | DL entries con formato DL_YYYYMMDD_[SUBSYSTEM]_[NNN] y numeración global | INTEGRATED |
+| DL_20260221_SYSTEM_013 | ~~DL entries con numeración global~~ — SUPERSEDIDA por DL_20260418_SYSTEM_027 | SUPERSEDED |
+| DL_20260418_SYSTEM_027 | NNN secuencial por subsistema (no global). Identificador canónico = nombre completo del archivo | OPEN |
 
 ---
 
