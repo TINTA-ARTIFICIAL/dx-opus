@@ -1,10 +1,30 @@
-# CREATE_EDITOR_PROFILE_PROMPT v1.0
+---
+id:          PROMPT_CREATE_EDITOR_PROFILE
+type:        PROMPT
+subsystem:   EDITORIAL_PROFILE
+version:     1.1
+status:      ACTIVE
+created:     2026-01-26
+updated:     2026-04-16
+owner_chat:  editorial-profile-dev
+---
+
+## CHANGELOG
+
+| Version | Date | Author | Summary |
+|---------|------|--------|---------|
+| v1.1 | 2026-04-16 | JM | Added YAML header. Updated references: WORKFLOW_WRITING_BOOKS → WORKFLOW_WRITING, EDITOR_PROFILE_TEMPLATE.md → TEMPLATE_EDITOR_PROFILE.md. Sprint cierre R1 (EP-03). |
+| v1.0 | 2026-01-26 | JM | Initial version |
+
+---
+
+# CREATE_EDITOR_PROFILE_PROMPT v1.1
 
 **Proyecto:** Tinta Artificial
 **Tipo:** Prompt del Sistema
-**Versión:** 1.0
+**Versión:** 1.1
 **Fecha:** 26 enero 2026
-**Función:** Generar perfiles completos de editores para el WORKFLOW_WRITING_BOOKS
+**Función:** Generar perfiles completos de editores para el WORKFLOW_WRITING
 
 ---
 
@@ -61,7 +81,7 @@ Analiza TODAS las fuentes disponibles sobre el editor en el siguiente orden:
 
 **PASO 2: ANÁLISIS PROFUNDO**
 
-Para cada sección del EDITOR_PROFILE_TEMPLATE.md, realiza:
+Para cada sección del TEMPLATE_EDITOR_PROFILE.md, realiza:
 
 **2.1 Análisis de Voz y Tono:**
 - Identifica personas gramaticales dominantes (yo/nosotros/impersonal)
@@ -142,7 +162,7 @@ Para cada ejemplo, explica POR QUÉ es representativo (3-4 razones concretas).
 
 ### FORMATO DE OUTPUT
 
-**Usa el EDITOR_PROFILE_TEMPLATE.md como estructura:**
+**Usa el TEMPLATE_EDITOR_PROFILE.md como estructura:**
 
 1. Rellena TODAS las secciones con información específica
 2. Elimina secciones que NO apliquen (marca como "N/A" y explica por qué)
@@ -355,7 +375,7 @@ Antes de entregar el perfil, verifica:
 `EDITOR_PROFILE_[NOMBRE_EDITOR].md`
 
 **Estructura:**
-- Idéntica a EDITOR_PROFILE_TEMPLATE.md
+- Idéntica a TEMPLATE_EDITOR_PROFILE.md
 - Todas las secciones completadas con información específica
 - Mínimo 5 ejemplos de párrafos representativos
 - Checklist de validación operacional
@@ -389,12 +409,12 @@ Por favor:
 3. Incluye ejemplos concretos de los textos
 4. Crea checklist de validación específica
 
-Usa CREATE_EDITOR_PROFILE_PROMPT v1.0 como guía.
+Usa CREATE_EDITOR_PROFILE_PROMPT v1.1 como guía.
 ```
 
 ---
 
-**Versión:** 1.0
+**Versión:** 1.1
 **Fecha:** 26 enero 2026
 **Autor:** Sistema Tinta Artificial
 **Uso:** Ejecutar cuando se necesite crear perfil de nuevo editor
