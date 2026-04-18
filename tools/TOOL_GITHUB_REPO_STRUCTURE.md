@@ -2,10 +2,10 @@
 id:          TOOL_GITHUB_REPO_STRUCTURE
 type:        TOOL
 subsystem:   SYSTEM
-version:     1.2
+version:     1.3
 status:      ACTIVE
 created:     2026-02-21
-updated:     2026-04-16
+updated:     2026-04-18
 owner_chat:  system-architecture
 ---
 
@@ -13,6 +13,7 @@ owner_chat:  system-architecture
 
 | Version | Date | Author | Summary |
 |---------|------|--------|---------|
+| v1.3 | 2026-04-18 | JM | Audit R1: removed stale "pendiente" comments from tree (all files now in repo). Part 3 rewritten to reflect actual repo state verified by find output. DL count corrected to 34. docs/ structure corrected (developer-manuals/ at correct path). |
 | v1.2 | 2026-04-16 | JM | Sprint cierre R1: tree updated to reflect actual repo state. writing/post/ populated with 14 Sprint 3 artefacts. PROMPT_EVALUATE_BOOK_STYLE and PROMPT_EVALUATE_POST added to evaluation/. PROMPT_EVALUATE_BOOK_STYLE removed from editorial-profile/ (moved per DL_20260330_SYSTEM_004). RESEARCH_COMPONENT_AUDIT.md added to audits/. WORKFLOW_WRITING.md location per DL_20260416_SYSTEM_026. Estado actual section updated to R1 closure state. |
 | v1.1 | 2026-03-30 | JM | Removed versions from all filenames in repo tree. Replaced MCP setup with manual upload flow (DECISIÓN-15). Fixed shared prompts location to /writing/shared/. Added current repo state. |
 | v1.0 | 2026-02-21 | JM | Initial version |
@@ -75,10 +76,38 @@ dx-opus/
 │   │
 │   ├── decisions/
 │   │   ├── README.md
-│   │   ├── DL_20260222_EVAL_001.md
+│   │   ├── DL_20260221_SYSTEM_001.md
+│   │   ├── DL_20260221_SYSTEM_002.md
+│   │   ├── DL_20260221_SYSTEM_003.md
+│   │   ├── DL_20260221_SYSTEM_004.md
+│   │   ├── DL_20260221_SYSTEM_005.md
+│   │   ├── DL_20260221_SYSTEM_006.md
+│   │   ├── DL_20260221_SYSTEM_007.md
+│   │   ├── DL_20260221_SYSTEM_008.md
+│   │   ├── DL_20260221_SYSTEM_009.md
+│   │   ├── DL_20260221_SYSTEM_010.md
+│   │   ├── DL_20260221_SYSTEM_011.md
+│   │   ├── DL_20260221_SYSTEM_012.md
+│   │   ├── DL_20260221_SYSTEM_013.md
+│   │   ├── DL_20260222_EVAL_004.md
 │   │   ├── DL_20260222_KB_002.md
 │   │   ├── DL_20260222_KB_003.md
+│   │   ├── DL_20260222_RESEARCH_004.md
 │   │   ├── DL_20260330_SYSTEM_004.md
+│   │   ├── DL_20260331_RESEARCH_015.md
+│   │   ├── DL_20260331_RESEARCH_016.md
+│   │   ├── DL_20260401_EVAL_015.md
+│   │   ├── DL_20260411_ACTIVATION_022.md
+│   │   ├── DL_20260411_SYSTEM_021.md
+│   │   ├── DL_20260411_WRITING_015.md
+│   │   ├── DL_20260411_WRITING_016.md
+│   │   ├── DL_20260411_WRITING_017.md
+│   │   ├── DL_20260411_WRITING_018.md
+│   │   ├── DL_20260411_WRITING_019.md
+│   │   ├── DL_20260411_WRITING_020.md
+│   │   ├── DL_20260411_WRITING_023.md
+│   │   ├── DL_20260411_WRITING_024.md
+│   │   ├── DL_20260413_EVAL_002.md
 │   │   ├── DL_20260416_SYSTEM_025.md
 │   │   └── DL_20260416_SYSTEM_026.md
 │   │
@@ -103,9 +132,9 @@ dx-opus/
 │   ├── CONTEXT_RESEARCH.md
 │   ├── WORKFLOW_RESEARCH.md
 │   ├── PROMPT_SUMMARIZE_REFERENCES.md
-│   ├── PROMPT_RESEARCH_DEEP_DIVE.md       ← pendiente subir desde Drive (RE-01)
+│   ├── PROMPT_RESEARCH_DEEP_DIVE.md
 │   ├── PROMPT_CREATE_RESEARCH_PLAN.md
-│   ├── PROMPT_EXECUTE_RESEARCH_PLAN.md    ← pendiente subir desde Drive (RE-01)
+│   ├── PROMPT_EXECUTE_RESEARCH_PLAN.md
 │   ├── PROMPT_UPDATE_VALIDATION_CHECKLIST.md
 │   └── GUIDE_ANNOTATION_PHASE3.md
 │
@@ -113,16 +142,16 @@ dx-opus/
 │   ├── README.md
 │   ├── CONTEXT_EDITORIAL_PROFILE.md
 │   ├── PROMPT_CREATE_EDITOR_PROFILE.md
-│   ├── RESOURCE_EDITORIAL_STYLE.md        ← pendiente subir desde Drive (EP-01)
-│   ├── RESOURCE_BOOK_TYPES.md             ← pendiente subir desde Drive (EP-02)
-│   ├── TEMPLATE_EDITOR_PROFILE.md         ← pendiente subir desde Drive (EP-02)
-│   ├── TEMPLATE_EDITOR_NOTES.md           ← pendiente subir desde Drive (EP-02)
-│   └── GUIDE_EDITOR_NOTES.md              ← pendiente subir desde Drive (EP-02)
+│   ├── RESOURCE_EDITORIAL_STYLE.md
+│   ├── RESOURCE_BOOK_TYPES.md
+│   ├── TEMPLATE_EDITOR_PROFILE.md
+│   ├── TEMPLATE_EDITOR_NOTES.md
+│   └── GUIDE_EDITOR_NOTES.md
 │
 ├── writing/                               ← Subsistema 4: WRITING
 │   ├── README.md
 │   ├── CONTEXT_WRITING.md
-│   ├── WORKFLOW_WRITING.md                ← mover desde writing/book/ (DL_20260416_SYSTEM_026)
+│   ├── WORKFLOW_WRITING.md
 │   │
 │   ├── book/
 │   │   ├── README.md
@@ -169,13 +198,14 @@ dx-opus/
 │   ├── README.md
 │   ├── CONTEXT_ACTIVATION.md
 │   ├── WORKFLOW_ACTIVATION.md
-│   └── PROMPT_CREATE_BOOK_BRIEF.md        ← pendiente crear (AC-03)
+│   └── PROMPT_CREATE_BOOK_BRIEF.md
 │
 └── docs/                                  ← Subsistema 7: DOCS
     ├── README.md
     ├── CONTEXT_DOCS.md
     ├── system-design/
-    │   └── README.md
+    │   ├── README.md
+    │   └── RELEASE_NOTES_R1.md
     ├── subsystem-docs/
     │   └── README.md
     ├── editor-manuals/
@@ -188,53 +218,34 @@ dx-opus/
 
 ## PARTE 3: ESTADO ACTUAL DEL REPOSITORIO
 
-Estado al cierre de Release 1 (Sprint cierre R1, 16/04/2026).
+Estado verificado por auditoría post-Release 1 (18/04/2026). Árbol confirmado via `find` sobre el repositorio real.
 
-### Confirmados en repo
+### Artefactos presentes en repo — estado verificado
 
-| Carpeta | Artefactos |
+| Carpeta | Artefactos confirmados |
 |---|---|
-| `_system/` | MASTER_PLAN, SCHEMA_SYSTEM_ARCHITECTURE, SCHEMA_DECISION_LOG (⚠️ nombre roto — renombrar a SCHEMA_DECISION_LOG.md), RESOURCE_ARTIFACT_HEADER_STANDARD, TEMPLATE_SUBSYSTEM_CONTEXT, NAMING_CONVENTION_ANALYSIS |
-| `_system/decisions/` | DL_20260222_EVAL_001, DL_20260222_KB_002, DL_20260222_KB_003, README |
-| `_system/audits/` | README |
-| `tools/` | TOOL_SETUP_PROJECT.gs, TOOL_GITHUB_REPO_STRUCTURE.md, README |
-| `knowledge-base/` | CONTEXT_KNOWLEDGE_BASE, RESOURCE_SOURCE_AUTHORITY, RESOURCE_CLAIM_VALIDATION, RESOURCE_RESEARCH_FOCUS_TYPES, README |
-| `research/` | CONTEXT_RESEARCH, WORKFLOW_RESEARCH, PROMPT_SUMMARIZE_REFERENCES, PROMPT_CREATE_RESEARCH_PLAN, PROMPT_UPDATE_VALIDATION_CHECKLIST, GUIDE_ANNOTATION_PHASE3, README |
-| `editorial-profile/` | CONTEXT_EDITORIAL_PROFILE, PROMPT_CREATE_EDITOR_PROFILE, README |
-| `writing/` | CONTEXT_WRITING, README |
-| `writing/book/` | WORKFLOW_WRITING_BOOK (v2.0 — renombrar a WORKFLOW_WRITING.md en raíz writing/), todos los prompts de libro, README |
-| `writing/post/` | 14 artefactos Sprint 3 (ver árbol Parte 2), README |
-| `writing/shared/` | PROMPT_WRITE_POST (v2.0), PROMPT_CREATE_TIMELINE, PROMPT_CREATE_CAST, README |
-| `evaluation/` | CONTEXT_EVALUATION, RESOURCE_EVALUATION_FRAMEWORK, PROMPT_EVALUATE_RESEARCH_REPORT, PROMPT_EVALUATE_BOOK_CONTENT, PROMPT_EVALUATE_BOOK_STYLE, PROMPT_EVALUATE_POST, README |
-| `activation/` | CONTEXT_ACTIVATION, WORKFLOW_ACTIVATION, README |
-| `docs/` | CONTEXT_DOCS, README + subcarpetas |
+| `_system/` | README, MASTER_PLAN, SCHEMA_SYSTEM_ARCHITECTURE, SCHEMA_DECISION_LOG, RESOURCE_ARTIFACT_HEADER_STANDARD, TEMPLATE_SUBSYSTEM_CONTEXT, NAMING_CONVENTION_ANALYSIS |
+| `_system/decisions/` | README + 34 archivos DL (ver árbol Parte 2 para listado completo) |
+| `_system/audits/` | README, RESEARCH_COMPONENT_AUDIT |
+| `tools/` | README, TOOL_SETUP_PROJECT.gs, TOOL_GITHUB_REPO_STRUCTURE |
+| `knowledge-base/` | README, CONTEXT_KNOWLEDGE_BASE, RESOURCE_SOURCE_AUTHORITY, RESOURCE_CLAIM_VALIDATION, RESOURCE_RESEARCH_FOCUS_TYPES |
+| `research/` | README, CONTEXT_RESEARCH, WORKFLOW_RESEARCH, PROMPT_SUMMARIZE_REFERENCES, PROMPT_RESEARCH_DEEP_DIVE, PROMPT_CREATE_RESEARCH_PLAN, PROMPT_EXECUTE_RESEARCH_PLAN, PROMPT_UPDATE_VALIDATION_CHECKLIST, GUIDE_ANNOTATION_PHASE3 |
+| `editorial-profile/` | README, CONTEXT_EDITORIAL_PROFILE, PROMPT_CREATE_EDITOR_PROFILE, RESOURCE_EDITORIAL_STYLE, RESOURCE_BOOK_TYPES, TEMPLATE_EDITOR_PROFILE, TEMPLATE_EDITOR_NOTES, GUIDE_EDITOR_NOTES |
+| `writing/` | README, CONTEXT_WRITING, WORKFLOW_WRITING |
+| `writing/book/` | README, PROMPT_CREATE_BOOK_INDEX, PROMPT_WRITE_SAMPLE_CHAPTER, PROMPT_WRITE_CHAPTER, PROMPT_WRITE_INTRODUCTION, PROMPT_WRITE_PROLOGUE, PROMPT_CONSOLIDATE_REFERENCES, PROMPT_CREATE_BOOK_SHEET |
+| `writing/post/` | README, PROMPT_POST_BRIEF, PROMPT_POST_EXPLORE, PROMPT_SUMMARIZE_REF, PROMPT_VERIFY_RESEARCH, PROMPT_QA_IDEAS, PROMPT_POST_ANGLES, PROMPT_PLAN_POST, PROMPT_SPLIT_POST, RESOURCE_WRITING_CONTEXT, RESOURCE_PUBLICATION_PROFILE, SPEC_LEARNING_SIGNALS, TEMPLATE_POST_SEED, TEMPLATE_POST_BRIEFING |
+| `writing/shared/` | README, PROMPT_WRITE_POST, PROMPT_CREATE_TIMELINE, PROMPT_CREATE_CAST |
+| `evaluation/` | README, CONTEXT_EVALUATION, RESOURCE_EVALUATION_FRAMEWORK, PROMPT_EVALUATE_RESEARCH_REPORT, PROMPT_EVALUATE_BOOK_CONTENT, PROMPT_EVALUATE_BOOK_STYLE, PROMPT_EVALUATE_POST |
+| `activation/` | README, CONTEXT_ACTIVATION, WORKFLOW_ACTIVATION, PROMPT_CREATE_BOOK_BRIEF |
+| `docs/` | README, CONTEXT_DOCS + subcarpetas (system-design, subsystem-docs, editor-manuals, developer-manuals) |
 | raíz | README.md |
 
-### Pendientes de subir — paquete Sprint cierre R1
+### Deuda técnica activa — backlog Sprint 4
 
-| Archivo | Destino en repo | Tarea |
+| ID | Descripción | Severidad |
 |---|---|---|
-| DL_20260416_SYSTEM_025.md | `/_system/decisions/` | Fase 1 completada |
-| DL_20260416_SYSTEM_026.md | `/_system/decisions/` | Fase 1 completada |
-| PROMPT_EVALUATE_BOOK_STYLE.md (v1.1) | `/evaluation/` | EV-01 completada |
-| RESOURCE_EVALUATION_FRAMEWORK.md (v1.1) | `/evaluation/` | EV-02 completada |
-| CONTEXT_EVALUATION.md (v1.4) | `/evaluation/` | EV-03 completada |
-| TOOL_GITHUB_REPO_STRUCTURE.md (v1.2) | `/tools/` | SC-03 — este archivo |
-| MASTER_PLAN.md (v1.4) | `/_system/` | SC-04 completada |
-| decisions/README.md (actualizado) | `/_system/decisions/` | SC-07 completada |
-| RESEARCH_COMPONENT_AUDIT.md (v1.0) | `/_system/audits/` | SC-05 completada |
-| WORKFLOW_WRITING_BOOK.md → WORKFLOW_WRITING.md | `/writing/` (raíz) | WR-02: mover y renombrar (DL_026) |
-| CONTEXT_WRITING.md (v1.3) | `/writing/` | WR-01 pendiente |
-| WORKFLOW_ACTIVATION.md (v1.5) | `/activation/` | AC-01 pendiente |
-| CONTEXT_ACTIVATION.md (v1.3) | `/activation/` | AC-02 pendiente |
-| PROMPT_RESEARCH_DEEP_DIVE.md (v1.1) | `/research/` | RE-01 pendiente |
-| PROMPT_EXECUTE_RESEARCH_PLAN.md (v1.0) | `/research/` | RE-01 pendiente |
-| RESOURCE_SOURCE_AUTHORITY.md (v2.2) | `/knowledge-base/` | KB-01 pendiente |
-| RESOURCE_CLAIM_VALIDATION.md (v1.2) | `/knowledge-base/` | KB-02 pendiente |
-| RESOURCE_EDITORIAL_STYLE.md | `/editorial-profile/` | EP-01 pendiente |
-| TEMPLATE_EDITOR_PROFILE.md | `/editorial-profile/` | EP-02 pendiente |
-| TEMPLATE_EDITOR_NOTES.md | `/editorial-profile/` | EP-02 pendiente |
-| GUIDE_EDITOR_NOTES.md | `/editorial-profile/` | EP-02 pendiente |
+| DL-NUM | Esquema de numeración DL roto — colisiones de NNN entre subsistemas. 34 archivos en repo con numeración inconsistente. Pendiente decisión de diseño: aceptar como está y documentar, o renaming ordenado. | 🔴 Alta |
+| DL-ID | `DL_20260222_EVAL_004.md` tiene `dl_id: DL_20260222_EVAL_001` en cabecera interna. Inconsistencia entre nombre de archivo e ID. | 🟡 Baja |
 
 ---
 
