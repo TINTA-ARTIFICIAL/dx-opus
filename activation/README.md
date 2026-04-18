@@ -10,7 +10,7 @@ Puede producir posts para publicación inmediata o propuestas de nuevos libros (
 | Artefacto | Versión | Status | Descripción |
 |---|---|---|---|
 | WORKFLOW_ACTIVATION | v1.5 | ACTIVE | Workflow completo de activación |
-| PROMPT_CREATE_BOOK_BRIEF | v1.0 | PENDING | Genera 3-4 propuestas de nuevo libro |
+| PROMPT_CREATE_BOOK_BRIEF | v1.0 | ACTIVE | Genera 3-4 propuestas de nuevo libro |
 
 ## Loop con Research
 
