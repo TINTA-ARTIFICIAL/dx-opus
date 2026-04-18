@@ -1,65 +1,69 @@
-# Decision Log Entries
+# _system/
 
-Registro de decisiones arquitectónicas del sistema D-X-OPUS.
-Una entrada por decisión. Formato definido en `SCHEMA_DECISION_LOG.md`.
+Directorio raíz del subsistema SYSTEM. Contiene los artefactos fundacionales que hacen posible el desarrollo coherente del resto del sistema D-X-OPUS: arquitectura, estándares, decisiones globales y herramientas operativas.
 
-## Convención de naming
+**Owner:** system-architecture chat
+**Referencia principal:** `MASTER_PLAN.md`
 
-```
-DL_YYYYMMDD_[SUBSYSTEM]_[NNN].md
-```
+---
 
-Donde:
+## Artefactos
 
-* `YYYYMMDD` — fecha de la decisión
-* `SUBSYSTEM` — subsistema de origen: SYSTEM | KB | RESEARCH | EDITORIAL | WRITING | EVAL | ACTIVATION | DOCS
-* `NNN` — número secuencial global de 3 dígitos (continuo entre todos los subsistemas)
+| Artefacto | Versión | Tipo | Descripción |
+|---|---|---|---|
+| `MASTER_PLAN.md` | v1.4 | SCHEMA | Estado completo del sistema: decisiones, artefactos, plan de ejecución, backlog de sprints |
+| `SCHEMA_SYSTEM_ARCHITECTURE.md` | v1.3 | SCHEMA | Mapa completo del sistema: 8 subsistemas, interfaces, flujos, prompts compartidos, estructura del repo |
+| `SCHEMA_DECISION_LOG.md` | v2.1 | SCHEMA | Formato estándar de las entradas del DECISION_LOG. Define naming, campos, ciclo de vida y registro de decisiones fundacionales |
+| `RESOURCE_ARTIFACT_HEADER_STANDARD.md` | v1.0 | RESOURCE | Estándar de cabecera YAML obligatoria en todos los artefactos del sistema |
+| `TEMPLATE_SUBSYSTEM_CONTEXT.md` | v1.0 | TEMPLATE | Plantilla para crear documentos de contexto de desarrollo de cada subsistema |
+| `NAMING_CONVENTION_ANALYSIS.md` | v1.2 | SCHEMA | Convención de naming unificada para artefactos en GitHub y Google Drive |
 
-Ejemplos:
+**Nota SC-01:** el archivo `SCHEMA_DECISION_LOG.md` tiene el nombre roto en el repositorio (`SCHEMA_DECISION_LOG md` con espacio en lugar de punto). Requiere rename manual en GitHub. Ver tarea SC-01 en MASTER_PLAN.
 
-```
-DL_20260221_SYSTEM_001.md
-DL_20260222_KB_002.md
-DL_20260222_KB_003.md
-DL_20260222_EVAL_001.md
-```
+---
 
-## Entradas activas
+## Subcarpetas
 
-| DL ID | Subsistema | Decisión | Status |
-| --- | --- | --- | --- |
-| DL_20260222_EVAL_001 | EVALUATION | Publicación RESOURCE_EVALUATION_FRAMEWORK v1.0 | OPEN |
-| DL_20260222_KB_002 | KNOWLEDGE_BASE | Creación RESOURCE_RESEARCH_FOCUS_TYPES v1.1 | OPEN |
-| DL_20260222_KB_003 | KNOWLEDGE_BASE | CANONICAL UPDATE SCHEMA añadido a SAH y CVC | OPEN |
-| DL_20260411_WRITING_015 | WRITING | Q&A siempre activo en workflow POST salvo skip explícito del editor | OPEN |
-| DL_20260411_WRITING_016 | WRITING | POST_SEED como artefacto canónico — input unificado de PROMPT_WRITE_POST | OPEN |
-| DL_20260411_WRITING_017 | WRITING | WRITING_CONTEXT como artefacto canónico de configuración del workflow POST | OPEN |
-| DL_20260411_WRITING_018 | WRITING | PUBLICATION_PROFILE como entidad independiente del EDITOR_PROFILE | OPEN |
-| DL_20260411_WRITING_019 | WRITING | PROMPT_SPLIT_POST como prompt independiente invocable en cualquier fase | OPEN |
-| DL_20260411_WRITING_020 | WRITING | Modo híbrido de PROMPT_WRITE_POST activado solo por declaración explícita | OPEN |
-| DL_20260411_SYSTEM_021 | SYSTEM | Enriquecimiento del EDITOR_PROFILE por aprendizaje del sistema — Sprint 4 | OPEN |
-| DL_20260411_ACTIVATION_022 | ACTIVATION | WORKFLOW_ACTIVATION v1.5 incorpora Q&A de posicionamiento antes de escritura | OPEN |
-| DL_20260411_WRITING_023 | WRITING | PROMPT_POST_ANGLES posicionado después del Q&A, antes de PROMPT_PLAN_POST | OPEN |
+### `decisions/`
 
-## Decisiones fundacionales pendientes de crear como archivos individuales
+Registro de decisiones arquitectónicas del sistema. Una entrada por decisión, en formato `DL_YYYYMMDD_[SUBSYSTEM]_[NNN].md`. Ver `decisions/README.md` para el inventario completo y el próximo número disponible.
 
-| DL ID | Decisión |
-| --- | --- |
-| DL_20260221_SYSTEM_001 | Focus types extraídos a RESOURCE_RESEARCH_FOCUS_TYPES |
-| DL_20260221_SYSTEM_002 | Writing unificado con bifurcación editorial Book/Post |
-| DL_20260221_SYSTEM_003 | Evaluation como subsistema independiente con contrato de evaluación |
-| DL_20260221_SYSTEM_004 | UPDATE_VALIDATION_CHECKLIST owned by Research; KB define esquema canónico |
-| DL_20260221_SYSTEM_005 | BOOK_BRIEF de Activation orienta Research sin sustituirlo |
-| DL_20260221_SYSTEM_006 | Prompts compartidos en /writing/shared/ — Writing es owner |
-| DL_20260221_SYSTEM_007 | Naming convention: sin versión en nombre de archivo en GitHub |
-| DL_20260221_SYSTEM_008 | Cabecera YAML estándar obligatoria en todos los artefactos |
-| DL_20260221_SYSTEM_009 | GitHub para sistema, Drive para proyectos de producción |
-| DL_20260221_SYSTEM_010 | DOCS como subsistema activo con DECISION_LOG como mecanismo de sync |
-| DL_20260221_SYSTEM_011 | TOOLING en SYSTEM mientras menos de 3 herramientas activas |
-| DL_20260221_SYSTEM_012 | Subsistema 3 se llama EDITORIAL PROFILE |
-| DL_20260221_SYSTEM_013 | DL entries con formato DL_YYYYMMDD_[SUBSYSTEM]_[NNN] y numeración global |
-| DL_20260330_SYSTEM_014 | GitHub MCP no disponible en Plan Pro — flujo manual asistido (DECISIÓN-15) |
+**Entradas activas al cierre de R1:** 15 archivos (001–004 de Sprints 0-2, 015–023 de Sprint 3, 025–026 de Sprint cierre R1).
 
-## Último número usado
+**Próximo número disponible:** 027
 
-**023** — próxima entrada: 024
+### `audits/`
+
+Auditorías de subsistemas producidas por system-architecture. Verifican presencia, versión, cabecera YAML y coherencia de artefactos en el repositorio.
+
+| Artefacto | Versión | Descripción |
+|---|---|---|
+| `RESEARCH_COMPONENT_AUDIT.md` | v1.0 | Auditoría del subsistema Research — Sprint cierre R1 (16/04/2026) |
+
+---
+
+## Estado al cierre de Release 1
+
+**Sprint cierre R1 completado:** 16 abril 2026
+
+Tareas ejecutadas en esta sesión:
+
+| Tarea | Resultado |
+|---|---|
+| SC-01 | Rename `SCHEMA_DECISION_LOG md` → `SCHEMA_DECISION_LOG.md` — **pendiente acción manual del editor** |
+| SC-02 | Nota de numeración global documentada en SCHEMA_DECISION_LOG v2.1 |
+| SC-03 | TOOL_GITHUB_REPO_STRUCTURE actualizado a v1.2 |
+| SC-04 | MASTER_PLAN actualizado a v1.4 |
+| SC-05 | RESEARCH_COMPONENT_AUDIT.md v1.0 creado |
+| SC-06 | 13 decisiones fundacionales actualizadas a INTEGRATED en SCHEMA_DECISION_LOG |
+| SC-07 | decisions/README.md actualizado con inventario completo |
+
+---
+
+## Backlog Sprint 4
+
+| Tarea | Descripción |
+|---|---|
+| POST-R1-01 | Crear `GUIDE_DEV_PROTOCOL.md` v1.0 — protocolo estándar de desarrollo |
+| SC-01 | Completar rename manual de SCHEMA_DECISION_LOG en GitHub |
+| DL fundacionales | Crear archivos individuales para las 14 decisiones fundacionales pendientes |
