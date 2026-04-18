@@ -12,7 +12,7 @@ Puede cambiar el método de evaluación sin modificar los workflows que lo invoc
 | RESOURCE_EVALUATION_FRAMEWORK | v1.0 | ACTIVE | Contrato de evaluación: output canónico + protocolo |
 | PROMPT_EVALUATE_RESEARCH_REPORT | v1.1 | ACTIVE | Evalúa reports de investigación (RAMA A y RAMA B) |
 | PROMPT_EVALUATE_BOOK_CONTENT | v1.1 | ACTIVE | Evalúa rigor de fuentes y claims en el texto del libro |
-| PROMPT_EVALUATE_BOOK_STYLE | v1.0 | NEEDS UPDATE | Evalúa adherencia al perfil editorial del autor |
+| PROMPT_EVALUATE_BOOK_STYLE | v1.1 | ACTIVE | Evalúa adherencia al perfil editorial del autor |
 | PROMPT_EVALUATE_POST | v1.0 | ACTIVE | Evalúa calidad y voz de posts |
 | PROMPT_EVALUATE_ACTIVATION | — | PENDING | Evalúa campañas de activación (pendiente diseño) |
 
