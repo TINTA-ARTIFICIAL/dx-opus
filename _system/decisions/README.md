@@ -29,10 +29,10 @@ El identificador canónico de una decisión es el nombre completo del archivo. N
 | EDITORIAL | — | **001** |
 | WRITING | 024 | **025** |
 | EVAL | 015 | **016** |
-| ACTIVATION | 022 | **023** |
+| ACTIVATION | 026 | **027** |
 | DOCS | — | **001** |
 
-## Inventario de archivos activos (34 entradas)
+## Inventario de archivos activos (38 entradas)
 
 | Archivo | Subsistema | Status |
 |---|---|---|
@@ -57,7 +57,7 @@ El identificador canónico de una decisión es el nombre completo del archivo. N
 | DL_20260331_RESEARCH_015.md | RESEARCH | OPEN |
 | DL_20260331_RESEARCH_016.md | RESEARCH | OPEN |
 | DL_20260401_EVAL_015.md | EVAL | OPEN |
-| DL_20260411_ACTIVATION_022.md | ACTIVATION | OPEN |
+| DL_20260411_ACTIVATION_022.md | ACTIVATION | INTEGRATED |
 | DL_20260411_SYSTEM_021.md | SYSTEM | OPEN |
 | DL_20260411_WRITING_015.md | WRITING | OPEN |
 | DL_20260411_WRITING_016.md | WRITING | OPEN |
@@ -71,3 +71,7 @@ El identificador canónico de una decisión es el nombre completo del archivo. N
 | DL_20260416_SYSTEM_025.md | SYSTEM | OPEN |
 | DL_20260416_SYSTEM_026.md | SYSTEM | OPEN |
 | DL_20260418_SYSTEM_027.md | SYSTEM | OPEN |
+| DL_20260420_ACTIVATION_023.md | ACTIVATION | OPEN |
+| DL_20260420_ACTIVATION_024.md | ACTIVATION | OPEN |
+| DL_20260420_ACTIVATION_025.md | ACTIVATION | OPEN |
+| DL_20260420_ACTIVATION_026.md | ACTIVATION | OPEN |
