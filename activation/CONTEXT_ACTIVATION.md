@@ -1,18 +1,19 @@
 ---
-id: CONTEXT_ACTIVATION
-type: TEMPLATE
-subsystem: ACTIVATION
-version: 1.3
-status: ACTIVE
-created: 2026-02-21
-updated: 2026-04-16
-owner_chat: activation-dev
+id:          CONTEXT_ACTIVATION
+type:        TEMPLATE
+subsystem:   ACTIVATION
+version:     1.4
+status:      ACTIVE
+created:     2026-02-21
+updated:     2026-04-19
+owner_chat:  activation-dev
 ---
 
 ## CHANGELOG
 
 | Version | Date | Author | Summary |
 |---|---|---|---|
+| v1.4 | 2026-04-19 | JM | Arquitectura dual-output documentada (Ruta P + Ruta L). Inventario actualizado: ANALYZE_COLLECTION v1.5 y IDENTIFY_NARRATIVE_SEEDS v2.0 añadidos. BOOK_BRIEF reposicionado como Ruta L FASE 2B. CHECKPOINT DE ROUTING añadido post-FASE 1. Backlog Sprint 4 actualizado. Numeración DL corregida a por-subsistema. Implementa DL_20260420_ACTIVATION_023–026. |
 | v1.3 | 2026-04-16 | JM | R1 closure: WORKFLOW_ACTIVATION actualizado a v1.5, PROMPT_CREATE_BOOK_BRIEF añadido como ACTIVE, WRITING_CONTEXT y POST_SEED documentados en interfaces, nota de scope DL_20260416_SYSTEM_025 añadida, versiones eliminadas de campos DEPENDENCIES |
 | v1.2 | 2026-02-22 | JM | Added DL entry format with filename convention and subsystem code |
 | v1.1 | 2026-02-21 | JM | Added explicit filename naming rule — no version in filename, Git manages history |
@@ -69,14 +70,27 @@ D-X-OPUS es un sistema modular de escritura no-ficción asistida por IA. Cubre e
 
 ### Rol
 
-Activation genera valor a partir de libros ya escritos: campañas de contenido para publicación inmediata, y propuestas de nuevos libros (BOOK_BRIEF) que relanzan el ciclo completo del sistema. Es el último subsistema en ejecutarse en el flujo lineal, pero también el que cierra el loop del sistema al generar inputs para un nuevo ciclo de Research.
+Activation genera valor a partir de libros ya escritos mediante **dos rutas paralelas**:
+
+- **Ruta P (POST):** campaña de contenido inmediato — posts, artículos, threads publicables
+- **Ruta L (LIBRO):** BOOK_BRIEF que orienta un nuevo ciclo de Research y Writing
+
+Las dos rutas se bifurcan en el **CHECKPOINT DE ROUTING** (post-FASE 1), donde el editor clasifica cada seed identificada como [P] Ruta P, [L] Ruta L, o [P+L] ambas. Pueden ejecutarse en paralelo.
+
+Activation es el último subsistema en ejecutarse en el flujo lineal, pero también el que cierra el loop del sistema al generar inputs para un nuevo ciclo de Research.
 
 ### El loop del sistema
 
 ```
-Research → Writing Book → ACTIVATION → BOOK_BRIEF
-                                            ↓
-                              Research (nuevo ciclo, orientado por el brief)
+Research → Writing Book → ACTIVATION
+                                ↓
+              [CHECKPOINT DE ROUTING]
+             ╱                       ╲
+         RUTA P                    RUTA L
+        (posts)               (BOOK_BRIEF)
+                                    ↓
+                          Research (nuevo ciclo,
+                          orientado por el brief)
 ```
 
 El BOOK_BRIEF no sustituye al Research — lo orienta. El editor llega a Research ya sabiendo qué tipo de libro quiere escribir, lo que hace la investigación más dirigida.
@@ -99,8 +113,10 @@ El BOOK_BRIEF no sustituye al Research — lo orienta. El editor llega a Researc
 
 | Artefacto | Destino | Descripción |
 |---|---|---|
-| Posts / artículos / threads | Publicación directa | Contenido de campaña listo para publicar |
-| BOOK_BRIEF | Research | 3-4 propuestas de nuevo libro — input orientador opcional |
+| Posts / artículos / threads (Ruta P) | Publicación directa | Contenido de campaña listo para publicar |
+| BOOK_BRIEF (Ruta L) | Research | 3-4 propuestas de nuevo libro — input orientador opcional |
+| SEEDS_RUTA_P.md | CHECKPOINT DE ROUTING | Seeds clasificadas para contenido inmediato |
+| SEEDS_RUTA_L.md | CHECKPOINT DE ROUTING | Seeds clasificadas para propuesta de libro |
 
 ### Prompts de `/writing/shared/` que usa
 
@@ -131,20 +147,24 @@ Para invocar correctamente `PROMPT_WRITE_POST v2.0` desde `/writing/shared/`, Ac
 
 | Artefacto | Versión actual | Status | Descripción |
 |---|---|---|---|
-| WORKFLOW_ACTIVATION | v1.5 | ACTIVE | Workflow completo del proceso de activación |
-| PROMPT_CREATE_BOOK_BRIEF | v1.0 | ACTIVE | Genera BOOK_BRIEF a partir de colección de libros para iniciar nuevo ciclo de Research |
+| WORKFLOW_ACTIVATION | v1.6 | ACTIVE | Workflow completo del proceso de activación — arquitectura dual-output (Ruta P + Ruta L) |
+| ANALYZE_COLLECTION_FOR_ACTIVATION | v1.5 | ACTIVE | Análisis de colección para generar ACTIVATION_CONTEXT + identificar nichos narrativos |
+| IDENTIFY_NARRATIVE_SEEDS | v2.0 | ACTIVE | Análisis profundo del libro para identificar seeds activables — reemplaza ANALYZE_BOOK_FOR_ACTIVATION |
+| PROMPT_CREATE_BOOK_BRIEF | v1.0 | ACTIVE | Genera BOOK_BRIEF — Ruta L, FASE 2B, paralela a Ruta P |
 
 ### Artefactos pendientes de crear
 
 | Artefacto | Prioridad | Bloqueado por |
 |---|---|---|
 | PROMPT_EVALUATE_ACTIVATION_v1.0 | 🟡 Baja | RESOURCE_EVALUATION_FRAMEWORK (evaluation-dev) |
+| CREATE_CONTENT_STRATEGY v1.0 | 🟠 Media | Sprint 4 |
+| DESIGN_POST_PLAN v1.0 | 🟠 Media | Sprint 4 |
 
 ---
 
 ## SECCIÓN 4: DISEÑO DE PROMPT_CREATE_BOOK_BRIEF
 
-`PROMPT_CREATE_BOOK_BRIEF v1.0` ha sido creado en el cierre de Release 1. Ver `activation/PROMPT_CREATE_BOOK_BRIEF.md` para la especificación completa.
+`PROMPT_CREATE_BOOK_BRIEF v1.0` ha sido creado en el cierre de Release 1 y reposicionado como FASE 2B (Ruta L) en la arquitectura dual-output. Ver `activation/PROMPT_CREATE_BOOK_BRIEF.md` para la especificación completa.
 
 Los criterios de diseño originales documentados aquí se mantienen como referencia histórica:
 
@@ -153,6 +173,7 @@ Los criterios de diseño originales documentados aquí se mantienen como referen
 * Colección de libros ya escritos (resúmenes o fichas técnicas)
 * EDITOR_PROFILE (voz y áreas de expertise del autor)
 * Tendencias del mercado editorial (opcional)
+* **SEEDS_RUTA_L.md** (seeds clasificadas [L] o [P+L] del CHECKPOINT DE ROUTING)
 
 **Output — BOOK_BRIEF con 3-4 propuestas, cada una con:**
 
@@ -177,14 +198,36 @@ El BOOK_BRIEF se entrega al editor, quien decide si lanzar un nuevo proyecto. Si
 | F4-03 | Diseñar PROMPT_CREATE_BOOK_BRIEF_v1.0 | 🟡 Baja | ✅ Completado (R1 closure) |
 | F4-05 | Diseñar PROMPT_EVALUATE_ACTIVATION_v1.0 | 🟡 Baja | ❌ Pendiente — bloqueado por RESOURCE_EVALUATION_FRAMEWORK |
 
+### Historial Release 1 — completado
+
+| ID | Tarea | Resultado |
+|---|---|---|
+| ACT-R1-01 | Subir PROMPT_ANALYZE_COLLECTION_FOR_ACTIVATION v1.5 al repo | ✅ En `activation/` — ref stale corregida |
+| ACT-R1-02 | Subir PROMPT_IDENTIFY_NARRATIVE_SEEDS v2.0 al repo | ✅ En `activation/` — reemplaza ANALYZE_BOOK_FOR_ACTIVATION |
+| ACT-R1-03 | Diseñar arquitectura dual-output (Ruta P + Ruta L) | ✅ Implementada en WORKFLOW_ACTIVATION v1.6 |
+| ACT-R1-04 | Reposicionar PROMPT_CREATE_BOOK_BRIEF como FASE 2B Ruta L | ✅ DL_20260420_ACTIVATION_024 |
+
+### Backlog Sprint 4
+
+| ID | Tarea | Prioridad | Notas |
+|---|---|---|---|
+| S4-ACT-01 | Diseñar mecanismo de clasificación CHECKPOINT DE ROUTING | 🔴 Alta | Decide semántica exacta [P]/[L]/[P+L]; puede ser prompt o template manual |
+| S4-ACT-02 | Diseñar CREATE_CONTENT_STRATEGY v1.0 | 🟠 Media | FASE 2A (Ruta P); input: SEEDS_RUTA_P |
+| S4-ACT-03 | Diseñar DESIGN_POST_PLAN v1.0 | 🟠 Media | FASE 3 (Ruta P); añadir soporte de serie de posts |
+| S4-ACT-04 | Diseñar generación de POST_SEED propio de Activation | 🟠 Media | Pendiente definición Sprint 4; actualmente manual |
+
 ### DECISION_LOG entries pendientes de integrar
 
 | DL-ID | Decisión | Acción requerida en este chat |
 |---|---|---|
-| DL-20260221-005 | BOOK_BRIEF orienta Research sin sustituirlo | ✅ Implementado en PROMPT_CREATE_BOOK_BRIEF v1.0: el output es orientador, no un plan de investigación completo |
+| DL-20260221-005 | BOOK_BRIEF orienta Research sin sustituirlo | ✅ Implementado en PROMPT_CREATE_BOOK_BRIEF v1.0 |
 | DL-20260221-006 | Prompts shared en /writing/shared/ — Writing es owner | No proponer cambios directos a WRITE_POST, CREATE_TIMELINE, CREATE_CAST — canalizarlos a writing-dev |
 | DL-20260221-003 | Contrato de evaluación estándar | Cuando RESOURCE_EVALUATION_FRAMEWORK esté disponible, diseñar EVALUATE_ACTIVATION con ese output |
-| DL_20260416_SYSTEM_025 | Flujo POST completo no compartido con Activation en R1 | ✅ Documentado en SECCIÓN 2 y en WORKFLOW_ACTIVATION v1.5. POST_SEED y WRITING_CONTEXT añadidos como artefactos que Activation debe preparar. |
+| DL_20260416_SYSTEM_025 | Flujo POST completo no compartido con Activation en R1 | ✅ Documentado en SECCIÓN 2 y en WORKFLOW_ACTIVATION v1.6 |
+| DL_20260420_ACTIVATION_023 | Arquitectura dual-output | ✅ Implementada en WORKFLOW_ACTIVATION v1.6 |
+| DL_20260420_ACTIVATION_024 | BOOK_BRIEF reposicionado como FASE 2B Ruta L | ✅ Implementado |
+| DL_20260420_ACTIVATION_025 | CHECKPOINT DE ROUTING post-FASE 1 | ✅ Documentado en WORKFLOW; mecanismo pendiente Sprint 4 |
+| DL_20260420_ACTIVATION_026 | Subida de prompts FASE 0 y FASE 1 al repo | ✅ Subidos |
 
 ---
 
@@ -235,10 +278,10 @@ DL_YYYYMMDD_[SUBSYSTEM]_[NNN].md
 ```
 
 * `SUBSYSTEM` para este chat: `ACTIVATION`
-* `NNN` es numeración **global y secuencial** en todo el sistema — no se reinicia por subsistema ni por fecha
-* Antes de crear una entrada, consulta el último número usado en `/_system/decisions/` para continuar la secuencia
+* `NNN` es numeración **por subsistema** — se reinicia en 001 por subsistema (ver DL_20260418_SYSTEM_027)
+* Antes de crear una entrada, consultar el último número usado en `/_system/decisions/` para continuar la secuencia del subsistema correspondiente
 
-Ejemplo: `DL_20260222_RESEARCH_014.md`
+Ejemplo: `DL_20260420_ACTIVATION_023.md`
 
 El formato completo del contenido está en `SCHEMA_DECISION_LOG.md`.
 
