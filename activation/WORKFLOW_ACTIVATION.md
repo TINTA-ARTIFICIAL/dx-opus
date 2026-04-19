@@ -2,10 +2,10 @@
 id:          WORKFLOW_ACTIVATION
 type:        WORKFLOW
 subsystem:   ACTIVATION
-version:     1.5
+version:     1.6
 status:      ACTIVE
 created:     2026-02-10
-updated:     2026-04-16
+updated:     2026-04-19
 owner_chat:  activation-dev
 ---
 
@@ -13,6 +13,7 @@ owner_chat:  activation-dev
 
 | Version | Date | Author | Summary |
 |---------|------|--------|---------|
+| v1.6 | 2026-04-19 | JM | Arquitectura dual-output: Ruta P (contenido → Writing POST) y Ruta L (BOOK_BRIEF → Research → Writing BOOK) como tracks paralelos desde CHECKPOINT DE ROUTING post-FASE 1. FASE 1: ANALYZE_BOOK_FOR_ACTIVATION [DISEÑAR] → IDENTIFY_NARRATIVE_SEEDS v2.0 [ACTIVE]. PROMPT_CREATE_BOOK_BRIEF reposicionado como FASE 2B (Ruta L), paralela a FASES 2A–5. [P+L] simultáneo posible. Implementa DL-A, DL-B, DL-C, DL-D (DL_20260420_ACTIVATION_023–026). |
 | v1.5 | 2026-04-16 | JM | Q&A de posicionamiento (PROMPT_QA_IDEAS) añadido en Fase 4 antes de escritura. POST_SEED como input canónico de PROMPT_WRITE_POST. Skip declarable por el editor. Referencias a CONTEXT_WRITING y TEMPLATE_POST_SEED. Cabecera YAML estándar añadida. PROMPT_WRITE_POST v2.0 confirmado como existente en /writing/shared/. WRITE_POST/WRITE_ARTICLE/WRITE_THREAD eliminados como pendientes. WRITING_CONTEXT añadido como artefacto de configuración requerido (writing/post/RESOURCE_WRITING_CONTEXT.md). Nota de scope R1: flujo completo /writing/post/ no compartido con Activation; generación POST_SEED propio de Activation pendiente Sprint 4. Implementa DL_20260411_ACTIVATION_022, DL_20260416_SYSTEM_025. |
 | v1.4 | 2026-02-12 | JM | NICHOS LITERARIOS integrados en FASE 0. Objetivos de activación integrados en ANALYZE_COLLECTION v1.4. |
 | v1.3 | 2026-02-10 | JM | Instrucciones de parada añadidas en cada SUBFASE de FASE 0. |
@@ -23,7 +24,7 @@ owner_chat:  activation-dev
 ## DEPENDENCIES
 
 inputs:  [CONTEXT_WRITING, TEMPLATE_POST_SEED, EDITOR_PROFILE, libro(s) completo(s)]
-outputs: [posts/artículos/threads publicables, BOOK_BRIEF]
+outputs: [posts/artículos/threads publicables, SEEDS_RUTA_P.md, SEEDS_RUTA_L.md, BOOK_BRIEF]
 calls:   [PROMPT_QA_IDEAS, PROMPT_WRITE_POST, PROMPT_CREATE_TIMELINE, PROMPT_CREATE_CAST]
 
 ---
@@ -31,15 +32,23 @@ calls:   [PROMPT_QA_IDEAS, PROMPT_WRITE_POST, PROMPT_CREATE_TIMELINE, PROMPT_CRE
 # WORKFLOW: CONTENT ACTIVATION - SISTEMA TINTA ARTIFICIAL
 
 **Proyecto:** Tinta Artificial
-**Versión:** 1.5
+**Versión:** 1.6
 **Fecha:** 12 febrero 2026
-**Última actualización:** 16 abril 2026
+**Última actualización:** 19 abril 2026
 **Alcance:** Desde libro(s) completo(s) hasta campaña de activación de contenido
 **Tipo:** Workflow específico para ACTIVACIÓN DE CONTENIDO (posts, artículos, threads)
 
 ---
 
 ## CHANGELOG LEGADO (formato narrativo)
+**v1.6 (19 abril 2026 — DL_20260420_ACTIVATION_023–026):**
+- ✅ **Arquitectura dual-output:** Ruta P (contenido inmediato → Writing POST) y Ruta L (BOOK_BRIEF → Research → Writing BOOK) como tracks paralelos
+- ✅ **CHECKPOINT DE ROUTING** añadido como paso formal post-FASE 1; outputs: `SEEDS_RUTA_P.md` + `SEEDS_RUTA_L.md`; mecanismo de clasificación pendiente Sprint 4
+- ✅ **PROMPT_CREATE_BOOK_BRIEF** reposicionado: de post-FASE 5 a FASE 2B (Ruta L), paralela a FASES 2A–5
+- ✅ **IDENTIFY_NARRATIVE_SEEDS v2.0** activado en FASE 1; reemplaza `ANALYZE_BOOK_FOR_ACTIVATION [DISEÑAR]`
+- ✅ **ANALYZE_COLLECTION_FOR_ACTIVATION v1.5** y **IDENTIFY_NARRATIVE_SEEDS v2.0** subidos al repo
+- ✅ Clasificación [P] / [L] / [P+L] permite ejecución simultánea en ambas rutas
+- ✅ Fecha de actualización: 2026-04-19
 
 **v1.5 (16 abril 2026 — actualización DL_20260416_SYSTEM_025):**
 - ✅ **PROMPT_WRITE_POST v2.0 CONFIRMADO:** ya existe en `/writing/shared/` — no es pendiente de diseño
@@ -317,10 +326,10 @@ WORKFLOW RESEARCH
          [Checklist de verificación marcado]
                            ↓
 ┌────────────────────────────────────────────────────────────────┐
-│ FASE 1: ANÁLISIS PARA ACTIVACIÓN                              │
-│ Herramienta: ANALYZE_BOOK_FOR_ACTIVATION v1.0 [DISEÑAR]       │
+│ │ FASE 1: ANÁLISIS PARA ACTIVACIÓN                             │
+│ Herramienta: IDENTIFY_NARRATIVE_SEEDS v2.0 ✅ ACTIVE           │
 │ Actor: IA analiza, Editor selecciona                           │
-│ Tiempo: 2-3 horas (IA) + 1-2 horas (Editor)                   │
+│ Tiempo: 2-3 horas (IA) + 1-2 horas (Editor)                    │
 └────────────────────────────────────────────────────────────────┘
                            ↓
                     INPUT:
@@ -359,10 +368,32 @@ WORKFLOW RESEARCH
          [Editor puede ajustar ángulos propuestos]
                            ↓
 ┌────────────────────────────────────────────────────────────────┐
-│ FASE 2: ESTRATEGIA DE CONTENIDO                               │
-│ Herramienta: CREATE_CONTENT_STRATEGY v1.0 [DISEÑAR]           │
+│ CHECKPOINT DE ROUTING: CLASIFICACIÓN DE SEEDS                  │
+│ Actor: Editor | Tiempo: 1-2 horas                              │
+└────────────────────────────────────────────────────────────────┘
+                                    ↓
+         [Editor clasifica seeds: [P] Ruta P / [L] Ruta L / [P+L] ambas]
+                                    ↓
+              OUTPUT: SEEDS_RUTA_P.md + SEEDS_RUTA_L.md
+                                    ↓
+         [Bifurcación — RUTA P y RUTA L pueden ejecutarse en paralelo]
+                    ╱                               ╲
+               RUTA P                            RUTA L
+                  ↓                                ↓
+┌────────────────────────────────────────────────────────────────┐
+│ FASE 2A: ESTRATEGIA DE CONTENIDO (Ruta P)                      │
+│ Herramienta: CREATE_CONTENT_STRATEGY v1.0 [DISEÑAR]            │
+│ Input: SEEDS_RUTA_P                                            │
 │ Actor: IA propone, Editor ajusta                               │
-│ Tiempo: 1-2 horas (IA) + 1 hora (Editor)                      │
+│ Tiempo: 1-2 horas (IA) + 1 hora (Editor)                       │
+└────────────────────────────────────────────────────────────────┘
+
+┌────────────────────────────────────────────────────────────────┐
+│ FASE 2B: BOOK BRIEF (Ruta L) — PARALELA A FASES 2A–5          │
+│ Herramienta: PROMPT_CREATE_BOOK_BRIEF v1.0 ✅ ACTIVE           │
+│ Input: SEEDS_RUTA_L                                            │
+│ Actor: IA propone, Editor revisa                               │
+│ Tiempo: 2-4 horas                                              │
 └────────────────────────────────────────────────────────────────┘
                            ↓
                     INPUT:
@@ -1762,8 +1793,7 @@ Tiempo total: 13-21 horas
 
 ---
 
-**FIN DE FASE 0 - WORKFLOW ACTIVATION v1.5**
-
+**FIN DE FASE 0 - WORKFLOW ACTIVATION v1.6**
 ---
 
 ## FASE 1: ANÁLISIS PARA ACTIVACIÓN
@@ -1780,7 +1810,7 @@ IA analiza, Editor selecciona
 - **Total: 3-5 horas**
 
 ### Herramienta
-**`ANALYZE_BOOK_FOR_ACTIVATION v1.0`** [PENDIENTE DISEÑO]
+**`IDENTIFY_NARRATIVE_SEEDS v2.0`** ✅ ACTIVE
 
 ---
 
@@ -2100,10 +2130,22 @@ Temas seleccionados: [N] temas
 
 ---
 
-## FASE 2: ESTRATEGIA DE CONTENIDO
+## FASE 2A: ESTRATEGIA DE CONTENIDO (Ruta P)
 
 ### Objetivo
 Diseñar estrategia completa de contenido con calendario, secuenciación y métricas.
+Input: SEEDS_RUTA_P (seeds clasificadas para contenido inmediato).
+
+## FASE 2B: BOOK BRIEF (Ruta L) — paralela a FASES 2A–5
+
+### Objetivo
+Generar BOOK_BRIEF desde SEEDS_RUTA_L. Ejecuta en paralelo a la Ruta P.
+
+### Herramienta
+**`PROMPT_CREATE_BOOK_BRIEF v1.0`** ✅ ACTIVE
+
+### Duración
+2-4 horas
 
 ### Actor
 IA propone, Editor ajusta y aprueba
@@ -3113,15 +3155,17 @@ CONTENT_PACKAGE_[PROYECTO]/
 ### Herramientas (Prompts)
 
 **FASE 0: Preparación**
-1. ✅ `ANALYZE_COLLECTION_FOR_ACTIVATION v1.4` — DISEÑADO (owner: Activation)
-2. ✅ `CREATE_TIMELINE v1.0` — EXISTENTE, shared (owner: Writing)
-3. ✅ `CREATE_CAST v1.0` — EXISTENTE, shared (owner: Writing)
-4. ✅ `CREATE_EDITOR_PROFILE v1.0` — EXISTENTE (owner: Editorial Profile)
+1. ✅ `ANALYZE_COLLECTION_FOR_ACTIVATION v1.5` — DISEÑADO (owner: Activation)
+2. ✅ `IDENTIFY_NARRATIVE_SEEDS v2.0` — ACTIVE (owner: Activation)
+3. ✅ `CREATE_TIMELINE v1.0` — EXISTENTE, shared (owner: Writing)
+4. ✅ `CREATE_CAST v1.0` — EXISTENTE, shared (owner: Writing)
+5. ✅ `CREATE_EDITOR_PROFILE v1.0` — EXISTENTE (owner: Editorial Profile)
 
 **FASE 1: Análisis**
-5. ⚠️ `ANALYZE_BOOK_FOR_ACTIVATION v1.0` — PENDIENTE DISEÑO
+5. ✅ `IDENTIFY_NARRATIVE_SEEDS v2.0` — ACTIVE (owner: Activation)
 
 **FASE 2: Estrategia**
+5b. ✅ `PROMPT_CREATE_BOOK_BRIEF v1.0` — ACTIVE (Ruta L, FASE 2B)
 6. ⚠️ `CREATE_CONTENT_STRATEGY v1.0` — PENDIENTE DISEÑO
 
 **FASE 3: Plan**
@@ -3136,7 +3180,7 @@ CONTENT_PACKAGE_[PROYECTO]/
 **FASE 5: Validación**
 12. ⚠️ `EVALUATE_ACTIVATION_CONTENT v1.0` — PENDIENTE DISEÑO (bloqueado por RESOURCE_EVALUATION_FRAMEWORK)
 
-**Total de prompts:** 10 (6 existentes reutilizados + 4 nuevos pendientes de diseño)
+**Total de prompts:** 12 (8 existentes/activos + 4 nuevos pendientes de diseño)
 
 ---
 
@@ -3167,6 +3211,8 @@ CONTENT_PACKAGE_[PROYECTO]/
 - `PERFIL_ACTIVO_SELECCIONADO.md`
 
 **FASE 1:**
+- `SEEDS_RUTA_P.md` (seeds clasificadas [P] y [P+L])
+- `SEEDS_RUTA_L.md` (seeds clasificadas [L] y [P+L])
 - `TEMAS_ACTIVABLES_[PROYECTO].md`
 
 **FASE 2:**
@@ -3348,9 +3394,9 @@ TOTAL: ~84 horas
 
 ## FIN DEL WORKFLOW
 
-**Versión:** 1.5
-**Estado:** Activo — Q&A de posicionamiento integrado en FASE 4
-**DL implementada:** DL_20260411_ACTIVATION_022
+**Versión:** 1.6
+**Estado:** Activo — Arquitectura dual-output (Ruta P + Ruta L) implementada
+**DL implementadas:** DL_20260420_ACTIVATION_023, 024, 025, 026
 
 ---
 
