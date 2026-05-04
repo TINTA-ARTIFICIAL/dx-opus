@@ -1,0 +1,338 @@
+# AUTO_SAVE_CONFIG.yaml
+# Configuración central para auto-save de artefactos D-X-OPUS R1
+
+system_version: "R1"
+config_version: "1.0"
+updated: "2026-05-04"
+
+# =============================================================================
+# RESEARCH ARTIFACTS
+# =============================================================================
+
+RESEARCH:
+  REFERENCE_SUMMARY:
+    folder: "R_research"
+    prefix: "REF_SUM"
+    template: "{project_code}_R_REF_SUM_v{version}.md"
+    metadata_level: "standard"
+    description: "Resumen de referencias procesadas"
+    
+  RESEARCH_PLAN:
+    folder: "R_research"
+    prefix: "PLAN"
+    template: "{project_code}_R_PLAN_v{version}.md"
+    metadata_level: "standard"
+    description: "Plan de investigación orientativo"
+    
+  NARRATIVE_BRIDGE:
+    folder: "R_research"
+    prefix: "BRIDGE"
+    template: "{project_code}_R_BRIDGE_v{version}.md"
+    metadata_level: "standard"
+    description: "Puente narrativo para escritura"
+    
+  RESEARCH_DEEP_DIVE:
+    folder: "R_research"
+    prefix: "DEEP_DIVE"
+    template: "{project_code}_R_DEEP_DIVE_v{version}.md"
+    metadata_level: "extended"
+    description: "Investigación profunda (RAMA A)"
+    
+  RESEARCH_REPORT:
+    folder: "R_research"
+    prefix: "REPORT"
+    template: "{project_code}_R_REPORT_{subtype}_v{version}.md"
+    metadata_level: "extended"
+    description: "Reporte de investigación estructurado (RAMA B)"
+    subtypes: ["HIST", "ECON", "TECH", "SOCIAL", "POL", "SCI", "CUSTOM"]
+
+# =============================================================================
+# WRITING BOOK ARTIFACTS
+# =============================================================================
+
+WRITING_BOOK:
+  BOOK_INDEX:
+    folder: "WB_writing_book"
+    prefix: "INDEX"
+    template: "{project_code}_WB_INDEX_v{version}.md"
+    metadata_level: "standard"
+    description: "Índice del libro"
+    
+  SAMPLE_CHAPTER:
+    folder: "WB_writing_book"
+    prefix: "SAMPLE"
+    template: "{project_code}_WB_SAMPLE_CH{chapter_number}_v{version}.md"
+    metadata_level: "extended"
+    description: "Capítulo de muestra para aprobación"
+    
+  CHAPTER_DRAFT:
+    folder: "WB_writing_book"
+    prefix: "CHAPTER"
+    template: "{project_code}_WB_CHAPTER_CH{chapter_number}_v{version}.md"
+    metadata_level: "extended"
+    description: "Borrador de capítulo"
+    
+  INTRODUCTION:
+    folder: "WB_writing_book"
+    prefix: "INTRO"
+    template: "{project_code}_WB_INTRO_v{version}.md"
+    metadata_level: "extended"
+    description: "Introducción del libro"
+    
+  PROLOGUE:
+    folder: "WB_writing_book"
+    prefix: "PROLOGUE"
+    template: "{project_code}_WB_PROLOGUE_v{version}.md"
+    metadata_level: "extended"
+    description: "Prólogo del libro"
+    
+  BOOK_SHEET:
+    folder: "WB_writing_book"
+    prefix: "SHEET"
+    template: "{project_code}_WB_SHEET_v{version}.md"
+    metadata_level: "standard"
+    description: "Ficha técnica del libro"
+
+# =============================================================================
+# WRITING POST ARTIFACTS
+# =============================================================================
+
+WRITING_POST:
+  POST_SEED:
+    folder: "WP_writing_post"
+    prefix: "SEED"
+    template: "{project_code}_WP_SEED_{post_name}_v{version}.md"
+    metadata_level: "standard"
+    description: "Arquitectura y material para el post"
+    
+  POST_DRAFT:
+    folder: "WP_writing_post"
+    prefix: "POST"
+    template: "{project_code}_WP_POST_{post_name}_v{version}.md"
+    metadata_level: "extended"
+    description: "Borrador del post completo"
+    
+  INVENTARIO_IDEAS:
+    folder: "WP_writing_post"
+    prefix: "IDEAS"
+    template: "{project_code}_WP_IDEAS_{post_name}_v{version}.md"
+    metadata_level: "standard"
+    description: "Q&A de ideas del editor"
+    
+  SOURCE_MAP:
+    folder: "WP_writing_post"
+    prefix: "SOURCES"
+    template: "{project_code}_WP_SOURCES_{post_name}_v{version}.md"
+    metadata_level: "standard"
+    description: "Mapa de fuentes procesadas"
+    
+  VERIFICATION_MAP:
+    folder: "WP_writing_post"
+    prefix: "VERIFY"
+    template: "{project_code}_WP_VERIFY_{post_name}_v{version}.md"
+    metadata_level: "standard"
+    description: "Resultado de verificación de fuentes"
+    
+  ANGLES_REPORT:
+    folder: "WP_writing_post"
+    prefix: "ANGLES"
+    template: "{project_code}_WP_ANGLES_{post_name}_v{version}.md"
+    metadata_level: "standard"
+    description: "Ángulos y enfoques propuestos"
+    
+  POST_BRIEFING:
+    folder: "WP_writing_post"
+    prefix: "BRIEFING"
+    template: "{project_code}_WP_BRIEFING_{post_name}_v{version}.md"
+    metadata_level: "standard"
+    description: "Briefing de continuación entre sesiones"
+
+# =============================================================================
+# ACTIVATION ARTIFACTS
+# =============================================================================
+
+ACTIVATION:
+  ACTIVATION_CONTEXT:
+    folder: "A_activation"
+    prefix: "CONTEXT"
+    template: "{project_code}_A_CONTEXT_v{version}.md"
+    metadata_level: "extended"
+    description: "Contexto de activación del corpus"
+    
+  BOOK_BRIEF:
+    folder: "A_activation"
+    prefix: "BRIEF"
+    template: "{project_code}_A_BRIEF_v{version}.md"
+    metadata_level: "standard"
+    description: "Propuestas de nuevos libros"
+    
+  POST_PLAN:
+    folder: "A_activation"
+    prefix: "POST_PLAN"
+    template: "{project_code}_A_POST_PLAN_{plan_number}_v{version}.md"
+    metadata_level: "standard"
+    description: "Plan de post específico de la campaña"
+    
+  CONTENT_STRATEGY:
+    folder: "A_activation"
+    prefix: "STRATEGY"
+    template: "{project_code}_A_STRATEGY_v{version}.md"
+    metadata_level: "standard"
+    description: "Estrategia de contenido para la campaña"
+
+# =============================================================================
+# SYSTEM ARTIFACTS  
+# =============================================================================
+
+SYSTEM:
+  PROJECT_NOTES:
+    folder: "_discovery"
+    prefix: "NOTES"
+    template: "PROJECT_NOTES.md"
+    metadata_level: "standard"
+    description: "Notas de descubrimiento y orientación del proyecto"
+    unique: true  # Solo uno por proyecto
+    
+  WRITING_CONTEXT:
+    folder: "config"
+    prefix: "CONTEXT"
+    template: "WRITING_CONTEXT_{context_id}.md"
+    metadata_level: "standard"
+    description: "Configuración de contexto de escritura"
+    
+  PROJECT_CONFIG:
+    folder: "config"
+    prefix: "CONFIG"
+    template: "PROJECT_CONFIG.md"
+    metadata_level: "standard"
+    description: "Configuración del proyecto"
+    unique: true
+
+EDITOR:
+  EDITOR_CONFIG:
+    folder: "_editor/config"  # Ubicación global del editor, no del proyecto
+    prefix: "CONFIG"
+    template: "EDITOR_CONFIG.md"
+    metadata_level: "extended"
+    description: "Configuración personal completa del editor"
+    unique: true  # Solo uno por editor
+    scope: "global"  # No es específico de proyecto
+    
+  EDITOR_PROFILE:
+    folder: "_editor/profiles"
+    prefix: "PROFILE"
+    template: "EDITOR_PROFILE_{editor_name}.md"
+    metadata_level: "standard"
+    description: "Perfil editorial del editor"
+    scope: "global"
+
+# =============================================================================
+# EVALUATION ARTIFACTS
+# =============================================================================
+
+EVALUATION:
+  EVALUATION_RESULT:
+    folder: "{source_workflow_folder}"  # Dinámico según qué evalúa
+    prefix: "EVAL"
+    template: "{project_code}_EVAL_{target_type}_v{version}.md"
+    metadata_level: "standard"
+    description: "Resultado de evaluación de calidad"
+    target_types: ["RESEARCH", "BOOK", "POST", "ACTIVATION"]
+
+# =============================================================================
+# METADATA LEVELS CONFIGURATION
+# =============================================================================
+
+METADATA_LEVELS:
+  standard:
+    fields:
+      - id
+      - type
+      - project
+      - version
+      - created
+      - status
+      - generated_by
+      
+  extended:
+    fields:
+      - id
+      - type
+      - project
+      - version
+      - created
+      - updated
+      - status
+      - generated_by
+      - word_count
+      - processing_time
+      - source_artifacts
+      - quality_metrics
+      - next_step
+
+# =============================================================================
+# VERSION CONTROL SETTINGS
+# =============================================================================
+
+VERSION_CONTROL:
+  initial_version: "1.0"
+  increment_minor: "0.1"  # v1.0 → v1.1 → v1.2
+  increment_major: "1.0"  # v1.9 → v2.0
+  
+  minor_criteria:
+    - "Correcciones menores"
+    - "Añadidos que no cambian estructura"
+    - "Actualizaciones de metadatos"
+    
+  major_criteria:
+    - "Reescritura significativa"
+    - "Cambio de estructura"
+    - "Nueva versión del prompt que lo genera"
+
+# =============================================================================
+# NAMING UTILITIES
+# =============================================================================
+
+NAMING_RULES:
+  project_code:
+    max_length: 10
+    allowed_chars: "A-Z0-9_"
+    
+  post_name:
+    max_length: 40
+    transform: "title_case_to_snake_case"  # "Frankenstein Tenía Razón" → "Frankenstein_Tenia_Razon"
+    remove_chars: [".", ",", ":", ";", "!", "?", "'", '"']
+    
+  chapter_number:
+    format: "zero_padded"  # 1 → 01, 10 → 10
+    max_digits: 2
+    
+  plan_number:
+    format: "sequential"  # P1, P2, P3...
+    prefix: "P"
+
+# =============================================================================
+# ERROR HANDLING
+# =============================================================================
+
+ERROR_HANDLING:
+  fallback_behavior: "present_manual_content"
+  retry_attempts: 3
+  timeout_seconds: 30
+  
+  error_types:
+    drive_connection:
+      action: "present_content_for_manual_save"
+      message: "Auto-save no disponible. Contenido presentado para guardado manual."
+      
+    file_exists:
+      action: "increment_version"
+      message: "Archivo existente detectado. Versión incrementada automáticamente."
+      
+    invalid_config:
+      action: "use_generic_naming"
+      message: "Configuración incompleta. Usando naming genérico."
+      
+    unknown_artifact:
+      action: "use_generic_template"
+      message: "Tipo de artefacto no reconocido. Registry necesita actualización."
