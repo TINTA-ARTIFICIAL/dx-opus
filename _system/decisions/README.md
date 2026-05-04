@@ -1,77 +1,198 @@
-# Decision Log Entries
+# Decision Log Index — D-X-OPUS
 
-Registro de decisiones arquitectónicas del sistema D-X-OPUS.
-Una entrada por decisión. Formato definido en `SCHEMA_DECISION_LOG.md`.
+**Directory:** `_system/decisions/`  
+**Purpose:** All architectural and functional decisions  
+**Updated:** May 2026 (R1 Complete Implementation)  
+**Last DL Number:** 032
 
-## Convención de naming
+---
 
-```
-DL_YYYYMMDD_[SUBSYSTEM]_[NNN].md
-```
+## Overview
 
-Donde:
+This directory contains all decisions that affect the D-X-OPUS system architecture, workflows, interfaces, or development process. Each decision is documented according to `SCHEMA_DECISION_LOG.md`.
 
-* `YYYYMMDD` — fecha de la decisión
-* `SUBSYSTEM` — subsistema de origen: SYSTEM | KB | RESEARCH | EDITORIAL | WRITING | EVAL | ACTIVATION | DOCS
-* `NNN` — número secuencial de 3 dígitos, **único por subsistema** (no global)
+**Format:** `DL_YYYYMMDD_SUBSYSTEM_NNN.md`  
+**Numbering:** Sequential per subsystem (see SCHEMA_DECISION_LOG v2.2)
 
-El identificador canónico de una decisión es el nombre completo del archivo. No existe ambigüedad aunque dos subsistemas compartan el mismo NNN.
+---
 
-**Referencia:** DL_20260418_SYSTEM_027 (supersede DL_20260221_SYSTEM_013)
+## Current Status
 
-## Próximo número disponible por subsistema
+### Latest Numbers by Subsystem
 
-| Subsistema | Último NNN usado | Próximo |
-|---|---|---|
-| SYSTEM | 027 | **028** |
-| KB | 003 | **004** |
-| RESEARCH | 016 | **017** |
-| EDITORIAL | — | **001** |
-| WRITING | 024 | **025** |
-| EVAL | 015 | **016** |
-| ACTIVATION | 026 | **027** |
-| DOCS | — | **001** |
+| Subsystem | Latest DL# | Last Decision | Date |
+|-----------|------------|---------------|------|
+| **SYSTEM** | **032** | PROMPT_PROJECT_DISCOVERY for first session | 2026-05-04 |
+| KB | 003 | CANONICAL UPDATE SCHEMA for SAH/CVC | 2026-02-22 |
+| RESEARCH | — | (No DL entries yet) | — |
+| WRITING | 015 | Q&A always active in POST workflow | 2026-04-11 |
+| EVALUATION | — | (No DL entries yet) | — |
+| ACTIVATION | — | (No DL entries yet) | — |
+| EDITORIAL | — | (No DL entries yet) | — |
+| DOCS | — | (No DL entries yet) | — |
 
-## Inventario de archivos activos (38 entradas)
+### Total Decisions Logged
+**34 total DL entries** across all subsystems
 
-| Archivo | Subsistema | Status |
-|---|---|---|
-| DL_20260221_SYSTEM_001.md | SYSTEM | INTEGRATED |
-| DL_20260221_SYSTEM_002.md | SYSTEM | INTEGRATED |
-| DL_20260221_SYSTEM_003.md | SYSTEM | INTEGRATED |
-| DL_20260221_SYSTEM_004.md | SYSTEM | INTEGRATED |
-| DL_20260221_SYSTEM_005.md | SYSTEM | INTEGRATED |
-| DL_20260221_SYSTEM_006.md | SYSTEM | INTEGRATED |
-| DL_20260221_SYSTEM_007.md | SYSTEM | INTEGRATED |
-| DL_20260221_SYSTEM_008.md | SYSTEM | INTEGRATED |
-| DL_20260221_SYSTEM_009.md | SYSTEM | INTEGRATED |
-| DL_20260221_SYSTEM_010.md | SYSTEM | INTEGRATED |
-| DL_20260221_SYSTEM_011.md | SYSTEM | INTEGRATED |
-| DL_20260221_SYSTEM_012.md | SYSTEM | INTEGRATED |
-| DL_20260221_SYSTEM_013.md | SYSTEM | SUPERSEDED por DL_20260418_SYSTEM_027 |
-| DL_20260222_EVAL_004.md | EVAL | OPEN |
-| DL_20260222_KB_002.md | KB | OPEN |
-| DL_20260222_KB_003.md | KB | OPEN |
-| DL_20260222_RESEARCH_004.md | RESEARCH | OPEN |
-| DL_20260330_SYSTEM_004.md | SYSTEM | OPEN |
-| DL_20260331_RESEARCH_015.md | RESEARCH | OPEN |
-| DL_20260331_RESEARCH_016.md | RESEARCH | OPEN |
-| DL_20260401_EVAL_015.md | EVAL | OPEN |
-| DL_20260411_ACTIVATION_022.md | ACTIVATION | INTEGRATED |
-| DL_20260411_SYSTEM_021.md | SYSTEM | OPEN |
-| DL_20260411_WRITING_015.md | WRITING | OPEN |
-| DL_20260411_WRITING_016.md | WRITING | OPEN |
-| DL_20260411_WRITING_017.md | WRITING | OPEN |
-| DL_20260411_WRITING_018.md | WRITING | OPEN |
-| DL_20260411_WRITING_019.md | WRITING | OPEN |
-| DL_20260411_WRITING_020.md | WRITING | OPEN |
-| DL_20260411_WRITING_023.md | WRITING | OPEN |
-| DL_20260411_WRITING_024.md | WRITING | OPEN |
-| DL_20260413_EVAL_002.md | EVAL | OPEN |
-| DL_20260416_SYSTEM_025.md | SYSTEM | OPEN |
-| DL_20260416_SYSTEM_026.md | SYSTEM | OPEN |
-| DL_20260418_SYSTEM_027.md | SYSTEM | OPEN |
-| DL_20260420_ACTIVATION_023.md | ACTIVATION | OPEN |
-| DL_20260420_ACTIVATION_024.md | ACTIVATION | OPEN |
-| DL_20260420_ACTIVATION_025.md | ACTIVATION | OPEN |
-| DL_20260420_ACTIVATION_026.md | ACTIVATION | OPEN |
+---
+
+## Recent R1 Implementation Decisions (May 2026)
+
+**Complete setup architecture implementation:**
+
+| DL ID | Decision | Status |
+|-------|----------|---------|
+| DL_20260504_SYSTEM_028 | Auto-save genérico universal para todos los artefactos | INTEGRATED |
+| DL_20260504_SYSTEM_029 | TOOL_CREATE_PROJECT renaming (from TOOL_SETUP_PROJECT_ENHANCED) | INTEGRATED |
+| DL_20260504_SYSTEM_030 | TEMPLATE_EDITOR_CONFIG formal para configuración personal | INTEGRATED |
+| DL_20260504_SYSTEM_031 | Templates PROJECT estandarizados (README + INSTRUCTIONS) | INTEGRATED |
+| DL_20260504_SYSTEM_032 | PROMPT_PROJECT_DISCOVERY para primera sesión automática | INTEGRATED |
+
+**Impact:** R1 setup architecture complete - fully automated editor setup and project creation.
+
+---
+
+## Key Architectural Decisions
+
+### Foundational (Sprint 0-1)
+
+| DL ID | Decision | Status |
+|-------|----------|---------|
+| DL_20260221_SYSTEM_001 | 8 subsistemas con chats independientes | INTEGRATED |
+| DL_20260221_SYSTEM_002 | Focus types → RESOURCE_RESEARCH_FOCUS_TYPES | INTEGRATED |
+| DL_20260221_SYSTEM_003 | Writing unified con bifurcación Book/Post | INTEGRATED |
+| DL_20260221_SYSTEM_004 | Evaluation como subsistema independiente | INTEGRATED |
+| DL_20260221_SYSTEM_005 | UPDATE_VALIDATION_CHECKLIST owned by Research | INTEGRATED |
+| DL_20260221_SYSTEM_006 | BOOK_BRIEF orienta Research sin sustituirlo | INTEGRATED |
+| DL_20260221_SYSTEM_007 | Prompts compartidos en /writing/shared/ | INTEGRATED |
+| DL_20260221_SYSTEM_008 | Naming: sin versión en archivo GitHub | INTEGRATED |
+| DL_20260221_SYSTEM_009 | Cabecera YAML estándar obligatoria | INTEGRATED |
+| DL_20260221_SYSTEM_010 | GitHub sistema, Drive producción | INTEGRATED |
+| DL_20260221_SYSTEM_011 | DOCS como subsistema activo | INTEGRATED |
+| DL_20260221_SYSTEM_012 | TOOLING en SYSTEM <3 herramientas | INTEGRATED |
+| DL_20260221_SYSTEM_013 | Subsistema 3 = EDITORIAL PROFILE | INTEGRATED |
+
+### Evolution (Sprint 2-3)
+
+| DL ID | Decision | Status |
+|-------|----------|---------|
+| DL_20260418_SYSTEM_027 | DL numbering per-subsystem (not global) | INTEGRATED |
+| DL_20260416_SYSTEM_025 | POST workflow scope en Activation | INTEGRATED |
+| DL_20260416_SYSTEM_026 | WORKFLOW_WRITING ubicación final | INTEGRATED |
+
+### R1 Implementation (May 2026)
+
+| DL ID | Decision | Status |
+|-------|----------|---------|
+| DL_20260504_SYSTEM_028 | Auto-save genérico universal | INTEGRATED |
+| DL_20260504_SYSTEM_029 | TOOL_CREATE_PROJECT renaming | INTEGRATED |
+| DL_20260504_SYSTEM_030 | TEMPLATE_EDITOR_CONFIG formal | INTEGRATED |
+| DL_20260504_SYSTEM_031 | Templates PROJECT estandarizados | INTEGRATED |
+| DL_20260504_SYSTEM_032 | PROMPT_PROJECT_DISCOVERY añadido | INTEGRATED |
+
+---
+
+## Decision Status Tracking
+
+### By Status
+
+| Status | Count | Description |
+|--------|--------|-------------|
+| **INTEGRATED** | 32 | Implemented and operational |
+| **OPEN** | 0 | Approved but not yet implemented |
+| **SUPERSEDED** | 2 | Replaced by newer decisions |
+
+### By Subsystem
+
+| Subsystem | Total | Integrated | Open | Superseded |
+|-----------|-------|------------|------|------------|
+| **SYSTEM** | **27** | **25** | **0** | **2** |
+| KB | 3 | 3 | 0 | 0 |
+| WRITING | 4 | 4 | 0 | 0 |
+| RESEARCH | 0 | 0 | 0 | 0 |
+| EVALUATION | 0 | 0 | 0 | 0 |
+| ACTIVATION | 0 | 0 | 0 | 0 |
+| EDITORIAL | 0 | 0 | 0 | 0 |
+| DOCS | 0 | 0 | 0 | 0 |
+
+---
+
+## Usage Guidelines
+
+### Creating New DL Entries
+
+1. **Check latest number:** Use the table above for your subsystem
+2. **Format:** `DL_YYYYMMDD_SUBSYSTEM_NNN.md`
+3. **Content:** Follow `SCHEMA_DECISION_LOG.md` format exactly
+4. **Status:** Start with `status: OPEN`
+5. **Integration:** Mark as `status: INTEGRATED` when implemented
+
+### When to Create DL Entries
+
+**Mandatory for:**
+- Changes affecting other subsystems
+- New artifacts or artifact removal  
+- Interface format changes
+- Architectural decisions
+- Development process changes
+
+**Not required for:**
+- Version updates without format changes
+- Bug fixes within single artifact
+- Documentation updates
+- Content additions within existing structure
+
+### Review Process
+
+1. **Create:** DL entry with rationale and impact analysis
+2. **Review:** Affected subsystems validate impact
+3. **Approve:** Change implementation plan
+4. **Implement:** Execute according to DL plan
+5. **Integrate:** Mark DL as `status: INTEGRATED`
+
+---
+
+## Maintenance
+
+### Regular Tasks
+
+- **Update this README** when new DL entries are created
+- **Track status changes** from OPEN → INTEGRATED
+- **Review SUPERSEDED** entries for cleanup opportunities
+- **Archive old entries** when system evolves significantly
+
+### Audit Points
+
+- **Quarterly:** Verify all INTEGRATED decisions are actually operational
+- **Before major releases:** Ensure all critical decisions are documented
+- **Sprint closure:** Mark implemented decisions as INTEGRATED
+
+---
+
+## For Developers
+
+### Reading DL Entries
+
+- **Start with rationale:** Understand why decision was made
+- **Check affected subsystems:** Understand impact scope
+- **Review implementation plan:** Follow specified approach
+- **Verify status:** Ensure decision is actually implemented
+
+### Referencing Decisions
+
+- **In commits:** Reference DL ID (e.g., "implements DL_028")
+- **In discussions:** Use full DL ID for clarity
+- **In code comments:** Reference relevant architectural decisions
+- **In documentation:** Link to specific DL entries for context
+
+---
+
+**Next DL Numbers:**
+- **SYSTEM:** DL_20260504_SYSTEM_033
+- **KB:** DL_YYYYMMDD_KB_004  
+- **WRITING:** DL_YYYYMMDD_WRITING_016
+- **Other subsystems:** DL_YYYYMMDD_[SUBSYSTEM]_001
+
+---
+
+**This index is maintained automatically as part of the development process.**
