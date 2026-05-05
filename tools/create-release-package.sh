@@ -156,11 +156,10 @@ success "Package directory structure created"
 # FILE COPYING — Using mapping table
 # ═══════════════════════════════════════════════════════════════
 
-declare -A DIR_COUNTS
-DIR_COUNTS[prompts]=0
-DIR_COUNTS[templates]=0
-DIR_COUNTS[resources]=0
-DIR_COUNTS[tools]=0
+COUNT_PROMPTS=0
+COUNT_TEMPLATES=0
+COUNT_RESOURCES=0
+COUNT_TOOLS=0
 
 for mapping in "${FILE_MAPPINGS[@]}"; do
     IFS=':' read -r src_dir pattern dest <<< "$mapping"
@@ -180,22 +179,26 @@ for mapping in "${FILE_MAPPINGS[@]}"; do
         fi
 
         cp "$file" "$dest_file"
-        DIR_COUNTS[$dest]=$((DIR_COUNTS[$dest] + 1))
+        case "$dest" in
+            prompts)   COUNT_PROMPTS=$((COUNT_PROMPTS + 1)) ;;
+            templates) COUNT_TEMPLATES=$((COUNT_TEMPLATES + 1)) ;;
+            resources) COUNT_RESOURCES=$((COUNT_RESOURCES + 1)) ;;
+            tools)     COUNT_TOOLS=$((COUNT_TOOLS + 1)) ;;
+        esac
     done < <(find "$src_dir" -maxdepth 1 -name "$pattern" -print0 2>/dev/null)
 done
 
-TOTAL_FILES=0
-for key in prompts templates resources tools; do
-    count=${DIR_COUNTS[$key]}
-    TOTAL_FILES=$((TOTAL_FILES + count))
-    success "$(printf '%-10s' "${key}/"): ${count} files"
-done
+TOTAL_FILES=$((COUNT_PROMPTS + COUNT_TEMPLATES + COUNT_RESOURCES + COUNT_TOOLS))
+success "$(printf '%-10s' "prompts/"):   ${COUNT_PROMPTS} files"
+success "$(printf '%-10s' "templates/"): ${COUNT_TEMPLATES} files"
+success "$(printf '%-10s' "resources/"): ${COUNT_RESOURCES} files"
+success "$(printf '%-10s' "tools/"):     ${COUNT_TOOLS} files"
 echo ""
 log "Total files collected: ${TOTAL_FILES}"
 
 # Warn if unexpectedly low counts
-[ "${DIR_COUNTS[prompts]}" -lt 5 ]    && warn "Prompts count seems low (${DIR_COUNTS[prompts]}). Check repository structure."
-[ "${DIR_COUNTS[templates]}" -lt 1 ]  && warn "No templates found. Check _system/templates/"
+[ "${COUNT_PROMPTS}" -lt 5 ]   && warn "Prompts count seems low (${COUNT_PROMPTS}). Check repository structure."
+[ "${COUNT_TEMPLATES}" -lt 1 ] && warn "No templates found. Check _system/templates/"
 
 # ═══════════════════════════════════════════════════════════════
 # GENERATE PACKAGE_INFO.md
@@ -277,10 +280,10 @@ ${RECENT_CHANGES}
 
 | Category | Count | Description |
 |---|---|---|
-| **Prompts** | ${DIR_COUNTS[prompts]} | All D-X-OPUS workflow prompts |
-| **Templates** | ${DIR_COUNTS[templates]} | Project generation templates |
-| **Resources** | ${DIR_COUNTS[resources]} | Configuration + knowledge base |
-| **Tools** | ${DIR_COUNTS[tools]} | Google Apps Script automation |
+| **Prompts** | ${COUNT_PROMPTS} | All D-X-OPUS workflow prompts |
+| **Templates** | ${COUNT_TEMPLATES} | Project generation templates |
+| **Resources** | ${COUNT_RESOURCES} | Configuration + knowledge base |
+| **Tools** | ${COUNT_TOOLS} | Google Apps Script automation |
 | **Total** | **${TOTAL_FILES}** | |
 
 ### Prompts Included:
@@ -301,10 +304,10 @@ ${TOOL_LIST}
 
 \`\`\`
 ${PACKAGE_NAME}/
-├── prompts/           # ${DIR_COUNTS[prompts]} workflow prompts
-├── templates/         # ${DIR_COUNTS[templates]} project templates
-├── resources/         # ${DIR_COUNTS[resources]} config + knowledge base files
-├── tools/             # ${DIR_COUNTS[tools]} automation scripts
+├── prompts/           # ${COUNT_PROMPTS} workflow prompts
+├── templates/         # ${COUNT_TEMPLATES} project templates
+├── resources/         # ${COUNT_RESOURCES} config + knowledge base files
+├── tools/             # ${COUNT_TOOLS} automation scripts
 ├── PACKAGE_INFO.md    # This file
 └── MANIFEST.txt       # Complete file listing with checksums
 \`\`\`
@@ -352,16 +355,16 @@ Total:      ${TOTAL_FILES} files
 PACKAGE CONTENTS
 ═══════════════════════════════════════
 
-prompts/ (${DIR_COUNTS[prompts]} files):
+prompts/ (${COUNT_PROMPTS} files):
 $(find "${PACKAGE_NAME}/prompts"   -name "*.md" -exec basename {} \; | sort | sed 's/^/  /')
 
-templates/ (${DIR_COUNTS[templates]} files):
+templates/ (${COUNT_TEMPLATES} files):
 $(find "${PACKAGE_NAME}/templates" -name "*.md" -exec basename {} \; | sort | sed 's/^/  /')
 
-resources/ (${DIR_COUNTS[resources]} files):
+resources/ (${COUNT_RESOURCES} files):
 $(find "${PACKAGE_NAME}/resources" -type f      -exec basename {} \; | sort | sed 's/^/  /')
 
-tools/ (${DIR_COUNTS[tools]} files):
+tools/ (${COUNT_TOOLS} files):
 $(find "${PACKAGE_NAME}/tools"     -name "*.gs" -exec basename {} \; | sort | sed 's/^/  /')
 
 EOF
@@ -422,10 +425,10 @@ Complete automated installation package for **${SPRINT_DISPLAY}** closure.
 ### Included Components
 | Category | Count |
 |---|---|
-| Prompts | ${DIR_COUNTS[prompts]} |
-| Templates | ${DIR_COUNTS[templates]} |
-| Resources | ${DIR_COUNTS[resources]} |
-| Tools | ${DIR_COUNTS[tools]} |
+| Prompts | ${COUNT_PROMPTS} |
+| Templates | ${COUNT_TEMPLATES} |
+| Resources | ${COUNT_RESOURCES} |
+| Tools | ${COUNT_TOOLS} |
 | **Total** | **${TOTAL_FILES}** |
 
 ### Installation
@@ -468,7 +471,7 @@ if [ "$DRY_RUN" = false ] && [ -f "${ZIP_FILE}" ]; then
 echo "  💾 Size:      ${ZIP_SIZE}"
 fi
 echo "  📊 Files:     ${TOTAL_FILES} total"
-echo "               ${DIR_COUNTS[prompts]} prompts | ${DIR_COUNTS[templates]} templates | ${DIR_COUNTS[resources]} resources | ${DIR_COUNTS[tools]} tools"
+echo "               ${COUNT_PROMPTS} prompts | ${COUNT_TEMPLATES} templates | ${COUNT_RESOURCES} resources | ${COUNT_TOOLS} tools"
 if [ "$DRY_RUN" = false ] && [ "$SKIP_RELEASE" = false ]; then
 echo "  🔗 Release:   ${BASE_URL}/releases/tag/${VERSION}"
 fi
