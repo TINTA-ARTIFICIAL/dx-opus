@@ -3,7 +3,7 @@
 id:          TOOL_SETUP_EDITOR_ENVIRONMENT
 type:        TOOL
 subsystem:   SYSTEM
-version:     1.0
+version:     1.1
 status:      ACTIVE
 created:     2026-05-04
 updated:     2026-05-04
@@ -11,6 +11,7 @@ owner_chat:  system-architecture
 ---
 
 CHANGELOG:
+v1.1 | 2026-05-04 | JM | Fixed DriveApp.newBlob errors - corrected file creation syntax
 v1.0 | 2026-05-04 | JM | Initial version - creates D-X-OPUS editor environment
 
 DEPENDENCIES:
@@ -319,7 +320,7 @@ function setupEditorEnvironment(editorName, parentFolderId) {
   
   // Crear README principal
   const mainReadmeContent = createMainReadme(editorName);
-  mainFolder.createFile(DriveApp.newBlob(mainReadmeContent, "text/plain", "README.md"));
+  mainFolder.createFile("README.md", mainReadmeContent);
   
   // Crear estructura principal
   Object.keys(EDITOR_ENVIRONMENT_STRUCTURE).forEach(folderName => {
@@ -340,7 +341,7 @@ function setupEditorEnvironment(editorName, parentFolderId) {
     
     // Crear README de carpeta principal
     const readmeContent = folderInfo.readme_content;
-    folder.createFile(DriveApp.newBlob(readmeContent, "text/plain", "README.md"));
+    folder.createFile("README.md", readmeContent);
   });
   
   Logger.log("✅ Estructura D-X-OPUS creada exitosamente.");
@@ -362,7 +363,7 @@ function createLibraryStructure(libraryFolder) {
     const libInfo = EDITOR_LIBRARY_STRUCTURE[libFolderName];
     
     // Crear README para cada subcarpeta de library
-    libFolder.createFile(DriveApp.newBlob(libInfo.readme_content, "text/plain", "README.md"));
+    libFolder.createFile("README.md", libInfo.readme_content);
   });
   
   // README principal de library
@@ -396,7 +397,7 @@ Biblioteca de contenido personal del editor para el workflow de Activation.
 - Backup periódico recomendado
 `;
   
-  libraryFolder.createFile(DriveApp.newBlob(libraryReadmeContent, "text/plain", "README.md"));
+  libraryFolder.createFile("README.md", libraryReadmeContent);
 }
 
 /**
