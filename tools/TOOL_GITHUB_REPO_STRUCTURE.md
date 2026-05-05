@@ -2,10 +2,10 @@
 id:          TOOL_GITHUB_REPO_STRUCTURE
 type:        TOOL
 subsystem:   SYSTEM
-version:     1.3
+version:     1.4
 status:      ACTIVE
 created:     2026-02-21
-updated:     2026-04-18
+updated:     2026-05-05
 owner_chat:  system-architecture
 ---
 
@@ -13,9 +13,10 @@ owner_chat:  system-architecture
 
 | Version | Date | Author | Summary |
 |---------|------|--------|---------|
+| v1.4 | 2026-05-05 | JM | Sprint 4: Added create-release-package.sh, TOOL_SETUP_EDITOR_ENVIRONMENT.gs v1.1, SPEC_PACKAGE_SYSTEM.md, TEST_PACKAGE_SYSTEM_E2E.md, PACKAGE_SYSTEM_IMPLEMENTATION_SUMMARY.md. Tree and state updated to Sprint 4 verified state. |
 | v1.3 | 2026-04-18 | JM | Audit R1: removed stale "pendiente" comments from tree (all files now in repo). Part 3 rewritten to reflect actual repo state verified by find output. DL count corrected to 34. docs/ structure corrected (developer-manuals/ at correct path). |
-| v1.2 | 2026-04-16 | JM | Sprint cierre R1: tree updated to reflect actual repo state. writing/post/ populated with 14 Sprint 3 artefacts. PROMPT_EVALUATE_BOOK_STYLE and PROMPT_EVALUATE_POST added to evaluation/. PROMPT_EVALUATE_BOOK_STYLE removed from editorial-profile/ (moved per DL_20260330_SYSTEM_004). RESEARCH_COMPONENT_AUDIT.md added to audits/. WORKFLOW_WRITING.md location per DL_20260416_SYSTEM_026. Estado actual section updated to R1 closure state. |
-| v1.1 | 2026-03-30 | JM | Removed versions from all filenames in repo tree. Replaced MCP setup with manual upload flow (DECISIÓN-15). Fixed shared prompts location to /writing/shared/. Added current repo state. |
+| v1.2 | 2026-04-16 | JM | Sprint cierre R1: tree updated to reflect actual repo state. writing/post/ populated with 14 Sprint 3 artefacts. PROMPT_EVALUATE_BOOK_STYLE and PROMPT_EVALUATE_POST added to evaluation/. WORKFLOW_WRITING.md location per DL_20260416_SYSTEM_026. |
+| v1.1 | 2026-03-30 | JM | Removed versions from all filenames in repo tree. Replaced MCP setup with manual upload flow (DECISIÓN-15). Fixed shared prompts location to /writing/shared/. |
 | v1.0 | 2026-02-21 | JM | Initial version |
 
 ## DEPENDENCIES
@@ -73,50 +74,34 @@ dx-opus/
 │   ├── SCHEMA_SYSTEM_ARCHITECTURE.md
 │   ├── SCHEMA_DECISION_LOG.md
 │   ├── TEMPLATE_SUBSYSTEM_CONTEXT.md
+│   ├── ARQUITECTURA_AUTO_SAVE_GENERICA.md
+│   ├── PROMPT_PROJECT_DISCOVERY.md
+│   ├── SPEC_PACKAGE_SYSTEM.md             ← Sprint 4
 │   │
 │   ├── decisions/
 │   │   ├── README.md
-│   │   ├── DL_20260221_SYSTEM_001.md
-│   │   ├── DL_20260221_SYSTEM_002.md
-│   │   ├── DL_20260221_SYSTEM_003.md
-│   │   ├── DL_20260221_SYSTEM_004.md
-│   │   ├── DL_20260221_SYSTEM_005.md
-│   │   ├── DL_20260221_SYSTEM_006.md
-│   │   ├── DL_20260221_SYSTEM_007.md
-│   │   ├── DL_20260221_SYSTEM_008.md
-│   │   ├── DL_20260221_SYSTEM_009.md
-│   │   ├── DL_20260221_SYSTEM_010.md
-│   │   ├── DL_20260221_SYSTEM_011.md
-│   │   ├── DL_20260221_SYSTEM_012.md
-│   │   ├── DL_20260221_SYSTEM_013.md
-│   │   ├── DL_20260222_EVAL_004.md
-│   │   ├── DL_20260222_KB_002.md
-│   │   ├── DL_20260222_KB_003.md
-│   │   ├── DL_20260222_RESEARCH_004.md
-│   │   ├── DL_20260330_SYSTEM_004.md
-│   │   ├── DL_20260331_RESEARCH_015.md
-│   │   ├── DL_20260331_RESEARCH_016.md
-│   │   ├── DL_20260401_EVAL_015.md
-│   │   ├── DL_20260411_ACTIVATION_022.md
-│   │   ├── DL_20260411_SYSTEM_021.md
-│   │   ├── DL_20260411_WRITING_015.md
-│   │   ├── DL_20260411_WRITING_016.md
-│   │   ├── DL_20260411_WRITING_017.md
-│   │   ├── DL_20260411_WRITING_018.md
-│   │   ├── DL_20260411_WRITING_019.md
-│   │   ├── DL_20260411_WRITING_020.md
-│   │   ├── DL_20260411_WRITING_023.md
-│   │   ├── DL_20260411_WRITING_024.md
-│   │   ├── DL_20260413_EVAL_002.md
-│   │   ├── DL_20260416_SYSTEM_025.md
-│   │   └── DL_20260416_SYSTEM_026.md
+│   │   └── DL_*.md (35+ entries)
 │   │
-│   └── audits/
-│       ├── README.md
-│       └── RESEARCH_COMPONENT_AUDIT.md
+│   ├── audits/
+│   │   ├── README.md
+│   │   └── RESEARCH_COMPONENT_AUDIT.md
+│   │
+│   ├── templates/
+│   │   ├── TEMPLATE_EDITOR_CONFIG.md
+│   │   ├── TEMPLATE_PROJECT_README.md
+│   │   └── TEMPLATE_PROJECT_INSTRUCTIONS.md
+│   │
+│   ├── resources/
+│   │   └── AUTO_SAVE_CONFIG.yaml
+│   │
+│   └── test-records/                      ← Sprint 4 (nueva carpeta)
+│       └── TEST_PACKAGE_SYSTEM_E2E.md
 │
 ├── tools/                                 ← TOOLING (owned by SYSTEM)
 │   ├── README.md
+│   ├── create-release-package.sh          ← Sprint 4 (nuevo)
+│   ├── TOOL_SETUP_EDITOR_ENVIRONMENT.gs   ← Sprint 4 (v1.0 → v1.1)
+│   ├── TOOL_CREATE_PROJECT.gs
 │   ├── TOOL_SETUP_PROJECT.gs
 │   └── TOOL_GITHUB_REPO_STRUCTURE.md
 │
@@ -163,7 +148,7 @@ dx-opus/
 │   │   ├── PROMPT_CONSOLIDATE_REFERENCES.md
 │   │   └── PROMPT_CREATE_BOOK_SHEET.md
 │   │
-│   ├── post/                              ← RAMA POST completa (Sprint 3)
+│   ├── post/
 │   │   ├── README.md
 │   │   ├── PROMPT_POST_BRIEF.md
 │   │   ├── PROMPT_POST_EXPLORE.md
@@ -198,14 +183,17 @@ dx-opus/
 │   ├── README.md
 │   ├── CONTEXT_ACTIVATION.md
 │   ├── WORKFLOW_ACTIVATION.md
-│   └── PROMPT_CREATE_BOOK_BRIEF.md
+│   ├── PROMPT_CREATE_BOOK_BRIEF.md
+│   ├── PROMPT_ANALYZE_COLLECTION_FOR_ACTIVATION.md
+│   └── PROMPT_IDENTIFY_NARRATIVE_SEEDS.md
 │
 └── docs/                                  ← Subsistema 7: DOCS
     ├── README.md
     ├── CONTEXT_DOCS.md
     ├── system-design/
     │   ├── README.md
-    │   └── RELEASE_NOTES_R1.md
+    │   ├── RELEASE_NOTES_R1.md
+    │   └── PACKAGE_SYSTEM_IMPLEMENTATION_SUMMARY.md  ← Sprint 4
     ├── subsystem-docs/
     │   └── README.md
     ├── editor-manuals/
@@ -218,16 +206,19 @@ dx-opus/
 
 ## PARTE 3: ESTADO ACTUAL DEL REPOSITORIO
 
-Estado verificado por auditoría post-Release 1 (18/04/2026). Árbol confirmado via `find` sobre el repositorio real.
+Estado verificado post-Sprint 4 (05/05/2026).
 
 ### Artefactos presentes en repo — estado verificado
 
 | Carpeta | Artefactos confirmados |
 |---|---|
-| `_system/` | README, MASTER_PLAN, SCHEMA_SYSTEM_ARCHITECTURE, SCHEMA_DECISION_LOG, RESOURCE_ARTIFACT_HEADER_STANDARD, TEMPLATE_SUBSYSTEM_CONTEXT, NAMING_CONVENTION_ANALYSIS |
-| `_system/decisions/` | README + 34 archivos DL (ver árbol Parte 2 para listado completo) |
+| `_system/` | README, MASTER_PLAN, SCHEMA_SYSTEM_ARCHITECTURE, SCHEMA_DECISION_LOG, RESOURCE_ARTIFACT_HEADER_STANDARD, TEMPLATE_SUBSYSTEM_CONTEXT, NAMING_CONVENTION_ANALYSIS, ARQUITECTURA_AUTO_SAVE_GENERICA, PROMPT_PROJECT_DISCOVERY, SPEC_PACKAGE_SYSTEM |
+| `_system/decisions/` | README + 35 archivos DL |
 | `_system/audits/` | README, RESEARCH_COMPONENT_AUDIT |
-| `tools/` | README, TOOL_SETUP_PROJECT.gs, TOOL_GITHUB_REPO_STRUCTURE |
+| `_system/templates/` | TEMPLATE_EDITOR_CONFIG, TEMPLATE_PROJECT_README, TEMPLATE_PROJECT_INSTRUCTIONS |
+| `_system/resources/` | AUTO_SAVE_CONFIG.yaml |
+| `_system/test-records/` | TEST_PACKAGE_SYSTEM_E2E |
+| `tools/` | README, create-release-package.sh, TOOL_SETUP_EDITOR_ENVIRONMENT.gs (v1.1), TOOL_CREATE_PROJECT.gs, TOOL_SETUP_PROJECT.gs, TOOL_GITHUB_REPO_STRUCTURE |
 | `knowledge-base/` | README, CONTEXT_KNOWLEDGE_BASE, RESOURCE_SOURCE_AUTHORITY, RESOURCE_CLAIM_VALIDATION, RESOURCE_RESEARCH_FOCUS_TYPES |
 | `research/` | README, CONTEXT_RESEARCH, WORKFLOW_RESEARCH, PROMPT_SUMMARIZE_REFERENCES, PROMPT_RESEARCH_DEEP_DIVE, PROMPT_CREATE_RESEARCH_PLAN, PROMPT_EXECUTE_RESEARCH_PLAN, PROMPT_UPDATE_VALIDATION_CHECKLIST, GUIDE_ANNOTATION_PHASE3 |
 | `editorial-profile/` | README, CONTEXT_EDITORIAL_PROFILE, PROMPT_CREATE_EDITOR_PROFILE, RESOURCE_EDITORIAL_STYLE, RESOURCE_BOOK_TYPES, TEMPLATE_EDITOR_PROFILE, TEMPLATE_EDITOR_NOTES, GUIDE_EDITOR_NOTES |
@@ -236,16 +227,22 @@ Estado verificado por auditoría post-Release 1 (18/04/2026). Árbol confirmado 
 | `writing/post/` | README, PROMPT_POST_BRIEF, PROMPT_POST_EXPLORE, PROMPT_SUMMARIZE_REF, PROMPT_VERIFY_RESEARCH, PROMPT_QA_IDEAS, PROMPT_POST_ANGLES, PROMPT_PLAN_POST, PROMPT_SPLIT_POST, RESOURCE_WRITING_CONTEXT, RESOURCE_PUBLICATION_PROFILE, SPEC_LEARNING_SIGNALS, TEMPLATE_POST_SEED, TEMPLATE_POST_BRIEFING |
 | `writing/shared/` | README, PROMPT_WRITE_POST, PROMPT_CREATE_TIMELINE, PROMPT_CREATE_CAST |
 | `evaluation/` | README, CONTEXT_EVALUATION, RESOURCE_EVALUATION_FRAMEWORK, PROMPT_EVALUATE_RESEARCH_REPORT, PROMPT_EVALUATE_BOOK_CONTENT, PROMPT_EVALUATE_BOOK_STYLE, PROMPT_EVALUATE_POST |
-| `activation/` | README, CONTEXT_ACTIVATION, WORKFLOW_ACTIVATION, PROMPT_CREATE_BOOK_BRIEF |
-| `docs/` | README, CONTEXT_DOCS + subcarpetas (system-design, subsystem-docs, editor-manuals, developer-manuals) |
+| `activation/` | README, CONTEXT_ACTIVATION, WORKFLOW_ACTIVATION, PROMPT_CREATE_BOOK_BRIEF, PROMPT_ANALYZE_COLLECTION_FOR_ACTIVATION, PROMPT_IDENTIFY_NARRATIVE_SEEDS |
+| `docs/` | README, CONTEXT_DOCS + subcarpetas |
+| `docs/system-design/` | README, RELEASE_NOTES_R1, PACKAGE_SYSTEM_IMPLEMENTATION_SUMMARY |
 | raíz | README.md |
 
-### Deuda técnica activa — backlog Sprint 4
+### Package releases
+
+| Versión | Sprint | Fecha | Archivos |
+|---|---|---|---|
+| v1.4.0 | Sprint 4 | 2026-05-05 | 33 (23 prompts, 3 templates, 4 resources, 3 tools) |
+
+### Deuda técnica activa
 
 | ID | Descripción | Severidad |
 |---|---|---|
-| DL-NUM | Esquema de numeración DL roto — colisiones de NNN entre subsistemas. 34 archivos en repo con numeración inconsistente. Pendiente decisión de diseño: aceptar como está y documentar, o renaming ordenado. | 🔴 Alta |
-| DL-ID | `DL_20260222_EVAL_004.md` tiene `dl_id: DL_20260222_EVAL_001` en cabecera interna. Inconsistencia entre nombre de archivo e ID. | 🟡 Baja |
+| DL-NUM | Esquema de numeración DL con colisiones de NNN entre subsistemas. 35 archivos con numeración inconsistente. Decisión pendiente: aceptar como está o renaming ordenado. | 🔴 Alta |
 
 ---
 
@@ -266,7 +263,6 @@ docs/dev
 ```
 
 **Flujo:**
-
 ```
 Chat trabaja en su branch → crea PR → editor aprueba → merge a main
 ```
@@ -285,11 +281,10 @@ Subsistemas: SYSTEM | KB | RESEARCH | EDITORIAL | WRITING | EVAL | ACTIVATION | 
 
 Ejemplos:
 [SYSTEM] chore: update MASTER_PLAN to v1.4
-[SYSTEM] docs: add DL_20260416_SYSTEM_025 — POST flow scope decision for R1
+[SYSTEM] feat: add automated package creation system v1.0
+[SYSTEM] fix: replace declare -A with bash 3.x compatible variables
 [RESEARCH] feat: upload PROMPT_RESEARCH_DEEP_DIVE v1.1
-[RESEARCH] refactor: externalize focus types in CREATE_RESEARCH_PLAN v3.0
-[EVAL] feat: adopt evaluation contract in EVALUATE_BOOK_STYLE v1.1
-[WRITING] chore: move WORKFLOW_WRITING_BOOK to writing/WORKFLOW_WRITING.md
+[WRITING] feat: create PROMPT_POST_BRIEF v1.0
 ```
 
 ---

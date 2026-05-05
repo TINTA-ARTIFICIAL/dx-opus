@@ -1,315 +1,267 @@
 # D-X-OPUS Setup Tools
 
 **Directory:** tools/  
-**Purpose:** Automation tools for editor setup and project creation  
-**Updated:** May 2026 (R1 Complete Implementation)  
+**Purpose:** Automation tools for editor setup, project creation, and release management  
+**Updated:** May 2026 (Sprint 4 — Package System)  
 **Status:** Operational
 
 ---
 
 ## Overview
 
-This directory contains the automation tools that enable D-X-OPUS setup and operation. These tools implement the two-tier architecture: **LEVEL 1** (editor setup, once) and **LEVEL 2** (project creation, per project).
+This directory contains the automation tools that enable D-X-OPUS setup and operation. These tools implement a three-tier architecture: **LEVEL 0** (release packaging, per sprint), **LEVEL 1** (editor setup, once), and **LEVEL 2** (project creation, per project).
 
 ---
 
 ## Setup Architecture
 
-### LEVEL 1: Editor Setup (One Time)
-**Purpose:** Install and configure D-X-OPUS in the editor's environment  
-**Time:** 45-60 minutes (one time per editor)  
-**Result:** System ready to create projects in 2-3 minutes each
+### LEVEL 0: Release Packaging (Per Sprint)
 
-### LEVEL 2: Project Creation (Per Project)  
+**Purpose:** Create versioned ZIP packages from the repository at sprint closure  
+**Time:** ~5 minutes (automated)  
+**Result:** `dx-opus-system-vX.Y.0.zip` published to GitHub releases
+
+### LEVEL 1: Editor Setup (One Time)
+
+**Purpose:** Install and configure D-X-OPUS in the editor's Google Drive environment  
+**Time:** 5–10 minutes with package (was 45–60 min manual)  
+**Result:** System ready to create projects in 2–3 minutes each
+
+### LEVEL 2: Project Creation (Per Project)
+
 **Purpose:** Create specific projects ready for immediate use  
-**Time:** 2-3 minutes per project  
+**Time:** 2–3 minutes per project  
 **Result:** Project with full automation and prompts loaded
 
 ---
 
 ## Tools Inventory
 
-| Tool | Level | Purpose | Usage |
-|------|-------|---------|-------|
-| **SETUP_INICIAL_D_X_OPUS.md** | 1 | Complete editor setup guide | Follow once per editor |
-| **TOOL_CREATE_PROJECT.gs** | 1→2 | Automated project creation | Execute per project |
+| Tool | Level | Type | Purpose |
+|---|---|---|---|
+| **create-release-package.sh** | 0 | Shell script | Automated ZIP package creation + GitHub release at sprint closure |
+| **TOOL_SETUP_EDITOR_ENVIRONMENT.gs** | 1 | Apps Script | Automated editor environment setup via package download |
+| **TOOL_CREATE_PROJECT.gs** | 2 | Apps Script | Automated project creation in Google Drive |
+| **TOOL_SETUP_PROJECT.gs** | 1→2 | Apps Script | Legacy project setup (pre-R1) |
+| **TOOL_GITHUB_REPO_STRUCTURE.md** | — | Documentation | Repository structure specification and upload workflow |
 
 ---
 
-## SETUP_INICIAL_D_X_OPUS.md
+## create-release-package.sh
 
-**Complete setup guide for new editors using D-X-OPUS.**
-
-### What It Covers
-- **Google Drive structure** creation and organization
-- **Google Apps Script** installation and configuration
-- **EDITOR_PROFILE** creation and customization
-- **EDITOR_CONFIG** personal configuration setup
-- **Personal library** configuration for Activation workflow
-- **Claude.ai template** project setup
-- **Validation** and troubleshooting
-
-### Key Features (v1.1)
-- **Step-by-step process** with time estimates
-- **Troubleshooting section** for common issues
-- **Validation checkpoints** throughout setup
-- **EDITOR_CONFIG integration** with auto-tracking
-- **Multi-editor support** with personalization
+**Automated release package creation integrated into sprint closure workflow.**
 
 ### Usage
+
 ```bash
-# 1. Download R1 package
-# 2. Follow SETUP_INICIAL_D_X_OPUS.md step by step
-# 3. Validate complete setup
-# Result: D-X-OPUS operational
+# Validate only — no publishing (always run first)
+./tools/create-release-package.sh sprint-4 --dry-run
+
+# Create ZIP, skip GitHub release (for local testing)
+./tools/create-release-package.sh sprint-4 --no-release
+
+# Full release — create ZIP and publish to GitHub
+./tools/create-release-package.sh sprint-4
 ```
 
-### Outputs Created
-- Complete **D-X-OPUS/** folder structure in Drive
-- Personal **EDITOR_CONFIG.md** with auto-tracking
-- **EDITOR_PROFILE.md** with voice and style
-- **Google Apps Script** project configured
-- **Claude template** project ready for duplication
-- **Personal library** ready for Activation
+### What It Does
+
+1. Validates repository is clean (all changes committed)
+2. Creates package directory structure (`prompts/`, `templates/`, `resources/`, `tools/`)
+3. Copies all system files using source → destination mapping
+4. Generates `PACKAGE_INFO.md` with sprint metadata and file inventory
+5. Generates `MANIFEST.txt` with SHA256 checksums
+6. Creates and verifies ZIP archive
+7. Publishes GitHub release with ZIP attached
+
+### Version Format
+
+```
+vMAJOR.SPRINT.PATCH
+v1.4.0 = Sprint 4 release
+v1.5.0 = Sprint 5 release
+v2.0.0 = R2 major release
+```
+
+### Requirements
+
+- Clean git repository (all changes committed)
+- `zip` installed
+- GitHub CLI (`gh`) authenticated — only for full release, not for `--no-release`
+
+### Sprint Integration
+
+Add to sprint closure checklist:
+```bash
+./tools/create-release-package.sh sprint-N
+```
+
+---
+
+## TOOL_SETUP_EDITOR_ENVIRONMENT.gs
+
+**Google Apps Script for automated D-X-OPUS environment setup. v1.1**
+
+### Installation
+
+1. Go to [script.google.com](https://script.google.com)
+2. New Project → paste `TOOL_SETUP_EDITOR_ENVIRONMENT.gs` content
+3. Run `setupEditorEnvironment()`
+4. Authorize Google Drive permissions
+
+### Core Functions
+
+#### `setupEditorEnvironment()`
+
+Main entry point. Orchestrates complete installation:
+
+1. Detects existing installation and version
+2. Creates/verifies Drive folder structure (`D-X-OPUS/prompts`, `templates`, `resources`, `tools`, `projects`)
+3. Installs system components via package (primary) or individual files (fallback)
+4. Writes version marker `.dx-opus-version`
+5. Verifies critical files are present
+
+#### `checkInstallationStatus()`
+
+Safe to run anytime. Reports installed version and whether an update is available.
+
+#### `forceReinstall()`
+
+Replaces all system files with latest package version.
+
+### Installation Methods
+
+| Method | Time | Trigger |
+|---|---|---|
+| Package (ZIP) | 5–10 min | Default — downloads `dx-opus-system-vX.Y.0.zip` |
+| Individual files | 45–60 min | Fallback if package download fails |
+
+### Version Management
+
+After each sprint release, update `CONFIG.LATEST_VERSION` in the script:
+```javascript
+LATEST_VERSION: "v1.5.0",  // ← update per sprint
+```
 
 ---
 
 ## TOOL_CREATE_PROJECT.gs
 
-**Google Apps Script for automated project creation.**
+**Google Apps Script for automated project creation in Google Drive.**
 
 ### Core Functions
 
-#### `createProject(projectCode, projectName, editorProfile)`
-**Main function for creating new projects automatically.**
+#### `createProject(projectCode, projectName)`
+
+Main function. Creates complete project structure in Drive.
 
 **Parameters:**
-- `projectCode`: Short code for project (e.g., "TA", "ML")
-- `projectName`: Full project name (e.g., "Bottom Up", "Machine Learning")
-- `editorProfile`: Optional override of default editor profile
+- `projectCode`: Short code (e.g., `"TA"`, `"ML"`)
+- `projectName`: Full name (e.g., `"Bottom Up"`, `"Machine Learning"`)
 
 **What It Does:**
-1. **Validates setup** is complete and functional
-2. **Creates folder structure** in Drive automatically
-3. **Generates PROJECT_README** using TEMPLATE_PROJECT_README
-4. **Creates prompts package** ready for Claude.ai loading
-5. **Generates project configuration** with auto-save settings
-6. **Updates EDITOR_CONFIG** with new project tracking
-7. **Provides next steps** for Claude.ai setup
+1. Validates LEVEL 1 setup is complete
+2. Creates folder structure in Drive
+3. Generates `PROJECT_README` from `TEMPLATE_PROJECT_README`
+4. Creates prompts package for Claude.ai
+5. Generates project configuration with auto-save settings
+6. Updates `EDITOR_CONFIG` with new project tracking
 
-**Example Usage:**
+**Example:**
 ```javascript
-// Create TA Bottom Up project
 createProject("TA", "Bottom Up");
-
-// Create project with specific profile
-createProject("ML", "Machine Learning", "EDITOR_PROFILE_ANA_TORRES.md");
 ```
 
 #### Supporting Functions
 
 | Function | Purpose |
-|----------|---------|
-| `validateSetup()` | Ensures LEVEL 1 setup is complete before creating projects |
-| `updateEditorConfig()` | Auto-updates editor's personal configuration with new project |
-| `generateProjectReadme()` | Creates PROJECT_README from TEMPLATE_PROJECT_README |
-| `generatePromptsPackage()` | Packages all essential prompts for Claude.ai loading |
-| `generateProjectInstructions()` | Creates personalized Claude.ai project instructions |
-
-#### Configuration and Testing
-
-| Function | Purpose |
-|----------|---------|
-| `testSetup()` | Validates that LEVEL 1 setup is complete |
+|---|---|
+| `testSetup()` | Validates LEVEL 1 setup is complete |
 | `testConnection()` | Tests Google Drive API connectivity |
-| `testCreateProject()` | Creates test project for validation |
-| `getEditorStats()` | Reports editor's usage statistics |
-
-### Key Features
-
-#### **Template Integration**
-- Uses **TEMPLATE_PROJECT_README** for consistent project documentation
-- Uses **TEMPLATE_PROJECT_INSTRUCTIONS** for personalized Claude.ai setup
-- Uses **TEMPLATE_EDITOR_CONFIG** patterns for auto-tracking
-
-#### **Auto-Save Integration**
-- Configures **AUTO_SAVE_CONFIG** for the project
-- Sets up naming patterns: `{PROJECT_CODE}_{WORKFLOW}_{TYPE}_{ID}_v{VERSION}.md`
-- Prepares **PROJECT_CONFIG** for auto-save functionality
-
-#### **Multi-Editor Support**
-- Detects available **EDITOR_PROFILEs** automatically
-- Personalizes **project instructions** according to active profile
-- Updates **EDITOR_CONFIG** with project tracking
-
-#### **Error Handling**
-- Validates setup before creating projects
-- Provides clear error messages for common issues
-- Includes rollback functionality for failed creations
-
-### Installation and Configuration
-
-#### **1. Install Google Apps Script**
-```bash
-# 1. Go to https://script.google.com
-# 2. New Project
-# 3. Paste TOOL_CREATE_PROJECT.gs content
-# 4. Save as "D-X-OPUS Tools"
-# 5. Authorize Google Drive permissions
-```
-
-#### **2. Configure for Your Setup**
-```javascript
-// Update CONFIG object at top of script:
-const CONFIG = {
-  DRIVE_ROOT: "D-X-OPUS",
-  DEFAULT_EDITOR_PROFILE: "EDITOR_PROFILE_YOUR_NAME.md",
-  // ... other settings
-};
-```
-
-#### **3. Test Installation**
-```javascript
-// Run these functions in Apps Script editor:
-testConnection()  // Should show "Connection to Google Drive successful"
-testSetup()      // Should show "Setup valid - ready for projects"
-```
-
-### Usage Workflow
-
-#### **Creating Your First Project**
-```javascript
-// 1. Ensure setup is complete
-testSetup()
-
-// 2. Create project
-createProject("TEST", "Test Project")
-
-// 3. Follow output instructions for Claude.ai setup
-// 4. Validate project works correctly
-// 5. Delete test project if desired
-```
-
-#### **Regular Project Creation**
-```javascript
-// Quick project creation (30 seconds)
-createProject("PROJ", "Project Name")
-
-// Result: Project ready for immediate use
-```
+| `getEditorStats()` | Reports editor's project statistics |
 
 ### Output Structure
-
-**Each project creation generates:**
 
 ```
 [CODE]_[Project_Name]/
 ├── _discovery/           # Pre-workflow material
-├── R_research/          # Research artifacts  
-├── WB_writing_book/     # Book writing artifacts
-├── WP_writing_post/     # Post writing artifacts
-├── A_activation/        # Activation artifacts
-├── config/              # Project configuration
-├── PROJECT_README.md    # Project documentation
-└── PROJECT_CONFIG.md    # Technical configuration
+├── R_research/           # Research artifacts
+├── WB_writing_book/      # Book writing artifacts
+├── WP_writing_post/      # Post writing artifacts
+├── A_activation/         # Activation artifacts
+├── config/               # Project configuration
+├── PROJECT_README.md     # Project documentation
+└── PROJECT_CONFIG.md     # Technical configuration
 ```
-
-**Plus:**
-- **PROMPTS_PACKAGE.md** ready for Claude.ai
-- **Updated EDITOR_CONFIG** with project tracking
-- **Next steps instructions** for Claude.ai setup
 
 ---
 
 ## Setup Process Flow
 
-### Complete Workflow
-
-```mermaid
-graph TD
-    A[New Editor] --> B[Follow SETUP_INICIAL_D_X_OPUS.md]
-    B --> C[LEVEL 1: Editor Setup Complete]
-    C --> D[Execute TOOL_CREATE_PROJECT.gs]
-    D --> E[LEVEL 2: Project Created]
-    E --> F[Load in Claude.ai]
-    F --> G[Ready to Work]
-    
-    C --> H[Create Another Project]
-    H --> D
+```
+New Editor
+    ↓
+Download dx-opus-system-vX.Y.0.zip from GitHub releases
+    ↓
+Run TOOL_SETUP_EDITOR_ENVIRONMENT.gs → setupEditorEnvironment()
+    ↓
+LEVEL 1: Editor Setup Complete (5-10 min)
+    ↓
+Run TOOL_CREATE_PROJECT.gs → createProject("CODE", "Name")
+    ↓
+LEVEL 2: Project Created (2-3 min)
+    ↓
+Load project in Claude.ai → Ready to Work
 ```
 
 ### Time Investment
 
 | Phase | Time | Frequency |
-|-------|------|-----------|
-| **LEVEL 1 Setup** | 45-60 min | Once per editor |
-| **LEVEL 2 Project** | 2-3 min | Per project |
-| **Claude.ai Config** | 2 min | Per project |
-| **Total for First Project** | ~60 min | One time |
-| **Each Additional Project** | ~5 min | Unlimited |
+|---|---|---|
+| LEVEL 1 Setup (with package) | 5–10 min | Once per editor |
+| LEVEL 1 Setup (fallback) | 45–60 min | If package fails |
+| LEVEL 2 Project | 2–3 min | Per project |
+| Claude.ai Config | 2 min | Per project |
+| **Total for First Project** | **~15 min** | One time |
+| Each Additional Project | ~5 min | Unlimited |
 
 ---
 
 ## Troubleshooting
 
-### Common Issues
+### Package Installation Issues
+- **404 error:** Check `CONFIG.LATEST_VERSION` matches a published GitHub release
+- **ZIP extraction fails:** File may be corrupt — re-download from GitHub releases
+- **Timeout:** Apps Script has 6-min limit — run `forceReinstall()` if interrupted
 
-#### **Setup Errors**
-- **Drive permissions:** Re-authorize Google Apps Script
-- **Folder structure:** Verify D-X-OPUS/ exists with all subdirectories
-- **Templates missing:** Ensure _system/templates/ contains all required templates
+### Project Creation Errors
+- **"Setup not complete":** Run `checkInstallationStatus()` first
+- **Invalid project code:** Use 2–4 alphanumeric characters only
+- **Template errors:** Verify `_system/templates/` files are installed
 
-#### **Project Creation Errors**  
-- **Invalid project code:** Use alphanumeric characters only
-- **EDITOR_CONFIG not found:** Complete LEVEL 1 setup first
-- **Template errors:** Check template variable formatting
-
-#### **Auto-Update Issues**
-- **EDITOR_CONFIG not updating:** Check write permissions in _editor/config/
-- **Version conflicts:** Ensure templates are latest version
-
-### Getting Help
-
-1. **Run diagnostics:** `testSetup()` and `testConnection()`
-2. **Check logs:** Google Apps Script execution transcript
-3. **Verify setup:** Follow SETUP_INICIAL_D_X_OPUS.md validation steps
-4. **Reset if needed:** Delete and recreate test project
+### Script Permissions (macOS)
+```bash
+chmod +x tools/create-release-package.sh
+git update-index --chmod=+x tools/create-release-package.sh
+```
 
 ---
 
 ## Development
 
-### Adding Features
+### Adding New Tools
+1. Create DL entry documenting purpose and rationale
+2. Follow naming convention: `TOOL_[NAME].gs` or `TOOL_[NAME].sh`
+3. Add to `FILE_MAPPINGS` in `create-release-package.sh` if it should be packaged
+4. Update this README and `TOOL_GITHUB_REPO_STRUCTURE.md`
 
-**Before modifying tools:**
-1. Create DL entry documenting change rationale
-2. Test with multiple editor configurations
-3. Update this README with changes
-4. Verify backward compatibility
-
-### Testing
-
-**Manual testing checklist:**
-- [ ] `testSetup()` passes for clean installation
-- [ ] `createProject()` succeeds for multiple project types
-- [ ] Generated projects load correctly in Claude.ai
-- [ ] EDITOR_CONFIG updates correctly
-- [ ] Error handling works for invalid inputs
+### Testing Checklist
+- [ ] `--dry-run` passes for `create-release-package.sh`
+- [ ] `checkInstallationStatus()` reports correct version
+- [ ] `setupEditorEnvironment()` completes in clean Drive
+- [ ] `createProject()` succeeds end-to-end
+- [ ] Fallback install works when package unavailable
 
 ---
 
-## Integration with System
-
-### Dependencies
-- **_system/templates/**: All template files must be present
-- **_system/resources/**: AUTO_SAVE_CONFIG.yaml required
-- **EDITOR_CONFIG.md**: Must exist in _editor/config/
-
-### Outputs Used By
-- **Claude.ai projects**: PROMPTS_PACKAGE and project instructions
-- **Workflow prompts**: PROJECT_CONFIG for auto-save configuration  
-- **Session management**: PROJECT_README for status tracking
-
----
-
-**These tools enable the complete D-X-OPUS setup automation that makes R1 fully operational with minimal friction for editors.**
+**D-X-OPUS Tools — Sprint 4: Package system operational. Setup time 45-60 min → 5-10 min.**
