@@ -4,7 +4,7 @@ Directorio raíz del subsistema SYSTEM. Contiene los artefactos fundacionales qu
 
 **Owner:** system-architecture chat  
 **Referencia principal:** `MASTER_PLAN.md`  
-**Estado:** R1 completamente implementado. Sprint 4: Package System operacional.
+**Estado:** R1 completamente implementado. Sprint 4: Package System operacional. Hotfix v1.4.1 aplicado.
 
 ---
 
@@ -42,7 +42,7 @@ Directorio raíz del subsistema SYSTEM. Contiene los artefactos fundacionales qu
 
 ### `decisions/`
 
-**Status:** 35+ Decision Log entries — última: DL_20260505_SYSTEM_035
+**Status:** 36 Decision Log entries — última: DL_20260506_SYSTEM_036
 
 Registro completo de decisiones arquitectónicas del sistema. Formato: `DL_YYYYMMDD_[SUBSYSTEM]_[NNN].md`.
 
@@ -56,6 +56,9 @@ Registro completo de decisiones arquitectónicas del sistema. Formato: `DL_YYYYM
 
 **Sprint 4 Decisions:**
 - **DL_20260505_SYSTEM_035:** Package system implementation — setup 45-60 min → 5-10 min
+
+**Sprint 4 Hotfix:**
+- **DL_20260506_SYSTEM_036:** Hotfix v1.4.1 — 5 bugs E2E test TC-3.1 corregidos
 
 Ver `decisions/README.md` para inventario completo.
 
@@ -119,9 +122,9 @@ Registros de testing de componentes del sistema. Documentan ejecución de casos 
 
 #### Setup Architecture Complete
 - ✅ **NIVEL 0:** create-release-package.sh — Sprint package automation
-- ✅ **NIVEL 1:** TOOL_SETUP_EDITOR_ENVIRONMENT v1.1 — Package-based install (5-10 min)
-- ✅ **NIVEL 2:** TOOL_CREATE_PROJECT — Project automation (2-3 min)
-- ✅ **Latest package:** v1.4.0 (Sprint 4)
+- ✅ **NIVEL 1:** TOOL_SETUP_EDITOR_ENVIRONMENT v1.1.1 — Package-based install (5-10 min)
+- ✅ **NIVEL 2:** TOOL_CREATE_PROJECT v1.1.0 — Project automation (2-3 min)
+- ✅ **Latest package:** v1.4.1 (Sprint 4 Hotfix)
 
 #### Auto-save Universal
 - ✅ All workflows: Research, Writing Book, Writing Post, Activation
@@ -172,4 +175,4 @@ Registros de testing de componentes del sistema. Documentan ejecución de casos 
 
 ---
 
-**R1 System Status: Completely implemented and operational. Sprint 4: Package system active (v1.4.0).**
+**R1 System Status: Completely implemented and operational. Sprint 4 Hotfix v1.4.1: 5 E2E test bugs corrected.**
