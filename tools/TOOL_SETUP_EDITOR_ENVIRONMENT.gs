@@ -1,7 +1,7 @@
 /**
  * TOOL_SETUP_EDITOR_ENVIRONMENT.gs
  * D-X-OPUS Editor Environment Setup Tool
- * Version: 1.1.0
+ * Version: 1.1.1 (fix: SpreadsheetApp.getUi standalone error)
  *
  * DESCRIPTION:
  *   Automated Google Drive environment setup for D-X-OPUS.
@@ -17,6 +17,11 @@
  * SETUP TIME:
  *   Package install:  5–10 minutes
  *   Fallback install: 45–60 minutes
+ *
+ * CHANGELOG:
+ *   v1.1.1 - Fix: removed SpreadsheetApp.getUi() call (fails in standalone projects)
+ *   v1.1.0 - Package installation support (ZIP from GitHub releases)
+ *   v1.0.0 - Initial version (individual file fallback only)
  */
 
 // ═══════════════════════════════════════════════════════════════
@@ -28,10 +33,10 @@ const CONFIG = {
   REPO_OWNER:    "TINTA-ARTIFICIAL",
   REPO_NAME:     "dx-opus",
   
-  // Package config — update VERSION on each sprint release
+  // Package config – update VERSION on each sprint release
   LATEST_VERSION: "v1.4.0",
   
-  // Target Google Drive folder structure
+  // Target Google Drive folder structure (flat)
   FOLDERS: {
     ROOT:      "D-X-OPUS",
     PROMPTS:   "D-X-OPUS/prompts",
@@ -45,9 +50,9 @@ const CONFIG = {
   RAW_BASE: "https://raw.githubusercontent.com/TINTA-ARTIFICIAL/dx-opus/main",
 
   // Installation settings
-  MAX_RETRIES:       3,
-  TIMEOUT_MS:        30000,
-  PROGRESS_LOG:      true
+  MAX_RETRIES:   3,
+  TIMEOUT_MS:    30000,
+  PROGRESS_LOG:  true
 };
 
 // ═══════════════════════════════════════════════════════════════
@@ -59,7 +64,8 @@ const CONFIG = {
  * Called manually from Apps Script editor.
  */
 function setupEditorEnvironment() {
-  const ui = SpreadsheetApp.getUi ? SpreadsheetApp.getUi() : null;
+  // FIX v1.1.1: Do not call SpreadsheetApp.getUi() – fails in standalone projects
+  const ui = null;
   
   log_("═══════════════════════════════════════════════════");
   log_("  D-X-OPUS ENVIRONMENT SETUP");
@@ -68,7 +74,7 @@ function setupEditorEnvironment() {
   log_("═══════════════════════════════════════════════════");
 
   try {
-    // Step 1 — Detect existing installation
+    // Step 1 – Detect existing installation
     const existingVersion = detectExistingInstallation_();
     if (existingVersion) {
       log_("📦 Existing installation detected: " + existingVersion);
@@ -81,19 +87,19 @@ function setupEditorEnvironment() {
       log_("🔄 Upgrading " + existingVersion + " → " + CONFIG.LATEST_VERSION);
     }
 
-    // Step 2 — Create/verify Drive folder structure
+    // Step 2 – Create/verify Drive folder structure
     log_("\n📁 Setting up folder structure...");
     const folders = createFolderStructure_();
     log_("✅ Folders ready");
 
-    // Step 3 — Install system components
+    // Step 3 – Install system components
     log_("\n📦 Installing system components...");
     const result = installSystemComponents_(folders);
 
-    // Step 4 — Write version marker
+    // Step 4 – Write version marker
     writeVersionMarker_(folders.root, CONFIG.LATEST_VERSION);
 
-    // Step 5 — Verify installation
+    // Step 5 – Verify installation
     log_("\n🔍 Verifying installation...");
     const verification = verifyInstallation_(folders);
 
@@ -114,11 +120,8 @@ function setupEditorEnvironment() {
 
 /**
  * Tries package install first; falls back to individual files.
- * @param {Object} folders - Map of folder name → Drive Folder object
- * @returns {Object} Installation result
  */
 function installSystemComponents_(folders) {
-  // Attempt 1: Package install (fast)
   log_("  Attempting package installation...");
   const packageResult = tryPackageInstall_(folders);
   
@@ -130,10 +133,9 @@ function installSystemComponents_(folders) {
     return packageResult;
   }
 
-  // Attempt 2: Individual files (fallback)
   log_("⚠️  Package install failed: " + packageResult.error);
   log_("   Falling back to individual file download...");
-  log_("   (This will take longer — 45-60 minutes estimated)");
+  log_("   (This will take longer – 45-60 minutes estimated)");
   
   const fallbackResult = installIndividualFiles_(folders);
   
@@ -152,27 +154,20 @@ function installSystemComponents_(folders) {
 // PACKAGE INSTALLATION (Primary Method)
 // ═══════════════════════════════════════════════════════════════
 
-/**
- * Downloads and extracts the latest release ZIP package.
- * @returns {Object} {success, version, filesInstalled, error}
- */
 function tryPackageInstall_(folders) {
   try {
-    // Build download URL
-    const version   = CONFIG.LATEST_VERSION;
-    const pkgName   = "dx-opus-system-" + version;
-    const zipUrl    = buildReleaseUrl_(version, pkgName + ".zip");
+    const version  = CONFIG.LATEST_VERSION;
+    const pkgName  = "dx-opus-system-" + version;
+    const zipUrl   = buildReleaseUrl_(version, pkgName + ".zip");
 
     log_("  📥 Downloading: " + zipUrl);
 
-    // Fetch ZIP with retry
     const zipBlob = fetchWithRetry_(zipUrl, CONFIG.MAX_RETRIES);
     if (!zipBlob) {
       return { success: false, error: "Failed to download package from " + zipUrl };
     }
     log_("  ✅ Downloaded (" + formatBytes_(zipBlob.getBytes().length) + ")");
 
-    // Extract ZIP
     log_("  📂 Extracting package...");
     let unzipped;
     try {
@@ -182,7 +177,6 @@ function tryPackageInstall_(folders) {
     }
     log_("  ✅ Extracted " + unzipped.length + " files");
 
-    // Install files from package to Drive folders
     log_("  📋 Installing files to Drive...");
     const installResult = installFilesFromPackage_(unzipped, folders, pkgName);
 
@@ -205,17 +199,9 @@ function tryPackageInstall_(folders) {
   }
 }
 
-/**
- * Routes extracted ZIP files to correct Drive folders.
- * @param {Blob[]} files      - Array of extracted file blobs
- * @param {Object} folders    - Drive folder map
- * @param {string} pkgPrefix  - Package directory prefix to strip
- * @returns {Object} {installed, skipped, errors}
- */
 function installFilesFromPackage_(files, folders, pkgPrefix) {
   let installed = 0, skipped = 0, errors = 0;
 
-  // Map package subdirectory → Drive folder
   const DEST_MAP = {
     "prompts":   folders.prompts,
     "templates": folders.templates,
@@ -225,11 +211,8 @@ function installFilesFromPackage_(files, folders, pkgPrefix) {
 
   files.forEach(function(blob) {
     const fullName = blob.getName();
-
-    // Strip leading package directory prefix (e.g. "dx-opus-system-v1.4.0/")
     const relativePath = fullName.replace(pkgPrefix + "/", "").replace(pkgPrefix, "");
     
-    // Skip metadata files (they go to root)
     if (relativePath === "PACKAGE_INFO.md" || relativePath === "MANIFEST.txt") {
       try {
         upsertFile_(folders.root, basename_(relativePath), blob);
@@ -241,21 +224,19 @@ function installFilesFromPackage_(files, folders, pkgPrefix) {
       return;
     }
 
-    // Determine destination folder from first path segment
     const parts    = relativePath.split("/");
     const subdir   = parts[0];
     const filename = parts[parts.length - 1];
     const destFolder = DEST_MAP[subdir];
 
     if (!destFolder) {
-      // Unknown directory — log and skip
       log_("  ⚠️  Unknown package subdir '" + subdir + "' for: " + relativePath);
       skipped++;
       return;
     }
 
     if (!filename || filename === "") {
-      skipped++;  // Directory entry
+      skipped++;
       return;
     }
 
@@ -266,7 +247,7 @@ function installFilesFromPackage_(files, folders, pkgPrefix) {
         log_("  📄 " + subdir + "/" + filename);
       }
     } catch (e) {
-      log_("  ❌ Failed: " + relativePath + " — " + e.message);
+      log_("  ❌ Failed: " + relativePath + " – " + e.message);
       errors++;
     }
   });
@@ -278,21 +259,13 @@ function installFilesFromPackage_(files, folders, pkgPrefix) {
 // INDIVIDUAL FILE FALLBACK
 // ═══════════════════════════════════════════════════════════════
 
-/**
- * Downloads files individually from GitHub raw URLs.
- * Used when package download/extraction fails.
- * @returns {Object} Installation result
- */
 function installIndividualFiles_(folders) {
-  // This list should match the package contents exactly.
-  // Update this list each sprint with new/changed files.
   const FILES = getIndividualFileManifest_();
-  
   let installed = 0, errors = 0;
   const total = FILES.length;
 
   FILES.forEach(function(file, index) {
-    const url       = CONFIG.RAW_BASE + "/" + file.src;
+    const url        = CONFIG.RAW_BASE + "/" + file.src;
     const destFolder = getDestFolder_(file.dest, folders);
 
     if (!destFolder) {
@@ -318,51 +291,42 @@ function installIndividualFiles_(folders) {
       errors++;
     }
 
-    // Pause to avoid rate limits on large installs
     if (index > 0 && index % 10 === 0) {
       Utilities.sleep(1000);
     }
   });
 
   return {
-    success:        errors < FILES.length,  // partial success is ok
+    success:        errors < FILES.length,
     filesInstalled: installed,
     errors:         errors,
     method:         "individual"
   };
 }
 
-/**
- * Returns manifest of individual files for fallback install.
- * Format: { name, src (repo path), dest (folder key) }
- * 
- * ⚠️  UPDATE THIS LIST each sprint alongside the package script.
- */
 function getIndividualFileManifest_() {
   return [
     // ── Prompts ──────────────────────────────────────────────
-    { name: "PROMPT_PROJECT_DISCOVERY.md",       src: "activation/PROMPT_PROJECT_DISCOVERY.md",         dest: "prompts" },
-    { name: "PROMPT_SUMMARIZE_REFERENCES.md",    src: "research/PROMPT_SUMMARIZE_REFERENCES.md",        dest: "prompts" },
-    { name: "PROMPT_CREATE_RESEARCH_PLAN.md",    src: "research/PROMPT_CREATE_RESEARCH_PLAN.md",        dest: "prompts" },
-    { name: "PROMPT_EVALUATE_SOURCES.md",        src: "evaluation/PROMPT_EVALUATE_SOURCES.md",          dest: "prompts" },
-    { name: "PROMPT_WRITE_POST.md",              src: "writing/book/PROMPT_WRITE_POST.md",               dest: "prompts" },
-    { name: "PROMPT_WRITE_CHAPTER.md",           src: "writing/book/PROMPT_WRITE_CHAPTER.md",           dest: "prompts" },
-    { name: "PROMPT_CREATE_BOOK_BRIEF.md",       src: "writing/book/PROMPT_CREATE_BOOK_BRIEF.md",       dest: "prompts" },
-    { name: "PROMPT_EVALUATE_ACTIVATION.md",     src: "evaluation/PROMPT_EVALUATE_ACTIVATION.md",       dest: "prompts" },
-    // Add all PROMPT_*.md files here — this is the minimum set
-    
+    { name: "PROMPT_PROJECT_DISCOVERY.md",         src: "activation/PROMPT_PROJECT_DISCOVERY.md",          dest: "prompts" },
+    { name: "PROMPT_SUMMARIZE_REFERENCES.md",       src: "research/PROMPT_SUMMARIZE_REFERENCES.md",          dest: "prompts" },
+    { name: "PROMPT_CREATE_RESEARCH_PLAN.md",       src: "research/PROMPT_CREATE_RESEARCH_PLAN.md",          dest: "prompts" },
+    { name: "PROMPT_WRITE_POST.md",                 src: "writing/book/PROMPT_WRITE_POST.md",                dest: "prompts" },
+    { name: "PROMPT_WRITE_CHAPTER.md",              src: "writing/book/PROMPT_WRITE_CHAPTER.md",             dest: "prompts" },
+    { name: "PROMPT_CREATE_BOOK_BRIEF.md",          src: "writing/book/PROMPT_CREATE_BOOK_BRIEF.md",         dest: "prompts" },
+    { name: "PROMPT_CREATE_BOOK_INDEX.md",          src: "writing/book/PROMPT_CREATE_BOOK_INDEX.md",         dest: "prompts" },
+    { name: "PROMPT_EVALUATE_BOOK_STYLE.md",        src: "evaluation/PROMPT_EVALUATE_BOOK_STYLE.md",         dest: "prompts" },
+    { name: "PROMPT_EVALUATE_BOOK_CONTENT.md",      src: "evaluation/PROMPT_EVALUATE_BOOK_CONTENT.md",       dest: "prompts" },
+    { name: "PROMPT_EVALUATE_POST.md",              src: "evaluation/PROMPT_EVALUATE_POST.md",               dest: "prompts" },
     // ── Templates ────────────────────────────────────────────
-    { name: "TEMPLATE_PROJECT_README.md",        src: "_system/templates/TEMPLATE_PROJECT_README.md",   dest: "templates" },
-    { name: "TEMPLATE_PROJECT_INSTRUCTIONS.md",  src: "_system/templates/TEMPLATE_PROJECT_INSTRUCTIONS.md", dest: "templates" },
-    { name: "TEMPLATE_EDITOR_CONFIG.md",         src: "_system/templates/TEMPLATE_EDITOR_CONFIG.md",   dest: "templates" },
-
+    { name: "TEMPLATE_PROJECT_README.md",           src: "_system/templates/TEMPLATE_PROJECT_README.md",     dest: "templates" },
+    { name: "TEMPLATE_PROJECT_INSTRUCTIONS.md",     src: "_system/templates/TEMPLATE_PROJECT_INSTRUCTIONS.md", dest: "templates" },
+    { name: "TEMPLATE_EDITOR_CONFIG.md",            src: "_system/templates/TEMPLATE_EDITOR_CONFIG.md",      dest: "templates" },
     // ── Resources ────────────────────────────────────────────
-    { name: "AUTO_SAVE_CONFIG.yaml",             src: "_system/resources/AUTO_SAVE_CONFIG.yaml",        dest: "resources" },
-    { name: "RESOURCE_SOURCE_AUTHORITY.md",      src: "knowledge-base/RESOURCE_SOURCE_AUTHORITY.md",   dest: "resources" },
-    { name: "RESOURCE_CLAIM_VALIDATION.md",      src: "knowledge-base/RESOURCE_CLAIM_VALIDATION.md",   dest: "resources" },
-
+    { name: "AUTO_SAVE_CONFIG.yaml",                src: "_system/resources/AUTO_SAVE_CONFIG.yaml",          dest: "resources" },
+    { name: "RESOURCE_SOURCE_AUTHORITY.md",         src: "knowledge-base/RESOURCE_SOURCE_AUTHORITY.md",      dest: "resources" },
+    { name: "RESOURCE_CLAIM_VALIDATION.md",         src: "knowledge-base/RESOURCE_CLAIM_VALIDATION.md",      dest: "resources" },
     // ── Tools ────────────────────────────────────────────────
-    { name: "TOOL_CREATE_PROJECT.gs",            src: "tools/TOOL_CREATE_PROJECT.gs",                   dest: "tools" }
+    { name: "TOOL_CREATE_PROJECT.gs",               src: "tools/TOOL_CREATE_PROJECT.gs",                     dest: "tools"    }
   ];
 }
 
@@ -370,11 +334,6 @@ function getIndividualFileManifest_() {
 // GOOGLE DRIVE UTILITIES
 // ═══════════════════════════════════════════════════════════════
 
-/**
- * Creates the full D-X-OPUS folder structure in My Drive.
- * Skips folders that already exist.
- * @returns {Object} Map of folder key → DriveFolder
- */
 function createFolderStructure_() {
   const root = getOrCreateFolder_(DriveApp.getRootFolder(), CONFIG.FOLDERS.ROOT);
   log_("  📁 Root:      " + CONFIG.FOLDERS.ROOT + " [" + root.getId() + "]");
@@ -388,12 +347,6 @@ function createFolderStructure_() {
   return Object.assign({ root: root }, subfolders);
 }
 
-/**
- * Gets an existing folder or creates it.
- * @param {DriveFolder} parent
- * @param {string}      name
- * @returns {DriveFolder}
- */
 function getOrCreateFolder_(parent, name) {
   const existing = parent.getFoldersByName(name);
   if (existing.hasNext()) {
@@ -402,30 +355,17 @@ function getOrCreateFolder_(parent, name) {
   return parent.createFolder(name);
 }
 
-/**
- * Creates or replaces a file in a Drive folder.
- * @param {DriveFolder} folder
- * @param {string}      filename
- * @param {Blob}        blob
- */
 function upsertFile_(folder, filename, blob) {
-  // Remove existing file with same name
   const existing = folder.getFilesByName(filename);
   while (existing.hasNext()) {
     existing.next().setTrashed(true);
   }
-
-  // Detect MIME type
   const mimeType = detectMimeType_(filename);
   blob.setName(filename);
   if (mimeType) blob.setContentType(mimeType);
-
   folder.createFile(blob);
 }
 
-/**
- * Routes dest key to actual folder object.
- */
 function getDestFolder_(destKey, folders) {
   return folders[destKey] || null;
 }
@@ -434,10 +374,6 @@ function getDestFolder_(destKey, folders) {
 // VERSION MANAGEMENT
 // ═══════════════════════════════════════════════════════════════
 
-/**
- * Detects existing D-X-OPUS installation and returns version string.
- * @returns {string|null} Installed version or null if not found
- */
 function detectExistingInstallation_() {
   try {
     const rootFolders = DriveApp.getRootFolder().getFoldersByName(CONFIG.FOLDERS.ROOT);
@@ -455,9 +391,6 @@ function detectExistingInstallation_() {
   }
 }
 
-/**
- * Writes version marker file to root folder.
- */
 function writeVersionMarker_(rootFolder, version) {
   const content = [
     "# D-X-OPUS Version Marker",
@@ -469,7 +402,6 @@ function writeVersionMarker_(rootFolder, version) {
 
   const blob = Utilities.newBlob(content, "text/plain", ".dx-opus-version");
   
-  // Remove old marker if exists
   const existing = rootFolder.getFilesByName(".dx-opus-version");
   while (existing.hasNext()) existing.next().setTrashed(true);
   
@@ -481,16 +413,12 @@ function writeVersionMarker_(rootFolder, version) {
 // VERIFICATION
 // ═══════════════════════════════════════════════════════════════
 
-/**
- * Verifies installation completeness.
- * Checks for critical files in each folder.
- */
 function verifyInstallation_(folders) {
   const checks = {
     prompts:   { folder: folders.prompts,   required: ["PROMPT_PROJECT_DISCOVERY.md"] },
-    templates: { folder: folders.templates, required: ["TEMPLATE_PROJECT_README.md"] },
-    resources: { folder: folders.resources, required: ["AUTO_SAVE_CONFIG.yaml"] },
-    tools:     { folder: folders.tools,     required: ["TOOL_CREATE_PROJECT.gs"] }
+    templates: { folder: folders.templates, required: ["TEMPLATE_PROJECT_README.md"]  },
+    resources: { folder: folders.resources, required: ["AUTO_SAVE_CONFIG.yaml"]       },
+    tools:     { folder: folders.tools,     required: ["TOOL_CREATE_PROJECT.gs"]      }
   };
 
   let passed = 0, failed = 0;
@@ -511,29 +439,15 @@ function verifyInstallation_(folders) {
     });
   });
 
-  // Count total files per folder
   const counts = {};
   Object.keys(folders).forEach(function(key) {
     if (key === "root") return;
-    try {
-      counts[key] = countFiles_(folders[key]);
-    } catch(e) {
-      counts[key] = "?";
-    }
+    try { counts[key] = countFiles_(folders[key]); } catch(e) { counts[key] = "?"; }
   });
 
-  return {
-    passed:  passed,
-    failed:  failed,
-    issues:  issues,
-    counts:  counts,
-    healthy: failed === 0
-  };
+  return { passed: passed, failed: failed, issues: issues, counts: counts, healthy: failed === 0 };
 }
 
-/**
- * Counts files in a Drive folder.
- */
 function countFiles_(folder) {
   let count = 0;
   const files = folder.getFiles();
@@ -545,10 +459,6 @@ function countFiles_(folder) {
 // NETWORK UTILITIES
 // ═══════════════════════════════════════════════════════════════
 
-/**
- * Fetches a URL with retry on failure.
- * @returns {Blob|null}
- */
 function fetchWithRetry_(url, maxRetries) {
   let lastError = null;
 
@@ -566,12 +476,12 @@ function fetchWithRetry_(url, maxRetries) {
       
       if (code === 404) {
         log_("  ⚠️  Not found (404): " + url);
-        return null;  // No point retrying 404
+        return null;
       }
 
       lastError = "HTTP " + code;
       log_("  ⚠️  Attempt " + attempt + " failed (" + lastError + "), retrying...");
-      Utilities.sleep(1000 * attempt);  // Exponential backoff
+      Utilities.sleep(1000 * attempt);
 
     } catch (e) {
       lastError = e.message;
@@ -586,9 +496,6 @@ function fetchWithRetry_(url, maxRetries) {
   return null;
 }
 
-/**
- * Builds the GitHub release download URL.
- */
 function buildReleaseUrl_(version, filename) {
   return "https://github.com/" +
     CONFIG.REPO_OWNER + "/" + CONFIG.REPO_NAME +
@@ -604,8 +511,8 @@ function basename_(path) {
 }
 
 function formatBytes_(bytes) {
-  if (bytes < 1024)             return bytes + " B";
-  if (bytes < 1024 * 1024)     return (bytes / 1024).toFixed(1) + " KB";
+  if (bytes < 1024)           return bytes + " B";
+  if (bytes < 1024 * 1024)   return (bytes / 1024).toFixed(1) + " KB";
   return (bytes / (1024*1024)).toFixed(1) + " MB";
 }
 
@@ -666,10 +573,10 @@ function summarizeSetup_(installResult, verification) {
 
   log_("");
   log_("  📋 NEXT STEPS:");
-  log_("     1. Open Claude.ai → Your projects → D-X-OPUS");
-  log_("     2. Upload project files from Drive: D-X-OPUS/prompts/");
-  log_("     3. Start new session with PROMPT_PROJECT_DISCOVERY.md");
-  log_("     4. Follow activation workflow in documentation");
+  log_("     1. Run TOOL_CREATE_PROJECT.gs → createProject('CODE', 'Name')");
+  log_("     2. Open Claude.ai → New Project");
+  log_("     3. Upload PROMPTS_PACKAGE.md to Project Knowledge");
+  log_("     4. Start session with PROMPT_PROJECT_DISCOVERY");
   log_("═══════════════════════════════════════════════════");
 }
 
@@ -679,11 +586,10 @@ function summarizeSetup_(installResult, verification) {
 
 /**
  * Check installation status without modifying anything.
- * Run this to verify your current installation.
  */
 function checkInstallationStatus() {
   log_("D-X-OPUS Installation Status Check");
-  log_("====================================");
+  log_("=================================================");
   
   const version = detectExistingInstallation_();
   if (!version) {
@@ -703,8 +609,7 @@ function checkInstallationStatus() {
 }
 
 /**
- * Force reinstall — removes existing files and installs fresh.
- * Use when installation is corrupt or incomplete.
+ * Force reinstall – replaces existing files and installs fresh.
  */
 function forceReinstall() {
   log_("⚠️  Force reinstall initiated...");

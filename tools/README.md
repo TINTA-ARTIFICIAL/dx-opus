@@ -2,7 +2,7 @@
 
 **Directory:** tools/  
 **Purpose:** Automation tools for editor setup, project creation, and release management  
-**Updated:** May 2026 (Sprint 4 — Package System)  
+**Updated:** May 2026 (Sprint 4 — Package System | Hotfix v1.1.1)  
 **Status:** Operational
 
 ---
@@ -37,13 +37,13 @@ This directory contains the automation tools that enable D-X-OPUS setup and oper
 
 ## Tools Inventory
 
-| Tool | Level | Type | Purpose |
-|---|---|---|---|
-| **create-release-package.sh** | 0 | Shell script | Automated ZIP package creation + GitHub release at sprint closure |
-| **TOOL_SETUP_EDITOR_ENVIRONMENT.gs** | 1 | Apps Script | Automated editor environment setup via package download |
-| **TOOL_CREATE_PROJECT.gs** | 2 | Apps Script | Automated project creation in Google Drive |
-| **TOOL_SETUP_PROJECT.gs** | 1→2 | Apps Script | Legacy project setup (pre-R1) |
-| **TOOL_GITHUB_REPO_STRUCTURE.md** | — | Documentation | Repository structure specification and upload workflow |
+| Tool | Level | Version | Type | Purpose |
+|---|---|---|---|---|
+| **create-release-package.sh** | 0 | — | Shell script | Automated ZIP package creation + GitHub release at sprint closure |
+| **TOOL_SETUP_EDITOR_ENVIRONMENT.gs** | 1 | v1.1.1 | Apps Script | Automated editor environment setup via package download |
+| **TOOL_CREATE_PROJECT.gs** | 2 | v1.1.0 | Apps Script | Automated project creation in Google Drive |
+| **TOOL_SETUP_PROJECT.gs** | 1→2 | legacy | Apps Script | Legacy project setup (pre-R1) |
+| **TOOL_GITHUB_REPO_STRUCTURE.md** | — | — | Documentation | Repository structure specification and upload workflow |
 
 ---
 
@@ -79,6 +79,7 @@ This directory contains the automation tools that enable D-X-OPUS setup and oper
 ```
 vMAJOR.SPRINT.PATCH
 v1.4.0 = Sprint 4 release
+v1.4.1 = Sprint 4 hotfix (bug fixes from first-run testing)
 v1.5.0 = Sprint 5 release
 v2.0.0 = R2 major release
 ```
@@ -100,7 +101,7 @@ Add to sprint closure checklist:
 
 ## TOOL_SETUP_EDITOR_ENVIRONMENT.gs
 
-**Google Apps Script for automated D-X-OPUS environment setup. v1.1**
+**Google Apps Script for automated D-X-OPUS environment setup. v1.1.1**
 
 ### Installation
 
@@ -108,6 +109,8 @@ Add to sprint closure checklist:
 2. New Project → paste `TOOL_SETUP_EDITOR_ENVIRONMENT.gs` content
 3. Run `setupEditorEnvironment()`
 4. Authorize Google Drive permissions
+
+> ⚠️ **Note:** Create as a **standalone** Apps Script project (not linked to a Spreadsheet). The script does not require Google Sheets.
 
 ### Core Functions
 
@@ -140,37 +143,49 @@ Replaces all system files with latest package version.
 
 After each sprint release, update `CONFIG.LATEST_VERSION` in the script:
 ```javascript
-LATEST_VERSION: "v1.5.0",  // ← update per sprint
+LATEST_VERSION: "v1.5.0", // ← update per sprint
 ```
+
+### Changelog
+
+| Version | Date | Changes |
+|---|---|---|
+| v1.1.1 | 2026-05-06 | Fix: removed `SpreadsheetApp.getUi()` call — fails in standalone Apps Script projects |
+| v1.1.0 | 2026-05-04 | Package installation support (ZIP from GitHub releases) |
+| v1.0.0 | 2026-04-19 | Initial version (individual file fallback only) |
 
 ---
 
 ## TOOL_CREATE_PROJECT.gs
 
-**Google Apps Script for automated project creation in Google Drive.**
+**Google Apps Script for automated project creation in Google Drive. v1.1.0**
 
 ### Core Functions
 
-#### `createProject(projectCode, projectName)`
+#### `createProject(projectCode, projectName, editorProfile?)`
 
 Main function. Creates complete project structure in Drive.
 
 **Parameters:**
 - `projectCode`: Short code (e.g., `"TA"`, `"ML"`)
 - `projectName`: Full name (e.g., `"Bottom Up"`, `"Machine Learning"`)
+- `editorProfile` *(optional)*: EDITOR_PROFILE filename — skipped gracefully if not provided
 
 **What It Does:**
-1. Validates LEVEL 1 setup is complete
-2. Creates folder structure in Drive
-3. Generates `PROJECT_README` from `TEMPLATE_PROJECT_README`
-4. Creates prompts package for Claude.ai
-5. Generates project configuration with auto-save settings
-6. Updates `EDITOR_CONFIG` with new project tracking
+1. Validates LEVEL 1 setup is complete (flat folder structure)
+2. Creates folder structure in `D-X-OPUS/projects/`
+3. Generates `PROJECT_README.md`
+4. Creates `PROMPTS_PACKAGE.md` for Claude.ai project knowledge (reads from `D-X-OPUS/prompts/`)
+5. Generates `PROJECT_CONFIG.md` with auto-save settings
 
 **Example:**
 ```javascript
 createProject("TA", "Bottom Up");
 ```
+
+#### `runCreateProject()`
+
+Convenience wrapper — runs `createProject("TA", "Bottom Up")`. Select this function in the Apps Script editor to execute.
 
 #### Supporting Functions
 
@@ -178,21 +193,34 @@ createProject("TA", "Bottom Up");
 |---|---|
 | `testSetup()` | Validates LEVEL 1 setup is complete |
 | `testConnection()` | Tests Google Drive API connectivity |
-| `getEditorStats()` | Reports editor's project statistics |
 
 ### Output Structure
 
 ```
 [CODE]_[Project_Name]/
-├── _discovery/           # Pre-workflow material
-├── R_research/           # Research artifacts
-├── WB_writing_book/      # Book writing artifacts
-├── WP_writing_post/      # Post writing artifacts
-├── A_activation/         # Activation artifacts
-├── config/               # Project configuration
-├── PROJECT_README.md     # Project documentation
-└── PROJECT_CONFIG.md     # Technical configuration
+├── _discovery/          # Pre-workflow material
+├── R_research/          # Research artifacts
+├── WB_writing_book/     # Book writing artifacts
+├── WP_writing_post/     # Post writing artifacts
+├── A_activation/        # Activation artifacts
+├── config/              # Project configuration
+├── PROJECT_README.md    # Project documentation
+├── PROMPTS_PACKAGE.md   # Load into Claude.ai project knowledge
+└── PROJECT_CONFIG.md    # Technical configuration
 ```
+
+### Changelog
+
+| Version | Date | Changes |
+|---|---|---|
+| v1.1.0 | 2026-05-06 | Fix: adapted to flat folder structure (`prompts/`, `templates/`, `resources/`, `tools/`) |
+| | | Fix: `validateSetup()` no longer looks for `_system/` or `_editor/` folders |
+| | | Fix: `ESSENTIAL_PROMPTS` updated to match files actually installed by v1.4.0 package |
+| | | Fix: `generatePromptsPackage()` reads from flat `D-X-OPUS/prompts/` folder |
+| | | Fix: syntax error in `generateProjectReadme()` (unclosed string literal, line 266) |
+| | | Fix: `EDITOR_PROFILE` is now optional — project creation does not fail if not present |
+| | | Added: `runCreateProject()` convenience entry point |
+| v1.0.0 | 2026-05-04 | Initial version |
 
 ---
 
@@ -200,18 +228,16 @@ createProject("TA", "Bottom Up");
 
 ```
 New Editor
-    ↓
-Download dx-opus-system-vX.Y.0.zip from GitHub releases
-    ↓
+ ↓
 Run TOOL_SETUP_EDITOR_ENVIRONMENT.gs → setupEditorEnvironment()
-    ↓
+ ↓
 LEVEL 1: Editor Setup Complete (5-10 min)
-    ↓
-Run TOOL_CREATE_PROJECT.gs → createProject("CODE", "Name")
-    ↓
+ ↓  D-X-OPUS/prompts/ + templates/ + resources/ + tools/ + projects/
+Run TOOL_CREATE_PROJECT.gs → runCreateProject()
+ ↓
 LEVEL 2: Project Created (2-3 min)
-    ↓
-Load project in Claude.ai → Ready to Work
+ ↓  D-X-OPUS/projects/[CODE]_[Name]/ + PROMPTS_PACKAGE.md
+Load PROMPTS_PACKAGE.md in Claude.ai → New Project → Ready to Work
 ```
 
 ### Time Investment
@@ -235,9 +261,11 @@ Load project in Claude.ai → Ready to Work
 - **Timeout:** Apps Script has 6-min limit — run `forceReinstall()` if interrupted
 
 ### Project Creation Errors
-- **"Setup not complete":** Run `checkInstallationStatus()` first
+- **"Setup incompleto: Carpeta prompts no encontrada":** Run `setupEditorEnvironment()` first — the flat `D-X-OPUS/prompts/` folder must exist
+- **"Cannot call SpreadsheetApp.getUi()":** Use v1.1.1+ of `TOOL_SETUP_EDITOR_ENVIRONMENT.gs` (fix already applied)
+- **"Setup incompleto: Carpeta _system no encontrada":** Use v1.1.0+ of `TOOL_CREATE_PROJECT.gs` (fix already applied)
 - **Invalid project code:** Use 2–4 alphanumeric characters only
-- **Template errors:** Verify `_system/templates/` files are installed
+- **Prompts missing from PROMPTS_PACKAGE:** Check that `D-X-OPUS/prompts/` contains the expected `.md` files
 
 ### Script Permissions (macOS)
 ```bash
@@ -258,10 +286,10 @@ git update-index --chmod=+x tools/create-release-package.sh
 ### Testing Checklist
 - [ ] `--dry-run` passes for `create-release-package.sh`
 - [ ] `checkInstallationStatus()` reports correct version
-- [ ] `setupEditorEnvironment()` completes in clean Drive
-- [ ] `createProject()` succeeds end-to-end
+- [ ] `setupEditorEnvironment()` completes in clean Drive (standalone project)
+- [ ] `createProject()` succeeds end-to-end after clean setup
 - [ ] Fallback install works when package unavailable
 
 ---
 
-**D-X-OPUS Tools — Sprint 4: Package system operational. Setup time 45-60 min → 5-10 min.**
+**D-X-OPUS Tools — Sprint 4 Hotfix: compatibility bugs fixed from first-run E2E testing.**

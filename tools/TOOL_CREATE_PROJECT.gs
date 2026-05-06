@@ -1,114 +1,124 @@
 /**
- * D-X-OPUS ENHANCED PROJECT SETUP
- * 
- * Google Apps Script para creación automática de proyectos con:
- * - Estructura de carpetas en Drive
- * - Auto-carga de prompts desde repositorio del sistema
- * - Configuración de PROJECT_README pre-completado
- * - Linking automático con configuración del editor
- * 
- * Versión: 1.0 Enhanced
- * Fecha: 2026-05-04
- * Uso: Una vez completado el setup inicial del editor
+ * TOOL_CREATE_PROJECT.gs
+ * D-X-OPUS Enhanced Project Setup
+ * Version: 1.1.0 (fix: flat folder structure compatibility)
+ *
+ * DESCRIPTION:
+ *   Creates a complete D-X-OPUS project in Google Drive with:
+ *   - Folder structure under D-X-OPUS/projects/
+ *   - PROJECT_README.md (pre-filled)
+ *   - PROMPTS_PACKAGE.md (for Claude project knowledge)
+ *   - PROJECT_CONFIG.md (project-specific config)
+ *
+ * USAGE:
+ *   createProject("TA", "Bottom Up")
+ *
+ * PREREQUISITES:
+ *   Run TOOL_SETUP_EDITOR_ENVIRONMENT.gs first (creates D-X-OPUS/ flat structure).
+ *
+ * CHANGELOG:
+ *   v1.1.0 - Fix: adapted to flat folder structure (prompts/, templates/, resources/, tools/)
+ *            Fix: ESSENTIAL_PROMPTS updated to match installed package files
+ *            Fix: validateSetup() uses flat structure checks
+ *            Fix: generatePromptsPackage() reads from flat prompts/ folder
+ *            Fix: syntax error in generateProjectReadme() (unclosed string)
+ *            Fix: EDITOR_PROFILE handling made optional (not required for project creation)
  */
 
-// ============================================================
-// CONFIGURACIÓN GLOBAL
-// ============================================================
+// ═══════════════════════════════════════════════════════════════
+// CONFIGURATION
+// ═══════════════════════════════════════════════════════════════
 
-/**
- * Configuración principal del sistema.
- * IMPORTANTE: Actualizar estas rutas según tu setup personal.
- */
 const CONFIG = {
-  // Carpeta raíz de D-X-OPUS en tu Drive
+  // Root folder name in Drive (created by TOOL_SETUP_EDITOR_ENVIRONMENT)
   DRIVE_ROOT: "D-X-OPUS",
   
-  // Subcarpetas del sistema
-  SYSTEM_FOLDER: "_system",
-  EDITOR_FOLDER: "_editor", 
+  // Projects subfolder
   PROJECTS_FOLDER: "projects",
   
-  // Tu EDITOR_PROFILE principal (cambiar por el tuyo)
+  // Default EDITOR_PROFILE filename (optional – set to null if not yet created)
   DEFAULT_EDITOR_PROFILE: "EDITOR_PROFILE_MARCO_LAUCELLI.md",
   
-  // Versión del sistema
+  // System version
   SYSTEM_VERSION: "R1",
   
-  // Prompts esenciales que se cargan en cada proyecto
+  // Prompts to include in PROMPTS_PACKAGE.md
+  // Must match files actually installed by TOOL_SETUP_EDITOR_ENVIRONMENT
   ESSENTIAL_PROMPTS: [
-    "PROMPT_WRITE_POST.md",
-    "PROMPT_POST_BRIEF.md", 
-    "PROMPT_QA_IDEAS.md",
-    "PROMPT_PLAN_POST.md",
+    "PROMPT_PROJECT_DISCOVERY.md",
     "PROMPT_SUMMARIZE_REFERENCES.md",
-    "TEMPLATE_POST_SEED.md",
-    "RESOURCE_WRITING_CONTEXT.md",
-    "RESOURCE_PUBLICATION_PROFILE.md"
+    "PROMPT_CREATE_RESEARCH_PLAN.md",
+    "PROMPT_WRITE_POST.md",
+    "PROMPT_WRITE_CHAPTER.md",
+    "PROMPT_CREATE_BOOK_INDEX.md",
+    "PROMPT_CREATE_BOOK_BRIEF.md",
+    "PROMPT_WRITE_SAMPLE_CHAPTER.md",
+    "PROMPT_WRITE_INTRODUCTION.md",
+    "PROMPT_EVALUATE_BOOK_STYLE.md",
+    "PROMPT_EVALUATE_BOOK_CONTENT.md",
+    "PROMPT_EVALUATE_POST.md"
   ]
 };
 
-// ============================================================
-// FUNCIÓN PRINCIPAL: CREAR PROYECTO
-// ============================================================
+// ═══════════════════════════════════════════════════════════════
+// MAIN FUNCTION: CREATE PROJECT
+// ═══════════════════════════════════════════════════════════════
 
 /**
- * Función principal para crear un proyecto completo.
- * 
- * @param {string} projectCode - Código del proyecto (ej. "TA", "ML", "BOOK01")
- * @param {string} projectName - Nombre del proyecto (ej. "Bottom Up", "Machine Learning")
- * @param {string} editorProfile - EDITOR_PROFILE a usar (opcional, usa default si no se especifica)
+ * Creates a complete project structure.
+ * @param {string} projectCode   - Short code e.g. "TA", "ML"
+ * @param {string} projectName   - Full name e.g. "Bottom Up"
+ * @param {string} editorProfile - EDITOR_PROFILE filename (optional)
  */
-function createProject(projectCode = "TEST", projectName = "Test Project", editorProfile = null) {
+function createProject(projectCode, projectName, editorProfile) {
+  projectCode   = projectCode   || "TEST";
+  projectName   = projectName   || "Test Project";
+  editorProfile = editorProfile || null;
+
   try {
     Logger.log("🚀 Iniciando creación de proyecto " + projectCode + " - " + projectName);
     
-    // Validar configuración
+    // Validate setup
     const validation = validateSetup();
     if (!validation.valid) {
       throw new Error("Setup incompleto: " + validation.error);
     }
     
-    // Crear estructura en Drive
+    // Create folder structure in Drive
     const driveResult = createProjectStructure(projectCode, projectName);
     Logger.log("✅ Estructura Drive creada: " + driveResult.url);
     
-    // Crear PROJECT_README
+    // Generate PROJECT_README
     const readmeContent = generateProjectReadme(projectCode, projectName, editorProfile);
     createProjectFile(driveResult.folder, "PROJECT_README.md", readmeContent);
     Logger.log("✅ PROJECT_README generado");
     
-    // Crear package de prompts para Claude
-    const promptsPackage = generatePromptsPackage();
-    const packageInfo = createProjectFile(driveResult.folder, "PROMPTS_PACKAGE.md", promptsPackage);
-    Logger.log("✅ Package de prompts generado");
+    // Generate PROMPTS_PACKAGE for Claude knowledge
+    const promptsPackage = generatePromptsPackage(projectCode, projectName, editorProfile);
+    createProjectFile(driveResult.folder, "PROMPTS_PACKAGE.md", promptsPackage);
+    Logger.log("✅ PROMPTS_PACKAGE generado");
     
-    // Crear configuración de proyecto
+    // Generate PROJECT_CONFIG
     const projectConfig = generateProjectConfig(projectCode, projectName, editorProfile, driveResult);
     createProjectFile(driveResult.folder, "PROJECT_CONFIG.md", projectConfig);
-    Logger.log("✅ Configuración de proyecto generada");
+    Logger.log("✅ PROJECT_CONFIG generado");
     
-    // Actualizar EDITOR_CONFIG con el nuevo proyecto
-    const configUpdateResult = updateEditorConfig(projectCode, projectName, driveResult);
-    Logger.log("✅ EDITOR_CONFIG actualizado");
-    
-    // Resultado final
+    // Final result
     const result = {
-      success: true,
-      projectCode: projectCode,
-      projectName: projectName,
-      driveUrl: driveResult.url,
-      driveId: driveResult.id,
+      success:      true,
+      projectCode:  projectCode,
+      projectName:  projectName,
+      driveUrl:     driveResult.url,
+      driveId:      driveResult.id,
       promptsReady: true,
-      configReady: true,
-      editorConfigUpdated: configUpdateResult.success,
-      nextSteps: generateNextSteps(driveResult.url, projectCode)
+      configReady:  true,
+      nextSteps:    generateNextSteps(driveResult.url, projectCode)
     };
     
     Logger.log("🎉 PROYECTO CREADO EXITOSAMENTE");
     Logger.log("📁 Drive: " + result.driveUrl);
     Logger.log("🔗 ID: " + result.driveId);
-    Logger.log("🔧 EDITOR_CONFIG: " + (configUpdateResult.success ? "actualizado" : "error"));
+    Logger.log("📋 Carga PROMPTS_PACKAGE.md en el Project Knowledge de Claude");
     
     return result;
     
@@ -118,61 +128,33 @@ function createProject(projectCode = "TEST", projectName = "Test Project", edito
   }
 }
 
-// ============================================================
-// VALIDACIÓN DEL SETUP
-// ============================================================
+// ═══════════════════════════════════════════════════════════════
+// SETUP VALIDATION
+// ═══════════════════════════════════════════════════════════════
 
 /**
- * Valida que el setup inicial esté completo.
+ * Validates that TOOL_SETUP_EDITOR_ENVIRONMENT has been run first.
+ * Checks for flat folder structure: D-X-OPUS/prompts/, D-X-OPUS/projects/
  */
 function validateSetup() {
   try {
-    // Verificar carpeta raíz
+    // Check root folder exists
     const rootFolders = DriveApp.getFoldersByName(CONFIG.DRIVE_ROOT);
     if (!rootFolders.hasNext()) {
-      return { valid: false, error: "Carpeta " + CONFIG.DRIVE_ROOT + " no encontrada en Drive" };
+      return { valid: false, error: "Carpeta " + CONFIG.DRIVE_ROOT + " no encontrada en Drive. Ejecuta TOOL_SETUP_EDITOR_ENVIRONMENT primero." };
     }
-    
     const rootFolder = rootFolders.next();
     
-    // Verificar subcarpetas esenciales
-    const systemFolder = getSubfolder(rootFolder, CONFIG.SYSTEM_FOLDER);
-    if (!systemFolder) {
-      return { valid: false, error: "Carpeta " + CONFIG.SYSTEM_FOLDER + " no encontrada" };
-    }
-    
-    const editorFolder = getSubfolder(rootFolder, CONFIG.EDITOR_FOLDER);
-    if (!editorFolder) {
-      return { valid: false, error: "Carpeta " + CONFIG.EDITOR_FOLDER + " no encontrada" };
-    }
-    
-    // Verificar EDITOR_PROFILE
-    const profilesFolder = getSubfolder(editorFolder, "profiles");
-    if (!profilesFolder) {
-      return { valid: false, error: "Carpeta profiles no encontrada en " + CONFIG.EDITOR_FOLDER };
-    }
-    
-    const profileFiles = profilesFolder.getFilesByName(CONFIG.DEFAULT_EDITOR_PROFILE);
-    if (!profileFiles.hasNext()) {
-      return { valid: false, error: "EDITOR_PROFILE " + CONFIG.DEFAULT_EDITOR_PROFILE + " no encontrado" };
-    }
-    
-    // Verificar prompts esenciales
-    const promptsFolder = getSubfolder(systemFolder, "prompts");
+    // Check flat prompts/ folder (created by TOOL_SETUP_EDITOR_ENVIRONMENT v1.1+)
+    const promptsFolder = getSubfolder(rootFolder, "prompts");
     if (!promptsFolder) {
-      return { valid: false, error: "Carpeta prompts no encontrada en " + CONFIG.SYSTEM_FOLDER };
+      return { valid: false, error: "Carpeta 'prompts' no encontrada en " + CONFIG.DRIVE_ROOT + ". Ejecuta TOOL_SETUP_EDITOR_ENVIRONMENT primero." };
     }
     
-    let missingPrompts = [];
-    CONFIG.ESSENTIAL_PROMPTS.forEach(function(promptName) {
-      const promptFiles = promptsFolder.getFilesByName(promptName);
-      if (!promptFiles.hasNext()) {
-        missingPrompts.push(promptName);
-      }
-    });
-    
-    if (missingPrompts.length > 0) {
-      return { valid: false, error: "Prompts faltantes: " + missingPrompts.join(", ") };
+    // Check PROMPT_PROJECT_DISCOVERY exists (critical prompt)
+    const discoveryFiles = promptsFolder.getFilesByName("PROMPT_PROJECT_DISCOVERY.md");
+    if (!discoveryFiles.hasNext()) {
+      return { valid: false, error: "PROMPT_PROJECT_DISCOVERY.md no encontrado en prompts/. Reinstala con TOOL_SETUP_EDITOR_ENVIRONMENT." };
     }
     
     Logger.log("✅ Validación del setup completada exitosamente");
@@ -183,15 +165,11 @@ function validateSetup() {
   }
 }
 
-// ============================================================
-// CREACIÓN DE ESTRUCTURA EN DRIVE
-// ============================================================
+// ═══════════════════════════════════════════════════════════════
+// DRIVE STRUCTURE CREATION
+// ═══════════════════════════════════════════════════════════════
 
-/**
- * Crea la estructura de carpetas del proyecto en Drive.
- */
 function createProjectStructure(projectCode, projectName) {
-  // Obtener carpeta de proyectos
   const rootFolder = DriveApp.getFoldersByName(CONFIG.DRIVE_ROOT).next();
   let projectsFolder = getSubfolder(rootFolder, CONFIG.PROJECTS_FOLDER);
   
@@ -200,18 +178,16 @@ function createProjectStructure(projectCode, projectName) {
     Logger.log("📁 Carpeta projects creada");
   }
   
-  // Crear carpeta del proyecto
   const projectFolderName = projectCode + "_" + projectName.replace(/[^a-zA-Z0-9]/g, "_");
-  const projectFolder = projectsFolder.createFolder(projectFolderName);
+  const projectFolder     = projectsFolder.createFolder(projectFolderName);
   
-  // Crear subcarpetas de workflow
   const subfolders = [
-    "_discovery",       // Nueva: material pre-workflow
-    "R_research", 
-    "WB_writing_book", 
-    "WP_writing_post", 
+    "_discovery",
+    "R_research",
+    "WB_writing_book",
+    "WP_writing_post",
     "A_activation",
-    "config"           // Configuración específica del proyecto
+    "config"
   ];
   
   subfolders.forEach(function(folderName) {
@@ -222,25 +198,22 @@ function createProjectStructure(projectCode, projectName) {
   
   return {
     folder: projectFolder,
-    id: projectFolder.getId(),
-    url: "https://drive.google.com/drive/folders/" + projectFolder.getId(),
-    name: projectFolderName
+    id:     projectFolder.getId(),
+    url:    "https://drive.google.com/drive/folders/" + projectFolder.getId(),
+    name:   projectFolderName
   };
 }
 
-// ============================================================
-// GENERACIÓN DE ARTEFACTOS
-// ============================================================
+// ═══════════════════════════════════════════════════════════════
+// ARTIFACT GENERATION
+// ═══════════════════════════════════════════════════════════════
 
-/**
- * Genera el PROJECT_README específico del proyecto.
- */
 function generateProjectReadme(projectCode, projectName, editorProfile) {
-  const today = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd");
-  const profileName = editorProfile || CONFIG.DEFAULT_EDITOR_PROFILE;
+  const today       = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd");
+  const profileName = editorProfile || CONFIG.DEFAULT_EDITOR_PROFILE || "no_definido";
   
   return [
-    "# PROJECT_README :: " + projectCode + " — " + projectName,
+    "# PROJECT_README :: " + projectCode + " – " + projectName,
     "",
     "---",
     "project_code:     " + projectCode,
@@ -255,7 +228,7 @@ function generateProjectReadme(projectCode, projectName, editorProfile) {
     "",
     "| Artefacto | Ubicación | Estado |",
     "|---|---|---|",
-    "| " + profileName + " | Drive + Claude project knowledge | ✅ Cargado |",
+    "| " + profileName + " | Claude project knowledge | ✅ Cargado |",
     "| PROMPTS_PACKAGE | Claude project knowledge | ✅ Cargado |",
     "| WRITING_CONTEXT | config/ | ❌ Se crea en primera sesión POST |",
     "| PROJECT_NOTES | _discovery/ | ❌ Se crea con PROMPT_PROJECT_DISCOVERY |",
@@ -263,7 +236,7 @@ function generateProjectReadme(projectCode, projectName, editorProfile) {
     "## ESTADO DE WORKFLOWS",
     "",
     "| Workflow | Estado | Último artefacto | Última sesión | Próxima tarea |",
-    "|---|---|---|---|---|
+    "|---|---|---|---|---|",
     "| Research | `no_iniciado` | - | - | Aportar referencias → `PROMPT_SUMMARIZE_REFERENCES` |",
     "| Writing Book | `no_iniciado` | - | - | Requiere RESEARCH_REPORT previo |",
     "| Writing Post | `no_iniciado` | - | - | Abrir sesión → `PROMPT_POST_BRIEF` |",
@@ -291,13 +264,6 @@ function generateProjectReadme(projectCode, projectName, editorProfile) {
     "3. Actualizar `last_updated` en la cabecera",
     "4. Anotar la próxima tarea recomendada",
     "",
-    "Estados posibles por workflow:",
-    "",
-    "- **Research:** `no_iniciado` · `en_curso` · `completado`",
-    "- **Writing Book:** `no_iniciado` · `índice_aprobado` · `muestra_aprobada` · `en_escritura` · `completado`",
-    "- **Writing Post:** `no_iniciado` · `activo`",
-    "- **Activation:** `no_iniciado` · `en_curso` · `completado`",
-    "",
     "---",
     "",
     "*PROJECT_README generado automáticamente el " + today + " por D-X-OPUS " + CONFIG.SYSTEM_VERSION + "*"
@@ -305,11 +271,15 @@ function generateProjectReadme(projectCode, projectName, editorProfile) {
 }
 
 /**
- * Genera el package completo de prompts para cargar en Claude.
+ * Generates PROMPTS_PACKAGE.md by reading all essential prompts
+ * from the flat D-X-OPUS/prompts/ folder.
  */
-function generatePromptsPackage() {
-  let package = [
-    "# PROMPTS PACKAGE - D-X-OPUS R1",
+function generatePromptsPackage(projectCode, projectName, editorProfile) {
+  const header = [
+    "# PROMPTS PACKAGE - D-X-OPUS " + CONFIG.SYSTEM_VERSION,
+    "",
+    "**Proyecto:** " + (projectCode || "") + " — " + (projectName || ""),
+    "**Sistema:** D-X-OPUS " + CONFIG.SYSTEM_VERSION,
     "",
     "Este documento contiene todos los prompts esenciales del sistema D-X-OPUS.",
     "**INSTRUCCIONES:** Cargar este documento completo en el Project Knowledge del proyecto Claude.",
@@ -318,69 +288,73 @@ function generatePromptsPackage() {
     ""
   ];
   
-  // Obtener carpeta de prompts
-  const rootFolder = DriveApp.getFoldersByName(CONFIG.DRIVE_ROOT).next();
-  const systemFolder = getSubfolder(rootFolder, CONFIG.SYSTEM_FOLDER);
-  const promptsFolder = getSubfolder(systemFolder, "prompts");
+  let packageLines = header.slice();
   
-  // Leer cada prompt esencial
+  // Read from flat D-X-OPUS/prompts/ folder
+  const rootFolder    = DriveApp.getFoldersByName(CONFIG.DRIVE_ROOT).next();
+  const promptsFolder = getSubfolder(rootFolder, "prompts");
+  
+  if (!promptsFolder) {
+    Logger.log("❌ Carpeta prompts/ no encontrada - package generado sin prompts");
+    return packageLines.join("\n");
+  }
+  
   CONFIG.ESSENTIAL_PROMPTS.forEach(function(promptName) {
     try {
       const promptFiles = promptsFolder.getFilesByName(promptName);
       if (promptFiles.hasNext()) {
-        const file = promptFiles.next();
+        const file    = promptFiles.next();
         const content = file.getBlob().getDataAsString();
         
-        package.push("## " + promptName);
-        package.push("");
-        package.push(content);
-        package.push("");
-        package.push("---");
-        package.push("");
+        packageLines.push("## " + promptName);
+        packageLines.push("");
+        packageLines.push(content);
+        packageLines.push("");
+        packageLines.push("---");
+        packageLines.push("");
         
         Logger.log("📄 Prompt añadido al package: " + promptName);
       } else {
-        Logger.log("⚠️ Prompt no encontrado: " + promptName);
+        Logger.log("⚠️ Prompt no encontrado (omitido): " + promptName);
       }
     } catch (error) {
       Logger.log("❌ Error leyendo prompt " + promptName + ": " + error.toString());
     }
   });
   
-  // Añadir EDITOR_PROFILE
-  try {
-    const editorFolder = getSubfolder(rootFolder, CONFIG.EDITOR_FOLDER);
-    const profilesFolder = getSubfolder(editorFolder, "profiles");
-    const profileFiles = profilesFolder.getFilesByName(CONFIG.DEFAULT_EDITOR_PROFILE);
-    
-    if (profileFiles.hasNext()) {
-      const profileFile = profileFiles.next();
-      const profileContent = profileFile.getBlob().getDataAsString();
-      
-      package.push("## " + CONFIG.DEFAULT_EDITOR_PROFILE);
-      package.push("");
-      package.push(profileContent);
-      package.push("");
-      package.push("---");
-      package.push("");
-      
-      Logger.log("📄 EDITOR_PROFILE añadido al package");
+  // Optionally include EDITOR_PROFILE if it exists in prompts/
+  const profileName = editorProfile || CONFIG.DEFAULT_EDITOR_PROFILE;
+  if (profileName) {
+    try {
+      const profileFiles = promptsFolder.getFilesByName(profileName);
+      if (profileFiles.hasNext()) {
+        const profileFile    = profileFiles.next();
+        const profileContent = profileFile.getBlob().getDataAsString();
+        
+        packageLines.push("## " + profileName);
+        packageLines.push("");
+        packageLines.push(profileContent);
+        packageLines.push("");
+        packageLines.push("---");
+        packageLines.push("");
+        
+        Logger.log("📄 EDITOR_PROFILE añadido al package");
+      } else {
+        Logger.log("⚠️ EDITOR_PROFILE no encontrado en prompts/ (omitido del package). Cárgalo manualmente si lo tienes.");
+      }
+    } catch (error) {
+      Logger.log("⚠️ No se pudo leer EDITOR_PROFILE: " + error.toString());
     }
-  } catch (error) {
-    Logger.log("❌ Error añadiendo EDITOR_PROFILE: " + error.toString());
   }
   
-  return package.join("\n");
+  return packageLines.join("\n");
 }
 
-/**
- * Genera la configuración específica del proyecto.
- */
 function generateProjectConfig(projectCode, projectName, editorProfile, driveResult) {
   const today = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd");
   
   return [
-    "# PROJECT_CONFIG :: " + projectCode + " — " + projectName,
+    "# PROJECT_CONFIG :: " + projectCode + " – " + projectName,
     "",
     "**Generado:** " + today,
     "**Sistema:** D-X-OPUS " + CONFIG.SYSTEM_VERSION,
@@ -393,12 +367,10 @@ function generateProjectConfig(projectCode, projectName, editorProfile, driveRes
     "created_date: " + today,
     "drive_url: " + driveResult.url,
     "drive_id: " + driveResult.id,
-    "editor_profile: " + (editorProfile || CONFIG.DEFAULT_EDITOR_PROFILE),
+    "editor_profile: " + (editorProfile || CONFIG.DEFAULT_EDITOR_PROFILE || "no_definido"),
     "```",
     "",
     "## CONFIGURACIÓN DE AUTO-SAVE",
-    "",
-    "Artefactos que se guardan automáticamente:",
     "",
     "| Artefacto | Ubicación | Naming pattern |",
     "|---|---|---|",
@@ -410,9 +382,9 @@ function generateProjectConfig(projectCode, projectName, editorProfile, driveRes
     "## ENLACES RÁPIDOS",
     "",
     "- **Carpeta principal:** " + driveResult.url,
-    "- **Discovery:** " + driveResult.url + " (navegar a _discovery/)",
-    "- **Writing Post:** " + driveResult.url + " (navegar a WP_writing_post/)",
-    "- **Research:** " + driveResult.url + " (navegar a R_research/)",
+    "- **Discovery:** navegar a _discovery/",
+    "- **Writing Post:** navegar a WP_writing_post/",
+    "- **Research:** navegar a R_research/",
     "",
     "## ESTADO INICIAL",
     "",
@@ -426,9 +398,6 @@ function generateProjectConfig(projectCode, projectName, editorProfile, driveRes
   ].join("\n");
 }
 
-/**
- * Genera las instrucciones de siguientes pasos.
- */
 function generateNextSteps(driveUrl, projectCode) {
   return [
     "PRÓXIMOS PASOS PARA ACTIVAR EL PROYECTO:",
@@ -436,7 +405,7 @@ function generateNextSteps(driveUrl, projectCode) {
     "1. **Claude Project Setup:**",
     "   - Crear nuevo proyecto Claude: '" + projectCode + " - Writing Project'",
     "   - Cargar PROMPTS_PACKAGE.md en Project Knowledge",
-    "   - Copiar Project Instructions desde template",
+    "   - Si tienes EDITOR_PROFILE, cargarlo también",
     "",
     "2. **Primera sesión:**",
     "   - Ejecutar PROMPT_PROJECT_DISCOVERY",
@@ -448,38 +417,27 @@ function generateNextSteps(driveUrl, projectCode) {
   ].join("\n");
 }
 
-// ============================================================
-// UTILIDADES
-// ============================================================
+// ═══════════════════════════════════════════════════════════════
+// UTILITIES
+// ═══════════════════════════════════════════════════════════════
 
-/**
- * Obtiene una subcarpeta por nombre.
- */
 function getSubfolder(parentFolder, subfolderName) {
   const subfolders = parentFolder.getFoldersByName(subfolderName);
   return subfolders.hasNext() ? subfolders.next() : null;
 }
 
-/**
- * Crea un archivo en una carpeta.
- */
 function createProjectFile(folder, filename, content) {
   const blob = Utilities.newBlob(content, 'text/plain', filename);
   const file = folder.createFile(blob);
-  
-  return {
-    file: file,
-    id: file.getId(),
-    url: file.getUrl()
-  };
+  return { file: file, id: file.getId(), url: file.getUrl() };
 }
 
-/**
- * Función de test para validar el setup.
- */
+// ═══════════════════════════════════════════════════════════════
+// TEST & UTILITY FUNCTIONS
+// ═══════════════════════════════════════════════════════════════
+
 function testSetup() {
   Logger.log("🧪 Iniciando test del setup...");
-  
   const validation = validateSetup();
   if (validation.valid) {
     Logger.log("✅ Setup válido - listo para crear proyectos");
@@ -490,23 +448,6 @@ function testSetup() {
   }
 }
 
-/**
- * Función de test para crear proyecto de prueba.
- */
-function testCreateProject() {
-  try {
-    const result = createProject("TEST", "Test Project");
-    Logger.log("✅ Test exitoso: " + result.driveUrl);
-    return result;
-  } catch (error) {
-    Logger.log("❌ Test falló: " + error.toString());
-    return false;
-  }
-}
-
-/**
- * Función de conexión simple para validar permisos.
- */
 function testConnection() {
   try {
     const folders = DriveApp.getFolders();
@@ -519,162 +460,10 @@ function testConnection() {
   }
 }
 
-// ============================================================
-// FUNCIONES DE CONFIGURACIÓN RÁPIDA
-// ============================================================
-
 /**
- * Configuración rápida para usuarios específicos.
- * Cambiar según el editor que esté configurando el sistema.
+ * Entry point for creating the TA_Bottom_Up project.
+ * Run this function from the Apps Script editor.
  */
-function quickSetupMarco() {
-  CONFIG.DEFAULT_EDITOR_PROFILE = "EDITOR_PROFILE_MARCO_LAUCELLI.md";
-  Logger.log("⚙️ Configuración ajustada para Marco Laucelli");
-}
-
-function quickSetupAna() {
-  CONFIG.DEFAULT_EDITOR_PROFILE = "EDITOR_PROFILE_ANA_TORRES.md";
-  Logger.log("⚙️ Configuración ajustada para Ana Torres");
-}
-
-/**
- * Función para actualizar configuración personalizada.
- */
-function updateConfig(newEditorProfile) {
-  CONFIG.DEFAULT_EDITOR_PROFILE = newEditorProfile;
-  Logger.log("⚙️ EDITOR_PROFILE actualizado a: " + newEditorProfile);
-}
-
-// ============================================================
-// GESTIÓN DE EDITOR_CONFIG
-// ============================================================
-
-/**
- * Actualiza el EDITOR_CONFIG.md del editor con el nuevo proyecto creado.
- */
-function updateEditorConfig(projectCode, projectName, driveResult) {
-  try {
-    Logger.log("🔧 Actualizando EDITOR_CONFIG...");
-    
-    // Obtener carpeta de configuración del editor
-    const rootFolder = DriveApp.getFoldersByName(CONFIG.DRIVE_ROOT).next();
-    const editorFolder = getSubfolder(rootFolder, CONFIG.EDITOR_FOLDER);
-    const configFolder = getSubfolder(editorFolder, "config");
-    
-    if (!configFolder) {
-      Logger.log("⚠️ Carpeta config no encontrada - EDITOR_CONFIG no se puede actualizar");
-      return { success: false, error: "config folder not found" };
-    }
-    
-    // Buscar archivo EDITOR_CONFIG.md
-    const configFiles = configFolder.getFilesByName("EDITOR_CONFIG.md");
-    if (!configFiles.hasNext()) {
-      Logger.log("⚠️ EDITOR_CONFIG.md no encontrado - crear uno primero");
-      return { success: false, error: "EDITOR_CONFIG.md not found" };
-    }
-    
-    const configFile = configFiles.next();
-    const currentContent = configFile.getBlob().getDataAsString();
-    
-    // Actualizar contenido
-    const today = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd");
-    const projectFolderName = projectCode + "_" + projectName.replace(/[^a-zA-Z0-9]/g, "_");
-    
-    // Preparar nueva entrada de proyecto
-    const newProjectEntry = `| ${projectCode} | ${projectName} | activo | system | ${today} | ${driveResult.url} |`;
-    
-    // Buscar y actualizar la tabla de proyectos
-    let updatedContent = currentContent;
-    
-    // Actualizar last_config_update
-    const timestamp = Utilities.formatDate(new Date(), Session.getScriptTimeZone(), "yyyy-MM-dd HH:mm");
-    updatedContent = updatedContent.replace(
-      /last_config_update:\s+.*/,
-      `last_config_update:      ${timestamp}`
-    );
-    
-    // Actualizar last_project_created
-    updatedContent = updatedContent.replace(
-      /last_project_created:\s+.*/,
-      `last_project_created:    ${today}`
-    );
-    
-    // Añadir proyecto a la tabla (buscar la línea de ejemplo y añadir después)
-    const tableHeaderPattern = /\| Código \| Nombre \| Estado \| Workflow \| Última sesión \| Drive URL \|[\s\S]*?\|[\s-]+\|[\s-]+\|[\s-]+\|[\s-]+\|[\s-]+\|[\s-]+\|/;
-    const tableMatch = updatedContent.match(tableHeaderPattern);
-    
-    if (tableMatch) {
-      const insertionPoint = tableMatch.index + tableMatch[0].length;
-      updatedContent = updatedContent.slice(0, insertionPoint) + 
-                      '\n' + newProjectEntry + 
-                      updatedContent.slice(insertionPoint);
-    } else {
-      Logger.log("⚠️ No se pudo encontrar tabla de proyectos para actualizar");
-    }
-    
-    // Actualizar contador de proyectos
-    const projectCountPattern = /total_projects:\s+(\d+)/;
-    const countMatch = updatedContent.match(projectCountPattern);
-    if (countMatch) {
-      const currentCount = parseInt(countMatch[1]);
-      updatedContent = updatedContent.replace(
-        projectCountPattern,
-        `total_projects:          ${currentCount + 1}`
-      );
-      
-      // También actualizar active_projects
-      updatedContent = updatedContent.replace(
-        /active_projects:\s+(\d+)/,
-        `active_projects:         ${currentCount + 1}`
-      );
-    }
-    
-    // Guardar contenido actualizado
-    configFile.setContent(updatedContent);
-    
-    Logger.log("✅ EDITOR_CONFIG.md actualizado correctamente");
-    return { 
-      success: true, 
-      projectAdded: projectCode,
-      timestamp: timestamp
-    };
-    
-  } catch (error) {
-    Logger.log("❌ Error actualizando EDITOR_CONFIG: " + error.toString());
-    return { success: false, error: error.toString() };
-  }
-}
-
-/**
- * Función para leer estadísticas del EDITOR_CONFIG (opcional para reportes).
- */
-function getEditorStats() {
-  try {
-    const rootFolder = DriveApp.getFoldersByName(CONFIG.DRIVE_ROOT).next();
-    const editorFolder = getSubfolder(rootFolder, CONFIG.EDITOR_FOLDER);
-    const configFolder = getSubfolder(editorFolder, "config");
-    const configFiles = configFolder.getFilesByName("EDITOR_CONFIG.md");
-    
-    if (!configFiles.hasNext()) {
-      return { error: "EDITOR_CONFIG not found" };
-    }
-    
-    const configFile = configFiles.next();
-    const content = configFile.getBlob().getDataAsString();
-    
-    // Extraer estadísticas básicas
-    const totalProjectsMatch = content.match(/total_projects:\s+(\d+)/);
-    const activeProjectsMatch = content.match(/active_projects:\s+(\d+)/);
-    const lastProjectMatch = content.match(/last_project_created:\s+(.+)/);
-    
-    return {
-      totalProjects: totalProjectsMatch ? parseInt(totalProjectsMatch[1]) : 0,
-      activeProjects: activeProjectsMatch ? parseInt(activeProjectsMatch[1]) : 0,
-      lastProjectCreated: lastProjectMatch ? lastProjectMatch[1].trim() : "unknown",
-      configExists: true
-    };
-    
-  } catch (error) {
-    return { error: error.toString() };
-  }
+function runCreateProject() {
+  createProject("TA", "Bottom Up");
 }
