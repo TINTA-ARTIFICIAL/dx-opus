@@ -32,7 +32,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 | DOCS | — | (No DL entries yet) | — |
 
 ### Total Decisions Logged
-**35 total DL entries** across all subsystems
+**36 total DL entries** across all subsystems
 
 ---
 
@@ -109,7 +109,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 
 | Status | Count | Description |
 |--------|--------|-------------|
-| **INTEGRATED** | 33 | Implemented and operational |
+| **INTEGRATED** | 34 | Implemented and operational |
 | **OPEN** | 0 | Approved but not yet implemented |
 | **SUPERSEDED** | 2 | Replaced by newer decisions |
 
@@ -117,7 +117,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 
 | Subsystem | Total | Integrated | Open | Superseded |
 |-----------|-------|------------|------|------------|
-| **SYSTEM** | **28** | **26** | **0** | **2** |
+| **SYSTEM** | **29** | **27** | **0** | **2** |
 | KB | 3 | 3 | 0 | 0 |
 | WRITING | 4 | 4 | 0 | 0 |
 | RESEARCH | 0 | 0 | 0 | 0 |
