@@ -2,8 +2,8 @@
 
 **Directory:** `_system/decisions/`  
 **Purpose:** All architectural and functional decisions  
-**Updated:** May 2026 (Sprint 4 Hotfix — E2E Test Bugs)  
-**Last DL Number:** 036
+**Updated:** May 2026 (Sprint 4 Hotfix — E2E Test + patch flag)  
+**Last DL Number:** 037
 
 ---
 
@@ -22,7 +22,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 
 | Subsystem | Latest DL# | Last Decision | Date |
 |-----------|------------|---------------|------|
-| **SYSTEM** | **036** | Hotfix v1.4.1 — 5 bugs from E2E test TC-3.1 | 2026-05-06 |
+| **SYSTEM** | **037** | create-release-package.sh v1.2 — --patch flag added | 2026-05-07 |
 | KB | 003 | CANONICAL UPDATE SCHEMA for SAH/CVC | 2026-02-22 |
 | RESEARCH | — | (No DL entries yet) | — |
 | WRITING | 015 | Q&A always active in POST workflow | 2026-04-11 |
@@ -32,7 +32,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 | DOCS | — | (No DL entries yet) | — |
 
 ### Total Decisions Logged
-**36 total DL entries** across all subsystems
+**37 total DL entries** across all subsystems
 
 ---
 
@@ -44,6 +44,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 
 | DL ID | Decision | Status |
 |-------|----------|---------|
+| DL_20260507_SYSTEM_037 | create-release-package.sh v1.2 — added --patch N flag for hotfix versions | INTEGRATED |
 | DL_20260506_SYSTEM_036 | Hotfix v1.4.1 — 5 compatibility bugs between TOOL_SETUP_EDITOR_ENVIRONMENT and TOOL_CREATE_PROJECT | INTEGRATED |
 
 ### Sprint 4 — Package System (May 2026)
@@ -109,7 +110,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 
 | Status | Count | Description |
 |--------|--------|-------------|
-| **INTEGRATED** | 34 | Implemented and operational |
+| **INTEGRATED** | 35 | Implemented and operational |
 | **OPEN** | 0 | Approved but not yet implemented |
 | **SUPERSEDED** | 2 | Replaced by newer decisions |
 
@@ -117,7 +118,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 
 | Subsystem | Total | Integrated | Open | Superseded |
 |-----------|-------|------------|------|------------|
-| **SYSTEM** | **29** | **27** | **0** | **2** |
+| **SYSTEM** | **30** | **28** | **0** | **2** |
 | KB | 3 | 3 | 0 | 0 |
 | WRITING | 4 | 4 | 0 | 0 |
 | RESEARCH | 0 | 0 | 0 | 0 |
@@ -191,7 +192,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 
 ### Referencing Decisions
 
-- **In commits:** Reference DL ID (e.g., "implements DL_036")
+- **In commits:** Reference DL ID (e.g., "implements DL_037")
 - **In discussions:** Use full DL ID for clarity
 - **In code comments:** Reference relevant architectural decisions
 - **In documentation:** Link to specific DL entries for context
@@ -199,7 +200,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 ---
 
 **Next DL Numbers:**
-- **SYSTEM:** DL_YYYYMMDD_SYSTEM_037
+- **SYSTEM:** DL_YYYYMMDD_SYSTEM_038
 - **KB:** DL_YYYYMMDD_KB_004
 - **WRITING:** DL_YYYYMMDD_WRITING_016
 - **Other subsystems:** DL_YYYYMMDD_[SUBSYSTEM]_001
