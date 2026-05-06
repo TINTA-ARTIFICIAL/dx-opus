@@ -2,10 +2,10 @@
 id:          MASTER_PLAN
 type:        SCHEMA
 subsystem:   SYSTEM
-version:     1.5
+version:     1.6
 status:      ACTIVE
 created:     2026-02-21
-updated:     2026-05-04
+updated:     2026-05-05
 owner_chat:  system-architecture
 ---
 
@@ -13,14 +13,25 @@ owner_chat:  system-architecture
 
 ## Consolidación de decisiones y trabajo pendiente
 
-**Versión:** 1.5
-**Fecha:** 4 mayo 2026
-**Scope:** Estado real del sistema con R1 completamente implementado (Setup completo + Auto-save universal)
+**Versión:** 1.6  
+**Fecha:** 5 mayo 2026  
+**Scope:** Estado real del sistema con R1 completamente implementado + Sprint 4 Package System operacional
+
+**Changelog v1.6:**
+
+* **PACKAGE SYSTEM OPERACIONAL:** create-release-package.sh + TOOL_SETUP_EDITOR_ENVIRONMENT v1.1 (DL-035)
+* Añadida DECISIÓN-19: Sistema de release packages integrado en sprint workflow
+* Actualizado DECISIÓN-18: NIVEL 0 añadido — setup time NIVEL 1 reducido de 45-60 min a 5-10 min
+* Añadidos N-21 a N-25: artefactos Sprint 4 (package system)
+* Actualizado N-13: TOOL_GITHUB_REPO_STRUCTURE v1.3 → v1.4
+* Actualizado PARTE 6: backlog Sprint 4 con tareas completadas marcadas
+* Añadido `latest_package: v1.4.0` en PARTE 8
+* Actualizada PARTE 8: setup times reflejan package system
 
 **Changelog v1.5:**
 
-* **R1 COMPLETAMENTE IMPLEMENTADO:** Setup arquitectura implementada con DL entries 028-032
-* Añadida implementación completa de auto-save genérico universal (DL-028)  
+* **R1 COMPLETAMENTE IMPLEMENTADO:** Setup arquitectura implementada con DL entries 028-032  
+* Añadida implementación completa de auto-save genérico universal (DL-028)   
 * Añadido TOOL_CREATE_PROJECT (renombrado desde TOOL_SETUP_PROJECT_ENHANCED, DL-029)
 * Añadido TEMPLATE_EDITOR_CONFIG formal (DL-030)
 * Añadidos templates PROJECT estandarizados (DL-031)
@@ -67,21 +78,28 @@ owner_chat:  system-architecture
 
 ---
 
-### 1.2 Arquitectura de Setup (R1 Implementación Completa)
+### 1.2 Arquitectura de Setup (R1 + Sprint 4 Package System)
 
-**DECISIÓN-18:** Setup de dos niveles completamente automatizado (DL_028-032).
+**DECISIÓN-18 (actualizada v1.6):** Setup de tres niveles completamente automatizado.
+
+**NIVEL 0 — Release Packaging (cierre de sprint):**
+- Tiempo: ~5 minutos (una vez por sprint)
+- Herramienta: `create-release-package.sh`
+- Resultado: `dx-opus-system-vX.Y.0.zip` publicado en GitHub releases
+- Latest package: **v1.4.0** (Sprint 4, 2026-05-05)
 
 **NIVEL 1 — Setup del Editor (una vez):**
-- Tiempo: 45-60 minutos una sola vez por editor
-- Herramientas: SETUP_INICIAL_D_X_OPUS.md + TOOL_CREATE_PROJECT.gs  
+- Tiempo: **5-10 minutos** (con package) / 45-60 min (fallback individual)
+- Herramientas: `TOOL_SETUP_EDITOR_ENVIRONMENT.gs` v1.1
 - Resultado: EDITOR_CONFIG.md personal + sistema operativo para crear proyectos en 2-3 min
 
 **NIVEL 2 — Setup del Proyecto (cada proyecto):**
 - Tiempo: 2-3 minutos por proyecto (automático)
-- Herramientas: TOOL_CREATE_PROJECT.gs
+- Herramientas: `TOOL_CREATE_PROJECT.gs`
 - Resultado: Proyecto completo listo para trabajar inmediatamente
 
 **Componentes implementados:**
+- ✅ Package system con versioning sprint-aligned (vMAJOR.SPRINT.PATCH)
 - ✅ Auto-save genérico universal para todos los artefactos
 - ✅ Templates estandarizados (EDITOR_CONFIG, PROJECT_README, PROJECT_INSTRUCTIONS)
 - ✅ PROMPT_PROJECT_DISCOVERY para primera sesión automática
@@ -123,11 +141,13 @@ owner_chat:  system-architecture
 
 **DECISIÓN-17:** Ubicación WORKFLOW_WRITING (DL_20260416_SYSTEM_026).
 
+**DECISIÓN-19 (nueva v1.6):** Sistema de release packages integrado en sprint workflow (DL_20260505_SYSTEM_035). Versioning: `vMAJOR.SPRINT.PATCH`. Package-first installation con fallback individual. Ver SPEC_PACKAGE_SYSTEM.md.
+
 ---
 
 ## PARTE 2: ARTEFACTOS A CREAR
 
-Estado actualizado con implementación R1 completa (04/05/2026).
+Estado actualizado con implementación R1 completa + Sprint 4 (05/05/2026).
 
 | # | Artefacto | Tipo | Subsistema | Estado | Versión |
 |---|---|---|---|---|---|
@@ -135,15 +155,15 @@ Estado actualizado con implementación R1 completa (04/05/2026).
 | N-02 | RESOURCE_EVALUATION_FRAMEWORK | RESOURCE | EVALUATION | ✅ Completado | v1.1 |
 | N-03 | RESOURCE_ARTIFACT_HEADER_STANDARD | RESOURCE | SYSTEM | ✅ Completado | v1.0 |
 | N-04 | GUIDE_ANNOTATION_PHASE3 | GUIDE | RESEARCH | ✅ Completado | v1.0 |
-| N-05 | PROMPT_CREATE_BOOK_BRIEF | PROMPT | ACTIVATION | ❌ Pendiente Sprint 4 | — |
+| N-05 | PROMPT_CREATE_BOOK_BRIEF | PROMPT | ACTIVATION | ❌ Pendiente Sprint 5 | — |
 | N-06 | PROMPT_EVALUATE_POST | PROMPT | EVALUATION | ✅ Completado Sprint 3 | v1.0 |
-| N-07 | PROMPT_EVALUATE_ACTIVATION | PROMPT | EVALUATION | ❌ Pendiente Sprint 4 | — |
-| N-08 | WORKFLOW_WRITING | WORKFLOW | WRITING | ✅ Existe como WORKFLOW_WRITING_BOOK.md v2.0 — rename pendiente (DL_026) | v2.0 |
+| N-07 | PROMPT_EVALUATE_ACTIVATION | PROMPT | EVALUATION | ❌ Pendiente Sprint 5 | — |
+| N-08 | WORKFLOW_WRITING | WORKFLOW | WRITING | ✅ Existe como WORKFLOW_WRITING_BOOK.md v2.0 → rename pendiente (DL_026) | v2.0 |
 | N-09 | SCHEMA_SYSTEM_ARCHITECTURE | SCHEMA | SYSTEM | ✅ Completado | v1.3 → v1.4 pendiente |
 | N-10 | SCHEMA_DECISION_LOG | SCHEMA | SYSTEM | ✅ Completado | v2.1 |
 | N-11 | TEMPLATE_SUBSYSTEM_CONTEXT | TEMPLATE | SYSTEM | ✅ Completado | v1.0 |
 | N-12 | TOOL_SETUP_PROJECT | TOOL | SYSTEM | ✅ Completado → TOOL_CREATE_PROJECT.gs | v1.0 |
-| N-13 | TOOL_GITHUB_REPO_STRUCTURE | TOOL | SYSTEM | ✅ Actualizado | v1.3 |
+| N-13 | TOOL_GITHUB_REPO_STRUCTURE | TOOL | SYSTEM | ✅ Actualizado Sprint 4 | v1.4 |
 
 ### Nuevos artefactos R1 (Implementación mayo 2026)
 
@@ -156,6 +176,16 @@ Estado actualizado con implementación R1 completa (04/05/2026).
 | N-18 | TEMPLATE_PROJECT_README | TEMPLATE | SYSTEM | ✅ Implementado mayo 2026 | v1.0 |
 | N-19 | TEMPLATE_PROJECT_INSTRUCTIONS | TEMPLATE | SYSTEM | ✅ Implementado mayo 2026 | v1.0 |
 | N-20 | SETUP_INICIAL_D_X_OPUS | GUIDE | TOOLS | ✅ Implementado mayo 2026 | v1.1 |
+
+### Nuevos artefactos Sprint 4 (Package System — 05/05/2026)
+
+| # | Artefacto | Tipo | Subsistema | Estado | Versión |
+|---|---|---|---|---|---|
+| N-21 | create-release-package.sh | TOOL | SYSTEM | ✅ **Implementado Sprint 4** | v1.0 |
+| N-22 | TOOL_SETUP_EDITOR_ENVIRONMENT | TOOL | SYSTEM | ✅ **Actualizado Sprint 4** | v1.0 → v1.1 |
+| N-23 | SPEC_PACKAGE_SYSTEM | SPEC | SYSTEM | ✅ **Implementado Sprint 4** | v1.0 |
+| N-24 | TEST_PACKAGE_SYSTEM_E2E | TEST | SYSTEM | ✅ **Implementado Sprint 4** | v1.0 |
+| N-25 | PACKAGE_SYSTEM_IMPLEMENTATION_SUMMARY | GUIDE | SYSTEM | ✅ **Implementado Sprint 4** | v1.0 |
 
 ---
 
@@ -188,6 +218,7 @@ Estado actualizado con implementación R1 completa (04/05/2026).
 | G-05 | Subir artefactos existentes con naming correcto | ✅ **R1 COMPLETADO mayo 2026** |
 | G-06 | Configurar branch protection en main | ❌ Pendiente — acción del editor |
 | G-07 | Crear ramas de desarrollo por subsistema | ❌ Pendiente |
+| G-08 | Instalar GitHub CLI (`gh`) | ❌ Pendiente — `brew install gh` |
 
 ### 4.2 Google Drive - Setup Automation
 
@@ -198,6 +229,7 @@ Estado actualizado con implementación R1 completa (04/05/2026).
 | D-03 | Test: ejecutar script en un proyecto real | ✅ **R1 COMPLETADO mayo 2026** |
 | D-04 | Setup inicial del editor automatizado | ✅ **R1 COMPLETADO mayo 2026** |
 | D-05 | Multi-editor support | ✅ **R1 COMPLETADO mayo 2026** |
+| D-06 | Package-based installation (5-10 min) | ✅ **Sprint 4 COMPLETADO** |
 
 ### 4.3 Documentos de contexto para chats de desarrollo
 
@@ -225,7 +257,7 @@ Estado actualizado con implementación R1 completa (04/05/2026).
 | F0-03 | Crear SCHEMA_DECISION_LOG | ✅ v2.1 |
 | F0-04 | Crear TEMPLATE_SUBSYSTEM_CONTEXT | ✅ v1.0 |
 | F0-05 | Crear TOOL_SETUP_PROJECT | ✅ v1.0 → TOOL_CREATE_PROJECT |
-| F0-06 | Crear TOOL_GITHUB_REPO_STRUCTURE | ✅ v1.3 |
+| F0-06 | Crear TOOL_GITHUB_REPO_STRUCTURE | ✅ v1.4 |
 | F0-07 | Setup GitHub | ✅ Repositorio creado — MCP no disponible, flujo manual (DECISIÓN-15) |
 
 ---
@@ -251,6 +283,7 @@ Estado actualizado con implementación R1 completa (04/05/2026).
 | F2-03 | Implementar templates system | ✅ **COMPLETADO mayo 2026** |
 | F2-04 | Implementar PROMPT_PROJECT_DISCOVERY | ✅ **COMPLETADO mayo 2026** |
 | F2-05 | Implementar setup inicial automatizado | ✅ **COMPLETADO mayo 2026** |
+| F2-06 | Implementar package system | ✅ **COMPLETADO Sprint 4** |
 
 ---
 
@@ -260,8 +293,8 @@ Estado actualizado con implementación R1 completa (04/05/2026).
 |---|---|---|---|---|
 | SC-01 | Renombrar SCHEMA_DECISION_LOG md → SCHEMA_DECISION_LOG.md | `_system/` | ✅ **RESUELTO mayo 2026** | system-architecture |
 | SC-02+SC-06 | Regularizar DL entries + actualizar status 13 fundacionales | SCHEMA_DECISION_LOG + decisions/ | ✅ **COMPLETADO mayo 2026** | system-architecture |
-| SC-03 | TOOL_GITHUB_REPO_STRUCTURE v1.1 → v1.3 | `tools/` | ✅ Completado | system-architecture |
-| SC-04 | MASTER_PLAN v1.4 → v1.5 | `_system/` | ✅ **Este documento mayo 2026** | system-architecture |
+| SC-03 | TOOL_GITHUB_REPO_STRUCTURE v1.1 → v1.4 | `tools/` | ✅ Completado Sprint 4 | system-architecture |
+| SC-04 | MASTER_PLAN v1.4 → v1.6 | `_system/` | ✅ **Este documento mayo 2026** | system-architecture |
 | SC-05 | Crear RESEARCH_COMPONENT_AUDIT.md v1.0 | `_system/audits/` | ✅ Completado | system-architecture |
 | SC-07 | Corregir decisions/README.md | `_system/decisions/` | ✅ **Actualizado mayo 2026** | system-architecture |
 | EV-01 | PROMPT_EVALUATE_BOOK_STYLE v1.0 → v1.1 | `evaluation/` | ✅ Completado | evaluation-dev |
@@ -278,22 +311,27 @@ Estado actualizado con implementación R1 completa (04/05/2026).
 
 ---
 
-## PARTE 6: ESTADO SPRINT 4 — BACKLOG
+## PARTE 6: ESTADO SPRINT 4 — COMPLETADO
 
-**Sprint 4 — Post R1 Implementation Cleanup:**
+**Sprint 4 — Post R1 Implementation + Package System:**
 
-| Prioridad | Tarea | Subsistema | Descripción |
+| Prioridad | Tarea | Subsistema | Estado |
 |---|---|---|---|
-| 🔴 Alta | POST-R1-01 | SYSTEM | Crear `GUIDE_DEV_PROTOCOL.md` v1.0 — protocolo estándar de desarrollo |
-| 🔴 Alta | POST-R1-02 | SYSTEM | Actualizar SCHEMA_SYSTEM_ARCHITECTURE v1.3 → v1.4 con nuevos componentes R1 |
-| 🔴 Alta | POST-R1-03 | ACTIVATION | Completar AC-01, AC-02, AC-03 para operatividad total |
-| 🟠 Media | POST-R1-04 | WRITING | Completar WR-01, WR-02, WR-03 para standards compliance |
-| 🟠 Media | POST-R1-05 | RESEARCH | Completar RE-01, RE-02 para operatividad total |
-| 🟠 Media | POST-R1-06 | EVALUATION | Crear PROMPT_EVALUATE_ACTIVATION v1.0 |
-| 🟠 Media | POST-R1-07 | DOCS | Iniciar subsistema DOCS: primeros documentos de usuario |
-| 🟡 Baja | POST-R1-08 | SYSTEM | Resolver GAP-R08, GAP-R09, GAP-R10 en Research |
-| 🟡 Baja | POST-R1-09 | KNOWLEDGE BASE | Gestor de referencias (issue #2) |
-| 🟡 Baja | POST-R1-10 | SYSTEM | Sistema de testing (issue #5) |
+| 🔴 Alta | POST-R1-01 | SYSTEM | ❌ Crear `GUIDE_DEV_PROTOCOL.md` v1.0 — protocolo estándar de desarrollo |
+| 🔴 Alta | POST-R1-02 | SYSTEM | ❌ Actualizar SCHEMA_SYSTEM_ARCHITECTURE v1.3 → v1.4 con nuevos componentes R1 |
+| 🔴 Alta | POST-R1-03 | ACTIVATION | ❌ Completar AC-01, AC-02, AC-03 para operatividad total |
+| 🟠 Media | POST-R1-04 | WRITING | ❌ Completar WR-01, WR-02, WR-03 para standards compliance |
+| 🟠 Media | POST-R1-05 | RESEARCH | ❌ Completar RE-01, RE-02 para operatividad total |
+| 🟠 Media | POST-R1-06 | EVALUATION | ❌ Crear PROMPT_EVALUATE_ACTIVATION v1.0 |
+| 🟠 Media | POST-R1-07 | DOCS | ❌ Iniciar subsistema DOCS: primeros documentos de usuario |
+| 🟡 Baja | POST-R1-08 | SYSTEM | ❌ Resolver GAP-R08, GAP-R09, GAP-R10 en Research |
+| 🟡 Baja | POST-R1-09 | KNOWLEDGE BASE | ❌ Gestor de referencias (issue #2) |
+| 🟡 Baja | POST-R1-10 | SYSTEM | ❌ Sistema de testing (issue #5) |
+| ✅ Sprint 4 | **PACKAGE-01** | **SYSTEM** | ✅ **create-release-package.sh v1.0 — COMPLETADO** |
+| ✅ Sprint 4 | **PACKAGE-02** | **SYSTEM** | ✅ **TOOL_SETUP_EDITOR_ENVIRONMENT v1.1 — COMPLETADO** |
+| ✅ Sprint 4 | **PACKAGE-03** | **SYSTEM** | ✅ **Release v1.4.0 publicado — COMPLETADO** |
+| ✅ Sprint 4 | **PACKAGE-04** | **SYSTEM** | ✅ **READMEs actualizados — COMPLETADO** |
+| ✅ Sprint 4 | **PACKAGE-05** | **SYSTEM** | ✅ **DL_035 documentado — COMPLETADO** |
 
 ---
 
@@ -315,22 +353,24 @@ Estado actualizado con implementación R1 completa (04/05/2026).
 
 | GAP ID | Descripción | Severidad | Estado |
 |---|---|---|
-| GAP-R11 | Focus types embebidos en CREATE_RESEARCH_PLAN | 🟠 IMPORTANTE | ⏳ Pendiente Sprint 4 (RE-02) |
+| GAP-R11 | Focus types embebidos en CREATE_RESEARCH_PLAN | 🟠 IMPORTANTE | ⏳ Pendiente Sprint 5 (RE-02) |
 | GAP-R08 | "Practical Applications" sin consumidor | 🟡 MENOR | ❌ Pendiente Fase 5 |
 | GAP-R09 | NARRATIVE_BRIDGE secciones 4-6 sin consumidor | 🟡 MENOR | ❌ Pendiente Fase 5 |
 | GAP-R10 | Naming inconsistente SUMMARIZE_REFERENCES | 🟡 MENOR | ❌ Pendiente Fase 5 |
 
 ---
 
-## PARTE 8: IMPLEMENTACIÓN R1 COMPLETA ✅
+## PARTE 8: IMPLEMENTACIÓN R1 COMPLETA ✅ + SPRINT 4 PACKAGE SYSTEM ✅
 
-**Estado:** R1 completamente implementado y operativo (mayo 2026)
+**Estado:** R1 completamente implementado y operativo (mayo 2026)  
+**Latest package:** `dx-opus-system-v1.4.0.zip` (Sprint 4, 2026-05-05, 33 archivos)
 
 ### Capacidades R1 implementadas
 
 #### ✅ **Setup Architecture Completa**
-- **NIVEL 1:** Setup inicial del editor (45-60 min, una vez)
-- **NIVEL 2:** Creación de proyectos (2-3 min, automático)
+- **NIVEL 0:** `create-release-package.sh` — Sprint package automation (Sprint 4)
+- **NIVEL 1:** Setup inicial del editor **5-10 min** con package (era 45-60 min)
+- **NIVEL 2:** Creación de proyectos 2-3 min, automático
 - **Multi-editor:** Sistema escalable para múltiples editores
 - **Templates:** Generación automática estandarizada
 
@@ -347,13 +387,14 @@ Estado actualizado con implementación R1 completa (04/05/2026).
 
 #### ✅ **Complete Tool Chain**
 - **TOOL_CREATE_PROJECT.gs:** Creación automática de proyectos
+- **TOOL_SETUP_EDITOR_ENVIRONMENT.gs v1.1:** Setup automatizado via package
+- **create-release-package.sh:** Release automation integrada en sprint workflow
 - **SETUP_INICIAL_D_X_OPUS.md:** Guía completa de setup inicial
-- **EDITOR_CONFIG.md:** Tracking automático de configuración personal
 
 ### Tiempo de implementación
 
 **Para editor nuevo:**
-- Setup inicial: 45-60 minutos (una vez)
+- Setup inicial: **5-10 minutos** (con package v1.4.0+)
 - Primer proyecto: 2-3 minutos adicionales
 - Proyectos adicionales: 2-3 minutos cada uno
 
@@ -364,15 +405,17 @@ Estado actualizado con implementación R1 completa (04/05/2026).
 ### Validación de R1
 
 | Test | Estado |
-|------|--------|
+|---|---|
 | Setup inicial desde cero | ✅ Validado |
 | Creación automática de proyecto | ✅ Validado |
 | Auto-save universal | ✅ Validado |
 | Primera sesión con PROJECT_DISCOVERY | ✅ Validado |
 | Multi-editor support | ✅ Validado |
 | Template generation | ✅ Validado |
+| Package installation (ZIP) | ✅ Validado Sprint 4 |
+| Package creation script | ✅ Validado Sprint 4 |
 
-**R1 está listo para producción.**
+**R1 está listo para producción. Package system v1.4.0 operacional.**
 
 ---
 
