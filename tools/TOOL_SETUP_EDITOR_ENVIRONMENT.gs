@@ -34,7 +34,7 @@ const CONFIG = {
   REPO_NAME:     "dx-opus",
   
   // Package config – update VERSION on each sprint release
-  LATEST_VERSION: "v1.4.0",
+  LATEST_VERSION: "v1.4.1",
   
   // Target Google Drive folder structure (flat)
   FOLDERS: {
