@@ -3,7 +3,7 @@
 **Directory:** `_system/decisions/`  
 **Purpose:** All architectural and functional decisions  
 **Updated:** May 2026 (R1 Complete Implementation)  
-**Last DL Number:** 032
+**Last DL Number:** 035
 
 ---
 
