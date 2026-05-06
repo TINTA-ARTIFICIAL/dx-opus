@@ -1,18 +1,25 @@
 #!/bin/bash
 #
 # create-release-package.sh
-# D-X-OPUS Release Package Creation Script v1.1
+# D-X-OPUS Release Package Creation Script v1.2
 #
 # Usage:   ./create-release-package.sh sprint-4
-#          ./create-release-package.sh sprint-4 --dry-run     (validate only, no publish)
-#          ./create-release-package.sh sprint-4 --no-release  (create zip, skip GitHub)
+#          ./create-release-package.sh sprint-4 --dry-run        (validate only, no publish)
+#          ./create-release-package.sh sprint-4 --no-release     (create zip, skip GitHub)
+#          ./create-release-package.sh sprint-4 --patch 1        (generate v1.4.1)
+#          ./create-release-package.sh sprint-4 --patch 2        (generate v1.4.2)
 #
-# Output:  dx-opus-system-v1.X.0.zip + GitHub release
+# Output:  dx-opus-system-v1.X.Y.zip + GitHub release
 #
 # Requirements:
 #   - Clean git repository (all changes committed)
 #   - GitHub CLI installed and authenticated
 #   - Standard Unix tools: zip, sha256sum, find, grep
+#
+# CHANGELOG:
+#   v1.2 - Added --patch N flag for hotfix/patch version support
+#   v1.1 - Package-based installation support
+#   v1.0 - Initial version
 
 set -euo pipefail   # Exit on error, undefined vars, pipe failures
 IFS=$'\n\t'
@@ -45,6 +52,7 @@ declare -a FILE_MAPPINGS=(
 # Flags
 DRY_RUN=false
 SKIP_RELEASE=false
+PATCH_NUM=0
 
 # ═══════════════════════════════════════════════════════════════
 # LOGGING UTILITIES
@@ -61,7 +69,7 @@ header()  { echo ""; echo "═════════════════�
 # ═══════════════════════════════════════════════════════════════
 
 if [ $# -lt 1 ]; then
-    error "Usage: $0 <sprint-identifier> [--dry-run] [--no-release]\n  Example: $0 sprint-4"
+    error "Usage: $0 <sprint-identifier> [--dry-run] [--no-release] [--patch N]\n  Example: $0 sprint-4\n  Example: $0 sprint-4 --patch 1"
 fi
 
 SPRINT_ID="$1"
@@ -71,6 +79,13 @@ while [[ $# -gt 0 ]]; do
     case "$1" in
         --dry-run)     DRY_RUN=true ;;
         --no-release)  SKIP_RELEASE=true ;;
+        --patch)
+            if [[ $# -lt 2 ]]; then
+                error "--patch requires a number (e.g. --patch 1)"
+            fi
+            PATCH_NUM="$2"
+            shift
+            ;;
         *) error "Unknown option: $1" ;;
     esac
     shift
@@ -86,7 +101,7 @@ TIMESTAMP=$(date -u '+%Y-%m-%dT%H:%M:%SZ')
 SPRINT_NUM=$(echo "$SPRINT_ID" | grep -oE '[0-9]+' | head -1)
 [ -z "$SPRINT_NUM" ] && error "Cannot extract sprint number from '${SPRINT_ID}'. Use format: sprint-4"
 
-VERSION="v1.${SPRINT_NUM}.0"
+VERSION="v1.${SPRINT_NUM}.${PATCH_NUM}"
 PACKAGE_NAME="dx-opus-system-${VERSION}"
 ZIP_FILE="${PACKAGE_NAME}.zip"
 
@@ -218,7 +233,7 @@ TMPL_LIST=$(find   "${PACKAGE_NAME}/templates"  -name "*.md"  -exec basename {} 
 RES_LIST=$(find    "${PACKAGE_NAME}/resources"  -type f       -exec basename {} \; | sort | sed 's/^/- /' 2>/dev/null || echo "- (none)")
 TOOL_LIST=$(find   "${PACKAGE_NAME}/tools"      -name "*.gs"  -exec basename {} \; | sort | sed 's/^/- /' 2>/dev/null || echo "- (none)")
 
-# Capitalize sprint ID for display  
+# Capitalize sprint ID for display 
 SPRINT_DISPLAY=$(echo "$SPRINT_ID" | sed 's/-/ /g' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) tolower(substr($i,2))}1')
 
 cat > "${PACKAGE_NAME}/PACKAGE_INFO.md" << EOF
@@ -304,12 +319,12 @@ ${TOOL_LIST}
 
 \`\`\`
 ${PACKAGE_NAME}/
-├── prompts/           # ${COUNT_PROMPTS} workflow prompts
-├── templates/         # ${COUNT_TEMPLATES} project templates
-├── resources/         # ${COUNT_RESOURCES} config + knowledge base files
-├── tools/             # ${COUNT_TOOLS} automation scripts
-├── PACKAGE_INFO.md    # This file
-└── MANIFEST.txt       # Complete file listing with checksums
+├── prompts/            # ${COUNT_PROMPTS} workflow prompts
+├── templates/          # ${COUNT_TEMPLATES} project templates
+├── resources/          # ${COUNT_RESOURCES} config + knowledge base files
+├── tools/              # ${COUNT_TOOLS} automation scripts
+├── PACKAGE_INFO.md     # This file
+└── MANIFEST.txt        # Complete file listing with checksums
 \`\`\`
 
 ---
@@ -356,16 +371,16 @@ PACKAGE CONTENTS
 ═══════════════════════════════════════
 
 prompts/ (${COUNT_PROMPTS} files):
-$(find "${PACKAGE_NAME}/prompts"   -name "*.md" -exec basename {} \; | sort | sed 's/^/  /')
+$(find "${PACKAGE_NAME}/prompts"    -name "*.md" -exec basename {} \; | sort | sed 's/^/  /')
 
 templates/ (${COUNT_TEMPLATES} files):
-$(find "${PACKAGE_NAME}/templates" -name "*.md" -exec basename {} \; | sort | sed 's/^/  /')
+$(find "${PACKAGE_NAME}/templates"  -name "*.md" -exec basename {} \; | sort | sed 's/^/  /')
 
 resources/ (${COUNT_RESOURCES} files):
-$(find "${PACKAGE_NAME}/resources" -type f      -exec basename {} \; | sort | sed 's/^/  /')
+$(find "${PACKAGE_NAME}/resources"  -type f       -exec basename {} \; | sort | sed 's/^/  /')
 
 tools/ (${COUNT_TOOLS} files):
-$(find "${PACKAGE_NAME}/tools"     -name "*.gs" -exec basename {} \; | sort | sed 's/^/  /')
+$(find "${PACKAGE_NAME}/tools"      -name "*.gs"  -exec basename {} \; | sort | sed 's/^/  /')
 
 EOF
 
@@ -470,8 +485,8 @@ echo "  📍 Commit:    ${COMMIT_HASH} (${BRANCH})"
 if [ "$DRY_RUN" = false ] && [ -f "${ZIP_FILE}" ]; then
 echo "  💾 Size:      ${ZIP_SIZE}"
 fi
-echo "  📊 Files:     ${TOTAL_FILES} total"
-echo "               ${COUNT_PROMPTS} prompts | ${COUNT_TEMPLATES} templates | ${COUNT_RESOURCES} resources | ${COUNT_TOOLS} tools"
+echo "  📋 Files:     ${TOTAL_FILES} total"
+echo "                ${COUNT_PROMPTS} prompts | ${COUNT_TEMPLATES} templates | ${COUNT_RESOURCES} resources | ${COUNT_TOOLS} tools"
 if [ "$DRY_RUN" = false ] && [ "$SKIP_RELEASE" = false ]; then
 echo "  🔗 Release:   ${BASE_URL}/releases/tag/${VERSION}"
 fi
