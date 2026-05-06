@@ -2,8 +2,8 @@
 
 **Directory:** `_system/decisions/`  
 **Purpose:** All architectural and functional decisions  
-**Updated:** May 2026 (R1 Complete Implementation)  
-**Last DL Number:** 035
+**Updated:** May 2026 (Sprint 4 Hotfix — E2E Test Bugs)  
+**Last DL Number:** 036
 
 ---
 
@@ -22,7 +22,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 
 | Subsystem | Latest DL# | Last Decision | Date |
 |-----------|------------|---------------|------|
-| **SYSTEM** | **032** | PROMPT_PROJECT_DISCOVERY for first session | 2026-05-04 |
+| **SYSTEM** | **036** | Hotfix v1.4.1 — 5 bugs from E2E test TC-3.1 | 2026-05-06 |
 | KB | 003 | CANONICAL UPDATE SCHEMA for SAH/CVC | 2026-02-22 |
 | RESEARCH | — | (No DL entries yet) | — |
 | WRITING | 015 | Q&A always active in POST workflow | 2026-04-11 |
@@ -32,23 +32,34 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 | DOCS | — | (No DL entries yet) | — |
 
 ### Total Decisions Logged
-**34 total DL entries** across all subsystems
+**35 total DL entries** across all subsystems
 
 ---
 
-## Recent R1 Implementation Decisions (May 2026)
+## Recent Decisions
+
+### Sprint 4 Hotfix (May 2026)
+
+**Bugs found and fixed during first E2E test of TA_Bottom_Up (TC-3.1):**
+
+| DL ID | Decision | Status |
+|-------|----------|---------|
+| DL_20260506_SYSTEM_036 | Hotfix v1.4.1 — 5 compatibility bugs between TOOL_SETUP_EDITOR_ENVIRONMENT and TOOL_CREATE_PROJECT | INTEGRATED |
+
+### Sprint 4 — Package System (May 2026)
 
 **Complete setup architecture implementation:**
 
 | DL ID | Decision | Status |
 |-------|----------|---------|
-| DL_20260504_SYSTEM_028 | Auto-save genérico universal para todos los artefactos | INTEGRATED |
-| DL_20260504_SYSTEM_029 | TOOL_CREATE_PROJECT renaming (from TOOL_SETUP_PROJECT_ENHANCED) | INTEGRATED |
-| DL_20260504_SYSTEM_030 | TEMPLATE_EDITOR_CONFIG formal para configuración personal | INTEGRATED |
-| DL_20260504_SYSTEM_031 | Templates PROJECT estandarizados (README + INSTRUCTIONS) | INTEGRATED |
+| DL_20260505_SYSTEM_035 | Package system implementation — setup time 45-60 min → 5-10 min | INTEGRATED |
+| DL_20260504_SYSTEM_034 | TOOL_SETUP_EDITOR_ENVIRONMENT — Gap R1 cerrado | INTEGRATED |
+| DL_20260504_SYSTEM_033 | SPEC_PACKAGE_SYSTEM — especificación técnica del release system | INTEGRATED |
 | DL_20260504_SYSTEM_032 | PROMPT_PROJECT_DISCOVERY para primera sesión automática | INTEGRATED |
-
-**Impact:** R1 setup architecture complete - fully automated editor setup and project creation.
+| DL_20260504_SYSTEM_031 | Templates PROJECT estandarizados (README + INSTRUCTIONS) | INTEGRATED |
+| DL_20260504_SYSTEM_030 | TEMPLATE_EDITOR_CONFIG formal para configuración personal | INTEGRATED |
+| DL_20260504_SYSTEM_029 | TOOL_CREATE_PROJECT renaming (from TOOL_SETUP_PROJECT_ENHANCED) | INTEGRATED |
+| DL_20260504_SYSTEM_028 | Auto-save genérico universal para todos los artefactos | INTEGRATED |
 
 ---
 
@@ -98,7 +109,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 
 | Status | Count | Description |
 |--------|--------|-------------|
-| **INTEGRATED** | 32 | Implemented and operational |
+| **INTEGRATED** | 33 | Implemented and operational |
 | **OPEN** | 0 | Approved but not yet implemented |
 | **SUPERSEDED** | 2 | Replaced by newer decisions |
 
@@ -106,7 +117,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 
 | Subsystem | Total | Integrated | Open | Superseded |
 |-----------|-------|------------|------|------------|
-| **SYSTEM** | **27** | **25** | **0** | **2** |
+| **SYSTEM** | **28** | **26** | **0** | **2** |
 | KB | 3 | 3 | 0 | 0 |
 | WRITING | 4 | 4 | 0 | 0 |
 | RESEARCH | 0 | 0 | 0 | 0 |
@@ -131,7 +142,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 
 **Mandatory for:**
 - Changes affecting other subsystems
-- New artifacts or artifact removal  
+- New artifacts or artifact removal
 - Interface format changes
 - Architectural decisions
 - Development process changes
@@ -180,7 +191,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 
 ### Referencing Decisions
 
-- **In commits:** Reference DL ID (e.g., "implements DL_028")
+- **In commits:** Reference DL ID (e.g., "implements DL_036")
 - **In discussions:** Use full DL ID for clarity
 - **In code comments:** Reference relevant architectural decisions
 - **In documentation:** Link to specific DL entries for context
@@ -188,8 +199,8 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 ---
 
 **Next DL Numbers:**
-- **SYSTEM:** DL_20260504_SYSTEM_033
-- **KB:** DL_YYYYMMDD_KB_004  
+- **SYSTEM:** DL_YYYYMMDD_SYSTEM_037
+- **KB:** DL_YYYYMMDD_KB_004
 - **WRITING:** DL_YYYYMMDD_WRITING_016
 - **Other subsystems:** DL_YYYYMMDD_[SUBSYSTEM]_001
 
