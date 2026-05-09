@@ -3,7 +3,7 @@
 **Directory:** `_system/decisions/`  
 **Purpose:** All architectural and functional decisions  
 **Updated:** May 2026 (Sprint 4 Hotfix + Sprint 5 Design)  
-**Last DL Number:** 038
+**Last DL Number:** 039
 
 ---
 
@@ -22,7 +22,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 
 | Subsystem | Latest DL# | Last Decision | Date |
 |-----------|------------|---------------|------|
-| **SYSTEM** | **038** | EDITOR DIGITAL architecture — SESSION_ORCHESTRATOR + WORKFLOW_STATE | 2026-05-08 |
+| **SYSTEM** | **039** | Create D-X-OPUS/workflows/ dedicated folder for workflow documents | 2026-05-09 |
 | KB | 003 | CANONICAL UPDATE SCHEMA for SAH/CVC | 2026-02-22 |
 | RESEARCH | — | (No DL entries yet) | — |
 | WRITING | 015 | Q&A always active in POST workflow | 2026-04-11 |
@@ -32,7 +32,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 | DOCS | — | (No DL entries yet) | — |
 
 ### Total Decisions Logged
-**38 total DL entries** across all subsystems
+**39 total DL entries** across all subsystems
 
 ---
 
@@ -44,6 +44,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 
 | DL ID | Decision | Status |
 |-------|----------|---------|
+| DL_20260509_SYSTEM_039 | Create D-X-OPUS/workflows/ as dedicated folder for workflow orchestration documents — prerequisite for SESSION_ORCHESTRATOR | OPEN |
 | DL_20260508_SYSTEM_038 | EDITOR DIGITAL: SESSION_ORCHESTRATOR + WORKFLOW_STATE as central orchestration mechanism. Editor Digital adopts EDITORIAL_PROFILE. SESSION_ORCHESTRATOR is mandatory entry point. WORKFLOW_STATE via auto-save. | OPEN |
 
 ### Sprint 4 Hotfix (May 2026)
@@ -119,14 +120,14 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 | Status | Count | Description |
 |--------|--------|-------------|
 | **INTEGRATED** | 35 | Implemented and operational |
-| **OPEN** | 1 | Approved, pending Sprint 5 implementation |
+| **OPEN** | 2 | Approved, pending Sprint 5 implementation |
 | **SUPERSEDED** | 2 | Replaced by newer decisions |
 
 ### By Subsystem
 
 | Subsystem | Total | Integrated | Open | Superseded |
 |-----------|-------|------------|------|------------|
-| **SYSTEM** | **31** | **28** | **1** | **2** |
+| **SYSTEM** | **32** | **28** | **2** | **2** |
 | KB | 3 | 3 | 0 | 0 |
 | WRITING | 4 | 4 | 0 | 0 |
 | RESEARCH | 0 | 0 | 0 | 0 |
@@ -200,7 +201,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 
 ### Referencing Decisions
 
-- **In commits:** Reference DL ID (e.g., "implements DL_038")
+- **In commits:** Reference DL ID (e.g., "implements DL_039")
 - **In discussions:** Use full DL ID for clarity
 - **In code comments:** Reference relevant architectural decisions
 - **In documentation:** Link to specific DL entries for context
@@ -208,7 +209,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 ---
 
 **Next DL Numbers:**
-- **SYSTEM:** DL_YYYYMMDD_SYSTEM_039
+- **SYSTEM:** DL_YYYYMMDD_SYSTEM_040
 - **KB:** DL_YYYYMMDD_KB_004
 - **WRITING:** DL_YYYYMMDD_WRITING_016
 - **Other subsystems:** DL_YYYYMMDD_[SUBSYSTEM]_001
