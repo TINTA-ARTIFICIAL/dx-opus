@@ -4,7 +4,7 @@ Directorio raíz del subsistema SYSTEM. Contiene los artefactos fundacionales qu
 
 **Owner:** system-architecture chat  
 **Referencia principal:** `MASTER_PLAN.md`  
-**Estado:** R1 completamente implementado. Sprint 4: Package System operacional. Hotfix v1.4.1 aplicado.
+**Estado:** R1 completamente implementado. Sprint 4: Package System operacional. Hotfix v1.4.1 aplicado. Sprint 5: diseño en curso.
 
 ---
 
@@ -38,11 +38,19 @@ Directorio raíz del subsistema SYSTEM. Contiene los artefactos fundacionales qu
 
 ---
 
+## Artefactos Sprint 5 Design
+
+| Artefacto | Versión | Tipo | Descripción |
+|---|---|---|---|
+| **DEV_INSTRUCTIONS_ALL.md** | **v1.0** | **DOC** | **Instrucciones de desarrollo para los 8 chats — incluye protocolo de cierre de sesión con MCP Drive** |
+
+---
+
 ## Subcarpetas
 
 ### `decisions/`
 
-**Status:** 36 Decision Log entries — última: DL_20260506_SYSTEM_036
+**Status:** 40 Decision Log entries — última: DL_20260520_SYSTEM_040
 
 Registro completo de decisiones arquitectónicas del sistema. Formato: `DL_YYYYMMDD_[SUBSYSTEM]_[NNN].md`.
 
@@ -59,6 +67,12 @@ Registro completo de decisiones arquitectónicas del sistema. Formato: `DL_YYYYM
 
 **Sprint 4 Hotfix:**
 - **DL_20260506_SYSTEM_036:** Hotfix v1.4.1 — 5 bugs E2E test TC-3.1 corregidos
+- **DL_20260507_SYSTEM_037:** create-release-package.sh v1.2 — --patch flag
+
+**Sprint 5 Design:**
+- **DL_20260508_SYSTEM_038:** EDITOR DIGITAL — SESSION_ORCHESTRATOR + WORKFLOW_STATE + principio de lenguaje editorial
+- **DL_20260509_SYSTEM_039:** D-X-OPUS/workflows/ folder dedicada para documentos de orquestación
+- **DL_20260520_SYSTEM_040:** Automatización cierre de sesión de desarrollo via MCP Drive
 
 Ver `decisions/README.md` para inventario completo.
 
@@ -102,7 +116,7 @@ Auditorías de subsistemas producidas por system-architecture para verificar con
 
 ### `test-records/`
 
-**Status:** Sprint 4 — nuevo
+**Status:** Sprint 4 — operacional
 
 Registros de testing de componentes del sistema. Documentan ejecución de casos de test y sign-off de releases.
 
@@ -121,7 +135,7 @@ Registros de testing de componentes del sistema. Documentan ejecución de casos 
 **No hay gaps pendientes en R1.** Todas las funcionalidades están implementadas.
 
 #### Setup Architecture Complete
-- ✅ **NIVEL 0:** create-release-package.sh — Sprint package automation
+- ✅ **NIVEL 0:** create-release-package.sh v1.2 — Sprint package automation + --patch flag
 - ✅ **NIVEL 1:** TOOL_SETUP_EDITOR_ENVIRONMENT v1.1.1 — Package-based install (5-10 min)
 - ✅ **NIVEL 2:** TOOL_CREATE_PROJECT v1.1.0 — Project automation (2-3 min)
 - ✅ **Latest package:** v1.4.1 (Sprint 4 Hotfix)
@@ -140,6 +154,15 @@ Registros de testing de componentes del sistema. Documentan ejecución de casos 
 - ✅ Auto-generation: PROJECT_README, PROJECT_INSTRUCTIONS, EDITOR_CONFIG
 - ✅ Variable substitution: Dynamic personalization
 - ✅ Multi-editor: Template system scales automatically
+
+### 🔄 SPRINT 5 DESIGN IN PROGRESS
+
+Decisiones arquitectónicas tomadas durante el test E2E TC-3.1 (DL_038, DL_039, DL_040). Implementación en Sprint 5:
+
+- **Editor Digital** (DL_038) — SESSION_ORCHESTRATOR + WORKFLOW_STATE
+- **workflows/ folder** (DL_039) — carpeta dedicada para documentos de orquestación
+- **Dev session closure** (DL_040) — automatización via MCP Drive
+- **35+ issues** en backlog Sprint 5 — ver GitHub Issues #40–76
 
 ---
 
@@ -175,4 +198,4 @@ Registros de testing de componentes del sistema. Documentan ejecución de casos 
 
 ---
 
-**R1 System Status: Completely implemented and operational. Sprint 4 Hotfix v1.4.1: 5 E2E test bugs corrected.**
+**R1 System Status: Completely implemented and operational. Sprint 4 Hotfix v1.4.1. Sprint 5 design complete — 3 OPEN DLs, 35+ issues in backlog.**
