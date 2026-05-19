@@ -3,7 +3,7 @@
 **Directory:** `_system/decisions/`  
 **Purpose:** All architectural and functional decisions  
 **Updated:** May 2026 (Sprint 4 Hotfix + Sprint 5 Design)  
-**Last DL Number:** 039
+**Last DL Number:** 040
 
 ---
 
@@ -22,7 +22,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 
 | Subsystem | Latest DL# | Last Decision | Date |
 |-----------|------------|---------------|------|
-| **SYSTEM** | **039** | Create D-X-OPUS/workflows/ dedicated folder for workflow documents | 2026-05-09 |
+| **SYSTEM** | **040** | Automated dev session closure — DLs, READMEs and artifacts via MCP Drive | 2026-05-20 |
 | KB | 003 | CANONICAL UPDATE SCHEMA for SAH/CVC | 2026-02-22 |
 | RESEARCH | — | (No DL entries yet) | — |
 | WRITING | 015 | Q&A always active in POST workflow | 2026-04-11 |
@@ -32,7 +32,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 | DOCS | — | (No DL entries yet) | — |
 
 ### Total Decisions Logged
-**39 total DL entries** across all subsystems
+**40 total DL entries** across all subsystems
 
 ---
 
@@ -40,16 +40,15 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 
 ### Sprint 5 Design (May 2026)
 
-**Architectural decisions produced during E2E test analysis:**
+**Architectural decisions produced during E2E test analysis and session closure:**
 
 | DL ID | Decision | Status |
 |-------|----------|---------|
+| DL_20260520_SYSTEM_040 | Automated dev session closure — DLs, READMEs and all artifacts saved directly to repo via MCP Drive. Three levels: Project Instructions (immediate), PROMPT_DEV_CLOSURE (Sprint 5), Dev Agent (Phase 2) | OPEN |
 | DL_20260509_SYSTEM_039 | Create D-X-OPUS/workflows/ as dedicated folder for workflow orchestration documents — prerequisite for SESSION_ORCHESTRATOR | OPEN |
-| DL_20260508_SYSTEM_038 | EDITOR DIGITAL: SESSION_ORCHESTRATOR + WORKFLOW_STATE as central orchestration mechanism. Editor Digital adopts EDITORIAL_PROFILE. SESSION_ORCHESTRATOR is mandatory entry point. WORKFLOW_STATE via auto-save. | OPEN |
+| DL_20260508_SYSTEM_038 | EDITOR DIGITAL: SESSION_ORCHESTRATOR + WORKFLOW_STATE as central orchestration mechanism. Editor Digital adopts EDITORIAL_PROFILE. SESSION_ORCHESTRATOR is mandatory entry point. WORKFLOW_STATE via auto-save. Editorial language principle (issue #75). | OPEN |
 
 ### Sprint 4 Hotfix (May 2026)
-
-**Bugs found and fixed during first E2E test of TA_Bottom_Up (TC-3.1):**
 
 | DL ID | Decision | Status |
 |-------|----------|---------|
@@ -57,8 +56,6 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 | DL_20260506_SYSTEM_036 | Hotfix v1.4.1 — 5 compatibility bugs between TOOL_SETUP_EDITOR_ENVIRONMENT and TOOL_CREATE_PROJECT | INTEGRATED |
 
 ### Sprint 4 — Package System (May 2026)
-
-**Complete setup architecture implementation:**
 
 | DL ID | Decision | Status |
 |-------|----------|---------|
@@ -120,14 +117,14 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 | Status | Count | Description |
 |--------|--------|-------------|
 | **INTEGRATED** | 35 | Implemented and operational |
-| **OPEN** | 2 | Approved, pending Sprint 5 implementation |
+| **OPEN** | 3 | Approved, pending Sprint 5 implementation |
 | **SUPERSEDED** | 2 | Replaced by newer decisions |
 
 ### By Subsystem
 
 | Subsystem | Total | Integrated | Open | Superseded |
 |-----------|-------|------------|------|------------|
-| **SYSTEM** | **32** | **28** | **2** | **2** |
+| **SYSTEM** | **33** | **28** | **3** | **2** |
 | KB | 3 | 3 | 0 | 0 |
 | WRITING | 4 | 4 | 0 | 0 |
 | RESEARCH | 0 | 0 | 0 | 0 |
@@ -201,7 +198,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 
 ### Referencing Decisions
 
-- **In commits:** Reference DL ID (e.g., "implements DL_039")
+- **In commits:** Reference DL ID (e.g., "implements DL_040")
 - **In discussions:** Use full DL ID for clarity
 - **In code comments:** Reference relevant architectural decisions
 - **In documentation:** Link to specific DL entries for context
@@ -209,7 +206,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 ---
 
 **Next DL Numbers:**
-- **SYSTEM:** DL_YYYYMMDD_SYSTEM_040
+- **SYSTEM:** DL_YYYYMMDD_SYSTEM_041
 - **KB:** DL_YYYYMMDD_KB_004
 - **WRITING:** DL_YYYYMMDD_WRITING_016
 - **Other subsystems:** DL_YYYYMMDD_[SUBSYSTEM]_001
