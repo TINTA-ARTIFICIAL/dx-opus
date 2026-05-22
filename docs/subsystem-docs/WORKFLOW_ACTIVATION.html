@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WORKFLOW ACTIVATION v1.6 — D-X-OPUS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Gentium+Plus:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ta-tinta:   #0A0A0A;
+    --ta-carbon:  #434343;
+    --ta-grafito: #595959;
+    --ta-papel:   #E8E4D9;
+    --ta-blanco:  #FFFFFF;
+    --ta-cian:    #00D4D4;
+    --ta-rojo:    #FF2D2C;
+    --ta-pizarra: #78909C;
+    --ta-ambar:   #FFAB40;
+    --font-display: 'Bebas Neue', Arial, sans-serif;
+    --font-body:    'Gentium Plus', Georgia, serif;
+    --font-mono:    'JetBrains Mono', 'Courier New', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--ta-blanco);
+    color: var(--ta-tinta);
+    padding: 0;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    background: var(--ta-tinta);
+    padding: 56px 40px 44px;
+  }
+  .cover-rule { width: 48px; height: 3px; background: var(--ta-cian); margin-bottom: 24px; }
+  .cover-eyebrow {
+    font-family: var(--font-mono); font-size: 11px; color: var(--ta-cian);
+    letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px;
+  }
+  .cover-title {
+    font-family: var(--font-display); font-size: 72px; color: var(--ta-blanco);
+    line-height: 0.95; letter-spacing: 0.01em; margin-bottom: 14px;
+  }
+  .cover-subtitle {
+    font-family: var(--font-body); font-size: 16px; color: var(--ta-papel);
+    font-style: italic; margin-bottom: 40px; opacity: 0.85;
+    line-height: 22px;
+  }
+  .cover-meta {
+    display: flex; gap: 36px; flex-wrap: wrap;
+    border-top: 0.5px solid #2a2a2a; padding-top: 18px;
+  }
+  .cover-meta-item strong {
+    display: block; font-family: var(--font-mono); font-size: 10px;
+    color: var(--ta-grafito); letter-spacing: 0.08em;
+    text-transform: uppercase; margin-bottom: 3px;
+  }
+  .cover-meta-item span { font-family: var(--font-mono); font-size: 13px; color: var(--ta-papel); }
+
+  /* ── BODY ── */
+  .body-wrap { padding: 52px 40px; }
+
+  /* ── SECTION HEADERS ── */
+  .section-label {
+    font-family: var(--font-mono); font-size: 10px; color: var(--ta-cian);
+    letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 6px;
+  }
+  h1.doc-h1 {
+    font-family: var(--font-display); font-size: 34px; color: var(--ta-tinta);
+    letter-spacing: 0.02em; line-height: 1; margin-bottom: 6px;
+  }
+  .h1-rule { height: 2px; background: var(--ta-cian); margin-bottom: 28px; width: 100%; }
+  h2.doc-h2 {
+    font-family: var(--font-display); font-size: 20px; color: var(--ta-carbon);
+    letter-spacing: 0.04em; margin: 36px 0 10px;
+  }
+  h3.doc-h3 {
+    font-family: var(--font-body); font-size: 16px; font-weight: 700;
+    color: var(--ta-tinta); margin: 24px 0 8px;
+    line-height: 22px;
+  }
+  .section-divider { height: 0.5px; background: var(--ta-papel); margin: 48px 0; }
+
+  p {
+    font-family: var(--font-body); font-size: 18px; line-height: 26px;
+    color: var(--ta-tinta); margin-bottom: 14px;
+  }
+  p.lead { font-size: 18px; color: var(--ta-carbon);
+    line-height: 26px;
+  }
+
+  /* ── CALLOUTS ── */
+  .callout {
+    border-left: 3px solid var(--ta-cian); padding: 14px 18px;
+    background: #F0FAFA; border-radius: 0 6px 6px 0; margin: 20px 0;
+  }
+  .callout p { margin: 0; font-style: italic; font-size: 18px;
+    line-height: 26px;
+  }
+  .callout.warn { border-left-color: var(--ta-ambar); background: #FFFBF0; }
+  .callout.alert { border-left-color: var(--ta-rojo); background: #FFF5F5; }
+
+  /* ── CONCEPT CARDS ── */
+  .concept-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 24px 0;
+  }
+  .concept-card {
+    border: 0.5px solid #E0E0E0;
+    border-radius: 6px;
+    padding: 18px 20px;
+    background: #FDFCFA;
+  }
+  .concept-card.full { grid-column: 1 / -1; }
+  .concept-card.accent-cian { border-top: 2px solid var(--ta-cian); }
+  .concept-card.accent-ambar { border-top: 2px solid var(--ta-ambar); }
+  .concept-card.accent-rojo { border-top: 2px solid var(--ta-rojo); }
+  .concept-card.accent-pizarra { border-top: 2px solid var(--ta-pizarra); }
+
+  .concept-tag {
+    font-family: var(--font-mono); font-size: 9px; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .accent-cian .concept-tag { color: var(--ta-cian); }
+  .accent-ambar .concept-tag { color: var(--ta-ambar); }
+  .accent-rojo .concept-tag { color: var(--ta-rojo); }
+  .accent-pizarra .concept-tag { color: var(--ta-pizarra); }
+
+  .concept-name {
+    font-family: var(--font-display); font-size: 18px; color: var(--ta-tinta);
+    letter-spacing: 0.04em; margin-bottom: 8px; line-height: 1.1;
+  }
+  .concept-def {
+    font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito);
+    line-height: 22px;
+  }
+  .concept-def strong { color: var(--ta-tinta); }
+
+  /* ── QUOTE BLOCK ── */
+  .doc-quote {
+    border-left: 3px solid var(--ta-papel);
+    padding: 14px 20px;
+    margin: 20px 0;
+    background: #FAFAF8;
+  }
+  .doc-quote p {
+    font-style: italic; font-size: 18px; color: var(--ta-carbon);
+    margin-bottom: 6px;
+    line-height: 26px;
+  }
+  .doc-quote cite {
+    font-family: var(--font-mono); font-size: 10px; color: var(--ta-pizarra);
+    font-style: normal;
+  }
+
+  /* ── SEED TYPES TABLE ── */
+  table.doc-table {
+    width: 100%; border-collapse: collapse;
+    font-family: var(--font-body); font-size: 16px; margin: 16px 0;
+    line-height: 22px;
+  }
+  table.doc-table th {
+    font-family: var(--font-mono); font-size: 10px; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--ta-grafito);
+    border-bottom: 1.5px solid var(--ta-cian); padding: 8px 12px;
+    text-align: left; background: #FDFCFA;
+  }
+  table.doc-table td {
+    padding: 10px 12px; border-bottom: 0.5px solid var(--ta-papel);
+    color: var(--ta-tinta); vertical-align: top; font-size: 16px;
+  }
+  table.doc-table tr:last-child td { border-bottom: none; }
+  .badge {
+    display: inline-block; font-family: var(--font-mono); font-size: 9px;
+    font-weight: 500; padding: 2px 7px; border-radius: 3px;
+    margin-left: 4px; letter-spacing: 0.04em; vertical-align: middle;
+  }
+  .badge-cian    { background: var(--ta-cian); color: #003333; }
+  .badge-rojo    { background: var(--ta-rojo); color: #fff; }
+  .badge-ambar   { background: var(--ta-ambar); color: #4A2900; }
+  .badge-pizarra { background: var(--ta-pizarra); color: #fff; }
+  .badge-tinta   { background: var(--ta-tinta); color: var(--ta-blanco); }
+
+  /* ── NUMBERED LIST ── */
+  .doc-list {
+    list-style: none; margin: 16px 0;
+  }
+  .doc-list li {
+    display: flex; gap: 14px; align-items: flex-start;
+    padding: 10px 0; border-bottom: 0.5px solid #F0F0F0;
+    font-size: 18px; color: var(--ta-tinta); line-height: 26px;
+  }
+  .doc-list li:last-child { border-bottom: none; }
+  .doc-list .li-num {
+    font-family: var(--font-mono); font-size: 11px; color: var(--ta-cian);
+    min-width: 22px; font-weight: 500; padding-top: 2px;
+  }
+
+  /* ── INPUTS BOX ── */
+  .inputs-box {
+    background: #F7F9FA; border: 1px solid #D8EFF0;
+    border-left: 3px solid var(--ta-cian);
+    border-radius: 0 6px 6px 0; padding: 14px 18px; margin-bottom: 28px;
+  }
+  .inputs-box .box-label {
+    font-family: var(--font-mono); font-size: 10px; color: var(--ta-cian);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 10px; font-weight: 500;
+  }
+  .inputs-box ul { list-style: none; }
+  .inputs-box li {
+    font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito);
+    padding: 3px 0; padding-left: 14px; position: relative;
+    line-height: 22px;
+  }
+  .inputs-box li::before {
+    content: "→"; position: absolute; left: 0;
+    color: var(--ta-pizarra); font-family: var(--font-mono); font-size: 11px;
+  }
+  .inputs-box li strong { color: var(--ta-tinta); font-weight: 700; }
+
+  /* ── FLOW DIAGRAM ── */
+  .flow { display: flex; flex-direction: column; gap: 4px; }
+
+  .phase-card {
+    border: 0.5px solid #D4D4D4; border-radius: 6px; overflow: hidden;
+  }
+  .phase-card.phase-cian   { border-left: 3px solid var(--ta-cian); }
+  .phase-card.phase-rojo   { border-left: 3px solid var(--ta-rojo); border-color: #FFCCCC; background: #FFFAFA; }
+  .phase-card.phase-ambar  { border-left: 3px solid var(--ta-ambar); }
+  .phase-card.phase-pizarra{ border-left: 3px solid var(--ta-pizarra); }
+  .phase-card.phase-neutral{ border-left: 3px solid var(--ta-carbon); }
+
+  .phase-header {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 16px; cursor: pointer; user-select: none; background: #FAFAFA;
+  }
+  .phase-card.phase-cian  .phase-header { background: #F5FEFE; }
+  .phase-card.phase-rojo  .phase-header { background: #FFF8F8; }
+  .phase-card.phase-ambar .phase-header { background: #FFFBF5; }
+  .phase-header:hover { filter: brightness(0.97); }
+
+  .phase-tag {
+    font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+    min-width: 76px; letter-spacing: 0.05em;
+  }
+  .phase-card.phase-cian    .phase-tag { color: var(--ta-cian); }
+  .phase-card.phase-rojo    .phase-tag { color: var(--ta-rojo); }
+  .phase-card.phase-ambar   .phase-tag { color: var(--ta-ambar); }
+  .phase-card.phase-pizarra .phase-tag { color: var(--ta-pizarra); }
+  .phase-card.phase-neutral .phase-tag { color: var(--ta-carbon); }
+
+  .phase-title {
+    flex: 1; font-family: var(--font-display); font-size: 14px;
+    letter-spacing: 0.06em; color: var(--ta-tinta);
+  }
+  .phase-time {
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--ta-pizarra); white-space: nowrap;
+  }
+  .toggle-icon { font-size: 13px; color: var(--ta-pizarra); margin-left: 4px; }
+
+  .phase-body { display: none; padding: 0 16px 14px; border-top: 0.5px solid #EEEEEE; }
+  .phase-body.open { display: block; }
+
+  .task-row {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 8px 0; border-bottom: 0.5px solid #F0F0F0;
+  }
+  .task-row:last-child { border-bottom: none; }
+  .task-icon { font-size: 16px; min-width: 20px; margin-top: 1px; }
+  .task-name {
+    font-family: var(--font-mono); font-size: 10px; color: var(--ta-tinta);
+    font-weight: 500; margin-bottom: 3px; letter-spacing: 0.03em;
+  }
+  .task-desc {
+    font-family: var(--font-body); font-size: 16px;
+    color: var(--ta-grafito); line-height: 22px;
+  }
+
+  .checkpoint {
+    margin-top: 10px; padding: 7px 12px; border-radius: 4px;
+    font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.04em;
+  }
+  .cp-cian    { background: #E8FAFA; border: 0.5px solid var(--ta-cian); color: #006666; }
+  .cp-ambar   { background: #FFF8E8; border: 0.5px solid var(--ta-ambar); color: #7A4400; }
+  .cp-neutral { background: #F5F5F5; border: 0.5px solid #D0D0D0; color: var(--ta-carbon); }
+  .cp-rojo    { background: #FFF0F0; border: 0.5px solid var(--ta-rojo); color: #990000; }
+
+  .subfase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 10px 0; }
+  .subfase {
+    background: #F9F9F9; border: 0.5px solid #E0E0E0;
+    border-radius: 4px; padding: 8px 10px;
+  }
+  .subfase-id { font-family: var(--font-mono); font-size: 10px; color: var(--ta-cian); font-weight: 500; margin-bottom: 3px; }
+  .subfase-name { font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito); line-height: 22px; margin-bottom: 3px; }
+  .subfase-output { font-family: var(--font-mono); font-size: 9px; color: var(--ta-pizarra); }
+  .subfase-full { grid-column: 1 / -1; }
+
+  .flow-arrow { text-align: center; color: #CCCCCC; font-size: 18px; padding: 2px 0; line-height: 26px; }
+  .flow-arrow.split-arrow { font-family: var(--font-mono); font-size: 11px; color: var(--ta-pizarra); letter-spacing: 0.1em; }
+
+  .route-split { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+  .route-header {
+    text-align: center; padding: 6px 10px; border-radius: 4px;
+    font-family: var(--font-mono); font-size: 9px; font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px;
+  }
+  .route-p { background: #E5FAFA; color: #005555; border: 0.5px solid #AAEAEA; }
+  .route-l { background: #FFF5E5; color: #7A4400; border: 0.5px solid #FFD89A; }
+  .route-col { display: flex; flex-direction: column; gap: 4px; }
+
+  .next-cycle {
+    background: #FFFBF5; border: 0.5px solid #FFD89A;
+    border-left: 3px solid var(--ta-ambar); border-radius: 0 5px 5px 0;
+    padding: 12px 14px; margin-top: 4px;
+  }
+  .next-cycle-label {
+    font-family: var(--font-display); font-size: 14px;
+    color: var(--ta-ambar); letter-spacing: 0.08em; margin-bottom: 8px;
+  }
+  .next-cycle-flow {
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--ta-grafito); line-height: 2;
+  }
+
+  .changelog {
+    margin-top: 28px; background: #F7F7F7;
+    border: 0.5px solid #E0E0E0; border-radius: 5px; padding: 14px 18px;
+  }
+  .changelog-title {
+    font-family: var(--font-mono); font-size: 10px; color: var(--ta-cian);
+    letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; margin-bottom: 10px;
+  }
+  .changelog-row { font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito); line-height: 22px; }
+  .cl-del { color: #B0B0B0; text-decoration: line-through; }
+  .cl-add { color: var(--ta-tinta); }
+  .cl-addl { color: var(--ta-ambar); }
+
+  .legend {
+    display: flex; gap: 18px; flex-wrap: wrap;
+    margin-top: 20px; padding-top: 16px; border-top: 0.5px solid var(--ta-papel);
+  }
+  .legend-item {
+    display: flex; align-items: center; gap: 6px;
+    font-family: var(--font-mono); font-size: 9px; color: var(--ta-grafito);
+  }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  .doc-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 48px; padding-top: 14px; border-top: 0.5px solid var(--ta-papel);
+  }
+  .doc-footer-brand { font-family: var(--font-display); font-size: 20px; color: var(--ta-tinta); letter-spacing: 0.05em; }
+  .doc-footer-meta { font-family: var(--font-mono); font-size: 10px; color: var(--ta-grafito); }
+  .toc-num {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ta-cian);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+  }
+
+
+  /* ── DOC SIDEBAR LAYOUT ── */
+  .doc-sidebar {
+    width: 260px;
+    min-height: 100vh;
+    background: var(--ta-tinta);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0;
+    overflow-y: auto;
+    z-index: 100;
+  }
+  .ds-brand { padding: 24px 22px 18px; border-bottom: 0.5px solid #1a1a1a; }
+  .ds-rule { width: 28px; height: 2px; background: var(--ta-cian); margin-bottom: 12px; }
+  .ds-type { font-family: var(--font-mono); font-size: 9px; color: var(--ta-grafito); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px; line-height: 1.5; }
+  .ds-title { font-family: var(--font-display); font-size: 24px; color: #fff; letter-spacing: 0.04em; line-height: 1.05; margin-bottom: 6px; }
+  .ds-version { font-family: var(--font-mono); font-size: 9px; color: #333; letter-spacing: 0.1em; }
+  .ds-nav { flex: 1; padding: 20px 0 16px; }
+  .ds-nav-label { font-family: var(--font-mono); font-size: 9px; color: var(--ta-grafito); letter-spacing: 0.16em; text-transform: uppercase; padding: 0 22px 8px; display: block; }
+  .ds-item { display: flex; align-items: center; gap: 10px; padding: 9px 22px; text-decoration: none; border-left: 2px solid transparent; transition: background 0.15s; }
+  .ds-item:hover { background: rgba(255,255,255,0.05); border-left-color: var(--ta-cian); }
+  .ds-item-num { font-family: var(--font-mono); font-size: 10px; color: var(--ta-cian); font-weight: 500; min-width: 20px; }
+  .ds-item-text { font-family: var(--font-mono); font-size: 12px; color: var(--ta-pizarra); transition: color 0.15s; line-height: 1.3; }
+  .ds-item:hover .ds-item-text { color: #fff; }
+  .ds-footer { padding: 16px 22px; border-top: 0.5px solid #1a1a1a; }
+  .ds-back { display: flex; align-items: center; gap: 8px; text-decoration: none; font-family: var(--font-mono); font-size: 11px; color: var(--ta-pizarra); transition: color 0.15s; padding: 8px 0; }
+  .ds-back:hover { color: var(--ta-cian); }
+  .ds-back-arrow { font-size: 13px; }
+  .doc-main { margin-left: 260px; flex: 1; min-width: 0; }
+
+
+  .ds-back-wrap {
+    padding: 10px 22px;
+    border-bottom: 0.5px solid #1a1a1a;
+  }
+</style>
+</head>
+<body>
+<nav class="doc-sidebar">
+  <div class="ds-brand">
+    <div class="ds-rule"></div>
+    <div class="ds-type">Workflow · Subsistema 6</div>
+    <div class="ds-title">ACTIVATION</div>
+    <div class="ds-version">v1.6 · D-X-OPUS</div>
+  </div>
+  <div class="ds-back-wrap">
+    <a class="ds-back" href="INDEX.html"><span class="ds-back-arrow">←</span> Índice principal</a>
+  </div>
+  <div class="ds-nav">
+    <span class="ds-nav-label">Contenido</span>
+    <a class="ds-item" href="#s01"><span class="ds-item-num">01</span><span class="ds-item-text">Propósito</span></a>
+    <a class="ds-item" href="#s02"><span class="ds-item-num">02</span><span class="ds-item-text">Conceptos clave</span></a>
+    <a class="ds-item" href="#s03"><span class="ds-item-num">03</span><span class="ds-item-text">Diagrama</span></a>
+  </div>
+</nav>
+<div class="doc-main">
+
+
+<!-- ══ COVER ══ -->
+<div class="cover">
+  <div class="cover-rule"></div>
+  <div class="cover-eyebrow">Sistema D-X-OPUS · Subsistema 6 — Activation</div>
+  <div class="cover-title">WORKFLOW<br>ACTIVATION</div>
+  <div class="cover-subtitle">Cómo transformar un fondo editorial existente en un activo narrativo vivo</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><strong>Versión</strong><span>v1.6</span></div>
+    <div class="cover-meta-item"><strong>Release</strong><span>R1 · 2026</span></div>
+    <div class="cover-meta-item"><strong>Subsistema</strong><span>6 — Activation</span></div>
+    <div class="cover-meta-item"><strong>Audiencia</strong><span>Editor</span></div>
+    <div class="cover-meta-item"><strong>Estado</strong><span>ACTIVE</span></div>
+  </div>
+</div>
+
+
+</div>
+
+<!-- ══ BODY ══ -->
+<div class="body-wrap">
+
+  <!-- ══════════════════════════════════════
+       SECCIÓN 1 — PROPÓSITO Y CONTEXTO
+  ══════════════════════════════════════ -->
+  <div id="s01" style="position:relative;top:-20px;"></div>
+  <div class="section-label">01 — Propósito</div>
+  <h1 class="doc-h1">Qué es la Activación de Contenido</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">La Activación de Contenido es el proceso por el que un fondo editorial existente —libros escritos, investigaciones pasadas, archivos— se transforma en un activo narrativo activo capaz de generar nuevas historias, posts y propuestas editoriales.</p>
+
+  <p>La premisa de partida es que cualquier colección de libros de no-ficción contiene miles de fragmentos con potencial narrativo que nunca llegaron a desarrollarse: una nota al pie, un nombre en una lista, una máquina sin contexto, una fecha sin historia. El workflow de Activación está diseñado para encontrar todos esos fragmentos de forma sistemática, clasificarlos y convertirlos en material de trabajo para el editor.</p>
+
+  <div class="callout">
+    <p>El objetivo de la Activación no es resumir lo que ya está escrito. Es descubrir lo que todavía no se ha contado.</p>
+  </div>
+
+  <h2 class="doc-h2">Cuándo usar este workflow</h2>
+
+  <ul class="doc-list">
+    <li>
+      <span class="li-num">01</span>
+      <span>Tienes uno o más libros ya escritos y quieres generar una estrategia de contenido sostenida —posts, series, artículos— a partir de ese material sin repetirte.</span>
+    </li>
+    <li>
+      <span class="li-num">02</span>
+      <span>Quieres explorar si el fondo editorial que tienes contiene suficiente material para justificar la escritura de un nuevo libro sobre un ángulo no desarrollado.</span>
+    </li>
+    <li>
+      <span class="li-num">03</span>
+      <span>Trabajas con un fondo editorial de terceros —una editorial, un archivo, una colección— y necesitas evaluar su potencial narrativo de forma exhaustiva y estructurada.</span>
+    </li>
+    <li>
+      <span class="li-num">04</span>
+      <span>Quieres desacoplar el proceso de ideación del proceso de escritura: primero construir un catálogo completo de posibilidades, después decidir qué producir.</span>
+    </li>
+  </ul>
+
+  <h2 class="doc-h2">Qué produce este workflow</h2>
+
+  <p>El resultado principal es un <strong>catálogo de Narrative Seeds</strong> con 400 o más entradas clasificadas por tipo y prioridad. A partir de ese catálogo, el workflow bifurca en dos rutas independientes:</p>
+
+  <ul class="doc-list">
+    <li>
+      <span class="li-num" style="color:var(--ta-cian)">P</span>
+      <span><strong>Ruta Contenido</strong> — los seeds se desarrollan en posts, artículos o series para publicación directa a través del WORKFLOW_WRITING POST.</span>
+    </li>
+    <li>
+      <span class="li-num" style="color:var(--ta-ambar)">L</span>
+      <span><strong>Ruta Libro</strong> — los seeds se agrupan en una propuesta editorial estructurada (BOOK_BRIEF) que alimenta un nuevo ciclo de WORKFLOW_RESEARCH + WORKFLOW_WRITING BOOK.</span>
+    </li>
+  </ul>
+
+  <div class="callout warn">
+    <p>Un mismo seed puede pertenecer a ambas rutas simultáneamente. La clasificación [P+L] indica que el material tiene potencial tanto para contenido inmediato como para un nuevo libro.</p>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ══════════════════════════════════════
+       SECCIÓN 2 — CONCEPTOS CLAVE
+  ══════════════════════════════════════ -->
+  <div id="s02" style="position:relative;top:-20px;"></div>
+  <div class="section-label">02 — Conceptos clave</div>
+  <h1 class="doc-h1">El modelo conceptual</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">El workflow de Activación se apoya en un conjunto de conceptos que definen tanto los artefactos que produce como la lógica que guía su diseño. Entender estos conceptos es necesario para operar el sistema con criterio editorial.</p>
+
+  <!-- Narrative Seed -->
+  <h2 class="doc-h2">El Narrative Seed</h2>
+
+  <p>Un <strong>Narrative Seed</strong> (semilla narrativa) es la unidad mínima de información con potencial literario. No es un resumen, no es una historia completa: es el detonante a partir del cual un editor puede construir una historia singular.</p>
+
+  <div class="doc-quote">
+    <p>Una semilla narrativa puede ser una anécdota perdida en una nota al pie de página, un nombre en una lista de pasajeros de un barco de 1910 o una máquina olvidada en un inventario de quiebra. Es ese pequeño hilo suelto del que un editor humano puede tirar para tejer una historia singular.</p>
+    <cite>— D-X-OPUS, blog Tinta Artificial</cite>
+  </div>
+
+  <p>Un Narrative Seed se define por tres características que contradicen la intuición editorial habitual:</p>
+
+  <div class="concept-grid">
+    <div class="concept-card accent-cian">
+      <div class="concept-tag">Característica 1</div>
+      <div class="concept-name">Es un fragmento,<br>no un todo</div>
+      <div class="concept-def">El seed no busca la historia de la industria del chocolate, sino el álbum de cromos de la fábrica La Herminia usado como herramienta de marketing educativo en 1923. El valor está en el detalle específico, no en la narrativa general.</div>
+    </div>
+    <div class="concept-card accent-ambar">
+      <div class="concept-tag">Característica 2</div>
+      <div class="concept-name">Prioriza lo<br>incompleto</div>
+      <div class="concept-def">Una historia cerrada tiene bajo potencial de activación porque ya está contada. Las mejores semillas son las historias incompletas: la mención de una piscina fantasma que los obreros nunca usaron, el nombre que aparece repetido en los archivos sin que sepamos quién era.</div>
+    </div>
+    <div class="concept-card accent-pizarra full">
+      <div class="concept-tag">Característica 3</div>
+      <div class="concept-name">Es un nodo en una red</div>
+      <div class="concept-def">Un dato bruto se convierte en seed solo cuando se cruza con el contexto previo. Una ruina de hormigón es solo escombro. Pero cuando se cruza con el concepto de <em>estética de la ruina</em> definido en el Activation Context, el dato se activa como seed narrativo con ángulo editorial.</div>
+    </div>
+  </div>
+
+  <!-- Tipos de seed -->
+  <h2 class="doc-h2">Tipos de Narrative Seed</h2>
+  <p>El sistema clasifica los seeds en 8 categorías para facilitar su uso editorial posterior:</p>
+
+  <table class="doc-table">
+    <thead>
+      <tr><th>Tipo</th><th>Descripción</th><th>Ejemplo</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Microhistorias</strong></td><td>Episodios completos en miniatura con inicio, nudo y potencial de desarrollo</td><td>El día que una fábrica entera cambió de turno en silencio</td></tr>
+      <tr><td><strong>Transversales</strong></td><td>Temas o patrones que aparecen en múltiples libros de la colección</td><td>El paternalismo industrial como sistema de control en 5 empresas distintas</td></tr>
+      <tr><td><strong>Personas</strong></td><td>Individuos con historia propia insuficientemente desarrollada en las fuentes</td><td>Narda, la enfermera fusilada en Turón, 1936</td></tr>
+      <tr><td><strong>Lugares</strong></td><td>Espacios físicos con carga simbólica o histórica sin explorar</td><td>La piscina vacía de la fábrica de SEAT que los obreros nunca usaron</td></tr>
+      <tr><td><strong>Objetos</strong></td><td>Artefactos, máquinas o productos con historia propia</td><td>La plegadora rectangular de una fábrica textil de 1908</td></tr>
+      <tr><td><strong>Conceptos</strong></td><td>Ideas abstractas con potencial narrativo cuando se anclan en evidencias concretas</td><td>Estética de la ruina como categoría estética del patrimonio industrial</td></tr>
+      <tr><td><strong>Curiosidades</strong></td><td>Datos sorprendentes o contraintuitivos que generan interés inmediato</td><td>El cultivo experimental de tabaco Havana 142 en una granja del norte de España</td></tr>
+      <tr><td><strong>Conflictos</strong></td><td>Tensiones o contradicciones documentadas entre personas, grupos o valores</td><td>El debate entre conservar la ruina como patrimonio o demolerla como recurso</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Completitud Invertida -->
+  <h2 class="doc-h2">Completitud Invertida</h2>
+
+  <p>El principio de Completitud Invertida es la decisión de diseño más importante del workflow. Invierte la jerarquía de valor habitual: los seeds <strong>implícitos</strong> (los que contienen poca información pero alta tensión narrativa) tienen mayor prioridad que los seeds <strong>completos</strong> (los que ya están desarrollados en el texto fuente).</p>
+
+  <div class="concept-grid">
+    <div class="concept-card accent-rojo">
+      <div class="concept-tag">Alta prioridad</div>
+      <div class="concept-name">Seeds IMPLÍCITOS</div>
+      <div class="concept-def">Mencionados brevemente o inferibles desde el contexto. La falta de información es el valor: obligan al editor a tirar del hilo. Representan el 5–20% del total identificado pero concentran el mayor potencial de activación.</div>
+    </div>
+    <div class="concept-card accent-pizarra">
+      <div class="concept-tag">Baja prioridad</div>
+      <div class="concept-name">Seeds COMPLETOS</div>
+      <div class="concept-def">Historias ya desarrolladas en el texto fuente con coherencia narrativa cerrada. Un LLM sin instrucciones específicas los selecciona sistemáticamente porque son probabilísticamente más sólidos. El workflow los registra pero no los prioriza.</div>
+    </div>
+  </div>
+
+  <!-- Artefactos de contexto -->
+  <h2 class="doc-h2">Los tres artefactos de contexto</h2>
+
+  <p>Antes de iniciar la minería de seeds, el workflow construye tres artefactos en la Fase 0 que actúan como <em>mapa cognitivo</em> del sistema durante todo el proceso. Sin ellos, los seeds identificados son datos brutos sin activar.</p>
+
+  <div class="concept-grid">
+    <div class="concept-card accent-cian">
+      <div class="concept-tag">Artefacto 0.1</div>
+      <div class="concept-name">Activation Context</div>
+      <div class="concept-def">Descripción completa del universo temático, temporal y geográfico de la colección. Define los ejes conceptuales bajo los cuales se interpretarán los datos brutos durante la minería. Es el artefacto que convierte un dato en seed al proporcionar el marco de interpretación.</div>
+    </div>
+    <div class="concept-card accent-cian">
+      <div class="concept-tag">Artefacto 0.2</div>
+      <div class="concept-name">Timeline</div>
+      <div class="concept-def">Cronología exhaustiva de todos los hechos relevantes del período histórico cubierto por la colección. Permite situar cualquier dato en su contexto temporal y detectar tensiones o paralelismos entre momentos distintos.</div>
+    </div>
+    <div class="concept-card accent-cian">
+      <div class="concept-tag">Artefacto 0.3</div>
+      <div class="concept-name">Cast of Characters</div>
+      <div class="concept-def">Elenco de todos los personajes que aparecen en las fuentes: personas, pero también objetos, instituciones o cualquier identidad con potencial literario. Incluye arquetipos y patrones recurrentes que el sistema usará para cruzar datos durante la minería.</div>
+    </div>
+  </div>
+
+  <!-- Ingeniería de fricción -->
+  <h2 class="doc-h2">Ingeniería de Fricción</h2>
+
+  <p>Los LLMs tienen un <strong>Sesgo de Completitud</strong> estructural: si perciben el objetivo final del workflow (un post, un libro), tienden a saltar los pasos intermedios para entregar el resultado cuanto antes. Al hacerlo, recurren a su conocimiento general en lugar de usar los datos específicos de las fuentes, produciendo historias plausibles pero genéricas.</p>
+
+  <p>El workflow de Activación combate este sesgo mediante lo que se denomina <strong>Ingeniería de Fricción</strong>: un conjunto de decisiones de diseño que obligan al sistema a completar cada fase antes de poder ver la siguiente:</p>
+
+  <ul class="doc-list">
+    <li>
+      <span class="li-num">01</span>
+      <span><strong>Atomización secuencial</strong> — cada fase se ejecuta en una sesión separada con checkpoint de validación humana antes de continuar. El modelo no puede ver el destino final.</span>
+    </li>
+    <li>
+      <span class="li-num">02</span>
+      <span><strong>Parada obligatoria</strong> — instrucciones explícitas en cada prompt que impiden al modelo continuar sin validación del editor. La fricción es parte del diseño, no un defecto.</span>
+    </li>
+    <li>
+      <span class="li-num">03</span>
+      <span><strong>Inversión de incentivos</strong> — el éxito no se mide por la calidad de la prosa sino por la cantidad y diversidad de seeds extraídos. Más seeds brutos es mejor que menos seeds pulidos.</span>
+    </li>
+  </ul>
+
+  <div class="callout warn">
+    <p>No ejecutar las fases de golpe. La instrucción <em>no ejecutar de corrido</em> que aparece en la Fase 0 del diagrama no es una advertencia operativa: es la implementación de la Ingeniería de Fricción.</p>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ══════════════════════════════════════
+       SECCIÓN 3 — DIAGRAMA DE REFERENCIA
+  ══════════════════════════════════════ -->
+  <div id="s03" style="position:relative;top:-20px;"></div>
+  <div class="section-label">03 — Referencia operativa</div>
+  <h1 class="doc-h1">Diagrama del flujo</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">El diagrama siguiente es la referencia de ejecución fase a fase. Cada panel es expandible. Las fases 0, 1 y el Checkpoint de Routing aparecen abiertas por defecto. Usa este diagrama durante la ejecución del workflow.</p>
+
+  <!-- INPUTS -->
+  <div class="inputs-box" style="margin-top:24px;">
+    <div class="box-label">Inputs del sistema</div>
+    <ul>
+      <li><strong>LIBRO(S)_COMPLETO.md</strong> — 1–5 libros (obligatorio)</li>
+      <li><strong>OBJETIVOS_ACTIVACION.md</strong> — definidos por el editor (obligatorio)</li>
+      <li>RESEARCH_REPORT(s) — enriquecen ACTIVATION_CONTEXT (opcional)</li>
+      <li>TIMELINE, CAST, EDITOR_PROFILE — se generan si no existen (opcional)</li>
+    </ul>
+  </div>
+
+  <div class="flow">
+
+    <!-- FASE 0 -->
+    <div class="phase-card phase-cian">
+      <div class="phase-header" onclick="toggle(this)">
+        <span class="phase-tag">FASE 0</span>
+        <span class="phase-title">PREPARACIÓN Y GENERACIÓN DE CONTEXTO</span>
+        <span class="phase-time">2–15 h</span>
+        <span class="toggle-icon">▾</span>
+      </div>
+      <div class="phase-body open">
+        <p style="font-size:12px;color:var(--ta-grafito);padding-top:8px;margin-bottom:10px;">5 subfases con checkpoint individual. <strong>No ejecutar de golpe.</strong></p>
+        <div class="subfase-grid">
+          <div class="subfase">
+            <div class="subfase-id">SF 0.1</div>
+            <div class="subfase-name">ANALYZE_COLLECTION_FOR_ACTIVATION v1.4</div>
+            <div class="subfase-output">→ ACTIVATION_CONTEXT_[P].md</div>
+          </div>
+          <div class="subfase">
+            <div class="subfase-id">SF 0.2</div>
+            <div class="subfase-name">CREATE_TIMELINE v1.0 (exhaustivo)</div>
+            <div class="subfase-output">→ TIMELINE_[P].md</div>
+          </div>
+          <div class="subfase">
+            <div class="subfase-id">SF 0.3</div>
+            <div class="subfase-name">CREATE_CAST v1.0 (exhaustivo)</div>
+            <div class="subfase-output">→ CAST_OF_CHARACTERS_[P].md</div>
+          </div>
+          <div class="subfase">
+            <div class="subfase-id">SF 0.4</div>
+            <div class="subfase-name">CREATE_EDITOR_PROFILE v1.0</div>
+            <div class="subfase-output">→ EDITOR_PROFILE_[...].md</div>
+          </div>
+          <div class="subfase subfase-full">
+            <div class="subfase-id">SF 0.5</div>
+            <div class="subfase-name">Selección PERFIL_ACTIVO — automático si 1 perfil / pregunta al editor si múltiples</div>
+            <div class="subfase-output">→ PERFIL_ACTIVO_SELECCION_[P].md</div>
+          </div>
+        </div>
+        <div class="checkpoint cp-cian">✅ CHECKPOINT FINAL 0 — Verificación global antes de continuar</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">↓</div>
+
+    <!-- FASE 1 -->
+    <div class="phase-card phase-cian">
+      <div class="phase-header" onclick="toggle(this)">
+        <span class="phase-tag">FASE 1</span>
+        <span class="phase-title">IDENTIFICACIÓN DE NARRATIVE SEEDS <span class="badge badge-cian">ACTIVE v1.6</span></span>
+        <span class="phase-time">3–5 h</span>
+        <span class="toggle-icon">▾</span>
+      </div>
+      <div class="phase-body open">
+        <div class="task-row">
+          <div class="task-icon">⛏️</div>
+          <div>
+            <div class="task-name">IDENTIFY_NARRATIVE_SEEDS v2.0 <span class="badge badge-cian">ACTIVE</span></div>
+            <div class="task-desc">Minería exhaustiva. 400+ seeds sin filtrar.<br>
+            8 tipos: Microhistorias · Transversales · Personas · Lugares · Objetos · Conceptos · Curiosidades · Conflictos<br>
+            PASO 0: inventario masivo 500–1000 elementos → conversión a seeds documentados<br>
+            Prioridad invertida: IMPLÍCITOS (5–20%) > PARCIALES > COMPLETOS</div>
+          </div>
+        </div>
+        <div class="task-row">
+          <div class="task-icon">📥</div>
+          <div>
+            <div class="task-name">Inputs</div>
+            <div class="task-desc">ACTIVATION_CONTEXT · TIMELINE · CAST · SELECTED_EDITOR_PROFILE · LIBRO(S)</div>
+          </div>
+        </div>
+        <div class="task-row">
+          <div class="task-icon">📤</div>
+          <div>
+            <div class="task-name">Output</div>
+            <div class="task-desc">NARRATIVE_SEEDS_CATALOG_[P].md — catálogo 400+ seeds con ficha individual</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">↓</div>
+
+    <!-- ROUTING -->
+    <div class="phase-card phase-rojo">
+      <div class="phase-header" onclick="toggle(this)">
+        <span class="phase-tag">ROUTING</span>
+        <span class="phase-title">CHECKPOINT EDITORIAL — DECISIÓN DE RUTA <span class="badge badge-rojo">NUEVO v1.6</span></span>
+        <span class="phase-time">1–2 h</span>
+        <span class="toggle-icon">▾</span>
+      </div>
+      <div class="phase-body open">
+        <div class="task-row">
+          <div class="task-icon">🎯</div>
+          <div>
+            <div class="task-name">El editor clasifica los seeds del catálogo</div>
+            <div class="task-desc">
+              <strong style="color:var(--ta-cian)">[P]</strong> → Ruta Contenido: post / artículo / serie → Writing POST<br>
+              <strong style="color:var(--ta-ambar)">[L]</strong> → Ruta Libro: propuesta nuevo libro → Research → Writing BOOK<br>
+              <strong style="color:var(--ta-carbon)">[P+L]</strong> → Ambas rutas simultáneamente<br><br>
+              Las rutas son independientes una vez clasificados los seeds. La bifurcación puede ser simultánea.
+            </div>
+          </div>
+        </div>
+        <div class="task-row">
+          <div class="task-icon">📤</div>
+          <div>
+            <div class="task-name">Outputs</div>
+            <div class="task-desc">
+              SEEDS_RUTA_P.md — seeds [P] + [P+L] para Ruta Contenido<br>
+              SEEDS_RUTA_L.md — seeds [L] + [P+L] para Ruta Libro
+            </div>
+          </div>
+        </div>
+        <div class="checkpoint cp-rojo">⚠️ Mecanismo exacto de clasificación: pendiente diseño Sprint 4</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow split-arrow">↙ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ↘</div>
+
+    <!-- DUAL ROUTE -->
+    <div class="route-split">
+      <!-- RUTA P -->
+      <div class="route-col">
+        <div class="route-header route-p">RUTA P — CONTENIDO INMEDIATO</div>
+
+        <div class="phase-card phase-pizarra">
+          <div class="phase-header" onclick="toggle(this)">
+            <span class="phase-tag" style="font-size:9px;">FASE 2A</span>
+            <span class="phase-title" style="font-size:12px;">ESTRATEGIA DE CONTENIDO</span>
+            <span class="phase-time">2–3 h</span>
+            <span class="toggle-icon">▸</span>
+          </div>
+          <div class="phase-body">
+            <div class="task-row">
+              <div class="task-icon">⚠️</div>
+              <div>
+                <div class="task-name">CREATE_CONTENT_STRATEGY v1.0 <span class="badge badge-pizarra">PENDIENTE</span></div>
+                <div class="task-desc">Calendario editorial, mix de formatos, clusters temáticos, KPIs. Input: SEEDS_RUTA_P.</div>
+              </div>
+            </div>
+            <div class="checkpoint cp-neutral">⚠️ CHECKPOINT 3 — Aprobación estrategia</div>
+          </div>
+        </div>
+
+        <div class="phase-card phase-pizarra">
+          <div class="phase-header" onclick="toggle(this)">
+            <span class="phase-tag" style="font-size:9px;">FASE 3A</span>
+            <span class="phase-title" style="font-size:12px;">PLAN DE POSTS / SERIES</span>
+            <span class="phase-time">3–6 h</span>
+            <span class="toggle-icon">▸</span>
+          </div>
+          <div class="phase-body">
+            <div class="task-row">
+              <div class="task-icon">⚠️</div>
+              <div>
+                <div class="task-name">DESIGN_POST_PLAN v1.0 <span class="badge badge-pizarra">PENDIENTE</span></div>
+                <div class="task-desc">Plan por pieza: títulos, hook, estructura, key points, fuentes. Soporta post individual y serie cohesionada. Genera POST_SEED por pieza.</div>
+              </div>
+            </div>
+            <div class="checkpoint cp-neutral">⚠️ CHECKPOINT 4 — Revisión de planes</div>
+          </div>
+        </div>
+
+        <div class="phase-card phase-cian">
+          <div class="phase-header" onclick="toggle(this)">
+            <span class="phase-tag" style="font-size:9px;">FASE 4</span>
+            <span class="phase-title" style="font-size:12px;">PRODUCCIÓN (SECUENCIAL)</span>
+            <span class="phase-time">30–130 h</span>
+            <span class="toggle-icon">▸</span>
+          </div>
+          <div class="phase-body">
+            <div class="task-row">
+              <div class="task-icon">💬</div>
+              <div>
+                <div class="task-name">PROMPT_QA_IDEAS (Writing/shared)</div>
+                <div class="task-desc">Q&amp;A posicionamiento. Produce material citable + POST_SEED.</div>
+              </div>
+            </div>
+            <div class="task-row">
+              <div class="task-icon">✍️</div>
+              <div>
+                <div class="task-name">PROMPT_WRITE_POST v2.0 (Writing/shared)</div>
+                <div class="task-desc">Escribe desde POST_SEED. Formatos: post_estándar · post_largo · hilo.</div>
+              </div>
+            </div>
+            <div class="checkpoint cp-cian">✅ CHECKPOINT N — Por pieza producida</div>
+          </div>
+        </div>
+
+        <div class="phase-card phase-neutral">
+          <div class="phase-header" onclick="toggle(this)">
+            <span class="phase-tag" style="font-size:9px;">FASE 5</span>
+            <span class="phase-title" style="font-size:12px;">VALIDACIÓN Y PUBLICACIÓN</span>
+            <span class="phase-time">3–5 h</span>
+            <span class="toggle-icon">▸</span>
+          </div>
+          <div class="phase-body">
+            <div class="task-row">
+              <div class="task-icon">⚠️</div>
+              <div>
+                <div class="task-name">EVALUATE_ACTIVATION_CONTENT v1.0 <span class="badge badge-tinta">BLOQUEADO R2</span></div>
+                <div class="task-desc">Bloqueado hasta RESOURCE_EVALUATION_FRAMEWORK disponible en R2.</div>
+              </div>
+            </div>
+            <div style="font-family:var(--font-mono);font-size:9px;color:var(--ta-pizarra);margin-top:8px;">OUTPUT: CONTENT_PACKAGE → publicación directa</div>
+            <div class="checkpoint cp-neutral">⚠️ CHECKPOINT 5 — Aprobación final</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RUTA L -->
+      <div class="route-col">
+        <div class="route-header route-l">RUTA L — PROPUESTA DE LIBRO</div>
+
+        <div class="phase-card phase-ambar">
+          <div class="phase-header" onclick="toggle(this)" style="background:#FFFBF0;">
+            <span class="phase-tag" style="font-size:9px;">FASE 2B</span>
+            <span class="phase-title" style="font-size:12px;color:var(--ta-ambar);">BOOK BRIEF</span>
+            <span class="phase-time" style="color:var(--ta-ambar);">2–4 h</span>
+            <span class="toggle-icon">▾</span>
+          </div>
+          <div class="phase-body open">
+            <div class="task-row">
+              <div class="task-icon">📖</div>
+              <div>
+                <div class="task-name">PROMPT_CREATE_BOOK_BRIEF v1.0 <span class="badge badge-ambar">ACTIVO</span></div>
+                <div class="task-desc">
+                  A partir de SEEDS_RUTA_L + colección existente genera 3–4 propuestas.<br><br>
+                  Por propuesta: título provisional · hipótesis central · ángulo diferenciador vs colección existente · audiencia · focus type · por qué este libro ahora.<br><br>
+                  El output no es una decisión — es material para que el editor decida.
+                </div>
+              </div>
+            </div>
+            <div class="task-row">
+              <div class="task-icon">📥</div>
+              <div>
+                <div class="task-name">Inputs</div>
+                <div class="task-desc">SEEDS_RUTA_L · ACTIVATION_CONTEXT · EDITOR_PROFILE · colección de libros escritos</div>
+              </div>
+            </div>
+            <div class="task-row">
+              <div class="task-icon">📤</div>
+              <div>
+                <div class="task-name">Output</div>
+                <div class="task-desc">BOOK_BRIEF_[P].md — propuestas editoriales estructuradas</div>
+              </div>
+            </div>
+            <div class="checkpoint cp-ambar">✅ CHECKPOINT — Editor evalúa propuestas y decide</div>
+          </div>
+        </div>
+
+        <div class="next-cycle">
+          <div class="next-cycle-label">→ SIGUIENTE CICLO</div>
+          <div class="next-cycle-flow">
+            Si el editor aprueba:<br>
+            <span style="color:var(--ta-tinta);font-weight:500;">BOOK_BRIEF</span>
+            <span style="color:var(--ta-pizarra);"> → WORKFLOW_RESEARCH</span><br>
+            <span style="color:var(--ta-pizarra);">↓</span><br>
+            <span style="color:var(--ta-pizarra);">WORKFLOW_WRITING BOOK</span><br>
+            <span style="color:var(--ta-pizarra);">↓</span><br>
+            <span style="color:var(--ta-grafito);">Nuevo ciclo ACTIVATION</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHANGELOG -->
+    <div class="changelog">
+      <div class="changelog-title">Cambios v1.5 → v1.6</div>
+      <div class="changelog-row">
+        <span class="cl-del">FASE 1: ANALYZE_BOOK_FOR_ACTIVATION v1.0 [DISEÑAR]</span><br>
+        <span class="cl-add">▶ FASE 1: IDENTIFY_NARRATIVE_SEEDS v2.0 [ACTIVE]</span><br>
+        <span class="cl-add">▶ CHECKPOINT DE ROUTING: clasificación [P]/[L]/[P+L] — bifurcación simultánea posible</span><br>
+        <span class="cl-addl">▶ RUTA L: PROMPT_CREATE_BOOK_BRIEF reposicionado como track paralelo explícito (antes: apéndice post-F5)</span><br>
+        <span class="cl-add">▶ PROMPT_ANALYZE_COLLECTION v1.4 → v1.5 + subida a repo</span>
+      </div>
+    </div>
+
+    <!-- LEGEND -->
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--ta-cian)"></div>ACTIVE R1</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--ta-rojo)"></div>NUEVO v1.6</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--ta-ambar)"></div>Ruta L</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--ta-pizarra)"></div>PENDIENTE Sprint 4+</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--ta-tinta)"></div>BLOQUEADO R2</div>
+    </div>
+
+  </div><!-- end flow -->
+
+  <!-- FOOTER -->
+  <div class="doc-footer">
+    <div class="doc-footer-brand">TINTA ARTIFICIAL</div>
+    <div class="doc-footer-meta">WORKFLOW_ACTIVATION · v1.6 · R1 · 2026</div>
+  </div>
+
+</div><!-- end body-wrap -->
+
+<script>
+  function toggle(header) {
+    const body = header.nextElementSibling;
+    const icon = header.querySelector('.toggle-icon');
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    icon.textContent = isOpen ? '▸' : '▾';
+  }
+</script>
+
+
+</div>
+</body>
+</html>

@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WORKFLOW RESEARCH v3.2 — D-X-OPUS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Gentium+Plus:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ta-tinta:   #0A0A0A;
+    --ta-carbon:  #434343;
+    --ta-grafito: #595959;
+    --ta-papel:   #E8E4D9;
+    --ta-blanco:  #FFFFFF;
+    --ta-cian:    #00D4D4;
+    --ta-rojo:    #FF2D2C;
+    --ta-pizarra: #78909C;
+    --ta-ambar:   #FFAB40;
+    --font-display: 'Bebas Neue', Arial, sans-serif;
+    --font-body:    'Gentium Plus', Georgia, serif;
+    --font-mono:    'JetBrains Mono', 'Courier New', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-body);
+    background: var(--ta-blanco);
+    color: var(--ta-tinta);
+    padding: 0;
+  }
+
+  /* ── COVER ── */
+  .cover { background: var(--ta-tinta); padding: 56px 40px 44px; }
+  .cover-rule { width: 48px; height: 3px; background: var(--ta-cian); margin-bottom: 24px; }
+  .cover-eyebrow { font-family: var(--font-mono); font-size: 11px; color: var(--ta-cian); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
+  .cover-title { font-family: var(--font-display); font-size: 72px; color: var(--ta-blanco); line-height: 0.95; letter-spacing: 0.01em; margin-bottom: 14px; }
+  .cover-subtitle { font-family: var(--font-body); font-size: 16px; color: var(--ta-papel); font-style: italic; margin-bottom: 40px; opacity: 0.85;
+    line-height: 22px;
+  }
+  .cover-meta { display: flex; gap: 36px; flex-wrap: wrap; border-top: 0.5px solid #2a2a2a; padding-top: 18px; }
+  .cover-meta-item strong { display: block; font-family: var(--font-mono); font-size: 10px; color: var(--ta-grafito); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 3px; }
+  .cover-meta-item span { font-family: var(--font-mono); font-size: 13px; color: var(--ta-papel); }
+
+  /* ── BODY ── */
+  .body-wrap { padding: 52px 40px; }
+
+  /* ── HEADINGS ── */
+  .section-label { font-family: var(--font-mono); font-size: 10px; color: var(--ta-cian); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 6px; }
+  h1.doc-h1 { font-family: var(--font-display); font-size: 34px; color: var(--ta-tinta); letter-spacing: 0.02em; line-height: 1; margin-bottom: 6px; }
+  .h1-rule { height: 2px; background: var(--ta-cian); margin-bottom: 28px; width: 100%; }
+  h2.doc-h2 { font-family: var(--font-display); font-size: 20px; color: var(--ta-carbon); letter-spacing: 0.04em; margin: 36px 0 10px; }
+  h3.doc-h3 { font-family: var(--font-body); font-size: 16px; font-weight: 700; color: var(--ta-tinta); margin: 24px 0 8px;
+    line-height: 22px;
+  }
+  .section-divider { height: 0.5px; background: var(--ta-papel); margin: 48px 0; }
+
+  p { font-family: var(--font-body); font-size: 18px; line-height: 26px; color: var(--ta-tinta); margin-bottom: 14px; }
+  p.lead { font-size: 18px; color: var(--ta-carbon);
+    line-height: 26px;
+  }
+
+  /* ── CALLOUTS ── */
+  .callout { border-left: 3px solid var(--ta-cian); padding: 14px 18px; background: #F0FAFA; border-radius: 0 6px 6px 0; margin: 20px 0; }
+  .callout p { margin: 0; font-style: italic; font-size: 18px;
+    line-height: 26px;
+  }
+  .callout.warn { border-left-color: var(--ta-ambar); background: #FFFBF0; }
+  .callout.alert { border-left-color: var(--ta-rojo); background: #FFF5F5; }
+
+  /* ── BADGES ── */
+  .badge { display: inline-block; font-family: var(--font-mono); font-size: 9px; font-weight: 500; padding: 2px 7px; border-radius: 3px; margin-left: 4px; letter-spacing: 0.04em; vertical-align: middle; position: relative; top: -1px; }
+  .badge-cian    { background: var(--ta-cian); color: #003333; }
+  .badge-ambar   { background: var(--ta-ambar); color: #4A2900; }
+  .badge-pizarra { background: var(--ta-pizarra); color: #fff; }
+  .badge-tinta   { background: var(--ta-tinta); color: var(--ta-blanco); }
+  .badge-rojo    { background: var(--ta-rojo); color: #fff; }
+
+  /* ── NUMBERED LIST ── */
+  .doc-list { list-style: none; margin: 16px 0; }
+  .doc-list li { display: flex; gap: 14px; align-items: flex-start; padding: 10px 0; border-bottom: 0.5px solid #F0F0F0; font-size: 18px; color: var(--ta-tinta); line-height: 26px; }
+  .doc-list li:last-child { border-bottom: none; }
+  .li-num { font-family: var(--font-mono); font-size: 11px; color: var(--ta-cian); min-width: 22px; font-weight: 500; padding-top: 2px; }
+
+  /* ── CONCEPT CARDS ── */
+  .concept-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 24px 0; }
+  .concept-card { border: 0.5px solid #E0E0E0; border-radius: 6px; padding: 18px 20px; background: #FDFCFA; }
+  .concept-card.full { grid-column: 1 / -1; }
+  .concept-card.accent-cian   { border-top: 2px solid var(--ta-cian); }
+  .concept-card.accent-ambar  { border-top: 2px solid var(--ta-ambar); }
+  .concept-card.accent-rojo   { border-top: 2px solid var(--ta-rojo); }
+  .concept-card.accent-pizarra{ border-top: 2px solid var(--ta-pizarra); }
+  .concept-tag { font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+  .accent-cian    .concept-tag { color: var(--ta-cian); }
+  .accent-ambar   .concept-tag { color: var(--ta-ambar); }
+  .accent-rojo    .concept-tag { color: var(--ta-rojo); }
+  .accent-pizarra .concept-tag { color: var(--ta-pizarra); }
+  .concept-name { font-family: var(--font-display); font-size: 18px; color: var(--ta-tinta); letter-spacing: 0.04em; margin-bottom: 8px; line-height: 1.1; }
+  .concept-def { font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito); line-height: 22px; }
+  .concept-def strong { color: var(--ta-tinta); }
+
+  /* ── TABLE ── */
+  table.doc-table { width: 100%; border-collapse: collapse; font-family: var(--font-body); font-size: 16px; margin: 16px 0;
+    line-height: 22px;
+  }
+  table.doc-table th { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ta-grafito); border-bottom: 1.5px solid var(--ta-cian); padding: 8px 12px; text-align: left; background: #FDFCFA; }
+  table.doc-table td { padding: 10px 12px; border-bottom: 0.5px solid var(--ta-papel); color: var(--ta-tinta); vertical-align: top; font-size: 16px; line-height: 1.6; }
+  table.doc-table tr:last-child td { border-bottom: none; }
+  .td-type { font-family: var(--font-mono); font-size: 10px; color: var(--ta-cian); font-weight: 500; }
+
+  /* ── OUTPUT BOXES ── */
+  .output-trio { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 20px 0; }
+  .output-box { background: #F7F9FA; border: 0.5px solid #D0E8E8; border-top: 2px solid var(--ta-cian); border-radius: 0 0 5px 5px; padding: 12px 14px; }
+  .output-box-label { font-family: var(--font-mono); font-size: 9px; color: var(--ta-cian); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 5px; }
+  .output-box-name { font-family: var(--font-display); font-size: 16px; color: var(--ta-tinta); letter-spacing: 0.04em; margin-bottom: 6px; }
+  .output-box-desc { font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito); line-height: 22px; }
+  .output-box-size { font-family: var(--font-mono); font-size: 9px; color: var(--ta-pizarra); margin-top: 6px; }
+
+  /* ── RAMA SPLIT ── */
+  .rama-split { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0; }
+  .rama-box { border-radius: 6px; padding: 18px 20px; }
+  .rama-a { background: #F0FAFA; border: 1px solid #AAEAEA; }
+  .rama-b { background: #FFFBF5; border: 1px solid #FFD89A; }
+  .rama-label { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+  .rama-a .rama-label { color: var(--ta-cian); }
+  .rama-b .rama-label { color: var(--ta-ambar); }
+  .rama-title { font-family: var(--font-display); font-size: 16px; letter-spacing: 0.04em; margin-bottom: 8px; }
+  .rama-desc { font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito); line-height: 22px; }
+  .rama-desc strong { color: var(--ta-tinta); }
+
+  /* ── FOCUS TYPE GRID ── */
+  .focus-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 20px 0; }
+  .focus-card { border: 0.5px solid #E0E0E0; border-radius: 5px; padding: 12px; background: #FDFCFA; }
+  .focus-id { font-family: var(--font-mono); font-size: 18px; color: var(--ta-cian); font-weight: 500; margin-bottom: 4px; }
+  .focus-name { font-family: var(--font-display); font-size: 14px; color: var(--ta-tinta); letter-spacing: 0.04em; margin-bottom: 5px; line-height: 1.2; }
+  .focus-q { font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito); font-style: italic; line-height: 22px; }
+
+  /* ── TRAFFIC LIGHT ── */
+  .semaforo { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 20px 0; }
+  .semaforo-card { border-radius: 5px; padding: 12px 14px; }
+  .sem-green  { background: #F0FAF4; border: 0.5px solid #A8E6BE; border-top: 2px solid #34C670; }
+  .sem-yellow { background: #FFFBF0; border: 0.5px solid var(--ta-ambar); border-top: 2px solid var(--ta-ambar); }
+  .sem-red    { background: #FFF5F5; border: 0.5px solid #FFAAAA; border-top: 2px solid var(--ta-rojo); }
+  .sem-dot { width: 10px; height: 10px; border-radius: 50%; margin-bottom: 8px; }
+  .sem-green  .sem-dot { background: #34C670; }
+  .sem-yellow .sem-dot { background: var(--ta-ambar); }
+  .sem-red    .sem-dot { background: var(--ta-rojo); }
+  .sem-status { font-family: var(--font-display); font-size: 16px; letter-spacing: 0.06em; margin-bottom: 5px; }
+  .sem-action { font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito); line-height: 22px; }
+
+  /* ── INPUTS BOX ── */
+  .inputs-box { background: #F7F9FA; border: 1px solid #D8EFF0; border-left: 3px solid var(--ta-cian); border-radius: 0 6px 6px 0; padding: 14px 18px; margin-bottom: 24px; }
+  .inputs-box .box-label { font-family: var(--font-mono); font-size: 10px; color: var(--ta-cian); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; font-weight: 500; }
+  .inputs-box ul { list-style: none; }
+  .inputs-box li { font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito); padding: 3px 0 3px 14px; position: relative;
+    line-height: 22px;
+  }
+  .inputs-box li::before { content: "→"; position: absolute; left: 0; color: var(--ta-pizarra); font-family: var(--font-mono); font-size: 11px; }
+  .inputs-box li strong { color: var(--ta-tinta); font-weight: 700; }
+
+  /* ── FLOW DIAGRAM ── */
+  .flow { display: flex; flex-direction: column; gap: 4px; }
+  .phase-card { border: 0.5px solid #D4D4D4; border-radius: 6px; overflow: hidden; }
+  .phase-card.phase-cian    { border-left: 3px solid var(--ta-cian); }
+  .phase-card.phase-ambar   { border-left: 3px solid var(--ta-ambar); }
+  .phase-card.phase-pizarra { border-left: 3px solid var(--ta-pizarra); }
+  .phase-card.phase-neutral { border-left: 3px solid var(--ta-carbon); }
+  .phase-card.phase-green   { border-left: 3px solid #34C670; }
+
+  .phase-header { display: flex; align-items: center; gap: 12px; padding: 10px 16px; cursor: pointer; user-select: none; background: #FAFAFA; }
+  .phase-card.phase-cian  .phase-header { background: #F5FEFE; }
+  .phase-card.phase-ambar .phase-header { background: #FFFBF5; }
+  .phase-header:hover { filter: brightness(0.97); }
+
+  .phase-tag { font-family: var(--font-mono); font-size: 10px; font-weight: 500; min-width: 76px; letter-spacing: 0.05em; }
+  .phase-card.phase-cian    .phase-tag { color: var(--ta-cian); }
+  .phase-card.phase-ambar   .phase-tag { color: var(--ta-ambar); }
+  .phase-card.phase-pizarra .phase-tag { color: var(--ta-pizarra); }
+  .phase-card.phase-neutral .phase-tag { color: var(--ta-carbon); }
+  .phase-card.phase-green   .phase-tag { color: #34C670; }
+
+  .phase-title { flex: 1; font-family: var(--font-display); font-size: 14px; letter-spacing: 0.06em; color: var(--ta-tinta); }
+  .phase-time { font-family: var(--font-mono); font-size: 10px; color: var(--ta-pizarra); white-space: nowrap; }
+  .toggle-icon { font-size: 13px; color: var(--ta-pizarra); margin-left: 4px; }
+  .phase-body { display: none; padding: 0 16px 14px; border-top: 0.5px solid #EEEEEE; }
+  .phase-body.open { display: block; }
+
+  .task-row { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 0.5px solid #F0F0F0; }
+  .task-row:last-child { border-bottom: none; }
+  .task-icon { font-size: 16px; min-width: 20px; margin-top: 1px; }
+  .task-name { font-family: var(--font-mono); font-size: 10px; color: var(--ta-tinta); font-weight: 500; margin-bottom: 3px; letter-spacing: 0.03em; }
+  .task-desc { font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito); line-height: 22px; }
+
+  .checkpoint { margin-top: 10px; padding: 7px 12px; border-radius: 4px; font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.04em; }
+  .cp-cian    { background: #E8FAFA; border: 0.5px solid var(--ta-cian); color: #006666; }
+  .cp-neutral { background: #F5F5F5; border: 0.5px solid #D0D0D0; color: var(--ta-carbon); }
+  .cp-ambar   { background: #FFF8E8; border: 0.5px solid var(--ta-ambar); color: #7A4400; }
+  .cp-green   { background: #F0FAF4; border: 0.5px solid #A8E6BE; color: #1A7A40; }
+
+  .flow-arrow { text-align: center; color: #CCCCCC; font-size: 18px; padding: 2px 0; line-height: 26px; }
+  .flow-arrow.split-arrow { font-family: var(--font-mono); font-size: 11px; color: var(--ta-pizarra); letter-spacing: 0.1em; }
+
+  .rama-flow-split { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+  .rama-col { display: flex; flex-direction: column; gap: 4px; }
+  .rama-col-header { text-align: center; padding: 6px 10px; border-radius: 4px; font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+  .rama-col-a { background: #E5FAFA; color: #005555; border: 0.5px solid #AAEAEA; }
+  .rama-col-b { background: #FFF5E5; color: #7A4400; border: 0.5px solid #FFD89A; }
+
+  .doc-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 48px; padding-top: 14px; border-top: 0.5px solid var(--ta-papel); }
+  .doc-footer-brand { font-family: var(--font-display); font-size: 20px; color: var(--ta-tinta); letter-spacing: 0.05em; }
+  .doc-footer-meta { font-family: var(--font-mono); font-size: 10px; color: var(--ta-grafito); }
+  .toc-num {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ta-cian);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+  }
+
+
+  /* ── DOC SIDEBAR LAYOUT ── */
+  .doc-sidebar {
+    width: 260px;
+    min-height: 100vh;
+    background: var(--ta-tinta);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0;
+    overflow-y: auto;
+    z-index: 100;
+  }
+  .ds-brand { padding: 24px 22px 18px; border-bottom: 0.5px solid #1a1a1a; }
+  .ds-rule { width: 28px; height: 2px; background: var(--ta-cian); margin-bottom: 12px; }
+  .ds-type { font-family: var(--font-mono); font-size: 9px; color: var(--ta-grafito); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px; line-height: 1.5; }
+  .ds-title { font-family: var(--font-display); font-size: 24px; color: #fff; letter-spacing: 0.04em; line-height: 1.05; margin-bottom: 6px; }
+  .ds-version { font-family: var(--font-mono); font-size: 9px; color: #333; letter-spacing: 0.1em; }
+  .ds-nav { flex: 1; padding: 20px 0 16px; }
+  .ds-nav-label { font-family: var(--font-mono); font-size: 9px; color: var(--ta-grafito); letter-spacing: 0.16em; text-transform: uppercase; padding: 0 22px 8px; display: block; }
+  .ds-item { display: flex; align-items: center; gap: 10px; padding: 9px 22px; text-decoration: none; border-left: 2px solid transparent; transition: background 0.15s; }
+  .ds-item:hover { background: rgba(255,255,255,0.05); border-left-color: var(--ta-cian); }
+  .ds-item-num { font-family: var(--font-mono); font-size: 10px; color: var(--ta-cian); font-weight: 500; min-width: 20px; }
+  .ds-item-text { font-family: var(--font-mono); font-size: 12px; color: var(--ta-pizarra); transition: color 0.15s; line-height: 1.3; }
+  .ds-item:hover .ds-item-text { color: #fff; }
+  .ds-footer { padding: 16px 22px; border-top: 0.5px solid #1a1a1a; }
+  .ds-back { display: flex; align-items: center; gap: 8px; text-decoration: none; font-family: var(--font-mono); font-size: 11px; color: var(--ta-pizarra); transition: color 0.15s; padding: 8px 0; }
+  .ds-back:hover { color: var(--ta-cian); }
+  .ds-back-arrow { font-size: 13px; }
+  .doc-main { margin-left: 260px; flex: 1; min-width: 0; }
+
+
+  .ds-back-wrap {
+    padding: 10px 22px;
+    border-bottom: 0.5px solid #1a1a1a;
+  }
+</style>
+</head>
+<body>
+<nav class="doc-sidebar">
+  <div class="ds-brand">
+    <div class="ds-rule"></div>
+    <div class="ds-type">Workflow · Subsistema 2</div>
+    <div class="ds-title">RESEARCH</div>
+    <div class="ds-version">v3.2 · D-X-OPUS</div>
+  </div>
+  <div class="ds-back-wrap">
+    <a class="ds-back" href="INDEX.html"><span class="ds-back-arrow">←</span> Índice principal</a>
+  </div>
+  <div class="ds-nav">
+    <span class="ds-nav-label">Contenido</span>
+    <a class="ds-item" href="#s01"><span class="ds-item-num">01</span><span class="ds-item-text">Propósito</span></a>
+    <a class="ds-item" href="#s02"><span class="ds-item-num">02</span><span class="ds-item-text">Conceptos clave</span></a>
+    <a class="ds-item" href="#s03"><span class="ds-item-num">03</span><span class="ds-item-text">Diagrama</span></a>
+  </div>
+</nav>
+<div class="doc-main">
+
+
+<!-- ══ COVER ══ -->
+<div class="cover">
+  <div class="cover-rule"></div>
+  <div class="cover-eyebrow">Sistema D-X-OPUS · Subsistema 2 — Research</div>
+  <div class="cover-title">WORKFLOW<br>RESEARCH</div>
+  <div class="cover-subtitle">Cómo transformar referencias brutas en conocimiento validado listo para escribir</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><strong>Versión</strong><span>v3.2</span></div>
+    <div class="cover-meta-item"><strong>Release</strong><span>R1 · 2026</span></div>
+    <div class="cover-meta-item"><strong>Subsistema</strong><span>2 — Research</span></div>
+    <div class="cover-meta-item"><strong>Audiencia</strong><span>Editor</span></div>
+    <div class="cover-meta-item"><strong>Estado</strong><span>ACTIVE</span></div>
+  </div>
+</div>
+
+
+</div>
+
+<!-- ══ BODY ══ -->
+<div class="body-wrap">
+
+  <!-- ══════════════════════════
+       SECCIÓN 1 — PROPÓSITO
+  ══════════════════════════ -->
+  <div id="s01" style="position:relative;top:-20px;"></div>
+  <div class="section-label">01 — Propósito</div>
+  <h1 class="doc-h1">Qué hace el subsistema Research</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">Research es el primer subsistema que se ejecuta en cualquier proyecto nuevo. Su función es convertir un conjunto de referencias —libros, artículos, papers, URLs, notas— en un cuerpo de conocimiento estructurado, validado y listo para informar la escritura.</p>
+
+  <p>El output de Research no es un resumen. Es una síntesis razonada que combina el análisis de las fuentes, la identificación de los gaps de conocimiento, y una propuesta de estructura narrativa orientada al tipo de texto que el editor quiere producir. Antes de que se escriba una sola palabra del texto final, el editor habrá leído y aprobado ese output y habrá anotado qué le interesa desarrollar, qué perspectivas quiere enfatizar y qué preguntas quedan abiertas.</p>
+
+  <div class="callout">
+    <p>Research garantiza que el texto que se escribe después está fundamentado en fuentes reales, no en el conocimiento general del modelo. Cada afirmación relevante del texto final puede rastrearse hasta una fuente concreta que el editor ha validado.</p>
+  </div>
+
+  <h2 class="doc-h2">Cuándo usar este workflow</h2>
+
+  <ul class="doc-list">
+    <li>
+      <span class="li-num">01</span>
+      <span>Quieres escribir un libro o post sobre un tema y tienes un conjunto de referencias de partida —mínimo una, sin límite superior.</span>
+    </li>
+    <li>
+      <span class="li-num">02</span>
+      <span>Tienes un BOOK_BRIEF producido por el workflow de Activación y quieres convertirlo en un proyecto de investigación dirigida.</span>
+    </li>
+    <li>
+      <span class="li-num">03</span>
+      <span>Quieres explorar un tema antes de decidir si justifica un libro o un post: el Research produce un mapa del territorio que ayuda a esa decisión.</span>
+    </li>
+    <li>
+      <span class="li-num">04</span>
+      <span>Quieres actualizar la base de conocimiento del sistema con nuevas fuentes sobre un tema ya investigado.</span>
+    </li>
+  </ul>
+
+  <h2 class="doc-h2">Qué produce</h2>
+
+  <p>El workflow bifurca en la Fase 4 según el objetivo editorial. Ambas ramas producen conocimiento validado; la diferencia está en la profundidad y la estructura del output:</p>
+
+  <div class="output-trio">
+    <div class="output-box">
+      <div class="output-box-label">Fase 1 — Siempre</div>
+      <div class="output-box-name">Reference Summary</div>
+      <div class="output-box-desc">Análisis crítico de las fuentes iniciales: qué dicen, cómo se relacionan, qué falta.</div>
+      <div class="output-box-size">5.000–7.000 palabras</div>
+    </div>
+    <div class="output-box">
+      <div class="output-box-label">Rama A — Post</div>
+      <div class="output-box-name">Research Deep Dive</div>
+      <div class="output-box-desc">Investigación profunda orientada al post. Incluye Timeline y Cast.</div>
+      <div class="output-box-size">5.000–10.000 palabras</div>
+    </div>
+    <div class="output-box">
+      <div class="output-box-label">Rama B — Libro</div>
+      <div class="output-box-name">Research Report</div>
+      <div class="output-box-desc">Investigación estructurada por focus type. Uno o varios reports por libro.</div>
+      <div class="output-box-size">8.000–15.000 palabras c/u</div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ══════════════════════════
+       SECCIÓN 2 — CONCEPTOS
+  ══════════════════════════ -->
+  <div id="s02" style="position:relative;top:-20px;"></div>
+  <div class="section-label">02 — Conceptos clave</div>
+  <h1 class="doc-h1">El modelo conceptual</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">El subsistema Research opera sobre un conjunto de conceptos que definen cómo evalúa las fuentes, cómo estructura el conocimiento y cómo orienta la investigación. Entender estos conceptos permite al editor dirigir el proceso con criterio.</p>
+
+  <!-- SAH -->
+  <h2 class="doc-h2">La jerarquía de autoridad de fuentes</h2>
+
+  <p>No todas las fuentes tienen el mismo peso. El sistema opera con una <strong>jerarquía de tres niveles</strong> que determina cómo se usan las afirmaciones de cada tipo de fuente en el análisis y cómo se presentan al editor.</p>
+
+  <table class="doc-table">
+    <thead><tr><th>Nivel</th><th>Tipo de fuente</th><th>Uso en el sistema</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><span class="td-type">TIER 1</span></td>
+        <td><strong>Fuentes primarias y académicas con revisión</strong> — papers peer-reviewed, libros académicos, datos originales, documentos de archivo, estadísticas oficiales.</td>
+        <td>Base principal del análisis. Sus afirmaciones se incorporan sin necesidad de validación adicional cuando son consistentes entre sí.</td>
+      </tr>
+      <tr>
+        <td><span class="td-type">TIER 2</span></td>
+        <td><strong>Fuentes especializadas de calidad</strong> — libros de divulgación rigurosa, informes de instituciones reconocidas, periodismo de largo aliento, entrevistas a expertos documentadas.</td>
+        <td>Se usan para contextualizar y ampliar. Se señalan como Tier 2 cuando sostienen una afirmación sin respaldo de Tier 1.</td>
+      </tr>
+      <tr>
+        <td><span class="td-type">TIER 3</span></td>
+        <td><strong>Fuentes generales</strong> — medios generalistas, blogs, posts, contenido sin atribución clara, fuentes sin actualizar.</td>
+        <td>Solo se usan para orientación inicial o para señalar perspectivas populares. Nunca sostienen afirmaciones de fondo sin respaldo de niveles superiores.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout warn">
+    <p>El sistema nunca inventa fuentes. Si una afirmación no puede rastrearse a una fuente concreta de Tier 1 o Tier 2, se señala explícitamente como gap de conocimiento, no se rellena con conocimiento general del modelo.</p>
+  </div>
+
+  <!-- Validation Checklist -->
+  <h2 class="doc-h2">El Validation Checklist</h2>
+
+  <p>El Validation Checklist es un documento acumulativo que registra qué afirmaciones sobre un tema han sido verificadas y con qué fuentes, y qué afirmaciones siguen sin respaldo suficiente. Se actualiza con cada nuevo proyecto sobre el mismo tema.</p>
+
+  <p>Su función es doble: evita que el sistema reintroduzca afirmaciones que ya han sido descartadas en proyectos anteriores, y señala activamente qué áreas del conocimiento sobre ese tema necesitan más fuentes antes de que la investigación sea suficiente para escribir con rigor.</p>
+
+  <!-- Los tres documentos de Fase 1 -->
+  <h2 class="doc-h2">Los tres documentos de la Fase 1</h2>
+
+  <p>El primer análisis del sistema sobre las referencias iniciales produce tres documentos distintos que cumplen funciones complementarias:</p>
+
+  <div class="concept-grid">
+    <div class="concept-card accent-cian">
+      <div class="concept-tag">Documento 1</div>
+      <div class="concept-name">Reference Summary</div>
+      <div class="concept-def">Análisis crítico de las fuentes: qué dice cada una, qué debates existen entre ellas, qué afirmaciones son sólidas y cuáles tienen respaldo débil, y qué áreas del tema quedan sin cubrir. Es el documento que el editor lee primero para entender el estado del conocimiento disponible.</div>
+    </div>
+    <div class="concept-card accent-cian">
+      <div class="concept-tag">Documento 2</div>
+      <div class="concept-name">Research Plan</div>
+      <div class="concept-def">Propuesta de plan de investigación profunda basada en los gaps identificados en el Reference Summary. Define qué hay que buscar, por qué, y en qué orden. El editor lo revisa y anota antes de que empiece la Fase 4.</div>
+    </div>
+    <div class="concept-card accent-cian full">
+      <div class="concept-tag">Documento 3</div>
+      <div class="concept-name">Narrative Bridge</div>
+      <div class="concept-def">Un documento más corto que conecta el análisis técnico de las fuentes con las posibilidades narrativas del tema. Responde a la pregunta: ¿qué historia puede contarse con este material? Orienta al editor sobre los ángulos posibles antes de que decida si el proyecto es un post o un libro, y qué tipo de investigación profunda justifica.</div>
+    </div>
+  </div>
+
+  <!-- Anotación del editor -->
+  <h2 class="doc-h2">La anotación del editor</h2>
+
+  <p>La Fase 3 no la ejecuta el sistema. La ejecuta el editor. Es la fase en la que el editor lee los tres documentos producidos en la Fase 1, actualiza el Validation Checklist con lo que ha aprendido, y anota directamente sobre el Research Plan y el Narrative Bridge qué le interesa desarrollar, qué perspectivas le resultan más relevantes, qué preguntas quiere que la investigación responda y qué conexiones ha visto que el sistema no ha señalado.</p>
+
+  <p>Esas anotaciones son el input principal de la Fase 4. El sistema no procede hasta que el editor ha completado esta fase. La anotación manual es el mecanismo que garantiza que la investigación profunda esté orientada por el criterio editorial del editor, no por la inercia probabilística del modelo.</p>
+
+  <div class="callout">
+    <p>La Fase 3 es la fase más corta del workflow en tiempo de sistema y la más importante en tiempo de editor. Dos horas de anotación cuidadosa valen más que diez horas de investigación profunda sin dirección.</p>
+  </div>
+
+  <!-- Rama A / Rama B -->
+  <h2 class="doc-h2">Rama A y Rama B — la bifurcación de la Fase 4</h2>
+
+  <p>Una vez que el editor ha anotado los documentos de la Fase 1, el workflow bifurca según el objetivo editorial del proyecto:</p>
+
+  <div class="rama-split">
+    <div class="rama-box rama-a">
+      <div class="rama-label">Rama A — Post</div>
+      <div class="rama-title">Research Deep Dive</div>
+      <div class="rama-desc">Investigación profunda y flexible orientada a post. Profundiza en las tareas, líneas y preguntas que el editor ha marcado en la anotación, sin estructura de focus type predefinida. Produce un documento único de investigación que incluye Timeline y Cast of Characters. <strong>Se ejecuta también en proyectos de libro</strong> cuando hay anotaciones significativas que merecen exploración libre antes de estructurar el Research Plan definitivo.</div>
+    </div>
+    <div class="rama-box rama-b">
+      <div class="rama-label">Rama B — Libro</div>
+      <div class="rama-title">Research Report</div>
+      <div class="rama-desc">Investigación estructurada según un focus type específico, con narrative arc definido. Produce un Research Report de 8.000–15.000 palabras por focus. Un libro puede requerir varios Reports con focos distintos —por ejemplo: Focus A (revisión histórica) + Focus F (implementación práctica) + Focus D (desarrollos recientes)— ejecutados secuencialmente. Cada Report se evalúa antes de continuar.</div>
+    </div>
+  </div>
+
+  <!-- 7 Focus Types -->
+  <h2 class="doc-h2">Los 7 tipos de Research Focus</h2>
+
+  <p>Cada Research Report de la Rama B se estructura según uno de estos siete tipos. El tipo determina la pregunta central de la investigación, la estructura narrativa del report y los elementos que se enfatizan. El editor elige el focus antes de que empiece la Fase 4.</p>
+
+  <div class="focus-grid">
+    <div class="focus-card">
+      <div class="focus-id">A</div>
+      <div class="focus-name">Revisión Histórica</div>
+      <div class="focus-q">¿Cómo llegamos aquí?</div>
+    </div>
+    <div class="focus-card">
+      <div class="focus-id">B</div>
+      <div class="focus-name">Estado del Arte</div>
+      <div class="focus-q">¿Qué sabemos hoy?</div>
+    </div>
+    <div class="focus-card">
+      <div class="focus-id">C</div>
+      <div class="focus-name">Análisis de Escuela</div>
+      <div class="focus-q">¿Qué dice esta corriente?</div>
+    </div>
+    <div class="focus-card">
+      <div class="focus-id">D</div>
+      <div class="focus-name">Desarrollos Recientes</div>
+      <div class="focus-q">¿Qué ha cambiado?</div>
+    </div>
+    <div class="focus-card">
+      <div class="focus-id">E</div>
+      <div class="focus-name">Análisis Comparativo</div>
+      <div class="focus-q">¿Cuál es mejor?</div>
+    </div>
+    <div class="focus-card">
+      <div class="focus-id">F</div>
+      <div class="focus-name">Implementación Práctica</div>
+      <div class="focus-q">¿Cómo se usa?</div>
+    </div>
+    <div class="focus-card">
+      <div class="focus-id">G</div>
+      <div class="focus-name">Concepto Seminal</div>
+      <div class="focus-q">¿Qué significa este concepto?</div>
+    </div>
+    <div class="focus-card" style="background:#F5FEFE; border-color:#AAEAEA;">
+      <div class="focus-id" style="color:var(--ta-pizarra);">—</div>
+      <div class="focus-name" style="color:var(--ta-pizarra);">Neutral</div>
+      <div class="focus-q">Para Rama A o cuando el foco todavía no está definido.</div>
+    </div>
+  </div>
+
+  <!-- Evaluación -->
+  <h2 class="doc-h2">La evaluación del Research Report</h2>
+
+  <p>Antes de pasar a la escritura, cada Research Report se evalúa. La evaluación produce un resultado en tres estados que determina qué hace el editor a continuación:</p>
+
+  <div class="semaforo">
+    <div class="semaforo-card sem-green">
+      <div class="sem-dot"></div>
+      <div class="sem-status">GREEN</div>
+      <div class="sem-action">El report está listo para informar la escritura. El editor puede avanzar al WORKFLOW_WRITING directamente.</div>
+    </div>
+    <div class="semaforo-card sem-yellow">
+      <div class="sem-dot"></div>
+      <div class="sem-status">YELLOW</div>
+      <div class="sem-action">El report necesita refuerzo en áreas específicas. El sistema señala qué y el editor decide si reforzar antes de escribir o aceptar las limitaciones.</div>
+    </div>
+    <div class="semaforo-card sem-red">
+      <div class="sem-dot"></div>
+      <div class="sem-status">RED</div>
+      <div class="sem-action">El report tiene problemas de fondo: fuentes insuficientes, gaps críticos o inconsistencias que requieren rework antes de escribir.</div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ══════════════════════════
+       SECCIÓN 3 — DIAGRAMA
+  ══════════════════════════ -->
+  <div id="s03" style="position:relative;top:-20px;"></div>
+  <div class="section-label">03 — Referencia operativa</div>
+  <h1 class="doc-h1">Diagrama del flujo</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">El diagrama siguiente es la referencia de ejecución fase a fase. Las fases 0, 1 y 3 aparecen abiertas por defecto. La bifurcación de la Fase 4 se muestra en columnas paralelas.</p>
+
+  <div class="inputs-box" style="margin-top:24px;">
+    <div class="box-label">Inputs del sistema</div>
+    <ul>
+      <li><strong>Referencias brutas</strong> — PDFs, URLs, artículos, papers (mínimo 1, sin límite superior)</li>
+      <li>BOOK_BRIEF — orientador opcional desde el workflow de Activation</li>
+      <li>SAH / CVC — jerarquía de fuentes y checklist de validación desde Knowledge Base</li>
+      <li>EDITOR_PROFILE — perfil editorial del editor (si existe)</li>
+    </ul>
+  </div>
+
+  <div class="flow">
+
+    <!-- FASE 0 -->
+    <div class="phase-card phase-neutral">
+      <div class="phase-header" onclick="toggle(this)">
+        <span class="phase-tag">FASE 0</span>
+        <span class="phase-title">PREPARACIÓN — RECOPILACIÓN DE REFERENCIAS</span>
+        <span class="phase-time">Variable</span>
+        <span class="toggle-icon">▾</span>
+      </div>
+      <div class="phase-body open">
+        <div class="task-row">
+          <div class="task-icon">👤</div>
+          <div>
+            <div class="task-name">Actor: Editor</div>
+            <div class="task-desc">El editor identifica el tema, define el scope preliminar y recopila las referencias iniciales. Si existe un BOOK_BRIEF de Activation, lo incorpora como orientador. No hay intervención del sistema en esta fase.</div>
+          </div>
+        </div>
+        <div class="task-row">
+          <div class="task-icon">📥</div>
+          <div>
+            <div class="task-name">Entrega al sistema</div>
+            <div class="task-desc">Referencias brutas + BOOK_BRIEF (opcional) + indicación del objetivo: post o libro.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">↓</div>
+
+    <!-- FASE 1 -->
+    <div class="phase-card phase-cian">
+      <div class="phase-header" onclick="toggle(this)">
+        <span class="phase-tag">FASE 1</span>
+        <span class="phase-title">ANÁLISIS DE REFERENCIAS INICIALES</span>
+        <span class="phase-time">30–60 min</span>
+        <span class="toggle-icon">▾</span>
+      </div>
+      <div class="phase-body open">
+        <div class="task-row">
+          <div class="task-icon">🔍</div>
+          <div>
+            <div class="task-name">PROMPT_SUMMARIZE_REFERENCES v4.1</div>
+            <div class="task-desc">Análisis en 4 fases internas: Deep Analysis (35%) → Cross-Synthesis (25%) → Gap Mapping (30%) → Structuring (10%).</div>
+          </div>
+        </div>
+        <div class="task-row">
+          <div class="task-icon">📤</div>
+          <div>
+            <div class="task-name">Produce 3 documentos</div>
+            <div class="task-desc">
+              <strong>REFERENCE_SUMMARY</strong> — análisis crítico de fuentes · 5.000–7.000 palabras<br>
+              <strong>RESEARCH_PLAN</strong> — propuesta de investigación profunda · 3.000–4.000 palabras<br>
+              <strong>NARRATIVE_BRIDGE</strong> — conexión con posibilidades narrativas · 1.500–2.000 palabras
+            </div>
+          </div>
+        </div>
+        <div class="checkpoint cp-cian">✅ CHECKPOINT 1 — El editor lee y revisa los tres documentos antes de continuar</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">↓</div>
+
+    <!-- FASE 2 -->
+    <div class="phase-card phase-cian">
+      <div class="phase-header" onclick="toggle(this)">
+        <span class="phase-tag">FASE 2</span>
+        <span class="phase-title">ACTUALIZACIÓN DEL VALIDATION CHECKLIST</span>
+        <span class="phase-time">15–30 min</span>
+        <span class="toggle-icon">▸</span>
+      </div>
+      <div class="phase-body">
+        <div class="task-row">
+          <div class="task-icon">📋</div>
+          <div>
+            <div class="task-name">PROMPT_UPDATE_VALIDATION_CHECKLIST v3.1</div>
+            <div class="task-desc">Actualiza SAH y CVC con el conocimiento adquirido en la Fase 1. El esquema canónico lo define Knowledge Base; Research lo actualiza.</div>
+          </div>
+        </div>
+        <div class="task-row">
+          <div class="task-icon">📤</div>
+          <div>
+            <div class="task-name">Output</div>
+            <div class="task-desc">SAH / CVC actualizados para este proyecto</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">↓</div>
+
+    <!-- FASE 3 -->
+    <div class="phase-card phase-ambar">
+      <div class="phase-header" onclick="toggle(this)">
+        <span class="phase-tag">FASE 3</span>
+        <span class="phase-title">ANOTACIÓN DEL EDITOR</span>
+        <span class="phase-time">2–4 h</span>
+        <span class="toggle-icon">▾</span>
+      </div>
+      <div class="phase-body open">
+        <div class="task-row">
+          <div class="task-icon">👤</div>
+          <div>
+            <div class="task-name">Actor: Editor — sin intervención del sistema</div>
+            <div class="task-desc">El editor lee el REFERENCE_SUMMARY, el RESEARCH_PLAN y el NARRATIVE_BRIDGE. Anota directamente sobre ellos: qué le interesa desarrollar, qué perspectivas prioriza, qué preguntas quiere que la Fase 4 responda, qué conexiones ha visto. Guía disponible: GUIDE_ANNOTATION_PHASE3 v1.0.</div>
+          </div>
+        </div>
+        <div class="task-row">
+          <div class="task-icon">🔀</div>
+          <div>
+            <div class="task-name">Decisión editorial</div>
+            <div class="task-desc">El editor decide qué rama ejecutar en Fase 4:<br>
+            <strong>→ Rama A</strong> si el objetivo es un post o si quiere exploración libre antes de estructurar<br>
+            <strong>→ Rama B</strong> si el objetivo es un libro con focus type definido<br>
+            <strong>→ Ambas</strong> si hay anotaciones significativas que justifican Rama A además de Rama B</div>
+          </div>
+        </div>
+        <div class="checkpoint cp-ambar">⚑ CHECKPOINT 3 — El sistema no avanza hasta que el editor ha completado la anotación</div>
+      </div>
+    </div>
+
+    <div class="flow-arrow split-arrow">↙ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ↘</div>
+
+    <!-- FASE 4 SPLIT -->
+    <div class="rama-flow-split">
+
+      <!-- RAMA A -->
+      <div class="rama-col">
+        <div class="rama-col-header rama-col-a">RAMA A — DEEP DIVE (POST / EXPLORACIÓN)</div>
+
+        <div class="phase-card phase-cian">
+          <div class="phase-header" onclick="toggle(this)">
+            <span class="phase-tag" style="font-size:9px;">FASE 4A</span>
+            <span class="phase-title" style="font-size:12px;">INVESTIGACIÓN PROFUNDA ORIENTADA A POST</span>
+            <span class="phase-time">5–15 h</span>
+            <span class="toggle-icon">▸</span>
+          </div>
+          <div class="phase-body">
+            <div class="task-row">
+              <div class="task-icon">🔬</div>
+              <div>
+                <div class="task-name">PROMPT_RESEARCH_DEEP_DIVE v1.1</div>
+                <div class="task-desc">Investigación libre orientada por las anotaciones del editor. Profundiza en TASKs, LINEs y COMMENTs marcados. Incluye Timeline y Cast of Characters (400–600 palabras c/u).</div>
+              </div>
+            </div>
+            <div class="task-row">
+              <div class="task-icon">📤</div>
+              <div>
+                <div class="task-name">Output</div>
+                <div class="task-desc">RESEARCH_DEEP_DIVE — 5.000–10.000 palabras → destino: Writing POST</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RAMA B -->
+      <div class="rama-col">
+        <div class="rama-col-header rama-col-b">RAMA B — RESEARCH REPORT (LIBRO)</div>
+
+        <div class="phase-card phase-ambar">
+          <div class="phase-header" onclick="toggle(this)" style="background:#FFFBF5;">
+            <span class="phase-tag" style="font-size:9px;">FASE 4B·1</span>
+            <span class="phase-title" style="font-size:12px;color:var(--ta-ambar);">PLANIFICACIÓN DETALLADA</span>
+            <span class="phase-time" style="color:var(--ta-ambar);">1–2 h</span>
+            <span class="toggle-icon">▸</span>
+          </div>
+          <div class="phase-body">
+            <div class="task-row">
+              <div class="task-icon">📐</div>
+              <div>
+                <div class="task-name">PROMPT_CREATE_RESEARCH_PLAN v3.0</div>
+                <div class="task-desc">Genera RESEARCH_PLAN_DETAILED + WRITING_INSTRUCTIONS para el focus type seleccionado. Lee RESOURCE_RESEARCH_FOCUS_TYPES para configurar el plan según el tipo A–G.</div>
+              </div>
+            </div>
+            <div class="checkpoint cp-ambar">⚑ CHECKPOINT — Editor aprueba el plan antes de ejecutar</div>
+          </div>
+        </div>
+
+        <div class="phase-card phase-ambar" style="margin-top:4px;">
+          <div class="phase-header" onclick="toggle(this)" style="background:#FFFBF5;">
+            <span class="phase-tag" style="font-size:9px;">FASE 4B·2</span>
+            <span class="phase-title" style="font-size:12px;color:var(--ta-ambar);">EJECUCIÓN DEL PLAN</span>
+            <span class="phase-time" style="color:var(--ta-ambar);">8–20 h</span>
+            <span class="toggle-icon">▸</span>
+          </div>
+          <div class="phase-body">
+            <div class="task-row">
+              <div class="task-icon">⚙️</div>
+              <div>
+                <div class="task-name">PROMPT_EXECUTE_RESEARCH_PLAN v1.0</div>
+                <div class="task-desc">Ejecuta el plan aprobado. Produce el RESEARCH_REPORT con Timeline y Cast incluidos. Puede ejecutarse múltiples veces con distintos focus types para proyectos de libro complejos.</div>
+              </div>
+            </div>
+            <div class="task-row">
+              <div class="task-icon">📤</div>
+              <div>
+                <div class="task-name">Output</div>
+                <div class="task-desc">RESEARCH_REPORT — 8.000–15.000 palabras por focus</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div><!-- end rama split -->
+
+    <div class="flow-arrow">↓</div>
+
+    <!-- FASE 5 -->
+    <div class="phase-card phase-green">
+      <div class="phase-header" onclick="toggle(this)">
+        <span class="phase-tag">FASE 5</span>
+        <span class="phase-title">EVALUACIÓN DEL RESEARCH REPORT</span>
+        <span class="phase-time">30–60 min</span>
+        <span class="toggle-icon">▾</span>
+      </div>
+      <div class="phase-body open">
+        <div class="task-row">
+          <div class="task-icon">📊</div>
+          <div>
+            <div class="task-name">PROMPT_EVALUATE_RESEARCH_REPORT v1.1 <span class="badge badge-pizarra">OWNER: EVALUATION</span></div>
+            <div class="task-desc">Evalúa coherencia, solidez de fuentes, cobertura de gaps y calidad general del report. Aplica contrato de evaluación canónico: GREEN / YELLOW / RED.</div>
+          </div>
+        </div>
+        <div class="task-row">
+          <div class="task-icon">🔀</div>
+          <div>
+            <div class="task-name">Decisión según resultado</div>
+            <div class="task-desc">
+              <strong style="color:#34C670">GREEN</strong> → Avanzar al WORKFLOW_WRITING<br>
+              <strong style="color:var(--ta-ambar)">YELLOW</strong> → Reforzar áreas señaladas (10–20 h) → re-evaluar<br>
+              <strong style="color:var(--ta-rojo)">RED</strong> → Iterar investigación (20–40 h) → re-evaluar
+            </div>
+          </div>
+        </div>
+        <div class="checkpoint cp-green">✅ CHECKPOINT FINAL — Research aprobado → WORKFLOW_WRITING</div>
+      </div>
+    </div>
+
+  </div><!-- end flow -->
+
+  <!-- FOOTER -->
+  <div class="doc-footer">
+    <div class="doc-footer-brand">TINTA ARTIFICIAL</div>
+    <div class="doc-footer-meta">WORKFLOW_RESEARCH · v3.2 · R1 · 2026</div>
+  </div>
+
+</div><!-- end body-wrap -->
+
+<script>
+  function toggle(header) {
+    const body = header.nextElementSibling;
+    const icon = header.querySelector('.toggle-icon');
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    icon.textContent = isOpen ? '▸' : '▾';
+  }
+</script>
+
+
+</div>
+</body>
+</html>

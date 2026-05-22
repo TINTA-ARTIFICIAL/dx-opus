@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SUBSYSTEM EVALUATION — D-X-OPUS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Gentium+Plus:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ta-tinta:   #0A0A0A;
+    --ta-carbon:  #434343;
+    --ta-grafito: #595959;
+    --ta-papel:   #E8E4D9;
+    --ta-blanco:  #FFFFFF;
+    --ta-cian:    #00D4D4;
+    --ta-rojo:    #FF2D2C;
+    --ta-pizarra: #78909C;
+    --ta-ambar:   #FFAB40;
+    --ta-verde:   #34C670;
+    --font-display: 'Bebas Neue', Arial, sans-serif;
+    --font-body:    'Gentium Plus', Georgia, serif;
+    --font-mono:    'JetBrains Mono', 'Courier New', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-body); background: var(--ta-blanco); color: var(--ta-tinta); padding: 0; }
+
+  /* ── COVER ── */
+  .cover { background: var(--ta-tinta); padding: 56px 40px 44px; }
+  .cover-rule { width: 48px; height: 3px; background: var(--ta-cian); margin-bottom: 24px; }
+  .cover-eyebrow { font-family: var(--font-mono); font-size: 11px; color: var(--ta-cian); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
+  .cover-title { font-family: var(--font-display); font-size: 72px; color: var(--ta-blanco); line-height: 0.95; letter-spacing: 0.01em; margin-bottom: 14px; }
+  .cover-subtitle { font-family: var(--font-body); font-size: 16px; color: var(--ta-papel); font-style: italic; margin-bottom: 40px; opacity: 0.85;
+    line-height: 22px;
+  }
+  .cover-meta { display: flex; gap: 36px; flex-wrap: wrap; border-top: 0.5px solid #2a2a2a; padding-top: 18px; }
+  .cover-meta-item strong { display: block; font-family: var(--font-mono); font-size: 10px; color: var(--ta-grafito); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 3px; }
+  .cover-meta-item span { font-family: var(--font-mono); font-size: 13px; color: var(--ta-papel); }
+
+  /* ── BODY ── */
+  .body-wrap { padding: 52px 40px; }
+  .section-label { font-family: var(--font-mono); font-size: 10px; color: var(--ta-cian); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 6px; }
+  h1.doc-h1 { font-family: var(--font-display); font-size: 34px; color: var(--ta-tinta); letter-spacing: 0.02em; line-height: 1; margin-bottom: 6px; }
+  .h1-rule { height: 2px; background: var(--ta-cian); margin-bottom: 28px; width: 100%; }
+  h2.doc-h2 { font-family: var(--font-display); font-size: 20px; color: var(--ta-carbon); letter-spacing: 0.04em; margin: 36px 0 10px; }
+  .section-divider { height: 0.5px; background: var(--ta-papel); margin: 48px 0; }
+  p { font-family: var(--font-body); font-size: 18px; line-height: 26px; color: var(--ta-tinta); margin-bottom: 14px; }
+  p.lead { font-size: 18px; color: var(--ta-carbon);
+    line-height: 26px;
+  }
+
+  /* ── CALLOUTS ── */
+  .callout { border-left: 3px solid var(--ta-cian); padding: 14px 18px; background: #F0FAFA; border-radius: 0 6px 6px 0; margin: 20px 0; }
+  .callout p { margin: 0; font-style: italic; font-size: 18px;
+    line-height: 26px;
+  }
+  .callout.warn { border-left-color: var(--ta-ambar); background: #FFFBF0; }
+
+  /* ── BADGES ── */
+  .badge { display: inline-block; font-family: var(--font-mono); font-size: 9px; font-weight: 500; padding: 2px 7px; border-radius: 3px; margin-left: 4px; letter-spacing: 0.04em; vertical-align: middle; position: relative; top: -1px; }
+  .badge-cian    { background: var(--ta-cian); color: #003333; }
+  .badge-ambar   { background: var(--ta-ambar); color: #4A2900; }
+  .badge-pizarra { background: var(--ta-pizarra); color: #fff; }
+  .badge-tinta   { background: var(--ta-tinta); color: var(--ta-blanco); }
+
+  /* ── SEMAFORO ── */
+  .semaforo { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin: 24px 0; }
+  .sem-card { border-radius: 6px; padding: 20px; }
+  .sem-green  { background: #F0FAF4; border: 1px solid #A8E6BE; border-top: 3px solid var(--ta-verde); }
+  .sem-yellow { background: #FFFBF0; border: 1px solid #FFD89A; border-top: 3px solid var(--ta-ambar); }
+  .sem-red    { background: #FFF5F5; border: 1px solid #FFAAAA; border-top: 3px solid var(--ta-rojo); }
+  .sem-dot { width: 12px; height: 12px; border-radius: 50%; margin-bottom: 10px; }
+  .sem-green  .sem-dot { background: var(--ta-verde); }
+  .sem-yellow .sem-dot { background: var(--ta-ambar); }
+  .sem-red    .sem-dot { background: var(--ta-rojo); }
+  .sem-status { font-family: var(--font-display); font-size: 22px; letter-spacing: 0.06em; margin-bottom: 6px; }
+  .sem-meaning { font-family: var(--font-mono); font-size: 9px; color: var(--ta-grafito); letter-spacing: 0.06em; margin-bottom: 10px; }
+  .sem-action { font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito); line-height: 22px; }
+  .sem-action strong { color: var(--ta-tinta); }
+
+  /* ── CONTRACT BOX ── */
+  .contract-box {
+    background: var(--ta-tinta); border-radius: 6px; padding: 20px 24px; margin: 24px 0;
+  }
+  .contract-label { font-family: var(--font-mono); font-size: 9px; color: var(--ta-cian); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px; }
+  .contract-field { display: flex; gap: 16px; align-items: flex-start; padding: 7px 0; border-bottom: 0.5px solid #1a1a1a; }
+  .contract-field:last-child { border-bottom: none; }
+  .contract-key { font-family: var(--font-mono); font-size: 11px; color: var(--ta-cian); min-width: 160px; font-weight: 500; padding-top: 1px; }
+  .contract-val { font-family: var(--font-body); font-size: 16px; color: var(--ta-papel); line-height: 22px; }
+  .contract-val em { color: var(--ta-pizarra); font-style: normal; font-family: var(--font-mono); font-size: 11px; }
+
+  /* ── EVALUATOR CARDS ── */
+  .evaluator-grid { display: flex; flex-direction: column; gap: 10px; margin: 24px 0; }
+  .evaluator-card { border: 0.5px solid #E0E0E0; border-radius: 6px; overflow: hidden; }
+  .evaluator-header { display: flex; align-items: center; gap: 12px; padding: 12px 16px; cursor: pointer; user-select: none; background: #FAFAFA; }
+  .evaluator-header:hover { filter: brightness(0.97); }
+  .evaluator-tag { font-family: var(--font-mono); font-size: 9px; color: var(--ta-pizarra); min-width: 56px; letter-spacing: 0.06em; }
+  .evaluator-name { flex: 1; font-family: var(--font-mono); font-size: 11px; color: var(--ta-tinta); font-weight: 500; letter-spacing: 0.03em; }
+  .evaluator-status { font-family: var(--font-mono); font-size: 9px; }
+  .toggle-icon { font-size: 13px; color: var(--ta-pizarra); margin-left: 4px; }
+  .evaluator-body { display: none; padding: 0 16px 14px; border-top: 0.5px solid #EEEEEE; }
+  .evaluator-body.open { display: block; }
+
+  .eval-row { display: flex; gap: 10px; padding: 7px 0; border-bottom: 0.5px solid #F5F5F5; font-size: 14px; }
+  .eval-row:last-child { border-bottom: none; }
+  .eval-key { font-family: var(--font-mono); font-size: 10px; color: var(--ta-pizarra); min-width: 100px; padding-top: 1px; }
+  .eval-val { font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito); line-height: 22px; }
+  .eval-val strong { color: var(--ta-tinta); }
+
+  .dim-list { list-style: none; margin-top: 8px; }
+  .dim-list li { display: flex; gap: 8px; align-items: flex-start; padding: 4px 0; font-size: 16px; color: var(--ta-grafito); font-family: var(--font-body);
+    line-height: 22px;
+  }
+  .dim-list .dim-id { font-family: var(--font-mono); font-size: 10px; color: var(--ta-cian); min-width: 24px; padding-top: 1px; }
+
+  /* ── WHERE USED ── */
+  .where-used { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
+  .wu-card { background: #FAFAFA; border: 0.5px solid #E0E0E0; border-radius: 5px; padding: 12px 14px; }
+  .wu-workflow { font-family: var(--font-mono); font-size: 9px; color: var(--ta-pizarra); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 5px; }
+  .wu-phase { font-family: var(--font-display); font-size: 14px; color: var(--ta-tinta); letter-spacing: 0.04em; margin-bottom: 5px; }
+  .wu-evaluator { font-family: var(--font-mono); font-size: 10px; color: var(--ta-cian); margin-bottom: 5px; }
+  .wu-desc { font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito); line-height: 22px; }
+
+  /* ── NUMBERED LIST ── */
+  .doc-list { list-style: none; margin: 16px 0; }
+  .doc-list li { display: flex; gap: 14px; align-items: flex-start; padding: 10px 0; border-bottom: 0.5px solid #F0F0F0; font-size: 18px; line-height: 26px; }
+  .doc-list li:last-child { border-bottom: none; }
+  .li-num { font-family: var(--font-mono); font-size: 11px; color: var(--ta-cian); min-width: 22px; font-weight: 500; padding-top: 2px; }
+
+  /* ── TABLE ── */
+  table.doc-table { width: 100%; border-collapse: collapse; font-family: var(--font-body); font-size: 16px; margin: 16px 0;
+    line-height: 22px;
+  }
+  table.doc-table th { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ta-grafito); border-bottom: 1.5px solid var(--ta-cian); padding: 8px 12px; text-align: left; background: #FDFCFA; }
+  table.doc-table td { padding: 10px 12px; border-bottom: 0.5px solid var(--ta-papel); color: var(--ta-tinta); vertical-align: top; font-size: 16px; line-height: 1.6; }
+  table.doc-table tr:last-child td { border-bottom: none; }
+
+  .doc-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 48px; padding-top: 14px; border-top: 0.5px solid var(--ta-papel); }
+  .doc-footer-brand { font-family: var(--font-display); font-size: 20px; color: var(--ta-tinta); letter-spacing: 0.05em; }
+  .doc-footer-meta { font-family: var(--font-mono); font-size: 10px; color: var(--ta-grafito); }
+  .toc-num {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ta-cian);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+  }
+
+
+  /* ── DOC SIDEBAR LAYOUT ── */
+  .doc-sidebar {
+    width: 260px;
+    min-height: 100vh;
+    background: var(--ta-tinta);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0;
+    overflow-y: auto;
+    z-index: 100;
+  }
+  .ds-brand { padding: 24px 22px 18px; border-bottom: 0.5px solid #1a1a1a; }
+  .ds-rule { width: 28px; height: 2px; background: var(--ta-cian); margin-bottom: 12px; }
+  .ds-type { font-family: var(--font-mono); font-size: 9px; color: var(--ta-grafito); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px; line-height: 1.5; }
+  .ds-title { font-family: var(--font-display); font-size: 24px; color: #fff; letter-spacing: 0.04em; line-height: 1.05; margin-bottom: 6px; }
+  .ds-version { font-family: var(--font-mono); font-size: 9px; color: #333; letter-spacing: 0.1em; }
+  .ds-nav { flex: 1; padding: 20px 0 16px; }
+  .ds-nav-label { font-family: var(--font-mono); font-size: 9px; color: var(--ta-grafito); letter-spacing: 0.16em; text-transform: uppercase; padding: 0 22px 8px; display: block; }
+  .ds-item { display: flex; align-items: center; gap: 10px; padding: 9px 22px; text-decoration: none; border-left: 2px solid transparent; transition: background 0.15s; }
+  .ds-item:hover { background: rgba(255,255,255,0.05); border-left-color: var(--ta-cian); }
+  .ds-item-num { font-family: var(--font-mono); font-size: 10px; color: var(--ta-cian); font-weight: 500; min-width: 20px; }
+  .ds-item-text { font-family: var(--font-mono); font-size: 12px; color: var(--ta-pizarra); transition: color 0.15s; line-height: 1.3; }
+  .ds-item:hover .ds-item-text { color: #fff; }
+  .ds-footer { padding: 16px 22px; border-top: 0.5px solid #1a1a1a; }
+  .ds-back { display: flex; align-items: center; gap: 8px; text-decoration: none; font-family: var(--font-mono); font-size: 11px; color: var(--ta-pizarra); transition: color 0.15s; padding: 8px 0; }
+  .ds-back:hover { color: var(--ta-cian); }
+  .ds-back-arrow { font-size: 13px; }
+  .doc-main { margin-left: 260px; flex: 1; min-width: 0; }
+
+
+  .ds-back-wrap {
+    padding: 10px 22px;
+    border-bottom: 0.5px solid #1a1a1a;
+  }
+</style>
+</head>
+<body>
+<nav class="doc-sidebar">
+  <div class="ds-brand">
+    <div class="ds-rule"></div>
+    <div class="ds-type">Subsistema 5</div>
+    <div class="ds-title">EVALUATION</div>
+    <div class="ds-version">R1 · D-X-OPUS</div>
+  </div>
+  <div class="ds-back-wrap">
+    <a class="ds-back" href="INDEX.html"><span class="ds-back-arrow">←</span> Índice principal</a>
+  </div>
+  <div class="ds-nav">
+    <span class="ds-nav-label">Contenido</span>
+    <a class="ds-item" href="#s01"><span class="ds-item-num">01</span><span class="ds-item-text">Propósito</span></a>
+    <a class="ds-item" href="#s02"><span class="ds-item-num">02</span><span class="ds-item-text">Conceptos clave</span></a>
+    <a class="ds-item" href="#s03"><span class="ds-item-num">03</span><span class="ds-item-text">Guía de uso</span></a>
+  </div>
+</nav>
+<div class="doc-main">
+
+
+<!-- ══ COVER ══ -->
+<div class="cover">
+  <div class="cover-rule"></div>
+  <div class="cover-eyebrow">Sistema D-X-OPUS · Subsistema 5 — Evaluation</div>
+  <div class="cover-title">EVALUATION</div>
+  <div class="cover-subtitle">El sistema de calidad que separa el proceso de escritura de sus criterios de validación</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><strong>Versión</strong><span>R1 · 2026</span></div>
+    <div class="cover-meta-item"><strong>Release</strong><span>R1 · 2026</span></div>
+    <div class="cover-meta-item"><strong>Subsistema</strong><span>5 — Evaluation</span></div>
+    <div class="cover-meta-item"><strong>Audiencia</strong><span>Editor</span></div>
+    <div class="cover-meta-item"><strong>Estado</strong><span>ACTIVE</span></div>
+  </div>
+</div>
+
+
+</div>
+
+<div class="body-wrap">
+
+  <!-- ══════════════════════════
+       SECCIÓN 1 — PROPÓSITO
+  ══════════════════════════ -->
+  <div id="s01" style="position:relative;top:-20px;"></div>
+  <div class="section-label">01 — Propósito</div>
+  <h1 class="doc-h1">Qué hace el subsistema Evaluation</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">Evaluation es el subsistema que valida la calidad de los artefactos producidos por el sistema antes de que el editor tome decisiones sobre ellos. Evalúa investigación, textos y contenido derivado — y lo hace siempre con el mismo formato de resultado, independientemente del tipo de artefacto que esté analizando.</p>
+
+  <p>La decisión de diseño central del subsistema es la separación entre el contrato de evaluación y la lógica de cada evaluador. Los workflows que invocan evaluadores solo necesitan saber que recibirán un resultado con un estado (GREEN, YELLOW o RED) y una orientación de decisión. Cómo se llega a ese estado — qué dimensiones se evalúan, con qué pesos, con qué umbrales — es responsabilidad exclusiva de cada evaluador y puede cambiar sin que los workflows se vean afectados.</p>
+
+  <div class="callout">
+    <p>Evaluation no decide si el proyecto continúa o se detiene. Señala y orienta — el editor juzga y decide. Un resultado RED no significa que el proyecto muera: significa que hay trabajo que hacer antes de avanzar.</p>
+  </div>
+
+  <h2 class="doc-h2">Qué no hace Evaluation</h2>
+
+  <ul class="doc-list">
+    <li><span class="li-num">→</span><span>No define el Perfil Editorial del editor — eso es Editorial Profile. Solo lo consume como input para evaluar adherencia de estilo.</span></li>
+    <li><span class="li-num">→</span><span>No define la jerarquía de fuentes ni el Validation Checklist — eso es Knowledge Base. Solo los consume para evaluar calidad de investigación.</span></li>
+    <li><span class="li-num">→</span><span>No produce texto ni investigación. Solo evalúa artefactos producidos por otros subsistemas.</span></li>
+    <li><span class="li-num">→</span><span>No es el último paso del proceso. La evaluación puede invocarse en cualquier punto — no solo al final.</span></li>
+  </ul>
+
+  <h2 class="doc-h2">Dónde interviene en el sistema</h2>
+
+  <div class="where-used">
+    <div class="wu-card">
+      <div class="wu-workflow">Research · Fase 5</div>
+      <div class="wu-phase">Evaluación del Research Report</div>
+      <div class="wu-evaluator">EVALUATE_RESEARCH_REPORT</div>
+      <div class="wu-desc">Valida la calidad de la investigación antes de pasar a escritura. Obligatorio antes de invocar cualquier prompt de Writing.</div>
+    </div>
+    <div class="wu-card">
+      <div class="wu-workflow">Writing Book · Fase 5</div>
+      <div class="wu-phase">Evaluación del libro</div>
+      <div class="wu-evaluator">EVALUATE_BOOK_CONTENT + EVALUATE_BOOK_STYLE</div>
+      <div class="wu-desc">Dos evaluaciones independientes: rigor de fuentes y claims en el texto, y adherencia a la voz del editor. Ambas obligatorias antes de cerrar el libro.</div>
+    </div>
+    <div class="wu-card">
+      <div class="wu-workflow">Writing Post · Fase 3</div>
+      <div class="wu-phase">Evaluación del post</div>
+      <div class="wu-evaluator">EVALUATE_POST</div>
+      <div class="wu-desc">Valida voz, estructura y calidad editorial antes de publicar. Produce orientación específica de mejora si el resultado no es GREEN.</div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ══════════════════════════
+       SECCIÓN 2 — CONCEPTOS
+  ══════════════════════════ -->
+  <div id="s02" style="position:relative;top:-20px;"></div>
+  <div class="section-label">02 — Conceptos clave</div>
+  <h1 class="doc-h1">El modelo conceptual</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">Evaluation opera sobre dos pilares: el contrato de evaluación, que define el formato estable de cualquier resultado, y los evaluadores individuales, que contienen la lógica específica de cada tipo de artefacto.</p>
+
+  <!-- El contrato -->
+  <h2 class="doc-h2">El contrato de evaluación</h2>
+
+  <p>Todo evaluador del sistema produce exactamente el mismo formato de resultado. Este formato — el EVALUATION_RESULT — es el contrato estable que permite a los workflows consumir evaluaciones sin conocer la lógica interna de cada evaluador.</p>
+
+  <div class="contract-box">
+    <div class="contract-label">EVALUATION_RESULT — formato canónico</div>
+    <div class="contract-field">
+      <div class="contract-key">status</div>
+      <div class="contract-val"><em>GREEN | YELLOW | RED</em> — resultado principal. Es lo primero que lee el editor.</div>
+    </div>
+    <div class="contract-field">
+      <div class="contract-key">score</div>
+      <div class="contract-val"><em>X / 100</em> — puntuación ponderada. Complementa el status; no lo sustituye.</div>
+    </div>
+    <div class="contract-field">
+      <div class="contract-key">decision_guidance</div>
+      <div class="contract-val">Qué debe hacer el editor a continuación. Orientación concreta, no genérica.</div>
+    </div>
+    <div class="contract-field">
+      <div class="contract-key">blocking_issues</div>
+      <div class="contract-val">Solo presente en RED. Lista de problemas que impiden avanzar hasta resolverse.</div>
+    </div>
+    <div class="contract-field">
+      <div class="contract-key">improvement_areas</div>
+      <div class="contract-val">Presente en YELLOW. Áreas específicas a reforzar antes de continuar.</div>
+    </div>
+    <div class="contract-field">
+      <div class="contract-key">strengths</div>
+      <div class="contract-val">Presente siempre. Lo que funciona bien y debe preservarse en iteraciones.</div>
+    </div>
+  </div>
+
+  <!-- El semáforo -->
+  <h2 class="doc-h2">El semáforo — qué significa cada estado</h2>
+
+  <div class="semaforo">
+    <div class="sem-card sem-green">
+      <div class="sem-dot"></div>
+      <div class="sem-status">GREEN</div>
+      <div class="sem-meaning">LISTO PARA AVANZAR</div>
+      <div class="sem-action">El artefacto cumple los criterios de calidad. <strong>El editor puede continuar al siguiente paso del workflow</strong> directamente. No se requiere iteración.</div>
+    </div>
+    <div class="sem-card sem-yellow">
+      <div class="sem-dot"></div>
+      <div class="sem-status">YELLOW</div>
+      <div class="sem-meaning">NECESITA REFINAMIENTO</div>
+      <div class="sem-action">El artefacto es aceptable pero tiene áreas mejorables. <strong>El editor decide</strong> si reforzar las áreas señaladas antes de continuar o avanzar asumiendo las limitaciones identificadas.</div>
+    </div>
+    <div class="sem-card sem-red">
+      <div class="sem-dot"></div>
+      <div class="sem-status">RED</div>
+      <div class="sem-meaning">REQUIERE REWORK</div>
+      <div class="sem-action">El artefacto tiene problemas que bloquean el avance. <strong>El editor debe resolver los blocking_issues</strong> antes de continuar. No es un resultado definitivo — es una señal de trabajo pendiente.</div>
+    </div>
+  </div>
+
+  <!-- Evaluadores -->
+  <h2 class="doc-h2">Los evaluadores activos</h2>
+
+  <p>Cada evaluador tiene su propia lógica interna — dimensiones, pesos, umbrales — pero todos producen el mismo EVALUATION_RESULT. La lógica interna puede evolucionar entre versiones sin afectar a los workflows que los invocan.</p>
+
+  <div class="evaluator-grid">
+
+    <div class="evaluator-card">
+      <div class="evaluator-header" onclick="toggleEval(this)">
+        <span class="evaluator-tag">RESEARCH</span>
+        <span class="evaluator-name">EVALUATE_RESEARCH_REPORT</span>
+        <span class="evaluator-status"><span class="badge badge-cian">ACTIVE v1.1</span></span>
+        <span class="toggle-icon">▸</span>
+      </div>
+      <div class="evaluator-body">
+        <div class="eval-row"><div class="eval-key">Evalúa</div><div class="eval-val">RESEARCH_REPORT y RESEARCH_DEEP_DIVE — Ramas A y B</div></div>
+        <div class="eval-row"><div class="eval-key">Invocado por</div><div class="eval-val">WORKFLOW_RESEARCH · Fase 5</div></div>
+        <div class="eval-row"><div class="eval-key">Inputs adicionales</div><div class="eval-val">SAH (Source Authority Hierarchy) + CVC (Claim Validation Checklist) — desde Knowledge Base</div></div>
+        <div class="eval-row">
+          <div class="eval-key">4 dimensiones</div>
+          <div class="eval-val">
+            <ul class="dim-list">
+              <li><span class="dim-id">D1</span>Calidad y autoridad de fuentes — ¿son Tier 1/2/3? ¿están correctamente citadas?</li>
+              <li><span class="dim-id">D2</span>Validación de claims — ¿cada afirmación relevante tiene respaldo en las fuentes?</li>
+              <li><span class="dim-id">D3</span>Cobertura del tema — ¿quedan gaps críticos sin cubrir en el scope definido?</li>
+              <li><span class="dim-id">D4</span>Calidad metodológica — ¿el proceso de investigación fue riguroso y documentado?</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="evaluator-card">
+      <div class="evaluator-header" onclick="toggleEval(this)">
+        <span class="evaluator-tag">WRITING</span>
+        <span class="evaluator-name">EVALUATE_BOOK_CONTENT</span>
+        <span class="evaluator-status"><span class="badge badge-cian">ACTIVE v1.1</span></span>
+        <span class="toggle-icon">▸</span>
+      </div>
+      <div class="evaluator-body">
+        <div class="eval-row"><div class="eval-key">Evalúa</div><div class="eval-val">Capítulos individuales o el libro completo</div></div>
+        <div class="eval-row"><div class="eval-key">Invocado por</div><div class="eval-val">WORKFLOW_WRITING BOOK · Fase 5</div></div>
+        <div class="eval-row"><div class="eval-key">Inputs adicionales</div><div class="eval-val">RESEARCH_REPORT(s) usados como fuente del libro</div></div>
+        <div class="eval-row">
+          <div class="eval-key">2 dimensiones</div>
+          <div class="eval-val">
+            <ul class="dim-list">
+              <li><span class="dim-id">D1</span>Calidad de fuentes en prosa — ¿las afirmaciones del texto están respaldadas por las fuentes de Research?</li>
+              <li><span class="dim-id">D2</span>Calidad de claims — ¿los argumentos son coherentes, están bien construidos y libres de problemas típicos de escritura asistida (generalizaciones, afirmaciones no respaldadas, repeticiones)?</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="evaluator-card">
+      <div class="evaluator-header" onclick="toggleEval(this)">
+        <span class="evaluator-tag">WRITING</span>
+        <span class="evaluator-name">EVALUATE_BOOK_STYLE</span>
+        <span class="evaluator-status"><span class="badge badge-cian">ACTIVE v1.1</span></span>
+        <span class="toggle-icon">▸</span>
+      </div>
+      <div class="evaluator-body">
+        <div class="eval-row"><div class="eval-key">Evalúa</div><div class="eval-val">Adherencia al Perfil Editorial del autor — capítulos o libro completo</div></div>
+        <div class="eval-row"><div class="eval-key">Invocado por</div><div class="eval-val">WORKFLOW_WRITING BOOK · Fase 5</div></div>
+        <div class="eval-row"><div class="eval-key">Inputs adicionales</div><div class="eval-val">EDITOR_PROFILE — desde Editorial Profile (obligatorio)</div></div>
+        <div class="eval-row">
+          <div class="eval-key">9 dimensiones</div>
+          <div class="eval-val">
+            <ul class="dim-list">
+              <li><span class="dim-id">D1</span>Voz y tono <em style="color:var(--ta-rojo);font-size:10px;font-family:var(--font-mono);">peso 20%</em></li>
+              <li><span class="dim-id">D2</span>Registro y formalidad</li>
+              <li><span class="dim-id">D3</span>Arquitectura narrativa y estructura de argumentos</li>
+              <li><span class="dim-id">D4</span>Recursos literarios recurrentes</li>
+              <li><span class="dim-id">D5</span>Uso de ejemplos y analogías</li>
+              <li><span class="dim-id">D6</span>Densidad y ritmo de prosa</li>
+              <li><span class="dim-id">D7</span>NO-GOs del perfil <em style="color:var(--ta-rojo);font-size:10px;font-family:var(--font-mono);">peso 20% — cualquier violación → RED automático</em></li>
+              <li><span class="dim-id">D8</span>Coherencia de estilo a lo largo del texto</li>
+              <li><span class="dim-id">D9</span>Identidad autoral — ¿el texto podría haber sido escrito por el editor?</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="evaluator-card">
+      <div class="evaluator-header" onclick="toggleEval(this)">
+        <span class="evaluator-tag">WRITING</span>
+        <span class="evaluator-name">EVALUATE_POST</span>
+        <span class="evaluator-status"><span class="badge badge-cian">ACTIVE v1.0</span></span>
+        <span class="toggle-icon">▸</span>
+      </div>
+      <div class="evaluator-body">
+        <div class="eval-row"><div class="eval-key">Evalúa</div><div class="eval-val">Posts, artículos y hilos producidos por WORKFLOW_WRITING POST</div></div>
+        <div class="eval-row"><div class="eval-key">Invocado por</div><div class="eval-val">WORKFLOW_WRITING POST · Fase 3</div></div>
+        <div class="eval-row"><div class="eval-key">Inputs adicionales</div><div class="eval-val">EDITOR_PROFILE + PUBLICATION_PROFILE (vía WRITING_CONTEXT)</div></div>
+        <div class="eval-row">
+          <div class="eval-key">Evalúa</div>
+          <div class="eval-val">Voz y adherencia al perfil, estructura y claridad narrativa, adecuación al formato y plataforma, calidad editorial general, coherencia argumental.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="evaluator-card" style="opacity:0.7;">
+      <div class="evaluator-header">
+        <span class="evaluator-tag">ACTIVATION</span>
+        <span class="evaluator-name">EVALUATE_ACTIVATION</span>
+        <span class="evaluator-status"><span class="badge badge-pizarra">PENDIENTE R2</span></span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Ownership -->
+  <h2 class="doc-h2">El principio de ownership</h2>
+
+  <p>Todos los evaluadores del sistema son propiedad del subsistema Evaluation, independientemente de qué inputs necesiten para funcionar. Esto incluye EVALUATE_BOOK_STYLE, que necesita el Perfil Editorial como input pero pertenece a Evaluation porque su función es evaluar — no modelar al autor.</p>
+
+  <p>El criterio es funcional, no de dependencia: lo que determina el ownership es <strong>qué hace</strong> el artefacto, no qué consume. Este principio garantiza que todos los evaluadores se desarrollan con coherencia bajo una única responsabilidad — el subsistema Evaluation — y que pueden evolucionar juntos cuando el contrato de evaluación se actualice.</p>
+
+  <div class="section-divider"></div>
+
+  <!-- ══════════════════════════
+       SECCIÓN 3 — GUÍA DE USO
+  ══════════════════════════ -->
+  <div id="s03" style="position:relative;top:-20px;"></div>
+  <div class="section-label">03 — Guía de uso</div>
+  <h1 class="doc-h1">Cómo leer e interpretar un resultado</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">El editor no interactúa directamente con Evaluation — los workflows lo invocan en los momentos adecuados. Lo que el editor hace es leer el EVALUATION_RESULT y decidir qué hacer con él. Esta sección explica cómo hacerlo.</p>
+
+  <h2 class="doc-h2">Orden de lectura de un resultado</h2>
+
+  <table class="doc-table">
+    <thead><tr><th>Paso</th><th>Qué leer</th><th>Para qué</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1</strong></td><td><code>status</code></td><td>Determina inmediatamente si se puede avanzar (GREEN), si hay decisión pendiente (YELLOW) o si hay trabajo obligatorio antes de continuar (RED).</td></tr>
+      <tr><td><strong>2</strong></td><td><code>decision_guidance</code></td><td>Indica qué acción concreta debe tomar el editor. Es la instrucción operativa del resultado.</td></tr>
+      <tr><td><strong>3</strong></td><td><code>blocking_issues</code> o <code>improvement_areas</code></td><td>Solo en RED o YELLOW respectivamente. Lista los problemas o áreas específicas que requieren atención.</td></tr>
+      <tr><td><strong>4</strong></td><td><code>strengths</code></td><td>Presente siempre. Identifica qué funciona bien para que el editor no lo modifique en iteraciones.</td></tr>
+      <tr><td><strong>5</strong></td><td><code>score</code></td><td>Lectura opcional. El score complementa el status pero no lo determina — un texto puede tener score 72/100 y status YELLOW o GREEN según la distribución de las dimensiones.</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="doc-h2">Qué hacer con cada status</h2>
+
+  <ul class="doc-list">
+    <li>
+      <span class="li-num" style="color:var(--ta-verde)">GREEN</span>
+      <span>Avanzar al siguiente paso del workflow. No es necesario iterar ni corregir, aunque el editor puede hacer ajustes menores si lo desea. Los strengths identificados son una referencia útil para mantener el nivel en los artefactos siguientes.</span>
+    </li>
+    <li>
+      <span class="li-num" style="color:var(--ta-ambar)">YELLOW</span>
+      <span>El editor lee las <code>improvement_areas</code> y decide. Puede optar por reforzar antes de continuar (recomendado si las áreas son relevantes para el texto final) o avanzar asumiendo las limitaciones (aceptable si el editor considera que las áreas señaladas no son críticas para su objetivo).</span>
+    </li>
+    <li>
+      <span class="li-num" style="color:var(--ta-rojo)">RED</span>
+      <span>El editor lee los <code>blocking_issues</code> y trabaja en resolverlos antes de continuar. Según el evaluador, la resolución puede implicar volver a fases anteriores del workflow — por ejemplo, un RED en EVALUATE_RESEARCH_REPORT puede requerir añadir fuentes (Fase 0) y repetir la investigación profunda (Fase 4).</span>
+    </li>
+  </ul>
+
+  <div class="callout warn">
+    <p>En EVALUATE_BOOK_STYLE, la violación de cualquier NO-GO del Perfil Editorial produce un RED automático independientemente del score total. Un NO-GO no es una preferencia — es una restricción que el editor ha definido explícitamente como incompatible con su voz.</p>
+  </div>
+
+  <h2 class="doc-h2">Cuándo invocar la evaluación fuera del flujo estándar</h2>
+
+  <p>Los evaluadores no están limitados a los checkpoints que definen los workflows. El editor puede invocarlos en cualquier momento:</p>
+
+  <ul class="doc-list">
+    <li><span class="li-num">→</span><span><strong>Antes de publicar un texto externo al sistema</strong> — EVALUATE_BOOK_STYLE puede usarse para evaluar un capítulo escrito manualmente por el editor y verificar su coherencia con el perfil antes de incorporarlo al libro.</span></li>
+    <li><span class="li-num">→</span><span><strong>Durante la escritura de un libro largo</strong> — si el editor sospecha que el estilo se está desviando en los capítulos intermedios, puede invocar EVALUATE_BOOK_STYLE en mitad del proceso para corregir antes de que el problema se acumule.</span></li>
+    <li><span class="li-num">→</span><span><strong>Sobre investigaciones de proyectos anteriores</strong> — EVALUATE_RESEARCH_REPORT puede aplicarse a un research report existente para verificar si sigue siendo válido antes de usarlo como base de un texto nuevo.</span></li>
+  </ul>
+
+  <!-- FOOTER -->
+  <div class="doc-footer">
+    <div class="doc-footer-brand">TINTA ARTIFICIAL</div>
+    <div class="doc-footer-meta">SUBSYSTEM EVALUATION · R1 · 2026</div>
+  </div>
+
+</div>
+
+<script>
+  function toggleEval(header) {
+    const body = header.nextElementSibling;
+    const icon = header.querySelector('.toggle-icon');
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    icon.textContent = isOpen ? '▸' : '▾';
+  }
+</script>
+
+
+</div>
+</body>
+</html>

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SUBSYSTEM EDITORIAL PROFILE — D-X-OPUS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Gentium+Plus:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ta-tinta:   #0A0A0A;
+    --ta-carbon:  #434343;
+    --ta-grafito: #595959;
+    --ta-papel:   #E8E4D9;
+    --ta-blanco:  #FFFFFF;
+    --ta-cian:    #00D4D4;
+    --ta-rojo:    #FF2D2C;
+    --ta-pizarra: #78909C;
+    --ta-ambar:   #FFAB40;
+    --font-display: 'Bebas Neue', Arial, sans-serif;
+    --font-body:    'Gentium Plus', Georgia, serif;
+    --font-mono:    'JetBrains Mono', 'Courier New', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-body); background: var(--ta-blanco); color: var(--ta-tinta); padding: 0; }
+
+  /* ── COVER ── */
+  .cover { background: var(--ta-tinta); padding: 56px 40px 44px; }
+  .cover-rule { width: 48px; height: 3px; background: var(--ta-cian); margin-bottom: 24px; }
+  .cover-eyebrow { font-family: var(--font-mono); font-size: 11px; color: var(--ta-cian); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
+  .cover-title { font-family: var(--font-display); font-size: 72px; color: var(--ta-blanco); line-height: 0.95; letter-spacing: 0.01em; margin-bottom: 14px; }
+  .cover-subtitle { font-family: var(--font-body); font-size: 16px; color: var(--ta-papel); font-style: italic; margin-bottom: 40px; opacity: 0.85;
+    line-height: 22px;
+  }
+  .cover-meta { display: flex; gap: 36px; flex-wrap: wrap; border-top: 0.5px solid #2a2a2a; padding-top: 18px; }
+  .cover-meta-item strong { display: block; font-family: var(--font-mono); font-size: 10px; color: var(--ta-grafito); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 3px; }
+  .cover-meta-item span { font-family: var(--font-mono); font-size: 13px; color: var(--ta-papel); }
+
+  /* ── BODY ── */
+  .body-wrap { padding: 52px 40px; }
+  .section-label { font-family: var(--font-mono); font-size: 10px; color: var(--ta-cian); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 6px; }
+  h1.doc-h1 { font-family: var(--font-display); font-size: 34px; color: var(--ta-tinta); letter-spacing: 0.02em; line-height: 1; margin-bottom: 6px; }
+  .h1-rule { height: 2px; background: var(--ta-cian); margin-bottom: 28px; width: 100%; }
+  h2.doc-h2 { font-family: var(--font-display); font-size: 20px; color: var(--ta-carbon); letter-spacing: 0.04em; margin: 36px 0 10px; }
+  .section-divider { height: 0.5px; background: var(--ta-papel); margin: 48px 0; }
+  p { font-family: var(--font-body); font-size: 18px; line-height: 26px; color: var(--ta-tinta); margin-bottom: 14px; }
+  p.lead { font-size: 18px; color: var(--ta-carbon);
+    line-height: 26px;
+  }
+
+  /* ── CALLOUTS ── */
+  .callout { border-left: 3px solid var(--ta-cian); padding: 14px 18px; background: #F0FAFA; border-radius: 0 6px 6px 0; margin: 20px 0; }
+  .callout p { margin: 0; font-style: italic; font-size: 18px;
+    line-height: 26px;
+  }
+  .callout.warn { border-left-color: var(--ta-ambar); background: #FFFBF0; }
+
+  /* ── BADGES ── */
+  .badge { display: inline-block; font-family: var(--font-mono); font-size: 9px; font-weight: 500; padding: 2px 7px; border-radius: 3px; margin-left: 4px; letter-spacing: 0.04em; vertical-align: middle; position: relative; top: -1px; }
+  .badge-cian  { background: var(--ta-cian); color: #003333; }
+  .badge-ambar { background: var(--ta-ambar); color: #4A2900; }
+  .badge-pizarra { background: var(--ta-pizarra); color: #fff; }
+  .badge-tinta { background: var(--ta-tinta); color: var(--ta-blanco); }
+
+  /* ── CONCEPT CARDS ── */
+  .concept-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 24px 0; }
+  .concept-card { border: 0.5px solid #E0E0E0; border-radius: 6px; padding: 18px 20px; background: #FDFCFA; }
+  .concept-card.full { grid-column: 1 / -1; }
+  .concept-card.accent-cian    { border-top: 2px solid var(--ta-cian); }
+  .concept-card.accent-ambar   { border-top: 2px solid var(--ta-ambar); }
+  .concept-card.accent-pizarra { border-top: 2px solid var(--ta-pizarra); }
+  .concept-tag { font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+  .accent-cian    .concept-tag { color: var(--ta-cian); }
+  .accent-ambar   .concept-tag { color: var(--ta-ambar); }
+  .accent-pizarra .concept-tag { color: var(--ta-pizarra); }
+  .concept-name { font-family: var(--font-display); font-size: 18px; color: var(--ta-tinta); letter-spacing: 0.04em; margin-bottom: 8px; line-height: 1.1; }
+  .concept-def { font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito); line-height: 22px; }
+  .concept-def strong { color: var(--ta-tinta); }
+
+  /* ── NUMBERED LIST ── */
+  .doc-list { list-style: none; margin: 16px 0; }
+  .doc-list li { display: flex; gap: 14px; align-items: flex-start; padding: 10px 0; border-bottom: 0.5px solid #F0F0F0; font-size: 18px; line-height: 26px; }
+  .doc-list li:last-child { border-bottom: none; }
+  .li-num { font-family: var(--font-mono); font-size: 11px; color: var(--ta-cian); min-width: 22px; font-weight: 500; padding-top: 2px; }
+
+  /* ── PROFILE COMPARISON ── */
+  .profile-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 24px 0; }
+  .profile-card { border-radius: 6px; padding: 20px; }
+  .profile-full  { background: #F0FAFA; border: 1px solid #AAEAEA; border-top: 3px solid var(--ta-cian); }
+  .profile-notes { background: #FFFBF5; border: 1px solid #FFD89A; border-top: 3px solid var(--ta-ambar); }
+  .profile-label { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+  .profile-full  .profile-label { color: var(--ta-cian); }
+  .profile-notes .profile-label { color: var(--ta-ambar); }
+  .profile-title { font-family: var(--font-display); font-size: 18px; letter-spacing: 0.04em; margin-bottom: 10px; }
+  .profile-stat  { font-family: var(--font-mono); font-size: 10px; color: var(--ta-grafito); margin-bottom: 4px; }
+  .profile-stat strong { color: var(--ta-tinta); }
+  .profile-desc  { font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito); line-height: 22px; margin-top: 10px; }
+
+  /* ── TABLE ── */
+  table.doc-table { width: 100%; border-collapse: collapse; font-family: var(--font-body); font-size: 16px; margin: 16px 0;
+    line-height: 22px;
+  }
+  table.doc-table th { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ta-grafito); border-bottom: 1.5px solid var(--ta-cian); padding: 8px 12px; text-align: left; background: #FDFCFA; }
+  table.doc-table td { padding: 10px 12px; border-bottom: 0.5px solid var(--ta-papel); color: var(--ta-tinta); vertical-align: top; font-size: 16px; line-height: 1.6; }
+  table.doc-table tr:last-child td { border-bottom: none; }
+
+  /* ── SOURCES FLOW ── */
+  .sources-flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
+  .source-card { background: #FDFCFA; border: 0.5px solid #E0E0E0; border-radius: 5px; padding: 14px 16px; }
+  .source-num { font-family: var(--font-mono); font-size: 20px; color: var(--ta-cian); font-weight: 500; margin-bottom: 6px; line-height: 1; }
+  .source-name { font-family: var(--font-display); font-size: 14px; color: var(--ta-tinta); letter-spacing: 0.04em; margin-bottom: 6px; }
+  .source-desc { font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito); line-height: 22px; }
+
+  /* ── USAGE STEPS ── */
+  .step-flow { display: flex; flex-direction: column; gap: 4px; margin: 20px 0; }
+  .step-card { display: flex; gap: 16px; align-items: flex-start; background: #FDFCFA; border: 0.5px solid #E0E0E0; border-radius: 5px; padding: 14px 16px; }
+  .step-num { font-family: var(--font-display); font-size: 28px; color: var(--ta-cian); line-height: 1; min-width: 32px; }
+  .step-content { flex: 1; }
+  .step-title { font-family: var(--font-display); font-size: 16px; color: var(--ta-tinta); letter-spacing: 0.04em; margin-bottom: 5px; }
+  .step-desc { font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito); line-height: 22px; }
+  .step-artifact { font-family: var(--font-mono); font-size: 9px; color: var(--ta-pizarra); margin-top: 5px; }
+  .step-arrow { text-align: center; color: #DDDDDD; font-size: 16px; padding: 0; line-height: 1.2; }
+
+  /* ── CONSUMERS ── */
+  .consumer-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 20px 0; }
+  .consumer-card { background: #FAFAFA; border: 0.5px solid #E0E0E0; border-radius: 5px; padding: 12px 14px; text-align: center; }
+  .consumer-sub { font-family: var(--font-mono); font-size: 9px; color: var(--ta-pizarra); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 5px; }
+  .consumer-name { font-family: var(--font-display); font-size: 14px; color: var(--ta-tinta); letter-spacing: 0.04em; margin-bottom: 6px; }
+  .consumer-use { font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito); line-height: 22px; }
+
+  /* ── ARTIFACTS TABLE ── */
+  .artifact-grid { display: flex; flex-direction: column; gap: 6px; margin: 20px 0; }
+  .artifact-row { display: flex; align-items: flex-start; gap: 12px; background: #FDFCFA; border: 0.5px solid #E0E0E0; border-radius: 5px; padding: 12px 16px; }
+  .artifact-id { font-family: var(--font-mono); font-size: 9px; color: var(--ta-cian); font-weight: 500; min-width: 36px; padding-top: 1px; }
+  .artifact-name { font-family: var(--font-mono); font-size: 11px; color: var(--ta-tinta); font-weight: 500; margin-bottom: 3px; letter-spacing: 0.02em; }
+  .artifact-desc { font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito); line-height: 22px; }
+  .artifact-ver { font-family: var(--font-mono); font-size: 9px; color: var(--ta-pizarra); margin-top: 3px; }
+
+  .doc-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 48px; padding-top: 14px; border-top: 0.5px solid var(--ta-papel); }
+  .doc-footer-brand { font-family: var(--font-display); font-size: 20px; color: var(--ta-tinta); letter-spacing: 0.05em; }
+  .doc-footer-meta { font-family: var(--font-mono); font-size: 10px; color: var(--ta-grafito); }
+  .toc-num {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ta-cian);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+  }
+
+
+  /* ── DOC SIDEBAR LAYOUT ── */
+  .doc-sidebar {
+    width: 260px;
+    min-height: 100vh;
+    background: var(--ta-tinta);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0;
+    overflow-y: auto;
+    z-index: 100;
+  }
+  .ds-brand { padding: 24px 22px 18px; border-bottom: 0.5px solid #1a1a1a; }
+  .ds-rule { width: 28px; height: 2px; background: var(--ta-cian); margin-bottom: 12px; }
+  .ds-type { font-family: var(--font-mono); font-size: 9px; color: var(--ta-grafito); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px; line-height: 1.5; }
+  .ds-title { font-family: var(--font-display); font-size: 24px; color: #fff; letter-spacing: 0.04em; line-height: 1.05; margin-bottom: 6px; }
+  .ds-version { font-family: var(--font-mono); font-size: 9px; color: #333; letter-spacing: 0.1em; }
+  .ds-nav { flex: 1; padding: 20px 0 16px; }
+  .ds-nav-label { font-family: var(--font-mono); font-size: 9px; color: var(--ta-grafito); letter-spacing: 0.16em; text-transform: uppercase; padding: 0 22px 8px; display: block; }
+  .ds-item { display: flex; align-items: center; gap: 10px; padding: 9px 22px; text-decoration: none; border-left: 2px solid transparent; transition: background 0.15s; }
+  .ds-item:hover { background: rgba(255,255,255,0.05); border-left-color: var(--ta-cian); }
+  .ds-item-num { font-family: var(--font-mono); font-size: 10px; color: var(--ta-cian); font-weight: 500; min-width: 20px; }
+  .ds-item-text { font-family: var(--font-mono); font-size: 12px; color: var(--ta-pizarra); transition: color 0.15s; line-height: 1.3; }
+  .ds-item:hover .ds-item-text { color: #fff; }
+  .ds-footer { padding: 16px 22px; border-top: 0.5px solid #1a1a1a; }
+  .ds-back { display: flex; align-items: center; gap: 8px; text-decoration: none; font-family: var(--font-mono); font-size: 11px; color: var(--ta-pizarra); transition: color 0.15s; padding: 8px 0; }
+  .ds-back:hover { color: var(--ta-cian); }
+  .ds-back-arrow { font-size: 13px; }
+  .doc-main { margin-left: 260px; flex: 1; min-width: 0; }
+
+
+  .ds-back-wrap {
+    padding: 10px 22px;
+    border-bottom: 0.5px solid #1a1a1a;
+  }
+</style>
+</head>
+<body>
+<nav class="doc-sidebar">
+  <div class="ds-brand">
+    <div class="ds-rule"></div>
+    <div class="ds-type">Subsistema 3</div>
+    <div class="ds-title">EDITORIAL<br>PROFILE</div>
+    <div class="ds-version">R1 · D-X-OPUS</div>
+  </div>
+  <div class="ds-back-wrap">
+    <a class="ds-back" href="INDEX.html"><span class="ds-back-arrow">←</span> Índice principal</a>
+  </div>
+  <div class="ds-nav">
+    <span class="ds-nav-label">Contenido</span>
+    <a class="ds-item" href="#s01"><span class="ds-item-num">01</span><span class="ds-item-text">Propósito</span></a>
+    <a class="ds-item" href="#s02"><span class="ds-item-num">02</span><span class="ds-item-text">Conceptos clave</span></a>
+    <a class="ds-item" href="#s03"><span class="ds-item-num">03</span><span class="ds-item-text">Guía de uso</span></a>
+  </div>
+</nav>
+<div class="doc-main">
+
+
+<!-- ══ COVER ══ -->
+<div class="cover">
+  <div class="cover-rule"></div>
+  <div class="cover-eyebrow">Sistema D-X-OPUS · Subsistema 3 — Editorial Profile</div>
+  <div class="cover-title">EDITORIAL<br>PROFILE</div>
+  <div class="cover-subtitle">El único subsistema que modela al humano, no al proceso</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><strong>Versión</strong><span>R1 · 2026</span></div>
+    <div class="cover-meta-item"><strong>Release</strong><span>R1 · 2026</span></div>
+    <div class="cover-meta-item"><strong>Subsistema</strong><span>3 — Editorial Profile</span></div>
+    <div class="cover-meta-item"><strong>Audiencia</strong><span>Editor</span></div>
+    <div class="cover-meta-item"><strong>Estado</strong><span>ACTIVE</span></div>
+  </div>
+</div>
+
+
+</div>
+
+<div class="body-wrap">
+
+  <!-- ══════════════════════════
+       SECCIÓN 1 — PROPÓSITO
+  ══════════════════════════ -->
+  <div id="s01" style="position:relative;top:-20px;"></div>
+  <div class="section-label">01 — Propósito</div>
+  <h1 class="doc-h1">Qué es el subsistema Editorial Profile</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">Editorial Profile es el subsistema que captura quién es el editor como comunicador y proporciona ese conocimiento como contexto activo a todos los subsistemas que producen texto. Es el único componente del sistema que modela al humano — no a un proceso ni a un artefacto.</p>
+
+  <p>Sin un Perfil Editorial activo, el sistema puede investigar y escribir, pero el texto resultante carece de identidad autoral. Es técnicamente correcto pero editorialmente genérico — podría haberlo escrito cualquiera. El Perfil Editorial es lo que convierte la producción asistida en autoría asistida.</p>
+
+  <div class="callout">
+    <p>El Perfil Editorial no es un conjunto de instrucciones de estilo. Es un modelo de la voz del editor construido a partir de sus propios textos, sus propias decisiones y sus propias correcciones sobre los textos producidos por el sistema.</p>
+  </div>
+
+  <h2 class="doc-h2">Qué produce</h2>
+
+  <p>El subsistema produce dos artefactos con distinto alcance y ciclo de vida:</p>
+
+  <div class="profile-compare">
+    <div class="profile-card profile-full">
+      <div class="profile-label">Artefacto principal</div>
+      <div class="profile-title">Editor Profile</div>
+      <div class="profile-stat"><strong>Alcance:</strong> Todos los proyectos del editor</div>
+      <div class="profile-stat"><strong>Creación:</strong> Una vez, antes del primer proyecto</div>
+      <div class="profile-stat"><strong>Actualización:</strong> A medida que el editor crece o cambia</div>
+      <div class="profile-stat"><strong>Archivo:</strong> EDITOR_PROFILE_[nombre].md</div>
+      <div class="profile-desc">Captura la voz, registro, recursos literarios, estructuras preferidas y restricciones del editor como comunicador. Es el input de estilo de todos los workflows de producción.</div>
+    </div>
+    <div class="profile-card profile-notes">
+      <div class="profile-label">Artefacto ligero</div>
+      <div class="profile-title">Editor Notes</div>
+      <div class="profile-stat"><strong>Alcance:</strong> Un proyecto específico</div>
+      <div class="profile-stat"><strong>Creación:</strong> Al inicio de cada proyecto</div>
+      <div class="profile-stat"><strong>Actualización:</strong> Durante la producción</div>
+      <div class="profile-stat"><strong>Archivo:</strong> EDITOR_NOTES_[proyecto].md</div>
+      <div class="profile-desc">Captura las instrucciones, preferencias y decisiones editoriales específicas de ese proyecto — lo que el Editor Profile no puede saber porque es particular de ese libro o post.</div>
+    </div>
+  </div>
+
+  <h2 class="doc-h2">Dónde se usa el perfil</h2>
+
+  <div class="consumer-row">
+    <div class="consumer-card">
+      <div class="consumer-sub">Writing</div>
+      <div class="consumer-name">Escritura</div>
+      <div class="consumer-use">Input obligatorio en todos los prompts de escritura — libro y post. Regula voz, tono y registro del texto producido.</div>
+    </div>
+    <div class="consumer-card">
+      <div class="consumer-sub">Activation</div>
+      <div class="consumer-name">Activación</div>
+      <div class="consumer-use">Input del proceso de minería de seeds y escritura de contenido derivado. Asegura que la activación mantiene la voz del editor.</div>
+    </div>
+    <div class="consumer-card">
+      <div class="consumer-sub">Evaluation</div>
+      <div class="consumer-name">Evaluación</div>
+      <div class="consumer-use">Input de EVALUATE_BOOK_STYLE y EVALUATE_POST. Sin el perfil, los evaluadores de estilo no pueden juzgar si el texto es fiel a la voz del editor.</div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ══════════════════════════
+       SECCIÓN 2 — CONCEPTOS
+  ══════════════════════════ -->
+  <div id="s02" style="position:relative;top:-20px;"></div>
+  <div class="section-label">02 — Conceptos clave</div>
+  <h1 class="doc-h1">El modelo conceptual</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">El subsistema opera con varios conceptos que definen qué captura el perfil, cómo se construye y cómo se complementa con otros artefactos durante la producción.</p>
+
+  <!-- Qué captura el perfil -->
+  <h2 class="doc-h2">Qué captura el Perfil Editorial</h2>
+
+  <p>El perfil no es una lista de instrucciones de formato. Es un modelo de la identidad comunicativa del editor — las decisiones conscientes e inconscientes que hacen que sus textos sean reconociblemente suyos.</p>
+
+  <div class="concept-grid">
+    <div class="concept-card accent-cian">
+      <div class="concept-tag">Dimensión 1</div>
+      <div class="concept-name">Voz y tono</div>
+      <div class="concept-def">Persona gramatical dominante, nivel de formalidad, actitud hacia el lector, densidad de prosa, ritmo de las frases. La diferencia entre un editor que escribe con distancia analítica y uno que escribe con cercanía conversacional.</div>
+    </div>
+    <div class="concept-card accent-cian">
+      <div class="concept-tag">Dimensión 2</div>
+      <div class="concept-name">Arquitectura narrativa</div>
+      <div class="concept-def">Cómo estructura el editor sus argumentos: ¿deduce o induce? ¿parte del ejemplo o parte del concepto? ¿usa analogías o prefiere la evidencia directa? ¿cómo construye los cierres de sección?</div>
+    </div>
+    <div class="concept-card accent-cian">
+      <div class="concept-tag">Dimensión 3</div>
+      <div class="concept-name">Recursos literarios</div>
+      <div class="concept-def">Metáforas recurrentes, tipos de ejemplos preferidos, uso de la ironía, referencias culturales habituales, maneras de introducir una cita o un dato estadístico.</div>
+    </div>
+    <div class="concept-card accent-ambar">
+      <div class="concept-tag">Dimensión 4</div>
+      <div class="concept-name">Restricciones — NO-GOs</div>
+      <div class="concept-def">Lo que el editor evita sistemáticamente: clichés específicos, estructuras que no le son propias, registros que le resultan ajenos, tipos de apertura que no usa nunca.</div>
+    </div>
+  </div>
+
+  <!-- Fuentes para construir el perfil -->
+  <h2 class="doc-h2">Cómo se construye el perfil</h2>
+
+  <p>El perfil se construye por análisis de textos del propio editor. Cuantos más textos y más variados, más preciso y robusto es el modelo. El sistema analiza las fuentes disponibles en orden de relevancia:</p>
+
+  <div class="sources-flow">
+    <div class="source-card">
+      <div class="source-num">01</div>
+      <div class="source-name">Textos propios del editor</div>
+      <div class="source-desc">Posts, artículos, libros, notas de trabajo. Son la fuente más directa de la voz real. Tienen prioridad absoluta sobre cualquier otra fuente.</div>
+    </div>
+    <div class="source-card">
+      <div class="source-num">02</div>
+      <div class="source-name">Documentos de proceso</div>
+      <div class="source-desc">Outlines, planes narrativos, notas de trabajo, borradores descartados. Revelan cómo piensa el editor antes de escribir — información que los textos pulidos no siempre muestran.</div>
+    </div>
+    <div class="source-card">
+      <div class="source-num">03</div>
+      <div class="source-name">Feedback e información biográfica</div>
+      <div class="source-desc">Correcciones históricas sobre textos, formación académica, áreas de especialización, intereses intelectuales que dan contexto al perfil.</div>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <p>Un perfil construido sin textos propios del editor es un perfil débil. El sistema puede producir un perfil provisional a partir de información biográfica, pero hasta que no se analicen textos reales del editor, el modelo de voz será genérico.</p>
+  </div>
+
+  <!-- Editor Notes vs Editor Profile -->
+  <h2 class="doc-h2">Editor Profile vs Editor Notes</h2>
+
+  <p>El Editor Profile captura la identidad autoral del editor a lo largo del tiempo. Las Editor Notes capturan las decisiones específicas de un proyecto concreto que no forman parte de la identidad permanente del editor — el tono particular de un libro, el ángulo editorial de una serie de posts, las restricciones de extensión de una publicación.</p>
+
+  <table class="doc-table">
+    <thead><tr><th>Criterio</th><th>Editor Profile</th><th>Editor Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Alcance</td><td>Todos los proyectos del editor</td><td>Un proyecto específico</td></tr>
+      <tr><td>Contenido</td><td>Voz, tono, recursos, restricciones permanentes</td><td>Instrucciones, ángulo, restricciones del proyecto</td></tr>
+      <tr><td>Cuándo se crea</td><td>Una vez, antes del primer proyecto</td><td>Al inicio de cada nuevo proyecto</td></tr>
+      <tr><td>Cuándo se actualiza</td><td>Cuando el editor evoluciona como comunicador</td><td>Durante la producción, cuando surgen decisiones nuevas</td></tr>
+      <tr><td>Múltiples instancias</td><td>Sí — un perfil por tipo de proyecto o plataforma</td><td>Sí — una por proyecto activo</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Publication Profile -->
+  <h2 class="doc-h2">El Perfil de Publicación</h2>
+
+  <p>Independiente del Editor Profile, el sistema gestiona también Perfiles de Publicación. Un editor puede escribir para varias publicaciones con criterios editoriales distintos — un blog personal, una revista académica, un newsletter de divulgación. Cada publicación tiene su propio perfil con sus propios criterios.</p>
+
+  <p>La relación entre editor y publicación es de muchos a muchos: un editor puede tener múltiples publicaciones, y una publicación puede tener múltiples editores colaboradores. Por eso el Perfil de Publicación vive como entidad independiente — no dentro del Editor Profile. La conexión entre ambos se establece en el contexto de cada proyecto.</p>
+
+  <!-- Estilos y tipos de libro -->
+  <h2 class="doc-h2">Recursos editoriales del sistema</h2>
+
+  <p>El subsistema mantiene dos recursos de referencia que informan la construcción del perfil y orientan las decisiones editoriales de cada proyecto:</p>
+
+  <div class="concept-grid">
+    <div class="concept-card accent-pizarra">
+      <div class="concept-tag">Recurso</div>
+      <div class="concept-name">Editorial Style</div>
+      <div class="concept-def">Catálogo de estilos editoriales disponibles en el sistema: los registros, tonos y aproximaciones narrativas que el sistema puede modelar. El editor selecciona el estilo que mejor describe su voz o el que quiere desarrollar para un proyecto específico.</div>
+    </div>
+    <div class="concept-card accent-pizarra">
+      <div class="concept-tag">Recurso</div>
+      <div class="concept-name">Book Types</div>
+      <div class="concept-def">Catálogo de los tipos de libro que el sistema soporta, con sus características estructurales, narrativas y de audiencia. Orienta la decisión sobre qué tipo de libro es adecuado para un determinado material de investigación.</div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ══════════════════════════
+       SECCIÓN 3 — GUÍA DE USO
+  ══════════════════════════ -->
+  <div id="s03" style="position:relative;top:-20px;"></div>
+  <div class="section-label">03 — Guía de uso</div>
+  <h1 class="doc-h1">Cómo configurar y mantener el perfil</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">El Perfil Editorial se crea una vez y se mantiene vivo. Esta sección describe cuándo crear el perfil, cómo usarlo durante la producción y cómo actualizarlo cuando el editor evoluciona.</p>
+
+  <h2 class="doc-h2">Crear el perfil — proceso paso a paso</h2>
+
+  <div class="step-flow">
+    <div class="step-card">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-title">Reunir textos propios</div>
+        <div class="step-desc">Recopilar 3–5 textos representativos del propio editor: posts, artículos, capítulos, notas largas. Cuanto más variados en tema y formato, mejor. Si no hay textos propios todavía, empezar con documentos de proceso y actualizar el perfil cuando se acumule producción.</div>
+      </div>
+    </div>
+    <div class="step-arrow">↓</div>
+    <div class="step-card">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-title">Ejecutar PROMPT_CREATE_EDITOR_PROFILE</div>
+        <div class="step-desc">El sistema analiza todos los materiales disponibles y produce el EDITOR_PROFILE siguiendo el TEMPLATE_EDITOR_PROFILE. El proceso incluye análisis de voz y tono, identificación de arquitectura narrativa, extracción de recursos literarios recurrentes y definición de NO-GOs.</div>
+        <div class="step-artifact">→ PROMPT_CREATE_EDITOR_PROFILE v1.1 · TEMPLATE_EDITOR_PROFILE v1.0</div>
+      </div>
+    </div>
+    <div class="step-arrow">↓</div>
+    <div class="step-card">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-title">Revisar y validar el perfil</div>
+        <div class="step-desc">El editor lee el perfil producido y verifica que el modelo de voz es reconociblemente suyo. Puede añadir, corregir o matizar cualquier dimensión. El perfil validado es la referencia canónica para todos los proyectos siguientes.</div>
+      </div>
+    </div>
+    <div class="step-arrow">↓</div>
+    <div class="step-card">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <div class="step-title">Asignar a los proyectos activos</div>
+        <div class="step-desc">El perfil validado se carga como input en todos los workflows de producción. Si el editor tiene perfiles distintos para tipos de proyecto distintos, se selecciona el perfil activo correspondiente al proyecto en curso.</div>
+        <div class="step-artifact">→ Destino: Writing (todos los prompts) · Activation · Evaluation</div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="doc-h2">Usar Editor Notes durante la producción</h2>
+
+  <p>Al inicio de cada proyecto se crea un documento de Editor Notes ligero que complementa al perfil con las decisiones específicas de ese proyecto. Las notas se van ampliando durante la producción cada vez que el editor toma una decisión que no está en el perfil general:</p>
+
+  <ul class="doc-list">
+    <li><span class="li-num">→</span><span>El tono de este libro es más formal que el perfil general del editor — los capítulos de análisis deben evitar el registro conversacional que usa habitualmente.</span></li>
+    <li><span class="li-num">→</span><span>Este post va dirigido a una audiencia técnica que ya conoce el tema — no explicar conceptos básicos, asumir conocimiento previo.</span></li>
+    <li><span class="li-num">→</span><span>El primer capítulo revisado mostró que el editor prefiere párrafos más cortos de lo habitual en este libro — incorporar al estilo del proyecto.</span></li>
+  </ul>
+
+  <div class="callout">
+    <p>Las Editor Notes son el mecanismo de aprendizaje proyecto a proyecto. Si una instrucción de las notas empieza a aparecer en todos los proyectos, es señal de que debe incorporarse al perfil general.</p>
+  </div>
+
+  <h2 class="doc-h2">Cuándo actualizar el perfil</h2>
+
+  <p>El Perfil Editorial no es estático. El editor evoluciona como comunicador y el perfil debe reflejar ese crecimiento. Las señales que indican que el perfil necesita actualización:</p>
+
+  <ul class="doc-list">
+    <li><span class="li-num">01</span><span>El editor corrige sistemáticamente el mismo tipo de elemento en varios proyectos seguidos — señal de que el perfil no ha capturado bien esa dimensión.</span></li>
+    <li><span class="li-num">02</span><span>El editor ha producido un cuerpo nuevo de textos relevantes que representan una evolución de su voz respecto a los textos con los que se construyó el perfil.</span></li>
+    <li><span class="li-num">03</span><span>El editor quiere desarrollar un nuevo registro para un tipo de proyecto diferente — se crea un perfil adicional para ese contexto sin modificar el perfil principal.</span></li>
+  </ul>
+
+  <h2 class="doc-h2">Inventario de artefactos</h2>
+
+  <div class="artifact-grid">
+    <div class="artifact-row">
+      <div class="artifact-id">P</div>
+      <div class="artifact-content">
+        <div class="artifact-name">PROMPT_CREATE_EDITOR_PROFILE</div>
+        <div class="artifact-desc">Genera el perfil editorial completo del autor a partir de sus textos y materiales de referencia. Analiza voz, tono, arquitectura narrativa, recursos literarios y restricciones.</div>
+        <div class="artifact-ver">v1.1 · ACTIVE</div>
+      </div>
+    </div>
+    <div class="artifact-row">
+      <div class="artifact-id">T</div>
+      <div class="artifact-content">
+        <div class="artifact-name">TEMPLATE_EDITOR_PROFILE</div>
+        <div class="artifact-desc">Plantilla estructurada que define las secciones y el formato del EDITOR_PROFILE. Garantiza consistencia entre perfiles de distintos editores.</div>
+        <div class="artifact-ver">v1.0 · ACTIVE</div>
+      </div>
+    </div>
+    <div class="artifact-row">
+      <div class="artifact-id">T</div>
+      <div class="artifact-content">
+        <div class="artifact-name">TEMPLATE_EDITOR_NOTES</div>
+        <div class="artifact-desc">Plantilla ligera para las notas del editor en cada proyecto. Más flexible que el perfil — captura instrucciones específicas del proyecto sin estructura fija.</div>
+        <div class="artifact-ver">v1.0 · ACTIVE</div>
+      </div>
+    </div>
+    <div class="artifact-row">
+      <div class="artifact-id">G</div>
+      <div class="artifact-content">
+        <div class="artifact-name">GUIDE_EDITOR_NOTES</div>
+        <div class="artifact-desc">Guía completa de uso para las notas del editor: cuándo crearlas, qué incluir, cómo mantenerlas durante la producción y cuándo trasladar su contenido al perfil general.</div>
+        <div class="artifact-ver">v1.0 · ACTIVE</div>
+      </div>
+    </div>
+    <div class="artifact-row">
+      <div class="artifact-id">R</div>
+      <div class="artifact-content">
+        <div class="artifact-name">RESOURCE_EDITORIAL_STYLE</div>
+        <div class="artifact-desc">Catálogo de estilos editoriales disponibles en el sistema. Referencia para la creación del perfil y para seleccionar el registro adecuado por tipo de proyecto.</div>
+        <div class="artifact-ver">v1.0 · ACTIVE</div>
+      </div>
+    </div>
+    <div class="artifact-row">
+      <div class="artifact-id">R</div>
+      <div class="artifact-content">
+        <div class="artifact-name">RESOURCE_BOOK_TYPES</div>
+        <div class="artifact-desc">Catálogo de tipos de libro soportados por el sistema con sus características estructurales, narrativas y de audiencia. Orienta la selección del tipo adecuado para cada proyecto de libro.</div>
+        <div class="artifact-ver">v1.3 · ACTIVE</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="doc-footer">
+    <div class="doc-footer-brand">TINTA ARTIFICIAL</div>
+    <div class="doc-footer-meta">SUBSYSTEM EDITORIAL PROFILE · R1 · 2026</div>
+  </div>
+
+</div>
+
+</div>
+</body>
+</html>

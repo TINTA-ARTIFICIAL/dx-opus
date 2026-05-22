@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WORKFLOW WRITING v2.0 — D-X-OPUS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Gentium+Plus:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ta-tinta:   #0A0A0A;
+    --ta-carbon:  #434343;
+    --ta-grafito: #595959;
+    --ta-papel:   #E8E4D9;
+    --ta-blanco:  #FFFFFF;
+    --ta-cian:    #00D4D4;
+    --ta-rojo:    #FF2D2C;
+    --ta-pizarra: #78909C;
+    --ta-ambar:   #FFAB40;
+    --font-display: 'Bebas Neue', Arial, sans-serif;
+    --font-body:    'Gentium Plus', Georgia, serif;
+    --font-mono:    'JetBrains Mono', 'Courier New', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-body); background: var(--ta-blanco); color: var(--ta-tinta); padding: 0; }
+
+  /* ── COVER ── */
+  .cover { background: var(--ta-tinta); padding: 56px 40px 44px; }
+  .cover-rule { width: 48px; height: 3px; background: var(--ta-cian); margin-bottom: 24px; }
+  .cover-eyebrow { font-family: var(--font-mono); font-size: 11px; color: var(--ta-cian); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
+  .cover-title { font-family: var(--font-display); font-size: 72px; color: var(--ta-blanco); line-height: 0.95; letter-spacing: 0.01em; margin-bottom: 14px; }
+  .cover-subtitle { font-family: var(--font-body); font-size: 16px; color: var(--ta-papel); font-style: italic; margin-bottom: 40px; opacity: 0.85;
+    line-height: 22px;
+  }
+  .cover-meta { display: flex; gap: 36px; flex-wrap: wrap; border-top: 0.5px solid #2a2a2a; padding-top: 18px; }
+  .cover-meta-item strong { display: block; font-family: var(--font-mono); font-size: 10px; color: var(--ta-grafito); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 3px; }
+  .cover-meta-item span { font-family: var(--font-mono); font-size: 13px; color: var(--ta-papel); }
+
+  /* ── BODY ── */
+  .body-wrap { padding: 52px 40px; }
+  .section-label { font-family: var(--font-mono); font-size: 10px; color: var(--ta-cian); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 6px; }
+  h1.doc-h1 { font-family: var(--font-display); font-size: 34px; color: var(--ta-tinta); letter-spacing: 0.02em; line-height: 1; margin-bottom: 6px; }
+  .h1-rule { height: 2px; background: var(--ta-cian); margin-bottom: 28px; width: 100%; }
+  h2.doc-h2 { font-family: var(--font-display); font-size: 20px; color: var(--ta-carbon); letter-spacing: 0.04em; margin: 36px 0 10px; }
+  .section-divider { height: 0.5px; background: var(--ta-papel); margin: 48px 0; }
+  p { font-family: var(--font-body); font-size: 18px; line-height: 26px; color: var(--ta-tinta); margin-bottom: 14px; }
+  p.lead { font-size: 18px; color: var(--ta-carbon);
+    line-height: 26px;
+  }
+
+  /* ── CALLOUTS ── */
+  .callout { border-left: 3px solid var(--ta-cian); padding: 14px 18px; background: #F0FAFA; border-radius: 0 6px 6px 0; margin: 20px 0; }
+  .callout p { margin: 0; font-style: italic; font-size: 18px;
+    line-height: 26px;
+  }
+  .callout.warn { border-left-color: var(--ta-ambar); background: #FFFBF0; }
+
+  /* ── BADGES ── */
+  .badge { display: inline-block; font-family: var(--font-mono); font-size: 9px; font-weight: 500; padding: 2px 7px; border-radius: 3px; margin-left: 4px; letter-spacing: 0.04em; vertical-align: middle; position: relative; top: -1px; }
+  .badge-cian    { background: var(--ta-cian); color: #003333; }
+  .badge-ambar   { background: var(--ta-ambar); color: #4A2900; }
+  .badge-pizarra { background: var(--ta-pizarra); color: #fff; }
+  .badge-tinta   { background: var(--ta-tinta); color: var(--ta-blanco); }
+
+  /* ── COMPARISON TABLE ── */
+  table.doc-table { width: 100%; border-collapse: collapse; font-family: var(--font-body); font-size: 16px; margin: 16px 0;
+    line-height: 22px;
+  }
+  table.doc-table th { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ta-grafito); border-bottom: 1.5px solid var(--ta-cian); padding: 8px 12px; text-align: left; background: #FDFCFA; }
+  table.doc-table td { padding: 10px 12px; border-bottom: 0.5px solid var(--ta-papel); color: var(--ta-tinta); vertical-align: top; font-size: 16px; line-height: 1.6; }
+  table.doc-table tr:last-child td { border-bottom: none; }
+  .td-book { color: var(--ta-cian); font-family: var(--font-mono); font-size: 10px; font-weight: 500; }
+  .td-post { color: var(--ta-ambar); font-family: var(--font-mono); font-size: 10px; font-weight: 500; }
+
+  /* ── BIFURCATION CARD ── */
+  .bifurcation { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 24px 0; }
+  .bif-card { border-radius: 6px; padding: 20px; }
+  .bif-book { background: #F0FAFA; border: 1px solid #AAEAEA; border-top: 3px solid var(--ta-cian); }
+  .bif-post { background: #FFFBF5; border: 1px solid #FFD89A; border-top: 3px solid var(--ta-ambar); }
+  .bif-label { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+  .bif-book .bif-label { color: var(--ta-cian); }
+  .bif-post .bif-label { color: var(--ta-ambar); }
+  .bif-title { font-family: var(--font-display); font-size: 20px; letter-spacing: 0.04em; margin-bottom: 10px; }
+  .bif-stat { font-family: var(--font-mono); font-size: 10px; color: var(--ta-grafito); margin-bottom: 4px; }
+  .bif-stat strong { color: var(--ta-tinta); }
+  .bif-desc { font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito); line-height: 22px; margin-top: 10px; }
+
+  /* ── CONCEPT CARDS ── */
+  .concept-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 24px 0; }
+  .concept-card { border: 0.5px solid #E0E0E0; border-radius: 6px; padding: 18px 20px; background: #FDFCFA; }
+  .concept-card.full { grid-column: 1 / -1; }
+  .concept-card.accent-cian    { border-top: 2px solid var(--ta-cian); }
+  .concept-card.accent-ambar   { border-top: 2px solid var(--ta-ambar); }
+  .concept-card.accent-pizarra { border-top: 2px solid var(--ta-pizarra); }
+  .concept-tag { font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+  .accent-cian    .concept-tag { color: var(--ta-cian); }
+  .accent-ambar   .concept-tag { color: var(--ta-ambar); }
+  .accent-pizarra .concept-tag { color: var(--ta-pizarra); }
+  .concept-name { font-family: var(--font-display); font-size: 18px; color: var(--ta-tinta); letter-spacing: 0.04em; margin-bottom: 8px; line-height: 1.1; }
+  .concept-def { font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito); line-height: 22px; }
+  .concept-def strong { color: var(--ta-tinta); }
+
+  /* ── NUMBERED LIST ── */
+  .doc-list { list-style: none; margin: 16px 0; }
+  .doc-list li { display: flex; gap: 14px; align-items: flex-start; padding: 10px 0; border-bottom: 0.5px solid #F0F0F0; font-size: 18px; line-height: 26px; }
+  .doc-list li:last-child { border-bottom: none; }
+  .li-num { font-family: var(--font-mono); font-size: 11px; color: var(--ta-cian); min-width: 22px; font-weight: 500; padding-top: 2px; }
+
+  /* ── EVALUATORS ── */
+  .eval-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin: 20px 0; }
+  .eval-card { background: #FDFCFA; border: 0.5px solid #E0E0E0; border-radius: 5px; padding: 14px 16px; }
+  .eval-name { font-family: var(--font-mono); font-size: 10px; color: var(--ta-cian); font-weight: 500; margin-bottom: 5px; }
+  .eval-owner { font-family: var(--font-mono); font-size: 9px; color: var(--ta-pizarra); margin-bottom: 6px; }
+  .eval-desc { font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito); line-height: 22px; }
+
+  /* ── INPUTS BOX ── */
+  .inputs-box { background: #F7F9FA; border: 1px solid #D8EFF0; border-left: 3px solid var(--ta-cian); border-radius: 0 6px 6px 0; padding: 14px 18px; margin-bottom: 24px; }
+  .inputs-box .box-label { font-family: var(--font-mono); font-size: 10px; color: var(--ta-cian); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; font-weight: 500; }
+  .inputs-box ul { list-style: none; }
+  .inputs-box li { font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito); padding: 3px 0 3px 14px; position: relative;
+    line-height: 22px;
+  }
+  .inputs-box li::before { content: "→"; position: absolute; left: 0; color: var(--ta-pizarra); font-family: var(--font-mono); font-size: 11px; }
+  .inputs-box li strong { color: var(--ta-tinta); }
+
+  /* ── FLOW DIAGRAM ── */
+  .flow { display: flex; flex-direction: column; gap: 4px; }
+  .phase-card { border: 0.5px solid #D4D4D4; border-radius: 6px; overflow: hidden; }
+  .phase-card.phase-cian    { border-left: 3px solid var(--ta-cian); }
+  .phase-card.phase-ambar   { border-left: 3px solid var(--ta-ambar); }
+  .phase-card.phase-pizarra { border-left: 3px solid var(--ta-pizarra); }
+  .phase-card.phase-neutral { border-left: 3px solid var(--ta-carbon); }
+  .phase-card.phase-green   { border-left: 3px solid #34C670; }
+
+  .phase-header { display: flex; align-items: center; gap: 12px; padding: 10px 16px; cursor: pointer; user-select: none; background: #FAFAFA; }
+  .phase-card.phase-cian  .phase-header { background: #F5FEFE; }
+  .phase-card.phase-ambar .phase-header { background: #FFFBF5; }
+  .phase-header:hover { filter: brightness(0.97); }
+
+  .phase-tag { font-family: var(--font-mono); font-size: 10px; font-weight: 500; min-width: 76px; letter-spacing: 0.05em; }
+  .phase-card.phase-cian    .phase-tag { color: var(--ta-cian); }
+  .phase-card.phase-ambar   .phase-tag { color: var(--ta-ambar); }
+  .phase-card.phase-pizarra .phase-tag { color: var(--ta-pizarra); }
+  .phase-card.phase-neutral .phase-tag { color: var(--ta-carbon); }
+  .phase-card.phase-green   .phase-tag { color: #34C670; }
+
+  .phase-title { flex: 1; font-family: var(--font-display); font-size: 14px; letter-spacing: 0.06em; color: var(--ta-tinta); }
+  .phase-time { font-family: var(--font-mono); font-size: 10px; color: var(--ta-pizarra); white-space: nowrap; }
+  .toggle-icon { font-size: 13px; color: var(--ta-pizarra); margin-left: 4px; }
+  .phase-body { display: none; padding: 0 16px 14px; border-top: 0.5px solid #EEEEEE; }
+  .phase-body.open { display: block; }
+
+  .task-row { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 0.5px solid #F0F0F0; }
+  .task-row:last-child { border-bottom: none; }
+  .task-icon { font-size: 16px; min-width: 20px; margin-top: 1px; }
+  .task-name { font-family: var(--font-mono); font-size: 10px; color: var(--ta-tinta); font-weight: 500; margin-bottom: 3px; letter-spacing: 0.03em; }
+  .task-desc { font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito); line-height: 22px; }
+
+  .checkpoint { margin-top: 10px; padding: 7px 12px; border-radius: 4px; font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.04em; }
+  .cp-cian    { background: #E8FAFA; border: 0.5px solid var(--ta-cian); color: #006666; }
+  .cp-neutral { background: #F5F5F5; border: 0.5px solid #D0D0D0; color: var(--ta-carbon); }
+  .cp-ambar   { background: #FFF8E8; border: 0.5px solid var(--ta-ambar); color: #7A4400; }
+  .cp-green   { background: #F0FAF4; border: 0.5px solid #A8E6BE; color: #1A7A40; }
+
+  .flow-arrow { text-align: center; color: #CCCCCC; font-size: 18px; padding: 2px 0; line-height: 26px; }
+  .flow-arrow.split-arrow { font-family: var(--font-mono); font-size: 11px; color: var(--ta-pizarra); letter-spacing: 0.1em; }
+
+  /* ── DUAL RAMA LAYOUT ── */
+  .rama-split { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .rama-col { display: flex; flex-direction: column; gap: 4px; }
+  .rama-col-header { text-align: center; padding: 7px 10px; border-radius: 4px; font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+  .rama-book-h { background: #E5FAFA; color: #005555; border: 0.5px solid #AAEAEA; }
+  .rama-post-h { background: #FFF5E5; color: #7A4400; border: 0.5px solid #FFD89A; }
+
+  /* ── OUTPUT BOX ── */
+  .output-final { background: var(--ta-tinta); border-radius: 5px; padding: 14px 18px; margin-top: 8px; }
+  .output-final-label { font-family: var(--font-mono); font-size: 9px; color: var(--ta-cian); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+  .output-final-item { font-family: var(--font-mono); font-size: 10px; color: var(--ta-papel); line-height: 1.9; }
+  .output-final-dest { font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito); margin-top: 8px; font-style: italic;
+    line-height: 22px;
+  }
+
+  .doc-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 48px; padding-top: 14px; border-top: 0.5px solid var(--ta-papel); }
+  .doc-footer-brand { font-family: var(--font-display); font-size: 20px; color: var(--ta-tinta); letter-spacing: 0.05em; }
+  .doc-footer-meta { font-family: var(--font-mono); font-size: 10px; color: var(--ta-grafito); }
+  .toc-num {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ta-cian);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+  }
+
+
+  /* ── DOC SIDEBAR LAYOUT ── */
+  .doc-sidebar {
+    width: 260px;
+    min-height: 100vh;
+    background: var(--ta-tinta);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0;
+    overflow-y: auto;
+    z-index: 100;
+  }
+  .ds-brand { padding: 24px 22px 18px; border-bottom: 0.5px solid #1a1a1a; }
+  .ds-rule { width: 28px; height: 2px; background: var(--ta-cian); margin-bottom: 12px; }
+  .ds-type { font-family: var(--font-mono); font-size: 9px; color: var(--ta-grafito); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px; line-height: 1.5; }
+  .ds-title { font-family: var(--font-display); font-size: 24px; color: #fff; letter-spacing: 0.04em; line-height: 1.05; margin-bottom: 6px; }
+  .ds-version { font-family: var(--font-mono); font-size: 9px; color: #333; letter-spacing: 0.1em; }
+  .ds-nav { flex: 1; padding: 20px 0 16px; }
+  .ds-nav-label { font-family: var(--font-mono); font-size: 9px; color: var(--ta-grafito); letter-spacing: 0.16em; text-transform: uppercase; padding: 0 22px 8px; display: block; }
+  .ds-item { display: flex; align-items: center; gap: 10px; padding: 9px 22px; text-decoration: none; border-left: 2px solid transparent; transition: background 0.15s; }
+  .ds-item:hover { background: rgba(255,255,255,0.05); border-left-color: var(--ta-cian); }
+  .ds-item-num { font-family: var(--font-mono); font-size: 10px; color: var(--ta-cian); font-weight: 500; min-width: 20px; }
+  .ds-item-text { font-family: var(--font-mono); font-size: 12px; color: var(--ta-pizarra); transition: color 0.15s; line-height: 1.3; }
+  .ds-item:hover .ds-item-text { color: #fff; }
+  .ds-footer { padding: 16px 22px; border-top: 0.5px solid #1a1a1a; }
+  .ds-back { display: flex; align-items: center; gap: 8px; text-decoration: none; font-family: var(--font-mono); font-size: 11px; color: var(--ta-pizarra); transition: color 0.15s; padding: 8px 0; }
+  .ds-back:hover { color: var(--ta-cian); }
+  .ds-back-arrow { font-size: 13px; }
+  .doc-main { margin-left: 260px; flex: 1; min-width: 0; }
+
+
+  .ds-back-wrap {
+    padding: 10px 22px;
+    border-bottom: 0.5px solid #1a1a1a;
+  }
+</style>
+</head>
+<body>
+<nav class="doc-sidebar">
+  <div class="ds-brand">
+    <div class="ds-rule"></div>
+    <div class="ds-type">Workflow · Subsistema 4</div>
+    <div class="ds-title">WRITING</div>
+    <div class="ds-version">v2.0 · D-X-OPUS</div>
+  </div>
+  <div class="ds-back-wrap">
+    <a class="ds-back" href="INDEX.html"><span class="ds-back-arrow">←</span> Índice principal</a>
+  </div>
+  <div class="ds-nav">
+    <span class="ds-nav-label">Contenido</span>
+    <a class="ds-item" href="#s01"><span class="ds-item-num">01</span><span class="ds-item-text">Propósito</span></a>
+    <a class="ds-item" href="#s02"><span class="ds-item-num">02</span><span class="ds-item-text">Conceptos clave</span></a>
+    <a class="ds-item" href="#s03"><span class="ds-item-num">03</span><span class="ds-item-text">Diagrama</span></a>
+  </div>
+</nav>
+<div class="doc-main">
+
+
+<!-- ══ COVER ══ -->
+<div class="cover">
+  <div class="cover-rule"></div>
+  <div class="cover-eyebrow">Sistema D-X-OPUS · Subsistema 4 — Writing</div>
+  <div class="cover-title">WORKFLOW<br>WRITING</div>
+  <div class="cover-subtitle">Cómo transformar la investigación en texto publicable — libro o post</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><strong>Versión</strong><span>v2.0</span></div>
+    <div class="cover-meta-item"><strong>Release</strong><span>R1 · 2026</span></div>
+    <div class="cover-meta-item"><strong>Subsistema</strong><span>4 — Writing</span></div>
+    <div class="cover-meta-item"><strong>Audiencia</strong><span>Editor</span></div>
+    <div class="cover-meta-item"><strong>Estado</strong><span>ACTIVE</span></div>
+  </div>
+</div>
+
+
+</div>
+
+<div class="body-wrap">
+
+  <!-- ══════════════════════════════
+       SECCIÓN 1 — PROPÓSITO
+  ══════════════════════════════ -->
+  <div id="s01" style="position:relative;top:-20px;"></div>
+  <div class="section-label">01 — Propósito</div>
+  <h1 class="doc-h1">Qué hace el subsistema Writing</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">Writing es el subsistema que transforma el conocimiento validado producido por Research en texto publicable. Su función es producir prosa con voz editorial —no resúmenes de fuentes— a partir del material que el editor ha investigado y aprobado.</p>
+
+  <p>La diferencia fundamental entre Research y Writing no es de contenido sino de rol. En Research, el sistema actúa como investigador: su objetivo es ser exhaustivo y fiel a las fuentes. En Writing, actúa como escritor: su objetivo es construir narrativa, mantener la voz del editor y producir texto que merezca ser leído. Esa transición de rol es lo que hace que un libro de no-ficción sea un libro y no un informe.</p>
+
+  <div class="callout">
+    <p>El sistema nunca escribe sin dirección editorial. Cada unidad —capítulo, sección o post— se produce para ser revisada y aprobada antes de continuar. El editor no delega la autoría: supervisa la ejecución de un plan que él mismo ha diseñado.</p>
+  </div>
+
+  <h2 class="doc-h2">La bifurcación Book / Post</h2>
+
+  <p>La decisión de rama ocurre al inicio de cada proyecto de escritura, antes de invocar cualquier prompt. Dos criterios la determinan: el formato de output que el editor quiere producir y el tipo de investigación disponible.</p>
+
+  <div class="bifurcation">
+    <div class="bif-card bif-book">
+      <div class="bif-label">Rama Book</div>
+      <div class="bif-title">LIBRO</div>
+      <div class="bif-stat"><strong>Extensión:</strong> 20.000–38.000 palabras</div>
+      <div class="bif-stat"><strong>Estructura:</strong> 10–12 capítulos + especiales</div>
+      <div class="bif-stat"><strong>Input principal:</strong> RESEARCH_REPORT(s)</div>
+      <div class="bif-stat"><strong>Producción:</strong> 86–207 horas</div>
+      <div class="bif-stat"><strong>Destino:</strong> Activation (campaña de contenido)</div>
+      <div class="bif-desc">Proceso largo y secuencial. Cada capítulo conoce los anteriores. El estilo se fija en la Fase 2 y se mantiene constante hasta el cierre.</div>
+    </div>
+    <div class="bif-card bif-post">
+      <div class="bif-label">Rama Post</div>
+      <div class="bif-title">POST</div>
+      <div class="bif-stat"><strong>Extensión:</strong> 500–5.000 palabras</div>
+      <div class="bif-stat"><strong>Estructura:</strong> 1 unidad (artículo, post largo o hilo)</div>
+      <div class="bif-stat"><strong>Input principal:</strong> RESEARCH_DEEP_DIVE o POST_SEED</div>
+      <div class="bif-stat"><strong>Producción:</strong> 2–6 horas</div>
+      <div class="bif-stat"><strong>Destino:</strong> Publicación directa</div>
+      <div class="bif-desc">Proceso ágil de 3 fases. Puede iniciarse desde Research o desde un Narrative Seed del workflow de Activation.</div>
+    </div>
+  </div>
+
+  <h2 class="doc-h2">Cuándo usar este workflow</h2>
+
+  <ul class="doc-list">
+    <li><span class="li-num">01</span><span>Tienes un Research Report o Research Deep Dive aprobado (GREEN o YELLOW aceptado) y quieres convertirlo en texto publicable.</span></li>
+    <li><span class="li-num">02</span><span>Tienes un POST_SEED producido por el workflow de Activation y quieres desarrollarlo en un post o artículo.</span></li>
+    <li><span class="li-num">03</span><span>Quieres retomar un libro en curso: el sistema puede incorporarse en cualquier fase si existen capítulos previos.</span></li>
+    <li><span class="li-num">04</span><span>Quieres evaluar el estilo de un texto ya escrito antes de decidir si lo publicas o lo incorporas a un libro en curso.</span></li>
+  </ul>
+
+  <div class="section-divider"></div>
+
+  <!-- ══════════════════════════════
+       SECCIÓN 2 — CONCEPTOS
+  ══════════════════════════════ -->
+  <div id="s02" style="position:relative;top:-20px;"></div>
+  <div class="section-label">02 — Conceptos clave</div>
+  <h1 class="doc-h1">El modelo conceptual</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">Writing opera sobre un conjunto de conceptos específicos que regulan cómo se construye la voz editorial, cómo se mantiene la coherencia a lo largo de un libro y cómo se garantiza la calidad antes de publicar.</p>
+
+  <!-- Perfil Editorial -->
+  <h2 class="doc-h2">El Perfil Editorial</h2>
+
+  <p>El Perfil Editorial es el modelo de voz del editor aplicado a cada texto que produce el sistema. Captura cómo escribe ese editor: qué estructuras prefiere, qué registro usa, qué densidad de prosa le es propia, con qué tipo de ejemplos argumenta, qué evita.</p>
+
+  <p>En Writing, el Perfil Editorial tiene un rol diferente al que tiene en Research. En Research actúa como orientador del foco de investigación. En Writing actúa como <strong>regulador estilístico activo</strong>: cada texto producido se confronta con el perfil para verificar que la voz resultante es la del editor, no la del modelo.</p>
+
+  <div class="concept-grid">
+    <div class="concept-card accent-cian">
+      <div class="concept-tag">En la práctica</div>
+      <div class="concept-name">Cómo opera el perfil</div>
+      <div class="concept-def">El perfil se carga como input en todos los prompts de escritura. No es un checklist que el sistema consulta al final — es parte de la instrucción que guía cada párrafo. Las correcciones manuales que el editor hace sobre los textos producidos también son señales de voz que pueden incorporarse al perfil.</div>
+    </div>
+    <div class="concept-card accent-cian">
+      <div class="concept-tag">Múltiples perfiles</div>
+      <div class="concept-name">Un perfil por proyecto</div>
+      <div class="concept-def">El editor puede tener perfiles distintos para proyectos distintos — una voz para libros académicos, otra para divulgación, otra para posts en redes sociales. Cada proyecto tiene un perfil activo asignado que el sistema usa durante toda la producción.</div>
+    </div>
+  </div>
+
+  <!-- Style Guide -->
+  <h2 class="doc-h2">El Style Guide del libro</h2>
+
+  <p>El Style Guide no existe antes de empezar a escribir — se produce durante la Fase 2 de la Rama Book, a partir del capítulo de muestra. Es la referencia canónica de estilo para ese libro concreto: no para libros en general, ni para el editor en general, sino para ese proyecto específico.</p>
+
+  <p>Una vez fijado el Style Guide, todos los capítulos posteriores lo reciben como input junto con el Perfil Editorial. Los dos documentos cumplen funciones distintas y complementarias: el Perfil Editorial captura la voz del editor como persona; el Style Guide captura las decisiones de estilo tomadas para ese libro — nivel de formalidad, densidad de citas, longitud de párrafos, uso de ejemplos concretos, tono de los apartados de análisis.</p>
+
+  <!-- Capítulo de muestra -->
+  <h2 class="doc-h2">El capítulo de muestra</h2>
+
+  <p>Antes de escribir los capítulos centrales del libro, el sistema escribe un capítulo de prueba — no necesariamente el primero del índice, sino el más representativo del tono que tendrá el libro. El propósito es doble: detectar desajustes de voz antes de comprometer muchas horas de producción, y producir el Style Guide que guiará el resto.</p>
+
+  <div class="callout warn">
+    <p>El capítulo de muestra no se descarta si sale bien. Se convierte en el primer capítulo validado del libro. Pero si el editor necesita correcciones sustanciales de estilo, es mucho mejor descubrirlo en el capítulo 1 que en el capítulo 8.</p>
+  </div>
+
+  <!-- Escritura secuencial -->
+  <h2 class="doc-h2">Escritura secuencial con coherencia acumulativa</h2>
+
+  <p>Los capítulos de un libro no se escriben en paralelo. El sistema produce un capítulo, el editor lo revisa y aprueba, y solo entonces se avanza al siguiente. Esta secuencialidad no es una limitación operativa — es una decisión de diseño que garantiza dos cosas: que el editor mantiene el control editorial en cada unidad, y que cada capítulo nuevo conoce los anteriores y puede evitar repeticiones o contradicciones.</p>
+
+  <p>Los capítulos aprobados se convierten en fuente canónica para los capítulos siguientes. El sistema los lee antes de escribir el nuevo para mantener la coherencia narrativa, las referencias cruzadas y la distribución de contenido a lo largo del libro.</p>
+
+  <!-- Q&A de ideas -->
+  <h2 class="doc-h2">El Q&A de ideas</h2>
+
+  <p>El Q&A de ideas es un mecanismo disponible en la Rama Post que invierte la dirección habitual de la interacción. En lugar de que el editor le diga al sistema qué escribir, el sistema hace preguntas secuenciales al editor sobre el tema, el argumento o el ángulo del post que va a producir.</p>
+
+  <p>Las respuestas del editor no se reescriben ni se parafrasean: se incorporan al texto tal cual. Lo que el editor dice en el Q&A es el material más valioso del resultado — su perspectiva genuina, sus ejemplos propios, su forma de ver el tema que ninguna fuente externa puede replicar. El Q&A produce además un POST_SEED que concentra ese material en un briefing estructurado listo para la escritura.</p>
+
+  <!-- Evaluadores -->
+  <h2 class="doc-h2">Los evaluadores de Writing</h2>
+
+  <p>Writing invoca tres evaluadores externos al cierre de cada producción. Ninguno de los tres es propiedad del subsistema Writing — los desarrollan y mantienen Editorial Profile y Evaluation. Writing los invoca como paso obligatorio antes de considerar cerrado un texto.</p>
+
+  <div class="eval-row">
+    <div class="eval-card">
+      <div class="eval-name">EVALUATE_BOOK_STYLE</div>
+      <div class="eval-owner">Owner: Editorial Profile</div>
+      <div class="eval-desc">Evalúa si el texto es fiel al Perfil Editorial del editor. Detecta desviaciones de voz, tono y registro. Aplica en Rama Book (Fase 5) y puede aplicarse a cualquier texto.</div>
+    </div>
+    <div class="eval-card">
+      <div class="eval-name">EVALUATE_BOOK_CONTENT</div>
+      <div class="eval-owner">Owner: Evaluation</div>
+      <div class="eval-desc">Evalúa coherencia argumental, solidez de razonamientos, uso correcto de fuentes y ausencia de problemas típicos de escritura asistida. Aplica en Rama Book (Fase 5).</div>
+    </div>
+    <div class="eval-card">
+      <div class="eval-name">EVALUATE_POST</div>
+      <div class="eval-owner">Owner: Evaluation</div>
+      <div class="eval-desc">Evalúa voz, estructura, registro y calidad editorial del post. Aplica en Rama Post (Fase 3). Produce GREEN / YELLOW / RED con recomendaciones específicas.</div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ══════════════════════════════
+       SECCIÓN 3 — DIAGRAMA
+  ══════════════════════════════ -->
+  <div id="s03" style="position:relative;top:-20px;"></div>
+  <div class="section-label">03 — Referencia operativa</div>
+  <h1 class="doc-h1">Diagrama del flujo</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">El flujo se bifurca al inicio. Selecciona la rama según el formato de output. Los paneles son expandibles — usa este diagrama como referencia durante la ejecución.</p>
+
+  <div class="inputs-box" style="margin-top:24px;">
+    <div class="box-label">Inputs del sistema</div>
+    <ul>
+      <li><strong>EDITOR_PROFILE</strong> — perfil editorial activo del editor (obligatorio)</li>
+      <li><strong>RESEARCH_REPORT(s)</strong> — para Rama Book (uno o varios según el proyecto)</li>
+      <li><strong>RESEARCH_DEEP_DIVE</strong> — para Rama Post desde Research</li>
+      <li><strong>POST_SEED / POST_BRIEFING</strong> — para Rama Post desde Activation</li>
+      <li>BOOK_BRIEF — orientador opcional desde Activation</li>
+    </ul>
+  </div>
+
+  <!-- BIFURCATION DECISION -->
+  <div class="phase-card phase-neutral" style="margin-bottom:4px;">
+    <div class="phase-header" onclick="toggle(this)">
+      <span class="phase-tag">ENTRADA</span>
+      <span class="phase-title">DECISIÓN DE RAMA — BOOK O POST</span>
+      <span class="phase-time">5 min</span>
+      <span class="toggle-icon">▾</span>
+    </div>
+    <div class="phase-body open">
+      <div class="task-row">
+        <div class="task-icon">🔀</div>
+        <div>
+          <div class="task-name">Criterio de decisión</div>
+          <div class="task-desc">
+            <strong style="color:var(--ta-cian)">→ RAMA BOOK</strong> si el output es un libro (10–12 caps, 20k–38k palabras) con RESEARCH_REPORT como input principal<br>
+            <strong style="color:var(--ta-ambar)">→ RAMA POST</strong> si el output es un artículo, post o hilo con RESEARCH_DEEP_DIVE o POST_SEED como input principal<br><br>
+            La decisión es irreversible dentro de un proyecto. Una vez elegida la rama, todos los prompts del flujo corresponden a esa rama.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flow-arrow split-arrow" style="margin:6px 0;">↙ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ↘</div>
+
+  <!-- DUAL RAMA -->
+  <div class="rama-split">
+
+    <!-- ══ RAMA BOOK ══ -->
+    <div class="rama-col">
+      <div class="rama-col-header rama-book-h">RAMA BOOK — ESCRITURA DE LIBRO</div>
+
+      <div class="phase-card phase-neutral">
+        <div class="phase-header" onclick="toggle(this)">
+          <span class="phase-tag" style="font-size:9px;">FASE 0</span>
+          <span class="phase-title" style="font-size:12px;">PREPARACIÓN</span>
+          <span class="phase-time">Variable</span>
+          <span class="toggle-icon">▾</span>
+        </div>
+        <div class="phase-body open">
+          <div class="task-row">
+            <div class="task-icon">👤</div>
+            <div>
+              <div class="task-name">Actor: Editor</div>
+              <div class="task-desc">Reúne RESEARCH_REPORT(s), EDITOR_PROFILE y fuentes originales. Si el libro retoma un proceso anterior, incorpora capítulos ya escritos. Verifica que el Research haya sido aprobado como GREEN (o YELLOW aceptado).</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase-card phase-cian">
+        <div class="phase-header" onclick="toggle(this)">
+          <span class="phase-tag" style="font-size:9px;">FASE 1</span>
+          <span class="phase-title" style="font-size:12px;">CREACIÓN DEL ÍNDICE</span>
+          <span class="phase-time">2–4 h</span>
+          <span class="toggle-icon">▸</span>
+        </div>
+        <div class="phase-body">
+          <div class="task-row">
+            <div class="task-icon">📑</div>
+            <div>
+              <div class="task-name">PROMPT_CREATE_BOOK_INDEX v1.0</div>
+              <div class="task-desc">Propone el índice completo del libro: títulos de capítulos, arco narrativo, distribución de contenido. El editor ajusta y aprueba la estructura antes de escribir una sola palabra.</div>
+            </div>
+          </div>
+          <div class="task-row">
+            <div class="task-icon">📤</div>
+            <div>
+              <div class="task-name">Output</div>
+              <div class="task-desc">BOOK_INDEX — referencia estructural para todas las fases siguientes</div>
+            </div>
+          </div>
+          <div class="checkpoint cp-cian">✅ CHECKPOINT 1 — Editor aprueba el índice antes de continuar</div>
+        </div>
+      </div>
+
+      <div class="phase-card phase-cian">
+        <div class="phase-header" onclick="toggle(this)">
+          <span class="phase-tag" style="font-size:9px;">FASE 2</span>
+          <span class="phase-title" style="font-size:12px;">CAPÍTULO DE MUESTRA Y ESTILO</span>
+          <span class="phase-time">6–12 h</span>
+          <span class="toggle-icon">▸</span>
+        </div>
+        <div class="phase-body">
+          <div class="task-row">
+            <div class="task-icon">🖊️</div>
+            <div>
+              <div class="task-name">PROMPT_WRITE_SAMPLE_CHAPTER v1.0</div>
+              <div class="task-desc">Escribe el capítulo más representativo del libro como prueba de estilo. El editor revisa y corrige. A partir del capítulo aprobado se produce el STYLE_GUIDE_LIBRO.</div>
+            </div>
+          </div>
+          <div class="task-row">
+            <div class="task-icon">📤</div>
+            <div>
+              <div class="task-name">Output</div>
+              <div class="task-desc">SAMPLE_CHAPTER_FINAL + STYLE_GUIDE_LIBRO — referencia canónica de estilo para el resto del libro</div>
+            </div>
+          </div>
+          <div class="checkpoint cp-cian">✅ CHECKPOINT 2 — Editor valida capítulo y style guide antes de producción en serie</div>
+        </div>
+      </div>
+
+      <div class="phase-card phase-cian">
+        <div class="phase-header" onclick="toggle(this)">
+          <span class="phase-tag" style="font-size:9px;">FASE 3</span>
+          <span class="phase-title" style="font-size:12px;">ESCRITURA DE CAPÍTULOS (SECUENCIAL)</span>
+          <span class="phase-time">6–10 h / cap.</span>
+          <span class="toggle-icon">▸</span>
+        </div>
+        <div class="phase-body">
+          <div class="task-row">
+            <div class="task-icon">✍️</div>
+            <div>
+              <div class="task-name">PROMPT_WRITE_CHAPTER v1.3 — por capítulo</div>
+              <div class="task-desc">Un capítulo a la vez. Cada ejecución lee todos los capítulos previos aprobados para mantener coherencia narrativa y evitar repeticiones. Jerarquía de versiones: FINAL_EDITED > FINAL > v2.0 > v1.0.</div>
+            </div>
+          </div>
+          <div class="task-row">
+            <div class="task-icon">🔁</div>
+            <div>
+              <div class="task-name">Inputs por capítulo N</div>
+              <div class="task-desc">BOOK_INDEX + STYLE_GUIDE_LIBRO + EDITOR_PROFILE + fuentes del capítulo + CHAPTER_01...(N-1)_FINAL</div>
+            </div>
+          </div>
+          <div class="checkpoint cp-neutral">⚑ CHECKPOINT N — Editor aprueba cada capítulo antes de avanzar al siguiente</div>
+        </div>
+      </div>
+
+      <div class="phase-card phase-cian">
+        <div class="phase-header" onclick="toggle(this)">
+          <span class="phase-tag" style="font-size:9px;">FASE 4</span>
+          <span class="phase-title" style="font-size:12px;">CAPÍTULOS ESPECIALES</span>
+          <span class="phase-time">4–8 h</span>
+          <span class="toggle-icon">▸</span>
+        </div>
+        <div class="phase-body">
+          <div class="task-row">
+            <div class="task-icon">📝</div>
+            <div>
+              <div class="task-name">PROMPT_WRITE_INTRODUCTION v1.0</div>
+              <div class="task-desc">Escribe la introducción del libro una vez que todos los capítulos centrales están aprobados. La introducción anuncia sin revelar; presenta el argumento central sin anticipar las conclusiones.</div>
+            </div>
+          </div>
+          <div class="task-row">
+            <div class="task-icon">🖋️</div>
+            <div>
+              <div class="task-name">PROMPT_WRITE_PROLOGUE v1.0</div>
+              <div class="task-desc">El prólogo es el espacio más personal del libro. El editor puede escribirlo directamente o con asistencia del sistema. A diferencia de los capítulos, el prólogo puede diferir conscientemente del STYLE_GUIDE: es la voz del editor sin mediaciones.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase-card phase-green">
+        <div class="phase-header" onclick="toggle(this)">
+          <span class="phase-tag" style="font-size:9px;">FASE 5</span>
+          <span class="phase-title" style="font-size:12px;">CONSOLIDACIÓN Y CIERRE</span>
+          <span class="phase-time">8–14 h</span>
+          <span class="toggle-icon">▸</span>
+        </div>
+        <div class="phase-body">
+          <div class="task-row">
+            <div class="task-icon">⏱️</div>
+            <div>
+              <div class="task-name">PROMPT_CREATE_TIMELINE v1.0 <span class="badge badge-tinta">SHARED</span></div>
+              <div class="task-desc">Cronología de hechos, eventos y periodos cubiertos por el libro. Input: todos los capítulos + Research Reports.</div>
+            </div>
+          </div>
+          <div class="task-row">
+            <div class="task-icon">👥</div>
+            <div>
+              <div class="task-name">PROMPT_CREATE_CAST v1.0 <span class="badge badge-tinta">SHARED</span></div>
+              <div class="task-desc">Elenco de personajes, instituciones y entidades relevantes con perfiles estructurados. 15–30 entradas típico.</div>
+            </div>
+          </div>
+          <div class="task-row">
+            <div class="task-icon">📚</div>
+            <div>
+              <div class="task-name">PROMPT_CONSOLIDATE_REFERENCES v1.1</div>
+              <div class="task-desc">Elimina duplicados, normaliza formato (IEEE/APA/Chicago), sustituye referencias a Research Reports por fuentes originales, verifica que toda cita tiene referencia y toda referencia está citada.</div>
+            </div>
+          </div>
+          <div class="task-row">
+            <div class="task-icon">📊</div>
+            <div>
+              <div class="task-name">EVALUATE_BOOK_STYLE + EVALUATE_BOOK_CONTENT</div>
+              <div class="task-desc">Evaluación obligatoria antes de cerrar. EVALUATE_BOOK_STYLE (owner: Editorial Profile) verifica voz y coherencia estilística. EVALUATE_BOOK_CONTENT (owner: Evaluation) verifica coherencia argumental y solidez de fuentes.</div>
+            </div>
+          </div>
+          <div class="task-row">
+            <div class="task-icon">📋</div>
+            <div>
+              <div class="task-name">PROMPT_CREATE_BOOK_SHEET v1.1</div>
+              <div class="task-desc">Ficha técnica del libro. Incluye declaración obligatoria de producción asistida por IA (política de transparencia).</div>
+            </div>
+          </div>
+          <div class="checkpoint cp-green">✅ LIBRO CERRADO → Activation</div>
+        </div>
+      </div>
+
+      <div class="output-final">
+        <div class="output-final-label">Output final — Rama Book</div>
+        <div class="output-final-item">
+          ├── PROLOGUE_FINAL_EDITED<br>
+          ├── INTRODUCTION_FINAL<br>
+          ├── CHAPTER_01_FINAL … CHAPTER_N_FINAL<br>
+          ├── BIBLIOGRAPHY_FINAL<br>
+          ├── TIMELINE_FINAL<br>
+          ├── CAST_FINAL<br>
+          └── BOOK_SHEET
+        </div>
+        <div class="output-final-dest">→ Entrega a Activation para campaña de contenido</div>
+      </div>
+    </div>
+
+    <!-- ══ RAMA POST ══ -->
+    <div class="rama-col">
+      <div class="rama-col-header rama-post-h">RAMA POST — ESCRITURA DE POST / ARTÍCULO</div>
+
+      <div class="phase-card phase-neutral">
+        <div class="phase-header" onclick="toggle(this)">
+          <span class="phase-tag" style="font-size:9px;">FASE 0</span>
+          <span class="phase-title" style="font-size:12px;">PREPARACIÓN</span>
+          <span class="phase-time">15–30 min</span>
+          <span class="toggle-icon">▾</span>
+        </div>
+        <div class="phase-body open">
+          <div class="task-row">
+            <div class="task-icon">👤</div>
+            <div>
+              <div class="task-name">Actor: Editor</div>
+              <div class="task-desc">Define el punto de entrada: ¿viene de Research (RESEARCH_DEEP_DIVE) o de Activation (POST_SEED / POST_BRIEFING)? Define formato objetivo: post estándar, artículo largo o hilo.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase-card phase-ambar">
+        <div class="phase-header" onclick="toggle(this)" style="background:#FFFBF5;">
+          <span class="phase-tag" style="font-size:9px;color:var(--ta-ambar);">FASE 1</span>
+          <span class="phase-title" style="font-size:12px;color:var(--ta-ambar);">PLANIFICACIÓN DEL POST</span>
+          <span class="phase-time" style="color:var(--ta-ambar);">30–90 min</span>
+          <span class="toggle-icon">▸</span>
+        </div>
+        <div class="phase-body">
+          <div class="task-row">
+            <div class="task-icon">💬</div>
+            <div>
+              <div class="task-name">PROMPT_QA_IDEAS (opcional)</div>
+              <div class="task-desc">Diálogo estructurado donde el sistema pregunta al editor sobre el ángulo, el argumento y los ejemplos que quiere usar. Las respuestas se incorporan al texto tal cual. Produce material citable + POST_SEED.</div>
+            </div>
+          </div>
+          <div class="task-row">
+            <div class="task-icon">📐</div>
+            <div>
+              <div class="task-name">PROMPT_POST_ANGLES + PROMPT_PLAN_POST v1.0</div>
+              <div class="task-desc">Explora ángulos narrativos posibles y propone la estructura del post: hook de apertura, secciones, puntos clave, cierre. El editor ajusta y aprueba el plan.</div>
+            </div>
+          </div>
+          <div class="task-row">
+            <div class="task-icon">📤</div>
+            <div>
+              <div class="task-name">Output</div>
+              <div class="task-desc">POST_PLAN — estructura aprobada + POST_SEED (si hay Q&A)</div>
+            </div>
+          </div>
+          <div class="checkpoint cp-ambar">⚑ CHECKPOINT — Editor aprueba estructura antes de escribir</div>
+        </div>
+      </div>
+
+      <div class="phase-card phase-ambar">
+        <div class="phase-header" onclick="toggle(this)" style="background:#FFFBF5;">
+          <span class="phase-tag" style="font-size:9px;color:var(--ta-ambar);">FASE 2</span>
+          <span class="phase-title" style="font-size:12px;color:var(--ta-ambar);">ESCRITURA</span>
+          <span class="phase-time" style="color:var(--ta-ambar);">1–3 h</span>
+          <span class="toggle-icon">▸</span>
+        </div>
+        <div class="phase-body">
+          <div class="task-row">
+            <div class="task-icon">✍️</div>
+            <div>
+              <div class="task-name">PROMPT_WRITE_POST v2.0 <span class="badge badge-tinta">SHARED</span></div>
+              <div class="task-desc">Escribe el post desde POST_SEED + POST_PLAN + EDITOR_PROFILE. Soporta tres formatos: post_estándar · post_largo · hilo. Si el borrador supera la extensión del formato, se invoca PROMPT_SPLIT_POST para dividirlo en dos piezas autónomas.</div>
+            </div>
+          </div>
+          <div class="task-row">
+            <div class="task-icon">✂️</div>
+            <div>
+              <div class="task-name">PROMPT_SPLIT_POST v1.0 (si aplica)</div>
+              <div class="task-desc">Divide un post que excede el formato en dos piezas. Produce: post 1 ajustado para quedar autónomo + POST_BRIEFING del post 2. Invocable en cualquier momento del proceso.</div>
+            </div>
+          </div>
+          <div class="task-row">
+            <div class="task-icon">📤</div>
+            <div>
+              <div class="task-name">Output</div>
+              <div class="task-desc">POST_DRAFT → revisión editorial → POST_FINAL</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="phase-card phase-green">
+        <div class="phase-header" onclick="toggle(this)">
+          <span class="phase-tag" style="font-size:9px;color:#34C670;">FASE 3</span>
+          <span class="phase-title" style="font-size:12px;">EVALUACIÓN Y PUBLICACIÓN</span>
+          <span class="phase-time">30–60 min</span>
+          <span class="toggle-icon">▸</span>
+        </div>
+        <div class="phase-body">
+          <div class="task-row">
+            <div class="task-icon">📊</div>
+            <div>
+              <div class="task-name">EVALUATE_POST v1.0 <span class="badge badge-pizarra">OWNER: EVALUATION</span></div>
+              <div class="task-desc">Evalúa voz, estructura, registro y calidad editorial. Produce GREEN / YELLOW / RED con recomendaciones específicas. El editor decide si publicar o revisar.</div>
+            </div>
+          </div>
+          <div class="checkpoint cp-green">✅ POST APROBADO → Publicación directa</div>
+        </div>
+      </div>
+
+      <div class="output-final">
+        <div class="output-final-label">Output final — Rama Post</div>
+        <div class="output-final-item">
+          └── POST_FINAL (post_estándar / post_largo / hilo)
+        </div>
+        <div class="output-final-dest">→ Publicación directa en plataforma del editor</div>
+      </div>
+
+      <!-- Nota prompts shared -->
+      <div style="background:#F7F9FA; border:0.5px solid #D0E8E8; border-left:3px solid var(--ta-pizarra); border-radius:0 5px 5px 0; padding:12px 14px; margin-top:8px;">
+        <div style="font-family:var(--font-mono);font-size:9px;color:var(--ta-pizarra);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px;">Prompts compartidos</div>
+        <div style="font-family:var(--font-body);font-size:12px;color:var(--ta-grafito);line-height:1.6;">
+          <strong>PROMPT_WRITE_POST</strong>, <strong>PROMPT_CREATE_TIMELINE</strong> y <strong>PROMPT_CREATE_CAST</strong> son owned por Writing pero también invocados por Activation. Si se modifica alguno de ellos, Activation puede verse afectado.
+        </div>
+      </div>
+    </div>
+  </div><!-- end rama-split -->
+
+  <!-- FOOTER -->
+  <div class="doc-footer">
+    <div class="doc-footer-brand">TINTA ARTIFICIAL</div>
+    <div class="doc-footer-meta">WORKFLOW_WRITING · v2.0 · R1 · 2026</div>
+  </div>
+
+</div>
+
+<script>
+  function toggle(header) {
+    const body = header.nextElementSibling;
+    const icon = header.querySelector('.toggle-icon');
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    icon.textContent = isOpen ? '▸' : '▾';
+  }
+</script>
+
+
+</div>
+</body>
+</html>

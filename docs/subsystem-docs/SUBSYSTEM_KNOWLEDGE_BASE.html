@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SUBSYSTEM KNOWLEDGE BASE — D-X-OPUS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Gentium+Plus:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ta-tinta:   #0A0A0A;
+    --ta-carbon:  #434343;
+    --ta-grafito: #595959;
+    --ta-papel:   #E8E4D9;
+    --ta-blanco:  #FFFFFF;
+    --ta-cian:    #00D4D4;
+    --ta-rojo:    #FF2D2C;
+    --ta-pizarra: #78909C;
+    --ta-ambar:   #FFAB40;
+    --font-display: 'Bebas Neue', Arial, sans-serif;
+    --font-body:    'Gentium Plus', Georgia, serif;
+    --font-mono:    'JetBrains Mono', 'Courier New', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-body); background: var(--ta-blanco); color: var(--ta-tinta); padding: 0; }
+
+  .cover { background: var(--ta-tinta); padding: 56px 40px 44px; }
+  .cover-rule { width: 48px; height: 3px; background: var(--ta-cian); margin-bottom: 24px; }
+  .cover-eyebrow { font-family: var(--font-mono); font-size: 11px; color: var(--ta-cian); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
+  .cover-title { font-family: var(--font-display); font-size: 72px; color: var(--ta-blanco); line-height: 0.95; letter-spacing: 0.01em; margin-bottom: 14px; }
+  .cover-subtitle { font-family: var(--font-body); font-size: 16px; color: var(--ta-papel); font-style: italic; margin-bottom: 40px; opacity: 0.85;
+    line-height: 22px;
+  }
+  .cover-meta { display: flex; gap: 36px; flex-wrap: wrap; border-top: 0.5px solid #2a2a2a; padding-top: 18px; }
+  .cover-meta-item strong { display: block; font-family: var(--font-mono); font-size: 10px; color: var(--ta-grafito); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 3px; }
+  .cover-meta-item span { font-family: var(--font-mono); font-size: 13px; color: var(--ta-papel); }
+
+  .body-wrap { padding: 52px 40px; }
+  .section-label { font-family: var(--font-mono); font-size: 10px; color: var(--ta-cian); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 6px; }
+  h1.doc-h1 { font-family: var(--font-display); font-size: 34px; color: var(--ta-tinta); letter-spacing: 0.02em; line-height: 1; margin-bottom: 6px; }
+  .h1-rule { height: 2px; background: var(--ta-cian); margin-bottom: 28px; width: 100%; }
+  h2.doc-h2 { font-family: var(--font-display); font-size: 20px; color: var(--ta-carbon); letter-spacing: 0.04em; margin: 36px 0 10px; }
+  .section-divider { height: 0.5px; background: var(--ta-papel); margin: 48px 0; }
+  p { font-family: var(--font-body); font-size: 18px; line-height: 26px; color: var(--ta-tinta); margin-bottom: 14px; }
+  p.lead { font-size: 18px; color: var(--ta-carbon);
+    line-height: 26px;
+  }
+
+  .callout { border-left: 3px solid var(--ta-cian); padding: 14px 18px; background: #F0FAFA; border-radius: 0 6px 6px 0; margin: 20px 0; }
+  .callout p { margin: 0; font-style: italic; font-size: 18px;
+    line-height: 26px;
+  }
+  .callout.warn { border-left-color: var(--ta-ambar); background: #FFFBF0; }
+
+  .badge { display: inline-block; font-family: var(--font-mono); font-size: 9px; font-weight: 500; padding: 2px 7px; border-radius: 3px; margin-left: 4px; letter-spacing: 0.04em; vertical-align: middle; position: relative; top: -1px; }
+  .badge-cian  { background: var(--ta-cian); color: #003333; }
+  .badge-pizarra { background: var(--ta-pizarra); color: #fff; }
+
+  /* ── RESOURCE CARDS ── */
+  .resource-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 24px 0; }
+  .resource-card { border: 0.5px solid #E0E0E0; border-radius: 6px; padding: 20px; background: #FDFCFA; }
+  .resource-card.full { grid-column: 1 / -1; }
+  .resource-card.accent-cian   { border-top: 2px solid var(--ta-cian); }
+  .resource-card.accent-ambar  { border-top: 2px solid var(--ta-ambar); }
+  .resource-card.accent-pizarra{ border-top: 2px solid var(--ta-pizarra); }
+  .resource-tag { font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+  .accent-cian   .resource-tag { color: var(--ta-cian); }
+  .accent-ambar  .resource-tag { color: var(--ta-ambar); }
+  .accent-pizarra .resource-tag { color: var(--ta-pizarra); }
+  .resource-name { font-family: var(--font-display); font-size: 18px; color: var(--ta-tinta); letter-spacing: 0.04em; margin-bottom: 8px; line-height: 1.1; }
+  .resource-def { font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito); line-height: 22px; }
+  .resource-def strong { color: var(--ta-tinta); }
+
+  /* ── TIER CARDS ── */
+  .tier-stack { display: flex; flex-direction: column; gap: 8px; margin: 20px 0; }
+  .tier-card { display: flex; gap: 16px; align-items: flex-start; border: 0.5px solid #E0E0E0; border-radius: 5px; padding: 14px 16px; background: #FDFCFA; }
+  .tier-badge { font-family: var(--font-display); font-size: 22px; color: var(--ta-cian); min-width: 60px; letter-spacing: 0.04em; line-height: 1; }
+  .tier-content { flex: 1; }
+  .tier-name { font-family: var(--font-display); font-size: 14px; color: var(--ta-tinta); letter-spacing: 0.04em; margin-bottom: 4px; }
+  .tier-desc { font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito); line-height: 22px; margin-bottom: 4px; }
+  .tier-examples { font-family: var(--font-mono); font-size: 10px; color: var(--ta-pizarra); line-height: 1.6; }
+
+  /* ── PILLARS ── */
+  .pillars { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 20px 0; }
+  .pillar { background: #FDFCFA; border: 0.5px solid #E0E0E0; border-radius: 5px; padding: 14px; text-align: center; }
+  .pillar-num { font-family: var(--font-display); font-size: 28px; color: var(--ta-cian); line-height: 1; margin-bottom: 6px; }
+  .pillar-name { font-family: var(--font-display); font-size: 14px; color: var(--ta-tinta); letter-spacing: 0.04em; margin-bottom: 5px; line-height: 1.2; }
+  .pillar-q { font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito); font-style: italic; line-height: 22px; }
+
+  /* ── GROWTH DIAGRAM ── */
+  .growth-flow { display: flex; align-items: center; gap: 0; margin: 24px 0; flex-wrap: wrap; }
+  .growth-node { background: #FDFCFA; border: 0.5px solid #E0E0E0; border-radius: 5px; padding: 12px 16px; text-align: center; flex: 1; min-width: 120px; }
+  .growth-node.highlight { background: #F0FAFA; border-color: var(--ta-cian); }
+  .growth-node-label { font-family: var(--font-mono); font-size: 9px; color: var(--ta-pizarra); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .growth-node-name { font-family: var(--font-display); font-size: 14px; color: var(--ta-tinta); letter-spacing: 0.04em; }
+  .growth-arrow { font-size: 16px; color: var(--ta-cian); padding: 0 8px; flex-shrink: 0; }
+
+  /* ── OWNERSHIP TABLE ── */
+  table.doc-table { width: 100%; border-collapse: collapse; font-family: var(--font-body); font-size: 16px; margin: 16px 0;
+    line-height: 22px;
+  }
+  table.doc-table th { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ta-grafito); border-bottom: 1.5px solid var(--ta-cian); padding: 8px 12px; text-align: left; background: #FDFCFA; }
+  table.doc-table td { padding: 10px 12px; border-bottom: 0.5px solid var(--ta-papel); color: var(--ta-tinta); vertical-align: top; font-size: 16px; line-height: 1.6; }
+  table.doc-table tr:last-child td { border-bottom: none; }
+  .td-kb { color: var(--ta-cian); font-family: var(--font-mono); font-size: 10px; font-weight: 500; }
+  .td-res { color: var(--ta-ambar); font-family: var(--font-mono); font-size: 10px; font-weight: 500; }
+
+  /* ── NUMBERED LIST ── */
+  .doc-list { list-style: none; margin: 16px 0; }
+  .doc-list li { display: flex; gap: 14px; align-items: flex-start; padding: 10px 0; border-bottom: 0.5px solid #F0F0F0; font-size: 18px; line-height: 26px; }
+  .doc-list li:last-child { border-bottom: none; }
+  .li-num { font-family: var(--font-mono); font-size: 11px; color: var(--ta-cian); min-width: 22px; font-weight: 500; padding-top: 2px; }
+
+  /* ── ARTIFACT ROW ── */
+  .artifact-grid { display: flex; flex-direction: column; gap: 6px; margin: 20px 0; }
+  .artifact-row { display: flex; align-items: flex-start; gap: 12px; background: #FDFCFA; border: 0.5px solid #E0E0E0; border-radius: 5px; padding: 12px 16px; }
+  .artifact-id { font-family: var(--font-mono); font-size: 9px; color: var(--ta-cian); font-weight: 500; min-width: 36px; padding-top: 1px; }
+  .artifact-name { font-family: var(--font-mono); font-size: 11px; color: var(--ta-tinta); font-weight: 500; margin-bottom: 3px; letter-spacing: 0.02em; }
+  .artifact-desc { font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito); line-height: 22px; }
+  .artifact-ver { font-family: var(--font-mono); font-size: 9px; color: var(--ta-pizarra); margin-top: 3px; }
+
+  .doc-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 48px; padding-top: 14px; border-top: 0.5px solid var(--ta-papel); }
+  .doc-footer-brand { font-family: var(--font-display); font-size: 20px; color: var(--ta-tinta); letter-spacing: 0.05em; }
+  .doc-footer-meta { font-family: var(--font-mono); font-size: 10px; color: var(--ta-grafito); }
+  .toc-num {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ta-cian);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+  }
+
+
+  /* ── DOC SIDEBAR LAYOUT ── */
+  .doc-sidebar {
+    width: 260px;
+    min-height: 100vh;
+    background: var(--ta-tinta);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0;
+    overflow-y: auto;
+    z-index: 100;
+  }
+  .ds-brand { padding: 24px 22px 18px; border-bottom: 0.5px solid #1a1a1a; }
+  .ds-rule { width: 28px; height: 2px; background: var(--ta-cian); margin-bottom: 12px; }
+  .ds-type { font-family: var(--font-mono); font-size: 9px; color: var(--ta-grafito); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px; line-height: 1.5; }
+  .ds-title { font-family: var(--font-display); font-size: 24px; color: #fff; letter-spacing: 0.04em; line-height: 1.05; margin-bottom: 6px; }
+  .ds-version { font-family: var(--font-mono); font-size: 9px; color: #333; letter-spacing: 0.1em; }
+  .ds-nav { flex: 1; padding: 20px 0 16px; }
+  .ds-nav-label { font-family: var(--font-mono); font-size: 9px; color: var(--ta-grafito); letter-spacing: 0.16em; text-transform: uppercase; padding: 0 22px 8px; display: block; }
+  .ds-item { display: flex; align-items: center; gap: 10px; padding: 9px 22px; text-decoration: none; border-left: 2px solid transparent; transition: background 0.15s; }
+  .ds-item:hover { background: rgba(255,255,255,0.05); border-left-color: var(--ta-cian); }
+  .ds-item-num { font-family: var(--font-mono); font-size: 10px; color: var(--ta-cian); font-weight: 500; min-width: 20px; }
+  .ds-item-text { font-family: var(--font-mono); font-size: 12px; color: var(--ta-pizarra); transition: color 0.15s; line-height: 1.3; }
+  .ds-item:hover .ds-item-text { color: #fff; }
+  .ds-footer { padding: 16px 22px; border-top: 0.5px solid #1a1a1a; }
+  .ds-back { display: flex; align-items: center; gap: 8px; text-decoration: none; font-family: var(--font-mono); font-size: 11px; color: var(--ta-pizarra); transition: color 0.15s; padding: 8px 0; }
+  .ds-back:hover { color: var(--ta-cian); }
+  .ds-back-arrow { font-size: 13px; }
+  .doc-main { margin-left: 260px; flex: 1; min-width: 0; }
+
+
+  .ds-back-wrap {
+    padding: 10px 22px;
+    border-bottom: 0.5px solid #1a1a1a;
+  }
+</style>
+</head>
+<body>
+<nav class="doc-sidebar">
+  <div class="ds-brand">
+    <div class="ds-rule"></div>
+    <div class="ds-type">Subsistema 1</div>
+    <div class="ds-title">KNOWLEDGE<br>BASE</div>
+    <div class="ds-version">R1 · D-X-OPUS</div>
+  </div>
+  <div class="ds-back-wrap">
+    <a class="ds-back" href="INDEX.html"><span class="ds-back-arrow">←</span> Índice principal</a>
+  </div>
+  <div class="ds-nav">
+    <span class="ds-nav-label">Contenido</span>
+    <a class="ds-item" href="#s01"><span class="ds-item-num">01</span><span class="ds-item-text">Propósito</span></a>
+    <a class="ds-item" href="#s02"><span class="ds-item-num">02</span><span class="ds-item-text">Conceptos clave</span></a>
+    <a class="ds-item" href="#s03"><span class="ds-item-num">03</span><span class="ds-item-text">Funcionamiento</span></a>
+  </div>
+</nav>
+<div class="doc-main">
+
+
+<!-- ══ COVER ══ -->
+<div class="cover">
+  <div class="cover-rule"></div>
+  <div class="cover-eyebrow">Sistema D-X-OPUS · Subsistema 1 — Knowledge Base</div>
+  <div class="cover-title">KNOWLEDGE<br>BASE</div>
+  <div class="cover-subtitle">La memoria acumulativa del sistema — crece con cada proyecto ejecutado</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><strong>Versión</strong><span>R1 · 2026</span></div>
+    <div class="cover-meta-item"><strong>Release</strong><span>R1 · 2026</span></div>
+    <div class="cover-meta-item"><strong>Subsistema</strong><span>1 — Knowledge Base</span></div>
+    <div class="cover-meta-item"><strong>Audiencia</strong><span>Editor · Desarrollador</span></div>
+    <div class="cover-meta-item"><strong>Estado</strong><span>ACTIVE</span></div>
+  </div>
+</div>
+
+
+</div>
+
+<div class="body-wrap">
+
+  <!-- ══════════════════════════
+       SECCIÓN 1 — PROPÓSITO
+  ══════════════════════════ -->
+  <div id="s01" style="position:relative;top:-20px;"></div>
+  <div class="section-label">01 — Propósito</div>
+  <h1 class="doc-h1">Qué es el subsistema Knowledge Base</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">Knowledge Base es la memoria acumulativa del sistema. Mantiene los recursos globales que determinan cómo el sistema evalúa la calidad de las fuentes y valida las afirmaciones en cualquier proyecto — y esos recursos crecen y se refinan con cada ciclo de investigación ejecutado.</p>
+
+  <p>Es el único subsistema del sistema D-X-OPUS que no consume artefactos externos para funcionar — produce recursos que otros subsistemas consumen. Y es el único cuyos artefactos principales no se crean una vez y se mantienen estáticos, sino que se enriquecen activamente: cada proyecto de Research añade nuevas fuentes clasificadas y nuevos criterios de validación al repositorio global.</p>
+
+  <div class="callout">
+    <p>Knowledge Base es transparente para el editor en el uso diario. No se invoca directamente, no requiere configuración por proyecto y no produce artefactos visibles en el output final. Lo que produce — criterios más precisos, fuentes mejor clasificadas — se manifiesta en la calidad de los Research Reports y las evaluaciones.</p>
+  </div>
+
+  <h2 class="doc-h2">Qué produce y quién lo consume</h2>
+
+  <div class="resource-grid">
+    <div class="resource-card accent-cian">
+      <div class="resource-tag">Recurso activo</div>
+      <div class="resource-name">Source Authority<br>Hierarchy</div>
+      <div class="resource-def">Repositorio vivo de fuentes clasificadas por nivel de autoridad (Tier 1–3) organizadas por tema y disciplina. Consumido por Research para evaluar la credibilidad de las referencias y por Evaluation para verificar la solidez de las fuentes usadas en un report.</div>
+    </div>
+    <div class="resource-card accent-cian">
+      <div class="resource-tag">Recurso activo</div>
+      <div class="resource-name">Claim Validation<br>Criteria</div>
+      <div class="resource-def">Framework de validación para evaluar la calidad y solidez de las afirmaciones en la investigación, independientemente del nivel de autoridad de la fuente. Consumido por Research para identificar gaps metodológicos y por Evaluation para verificar la coherencia argumental.</div>
+    </div>
+    <div class="resource-card accent-pizarra full">
+      <div class="resource-tag">Recurso de referencia</div>
+      <div class="resource-name">Research Focus Types</div>
+      <div class="resource-def">Configuración de los 7 tipos de focus de investigación (A–G) con sus job categories, estructuras de body y notas metodológicas. Consumido por Research (PROMPT_CREATE_RESEARCH_PLAN) para estructurar el Research Report según el tipo seleccionado. Es un recurso estático — no crece con los proyectos.</div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ══════════════════════════
+       SECCIÓN 2 — CONCEPTOS
+  ══════════════════════════ -->
+  <div id="s02" style="position:relative;top:-20px;"></div>
+  <div class="section-label">02 — Conceptos clave</div>
+  <h1 class="doc-h1">El modelo conceptual</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">Knowledge Base opera sobre dos conceptos que se complementan — la autoridad de las fuentes y la validez de las afirmaciones — y un principio de diseño que los hace crecer con el tiempo.</p>
+
+  <!-- SAH -->
+  <h2 class="doc-h2">La jerarquía de autoridad de fuentes — SAH</h2>
+
+  <p>La Source Authority Hierarchy responde a una pregunta: <em>¿es esta fuente creíble?</em> Clasifica las fuentes en tres niveles según su rigor, independencia y reproducibilidad. La clasificación no es absoluta — depende del tema y el contexto — pero proporciona criterios explícitos y aplicables que el sistema puede usar durante la investigación.</p>
+
+  <div class="tier-stack">
+    <div class="tier-card">
+      <div class="tier-badge">T1</div>
+      <div class="tier-content">
+        <div class="tier-name">Tier 1 — Máxima autoridad</div>
+        <div class="tier-desc">Fuentes con máxima credibilidad, rigor e independencia. Sus afirmaciones se incorporan como base del análisis sin necesidad de corroboración adicional cuando son consistentes entre sí.</div>
+        <div class="tier-examples">Papers peer-reviewed · Libros académicos con revisión · Datos originales y estadísticas oficiales · Documentos de archivo primarios</div>
+      </div>
+    </div>
+    <div class="tier-card">
+      <div class="tier-badge" style="color:var(--ta-ambar)">T2</div>
+      <div class="tier-content">
+        <div class="tier-name">Tier 2 — Autoridad especializada</div>
+        <div class="tier-desc">Fuentes especializadas de calidad contrastada. Se usan para contextualizar y ampliar el análisis. Cuando sostienen una afirmación sin respaldo de Tier 1, se señalan explícitamente.</div>
+        <div class="tier-examples">Libros de divulgación rigurosa · Informes de instituciones reconocidas · Periodismo de largo aliento · Entrevistas documentadas a expertos</div>
+      </div>
+    </div>
+    <div class="tier-card">
+      <div class="tier-badge" style="color:var(--ta-pizarra)">T3</div>
+      <div class="tier-content">
+        <div class="tier-name">Tier 3 — Orientación general</div>
+        <div class="tier-desc">Fuentes generales o de baja verificabilidad. Solo se usan para orientación inicial o para señalar perspectivas populares. Nunca sostienen afirmaciones de fondo sin respaldo de niveles superiores.</div>
+        <div class="tier-examples">Medios generalistas · Blogs y posts · Contenido sin atribución clara · Fuentes sin actualizar o con conflicto de interés</div>
+      </div>
+    </div>
+  </div>
+
+  <p>La SAH no es una lista cerrada. Con cada proyecto de Research, las fuentes consultadas y validadas se añaden al repositorio con su clasificación Tier y los criterios que la justifican. El sistema se vuelve progresivamente más preciso en la evaluación de fuentes sobre los temas que ha investigado antes.</p>
+
+  <!-- CVC -->
+  <h2 class="doc-h2">Los criterios de validación de claims — CVC</h2>
+
+  <p>La Source Authority Hierarchy no es suficiente por sí sola. Una fuente Tier 1 puede contener afirmaciones débiles — fuera del área de expertise del autor, con metodología cuestionable o basadas en datos desactualizados. Los Claim Validation Criteria responden a la pregunta complementaria: <em>¿está bien respaldada esta afirmación concreta?</em></p>
+
+  <p>La validación opera sobre cuatro pilares independientes del nivel de autoridad de la fuente:</p>
+
+  <div class="pillars">
+    <div class="pillar">
+      <div class="pillar-num">1</div>
+      <div class="pillar-name">Soporte evidencial</div>
+      <div class="pillar-q">¿Qué evidencia respalda esta afirmación?</div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">2</div>
+      <div class="pillar-name">Rigor metodológico</div>
+      <div class="pillar-q">¿Cómo se recogió y analizó esa evidencia?</div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">3</div>
+      <div class="pillar-name">Coherencia lógica</div>
+      <div class="pillar-q">¿El razonamiento que lleva a la afirmación es sólido?</div>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">4</div>
+      <div class="pillar-name">Validez contextual</div>
+      <div class="pillar-q">¿La afirmación aplica al contexto específico del proyecto?</div>
+    </div>
+  </div>
+
+  <div class="callout warn">
+    <p>Una fuente Tier 3 puede hacer afirmaciones perfectamente válidas en su nicho. Una fuente Tier 1 puede hacer afirmaciones débiles fuera de su área central. La SAH y la CVC son complementarias — ambas son necesarias para una evaluación rigurosa.</p>
+  </div>
+
+  <!-- La naturaleza acumulativa -->
+  <h2 class="doc-h2">La naturaleza acumulativa</h2>
+
+  <p>La diferencia fundamental entre Knowledge Base y el resto de subsistemas es que sus recursos principales no se agotan con el uso — se enriquecen. Cada proyecto de Research que completa un ciclo de investigación añade nuevas entradas a la SAH y refina los criterios de la CVC. El sistema es progresivamente más preciso en los temas que ha investigado antes.</p>
+
+  <div class="growth-flow">
+    <div class="growth-node">
+      <div class="growth-node-label">Inicio proyecto</div>
+      <div class="growth-node-name">SAH · CVC<br><span style="font-family:var(--font-mono);font-size:10px;color:var(--ta-pizarra);">estado actual</span></div>
+    </div>
+    <div class="growth-arrow">→</div>
+    <div class="growth-node">
+      <div class="growth-node-label">Research</div>
+      <div class="growth-node-name">Investigación<br>con fuentes nuevas</div>
+    </div>
+    <div class="growth-arrow">→</div>
+    <div class="growth-node highlight">
+      <div class="growth-node-label">Fase 2 Research</div>
+      <div class="growth-node-name">UPDATE_VALIDATION<br>_CHECKLIST</div>
+    </div>
+    <div class="growth-arrow">→</div>
+    <div class="growth-node">
+      <div class="growth-node-label">Resultado</div>
+      <div class="growth-node-name">SAH · CVC<br><span style="font-family:var(--font-mono);font-size:10px;color:var(--ta-cian);">enriquecidos</span></div>
+    </div>
+  </div>
+
+  <!-- Ownership boundary -->
+  <h2 class="doc-h2">La frontera de ownership con Research</h2>
+
+  <p>Hay una distinción de diseño importante entre lo que hace Knowledge Base y lo que hace Research respecto a la SAH y la CVC. Esta separación garantiza que los recursos globales evolucionan de forma coherente sin depender de un único subsistema para su mantenimiento.</p>
+
+  <table class="doc-table">
+    <thead><tr><th>Responsabilidad</th><th>Knowledge Base</th><th>Research</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Esquema canónico de SAH y CVC</td>
+        <td><span class="td-kb">OWNER</span> — define la estructura, los campos obligatorios y los procedimientos de actualización</td>
+        <td>Consumidor — debe seguir el esquema al actualizar</td>
+      </tr>
+      <tr>
+        <td>Ejecución de la actualización</td>
+        <td>No ejecuta — no tiene prompts de actualización</td>
+        <td><span class="td-res">OWNER</span> del PROMPT_UPDATE_VALIDATION_CHECKLIST — ejecuta la actualización tras cada proyecto</td>
+      </tr>
+      <tr>
+        <td>Cambios al esquema</td>
+        <td>Notifica a Research mediante DL entry cuando el esquema cambia</td>
+        <td>Actualiza el prompt para cumplir el nuevo esquema</td>
+      </tr>
+      <tr>
+        <td>Research Focus Types</td>
+        <td><span class="td-kb">OWNER</span> — define y mantiene los 7 tipos</td>
+        <td>Consumidor — CREATE_RESEARCH_PLAN lee RESOURCE_RESEARCH_FOCUS_TYPES</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="section-divider"></div>
+
+  <!-- ══════════════════════════
+       SECCIÓN 3 — FUNCIONAMIENTO
+  ══════════════════════════ -->
+  <div id="s03" style="position:relative;top:-20px;"></div>
+  <div class="section-label">03 — Funcionamiento</div>
+  <h1 class="doc-h1">Cómo interactúa con el sistema</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">El editor no necesita gestionar Knowledge Base activamente. Esta sección explica qué ocurre en segundo plano, cuándo los recursos se actualizan y cuál es la señal de que el subsistema está funcionando bien.</p>
+
+  <h2 class="doc-h2">Cuándo se actualiza</h2>
+
+  <p>Los recursos de Knowledge Base se actualizan automáticamente durante la Fase 2 del WORKFLOW_RESEARCH, en cada proyecto. El proceso es el siguiente:</p>
+
+  <ul class="doc-list">
+    <li><span class="li-num">01</span><span>La Fase 1 de Research analiza las referencias iniciales y produce el Reference Summary, que incluye una evaluación preliminar de las fuentes según los criterios Tier.</span></li>
+    <li><span class="li-num">02</span><span>En la Fase 2, el PROMPT_UPDATE_VALIDATION_CHECKLIST (propiedad de Research) toma esa evaluación y actualiza la SAH con las nuevas fuentes clasificadas y la CVC con los criterios de validación refinados para ese tema.</span></li>
+    <li><span class="li-num">03</span><span>Los recursos actualizados quedan disponibles para el siguiente proyecto que investigue sobre ese tema o temas relacionados.</span></li>
+  </ul>
+
+  <h2 class="doc-h2">Qué no debe hacer el editor</h2>
+
+  <ul class="doc-list">
+    <li><span class="li-num">→</span><span><strong>No editar la SAH ni la CVC manualmente</strong> fuera del proceso de Research. Las actualizaciones deben seguir el CANONICAL UPDATE SCHEMA definido por Knowledge Base para garantizar la coherencia del repositorio.</span></li>
+    <li><span class="li-num">→</span><span><strong>No preocuparse si los recursos están "completos"</strong> al inicio de un proyecto nuevo. La SAH y la CVC funcionan con lo que tienen en cada momento — su utilidad crece con el tiempo pero son válidos desde el primer uso.</span></li>
+    <li><span class="li-num">→</span><span><strong>No buscar los archivos de KB en los artefactos de producción</strong>. SAH, CVC y Focus Types viven en el repositorio GitHub del sistema, no en el Google Drive del proyecto.</span></li>
+  </ul>
+
+  <h2 class="doc-h2">Cuándo importa para el editor</h2>
+
+  <p>Aunque Knowledge Base opera en segundo plano, hay dos momentos en que su estado es relevante para el editor:</p>
+
+  <ul class="doc-list">
+    <li><span class="li-num">01</span><span><strong>Al elegir el Research Focus Type (Fase 4B de Research).</strong> El editor selecciona entre los 7 tipos disponibles en RESOURCE_RESEARCH_FOCUS_TYPES. Entender qué pregunta central responde cada tipo — ¿cómo llegamos aquí?, ¿qué sabemos hoy?, ¿cómo se usa? — es una decisión editorial, no técnica.</span></li>
+    <li><span class="li-num">02</span><span><strong>Al interpretar los resultados de evaluación.</strong> Cuando EVALUATE_RESEARCH_REPORT señala problemas de Tier en las fuentes usadas, está usando la SAH como referencia. Si el editor quiere entender por qué una fuente fue clasificada como Tier 2 en lugar de Tier 1, puede consultar la SAH directamente.</span></li>
+  </ul>
+
+  <h2 class="doc-h2">Inventario de artefactos</h2>
+
+  <div class="artifact-grid">
+    <div class="artifact-row">
+      <div class="artifact-id">R</div>
+      <div>
+        <div class="artifact-name">RESOURCE_SOURCE_AUTHORITY</div>
+        <div class="artifact-desc">Repositorio vivo de fuentes clasificadas por Tier y tema. Incluye CANONICAL UPDATE SCHEMA con los procedimientos que Research debe seguir para añadir fuentes, clasificarlas o reclasificarlas.</div>
+        <div class="artifact-ver">v2.2 · ACTIVE — crece con cada proyecto</div>
+      </div>
+    </div>
+    <div class="artifact-row">
+      <div class="artifact-id">R</div>
+      <div>
+        <div class="artifact-name">RESOURCE_CLAIM_VALIDATION</div>
+        <div class="artifact-desc">Framework de validación de afirmaciones estructurado en una capa universal (aplicable a cualquier tema) y capas específicas por tema. Incluye CANONICAL UPDATE SCHEMA y árbol de decisión para evaluación de claims.</div>
+        <div class="artifact-ver">v1.2 · ACTIVE — crece con cada proyecto</div>
+      </div>
+    </div>
+    <div class="artifact-row">
+      <div class="artifact-id">R</div>
+      <div>
+        <div class="artifact-name">RESOURCE_RESEARCH_FOCUS_TYPES</div>
+        <div class="artifact-desc">Configuración de los 7 tipos de focus (A–G) con job categories, body structure templates y notas metodológicas. Consumido por PROMPT_CREATE_RESEARCH_PLAN en la Rama B de Research. No crece con los proyectos — es estático hasta que se añada un tipo nuevo.</div>
+        <div class="artifact-ver">v1.1 · ACTIVE — estático</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="doc-footer">
+    <div class="doc-footer-brand">TINTA ARTIFICIAL</div>
+    <div class="doc-footer-meta">SUBSYSTEM KNOWLEDGE BASE · R1 · 2026</div>
+  </div>
+
+</div>
+
+</div>
+</body>
+</html>
