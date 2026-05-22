@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Principios de Diseño — D-X-OPUS · Tinta Artificial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Gentium+Plus:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ta-tinta:   #0A0A0A;
+    --ta-carbon:  #434343;
+    --ta-grafito: #595959;
+    --ta-papel:   #E8E4D9;
+    --ta-blanco:  #FFFFFF;
+    --ta-cian:    #00D4D4;
+    --ta-rojo:    #FF2D2C;
+    --ta-ambar:   #FFAB40;
+    --ta-pizarra: #78909C;
+    --font-display: 'Bebas Neue', Arial, sans-serif;
+    --font-body:    'Gentium Plus', Georgia, serif;
+    --font-mono:    'JetBrains Mono', 'Courier New', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-body);
+    background: var(--ta-blanco);
+    color: var(--ta-tinta);
+    padding: 0;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    background: var(--ta-tinta);
+    padding: 60px 60px 48px;
+  }
+  .cover-rule { width: 48px; height: 3px; background: var(--ta-cian); margin-bottom: 28px; }
+  .cover-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ta-cian);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .cover-title {
+    font-family: var(--font-display);
+    font-size: 72px;
+    color: var(--ta-blanco);
+    line-height: 0.95;
+    letter-spacing: 0.01em;
+    margin-bottom: 16px;
+  }
+  .cover-subtitle {
+    font-family: var(--font-body);
+    font-size: 18px;
+    color: var(--ta-papel);
+    font-style: italic;
+    margin-bottom: 48px;
+    opacity: 0.85;
+    line-height: 26px;
+  }
+  .cover-meta {
+    display: flex;
+    gap: 36px;
+    flex-wrap: wrap;
+    border-top: 0.5px solid #2a2a2a;
+    padding-top: 20px;
+  }
+  .cover-meta-item strong {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ta-grafito);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .cover-meta-item span {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--ta-papel);
+  }
+
+  /* ── BODY ── */
+  .body-wrap { padding: 52px 40px; }
+
+  /* ── SECTION LABELS ── */
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ta-cian);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  /* ── HEADINGS ── */
+  h1 {
+    font-family: var(--font-display);
+    font-size: 38px;
+    color: var(--ta-tinta);
+    letter-spacing: 0.02em;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .h1-rule { height: 2px; background: var(--ta-cian); margin-bottom: 28px; width: 100%; }
+  h2 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    color: var(--ta-carbon);
+    letter-spacing: 0.04em;
+    margin: 36px 0 10px;
+  }
+  h3 {
+    font-family: var(--font-body);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ta-tinta);
+    margin: 28px 0 8px;
+    line-height: 22px;
+  }
+
+  /* ── BODY TEXT ── */
+  p {
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 26px;
+    color: var(--ta-tinta);
+    margin-bottom: 16px;
+  }
+  p.lead {
+    font-size: 18px;
+    color: var(--ta-carbon);
+    margin-bottom: 20px;
+    line-height: 26px;
+  }
+
+  /* ── DIVIDERS ── */
+  .section-divider {
+    height: 0.5px;
+    background: var(--ta-papel);
+    margin: 52px 0;
+  }
+
+  /* ── CALLOUT ── */
+  .callout {
+    border-left: 3px solid var(--ta-cian);
+    padding: 14px 18px;
+    background: #F0FAFA;
+    border-radius: 0 6px 6px 0;
+    margin: 24px 0;
+  }
+  .callout p { margin: 0; font-style: italic; font-size: 18px; color: var(--ta-tinta);
+    line-height: 26px;
+  }
+
+  /* ── DIAGRAMS ── */
+  .diagram-wrap {
+    margin: 36px 0;
+    border: 0.5px solid var(--ta-papel);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--ta-blanco);
+  }
+  .diagram-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ta-grafito);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    border-bottom: 0.5px solid var(--ta-papel);
+    background: #FDFCFA;
+  }
+  .diagram-wrap svg { display: block; width: 100%; }
+
+  /* ── FOOTER ── */
+  .doc-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 48px;
+    padding-top: 16px;
+    border-top: 0.5px solid var(--ta-papel);
+  }
+  .doc-footer-brand {
+    font-family: var(--font-display);
+    font-size: 20px;
+    color: var(--ta-tinta);
+    letter-spacing: 0.05em;
+  }
+  .doc-footer-meta {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ta-grafito);
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    body { max-width: 100%; }
+    .cover { padding: 40px; }
+    .body-wrap { padding: 36px 40px; }
+    .diagram-wrap { break-inside: avoid; }
+  }
+  .toc-num {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ta-cian);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+  }
+
+
+  /* ── DOC SIDEBAR LAYOUT ── */
+  .doc-sidebar {
+    width: 260px;
+    min-height: 100vh;
+    background: var(--ta-tinta);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0;
+    overflow-y: auto;
+    z-index: 100;
+  }
+  .ds-brand { padding: 24px 22px 18px; border-bottom: 0.5px solid #1a1a1a; }
+  .ds-rule { width: 28px; height: 2px; background: var(--ta-cian); margin-bottom: 12px; }
+  .ds-type { font-family: var(--font-mono); font-size: 9px; color: var(--ta-grafito); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px; line-height: 1.5; }
+  .ds-title { font-family: var(--font-display); font-size: 24px; color: #fff; letter-spacing: 0.04em; line-height: 1.05; margin-bottom: 6px; }
+  .ds-version { font-family: var(--font-mono); font-size: 9px; color: #333; letter-spacing: 0.1em; }
+  .ds-nav { flex: 1; padding: 20px 0 16px; }
+  .ds-nav-label { font-family: var(--font-mono); font-size: 9px; color: var(--ta-grafito); letter-spacing: 0.16em; text-transform: uppercase; padding: 0 22px 8px; display: block; }
+  .ds-item { display: flex; align-items: center; gap: 10px; padding: 9px 22px; text-decoration: none; border-left: 2px solid transparent; transition: background 0.15s; }
+  .ds-item:hover { background: rgba(255,255,255,0.05); border-left-color: var(--ta-cian); }
+  .ds-item-num { font-family: var(--font-mono); font-size: 10px; color: var(--ta-cian); font-weight: 500; min-width: 20px; }
+  .ds-item-text { font-family: var(--font-mono); font-size: 12px; color: var(--ta-pizarra); transition: color 0.15s; line-height: 1.3; }
+  .ds-item:hover .ds-item-text { color: #fff; }
+  .ds-footer { padding: 16px 22px; border-top: 0.5px solid #1a1a1a; }
+  .ds-back { display: flex; align-items: center; gap: 8px; text-decoration: none; font-family: var(--font-mono); font-size: 11px; color: var(--ta-pizarra); transition: color 0.15s; padding: 8px 0; }
+  .ds-back:hover { color: var(--ta-cian); }
+  .ds-back-arrow { font-size: 13px; }
+  .doc-main { margin-left: 260px; flex: 1; min-width: 0; }
+
+
+  .ds-back-wrap {
+    padding: 10px 22px;
+    border-bottom: 0.5px solid #1a1a1a;
+  }
+</style>
+</head>
+<body>
+<nav class="doc-sidebar">
+  <div class="ds-brand">
+    <div class="ds-rule"></div>
+    <div class="ds-type">A-01 · Referencia</div>
+    <div class="ds-title">PRINCIPIOS<br>DE DISEÑO</div>
+    <div class="ds-version">v1.0 · D-X-OPUS</div>
+  </div>
+  <div class="ds-back-wrap">
+    <a class="ds-back" href="INDEX.html"><span class="ds-back-arrow">←</span> Índice principal</a>
+  </div>
+  <div class="ds-nav">
+    <span class="ds-nav-label">Contenido</span>
+    <a class="ds-item" href="#s01"><span class="ds-item-num">01</span><span class="ds-item-text">El problema</span></a>
+    <a class="ds-item" href="#s02"><span class="ds-item-num">02</span><span class="ds-item-text">Autoría Dirigida</span></a>
+    <a class="ds-item" href="#s03"><span class="ds-item-num">03</span><span class="ds-item-text">Principios</span></a>
+    <a class="ds-item" href="#s04"><span class="ds-item-num">04</span><span class="ds-item-text">El flujo</span></a>
+    <a class="ds-item" href="#s05"><span class="ds-item-num">05</span><span class="ds-item-text">Los métodos</span></a>
+    <a class="ds-item" href="#s06"><span class="ds-item-num">06</span><span class="ds-item-text">Qué no hace</span></a>
+  </div>
+</nav>
+<div class="doc-main">
+
+
+<!-- ═══ COVER ═══ -->
+<div class="cover">
+  <div class="cover-rule"></div>
+  <div class="cover-eyebrow">Sistema D-X-OPUS · Documentación oficial</div>
+  <div class="cover-title">SYSTEM<br>DESIGN<br>OVERVIEW</div>
+  <div class="cover-subtitle">Visión del sistema y principios de diseño</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><strong>Versión</strong><span>v1.0</span></div>
+    <div class="cover-meta-item"><strong>Release</strong><span>R1 · 2026</span></div>
+    <div class="cover-meta-item"><strong>Subsistema</strong><span>7 — DOCS</span></div>
+    <div class="cover-meta-item"><strong>Audiencia</strong><span>Todos</span></div>
+    <div class="cover-meta-item"><strong>Estado</strong><span>ACTIVE</span></div>
+  </div>
+</div>
+
+<!-- ═══ BODY ═══ -->
+
+</div>
+
+<div class="body-wrap">
+
+  <!-- ── 01 EL PROBLEMA ── -->
+  <div id="s01" style="position:relative;top:-20px;"></div>
+  <div class="section-label">01</div>
+  <h1>El problema</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">Escribir bien no es una cuestión de talento. Es una cuestión de proceso.</p>
+
+  <p>Cualquier texto de no-ficción de calidad requiere investigar fuentes, organizar el conocimiento, construir una estructura argumentativa, mantener la coherencia a lo largo de decenas de miles de palabras y evaluar el resultado con la suficiente distancia para ver sus defectos. Cada una de esas tareas consume tiempo y energía. Y no todas requieren lo mismo de quien escribe.</p>
+
+  <p>Algunas tareas necesitan el ángulo único del editor: qué historia contar, desde qué perspectiva, con qué argumento, con qué voz. Nadie puede hacer eso por él. Pero hay otras —procesar referencias, verificar afirmaciones, mantener el estilo consistente entre capítulos, generar la bibliografía— que no necesitan ese ángulo para ejecutarse, aunque sí deben ser coherentes con él. Son esas tareas las que se llevan una parte desproporcionada del esfuerzo, y son exactamente las que un sistema asistido puede asumir sin sustituir el criterio de quien dirige.</p>
+
+  <p>Ese es el problema que D-X-OPUS resuelve: no la falta de capacidad para escribir, sino el coste de ejecutar todo lo que escribir bien requiere.</p>
+
+  <p>El problema se presenta de formas distintas. Hay quien lleva meses leyendo sobre un tema y necesita explorar cómo contar sus propias conclusiones desde un ángulo que le represente, no desde los que ya existen en la literatura. Hay quien tiene ideas y argumentos claros pero quiere cotejarlos con el conocimiento disponible antes de publicarlos. Hay quien percibe conexiones entre referencias que no son obvias y quiere explorarlas con profundidad antes de comprometerse a una estructura. Y hay quien simplemente tiene una historia o un tema que necesita contar y quiere un proceso que le ayude a enfocar el proyecto desde el principio y acompañarle hasta el final.</p>
+
+  <p>El editor de Tinta Artificial puede ser cualquiera de ellos. No existe un perfil único: puede tener una voz ya formada que quiere trabajar con más agilidad, o puede estar escribiendo su primer libro. Lo que tienen en común no es la experiencia —es la intención. Quieren escribir con calidad y con una voz que sea reconociblemente suya.</p>
+
+  <p>D-X-OPUS entra en cualquier punto de ese proceso: en la exploración inicial de una idea, en medio de un proyecto ya en marcha, o en la revisión de un texto casi terminado. No es una línea de producción que empieza en el folio en blanco y termina en el punto final. Es un compañero de proceso que se adapta a donde está el editor y a lo que necesita en ese momento.</p>
+
+  <div class="section-divider"></div>
+
+  <!-- ── 02 AUTORÍA DIRIGIDA ── -->
+  <div id="s02" style="position:relative;top:-20px;"></div>
+  <div class="section-label">02</div>
+  <h1>Autoría Dirigida</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">El término que más se escucha cuando se habla de IA y escritura es <em>automatización</em>. La imagen que evoca es conocida: un sistema que genera texto de forma desatendida, a gran velocidad, sin que nadie lo dirija. Ese no es el modelo de D-X-OPUS.</p>
+
+  <p>Nuestra propuesta se basa en un principio diferente, que llamamos <strong>Autoría Dirigida</strong>: el proceso de escritura está siempre orientado por el editor, en cualquier momento y en cualquier fase. El sistema facilita pasos, ejecuta tareas, amplía capacidades. Pero no decide. El editor decide.</p>
+
+  <p>La distinción no es menor. Un sistema pensado para generar texto de forma automática optimiza para la velocidad y el volumen. Un sistema de Autoría Dirigida optimiza para otra cosa: garantizar que cuando se automatiza cualquier parte del proceso, esa parte se ejecute con la calidad y la singularidad del editor. No es lo mismo automatizar la escritura que automatizar la escritura <em>de una forma que represente al editor que la firma</em>.</p>
+
+  <p>D-X-OPUS puede hacer muchas cosas: investigar fuentes y sintetizar conocimiento, proponer estructuras, escribir capítulos, evaluar la coherencia de un argumento, descubrir historias en material ya producido. Pero ninguna de esas capacidades se activa sola ni avanza sin dirección. El sistema es responsable de la ejecución. El editor es responsable de la intención.</p>
+
+  <p>Y la intención lo es todo. El editor sabe qué quiere contar, por qué quiere contarlo y qué forma representa mejor ese propósito. Eso no puede ser asistido porque no puede ser delegado: es la razón por la que ese texto existe y no otro. Todo lo demás —el proceso, las tareas, la ejecución— puede ser acompañado, estructurado y amplificado por el sistema.</p>
+
+  <div class="diagram-wrap">
+    <div class="diagram-label">opcion_a — Autoría Dirigida: lo que dirige el editor, lo que ejecuta el sistema</div>
+    <svg width="100%" viewBox="0 0 680 228" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>D-X-OPUS — Los dos carriles: Editor y Sistema en cada fase</title>
+<desc>Tabla de dos filas mostrando qué decide el editor y qué ejecuta el sistema en cada una de las cinco fases del proceso.</desc>
+<!-- header row -->
+<rect x="0" y="0" width="680" height="36" fill="#0A0A0A"/>
+<rect x="0" y="0" width="44" height="228" fill="#0A0A0A"/>
+<!-- phase headers -->
+<text x="44" y="22" font-family="Courier New,monospace" font-size="9" fill="#00D4D4" letter-spacing="1">01 · INVESTIGACIÓN</text>
+<text x="171" y="22" font-family="Courier New,monospace" font-size="9" fill="#00D4D4" letter-spacing="1">02 · PLANIFICACIÓN</text>
+<text x="298" y="22" font-family="Courier New,monospace" font-size="9" fill="#00D4D4" letter-spacing="1">03 · ESCRITURA</text>
+<text x="425" y="22" font-family="Courier New,monospace" font-size="9" fill="#00D4D4" letter-spacing="1">04 · EVALUACIÓN</text>
+<text x="552" y="22" font-family="Courier New,monospace" font-size="9" fill="#00D4D4" letter-spacing="1">05 · ACTIVACIÓN</text>
+<!-- vertical separators -->
+<line x1="44" y1="0" x2="44" y2="228" stroke="#1A1A1A" stroke-width="1"/>
+<line x1="171" y1="36" x2="171" y2="228" stroke="#2A2A2A" stroke-width="0.5"/>
+<line x1="298" y1="36" x2="298" y2="228" stroke="#2A2A2A" stroke-width="0.5"/>
+<line x1="425" y1="36" x2="425" y2="228" stroke="#2A2A2A" stroke-width="0.5"/>
+<line x1="552" y1="36" x2="552" y2="228" stroke="#2A2A2A" stroke-width="0.5"/>
+<!-- row label EDITOR -->
+<rect x="0" y="36" width="44" height="96" fill="#E8E4D9"/>
+<text x="22" y="94" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="bold" fill="#434343" transform="rotate(-90,22,88)">EDITOR</text>
+<!-- row label SISTEMA -->
+<rect x="0" y="132" width="44" height="96" fill="#141414"/>
+<text x="22" y="192" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" font-weight="bold" fill="#595959" transform="rotate(-90,22,186)">SISTEMA</text>
+<!-- horizontal separator -->
+<line x1="44" y1="132" x2="680" y2="132" stroke="#595959" stroke-width="0.5"/>
+<!-- EDITOR cells -->
+<rect x="44" y="36" width="127" height="96" fill="#F0EDE6"/>
+<text x="52" y="55" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="#0A0A0A">Fija el foco</text>
+<text x="52" y="72" font-family="Arial,sans-serif" font-size="10" fill="#595959">Selecciona fuentes.</text>
+<text x="52" y="87" font-family="Arial,sans-serif" font-size="10" fill="#595959">Valida el mapa</text>
+<text x="52" y="102" font-family="Arial,sans-serif" font-size="10" fill="#595959">de conocimiento.</text>
+<rect x="171" y="36" width="127" height="96" fill="#F0EDE6"/>
+<text x="179" y="55" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="#0A0A0A">Aprueba arquitectura</text>
+<text x="179" y="72" font-family="Arial,sans-serif" font-size="10" fill="#595959">Valida estructura.</text>
+<text x="179" y="87" font-family="Arial,sans-serif" font-size="10" fill="#595959">Responde el Q&amp;A</text>
+<text x="179" y="102" font-family="Arial,sans-serif" font-size="10" fill="#595959">de ideas.</text>
+<rect x="298" y="36" width="127" height="96" fill="#F0EDE6"/>
+<text x="306" y="55" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="#0A0A0A">Aprueba cada bloque</text>
+<text x="306" y="72" font-family="Arial,sans-serif" font-size="10" fill="#595959">Revisa y valida</text>
+<text x="306" y="87" font-family="Arial,sans-serif" font-size="10" fill="#595959">antes de continuar.</text>
+<text x="306" y="102" font-family="Arial,sans-serif" font-size="10" fill="#595959">Interviene en la voz.</text>
+<rect x="425" y="36" width="127" height="96" fill="#F0EDE6"/>
+<text x="433" y="55" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="#0A0A0A">Decide qué corregir</text>
+<text x="433" y="72" font-family="Arial,sans-serif" font-size="10" fill="#595959">Valida la calidad.</text>
+<text x="433" y="87" font-family="Arial,sans-serif" font-size="10" fill="#595959">Acepta o rechaza</text>
+<text x="433" y="102" font-family="Arial,sans-serif" font-size="10" fill="#595959">las observaciones.</text>
+<rect x="552" y="36" width="128" height="96" fill="#F0EDE6"/>
+<text x="560" y="55" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="#0A0A0A">Elige qué activar</text>
+<text x="560" y="72" font-family="Arial,sans-serif" font-size="10" fill="#595959">Selecciona semillas.</text>
+<text x="560" y="87" font-family="Arial,sans-serif" font-size="10" fill="#595959">Orienta nuevos</text>
+<text x="560" y="102" font-family="Arial,sans-serif" font-size="10" fill="#595959">proyectos.</text>
+<!-- SISTEMA cells -->
+<rect x="44" y="132" width="127" height="96" fill="#141414"/>
+<text x="52" y="151" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="#00D4D4">Procesa fuentes</text>
+<text x="52" y="168" font-family="Arial,sans-serif" font-size="10" fill="#888780">Sintetiza referencias.</text>
+<text x="52" y="183" font-family="Arial,sans-serif" font-size="10" fill="#888780">Produce el Research</text>
+<text x="52" y="198" font-family="Arial,sans-serif" font-size="10" fill="#888780">Report.</text>
+<rect x="171" y="132" width="127" height="96" fill="#141414"/>
+<text x="179" y="151" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="#00D4D4">Propone estructura</text>
+<text x="179" y="168" font-family="Arial,sans-serif" font-size="10" fill="#888780">Genera índice.</text>
+<text x="179" y="183" font-family="Arial,sans-serif" font-size="10" fill="#888780">Ejecuta Q&amp;A.</text>
+<text x="179" y="198" font-family="Arial,sans-serif" font-size="10" fill="#888780">Identifica ángulos.</text>
+<rect x="298" y="132" width="127" height="96" fill="#141414"/>
+<text x="306" y="151" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="#00D4D4">Escribe el texto</text>
+<text x="306" y="168" font-family="Arial,sans-serif" font-size="10" fill="#888780">Redacta desde el</text>
+<text x="306" y="183" font-family="Arial,sans-serif" font-size="10" fill="#888780">perfil editorial</text>
+<text x="306" y="198" font-family="Arial,sans-serif" font-size="10" fill="#888780">del editor.</text>
+<rect x="425" y="132" width="127" height="96" fill="#141414"/>
+<text x="433" y="151" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="#00D4D4">Evalúa y detecta</text>
+<text x="433" y="168" font-family="Arial,sans-serif" font-size="10" fill="#888780">Analiza coherencia.</text>
+<text x="433" y="183" font-family="Arial,sans-serif" font-size="10" fill="#888780">Mide adherencia</text>
+<text x="433" y="198" font-family="Arial,sans-serif" font-size="10" fill="#888780">al perfil de voz.</text>
+<rect x="552" y="132" width="128" height="96" fill="#141414"/>
+<text x="560" y="151" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="#00D4D4">Descubre historias</text>
+<text x="560" y="168" font-family="Arial,sans-serif" font-size="10" fill="#888780">Identifica Narrative</text>
+<text x="560" y="183" font-family="Arial,sans-serif" font-size="10" fill="#888780">Seeds en textos</text>
+<text x="560" y="198" font-family="Arial,sans-serif" font-size="10" fill="#888780">ya producidos.</text>
+<!-- footer legend -->
+<text x="52" y="221" font-family="Arial,sans-serif" font-size="9" fill="#595959">▪ Editor: dirige · aprueba · decide</text>
+<text x="320" y="221" font-family="Courier New,monospace" font-size="9" fill="#00D4D4">▪ Sistema: ejecuta · asiste · amplifica</text>
+    </svg>
+  </div>
+
+  <p>El resultado es un texto del que el editor puede sentirse genuinamente responsable. No porque haya tecleado cada palabra, sino porque cada decisión que importa fue suya.</p>
+
+  <div class="section-divider"></div>
+
+  <!-- ── 03 PRINCIPIOS DE DISEÑO ── -->
+  <div id="s03" style="position:relative;top:-20px;"></div>
+  <div class="section-label">03</div>
+  <h1>Principios de diseño</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">D-X-OPUS cubre el proceso de escritura de principio a fin. No es una herramienta de un solo uso: es un sistema modular en el que cada fase tiene funciones propias, y el editor interviene con autoridad en cada una de ellas.</p>
+
+  <h3>Conocer el terreno antes de escribir</h3>
+  <p>El primer trabajo del sistema es el mismo que el primer trabajo de cualquier escritor serio: entender qué se ha dicho ya sobre el tema. No para repetirlo sino para poder ir más allá con conocimiento de causa. El subsistema de Research procesa las fuentes que el editor aporta, las sintetiza y produce un mapa de conocimiento que el editor valida antes de continuar. El objetivo es que ningún argumento del texto sea incorrecto o esté superado por desconocimiento —y que el editor sepa exactamente sobre qué terreno está eligiendo su posición.</p>
+
+  <h3>La voz del editor como criterio permanente</h3>
+  <p>Antes de escribir una sola línea, el sistema construye un Perfil Editorial: cómo escribe el editor, qué estructuras prefiere, qué registro le es propio, qué temas le pertenecen. Ese perfil no es un formulario que se rellena una vez —es un modelo vivo que se refina con cada proyecto. El Q&A de ideas lo actualiza en cada texto al extraer el punto de vista genuino del editor sobre lo que va a escribir. Las revisiones manuales del editor lo corrigen y matizan. Y el sistema está diseñado para ir aprendiendo de las propias intervenciones que el editor hace sobre los textos producidos: cada corrección es una señal de voz que el perfil incorpora.</p>
+
+  <h3>Explorar antes de fijar</h3>
+  <p>Una de las funciones más valiosas del sistema no es escribir sino descubrir. Antes de comprometerse con una estructura, el sistema ayuda a explorar ángulos no evidentes, conexiones entre ideas que no aparecen en las fuentes por separado, perspectivas que el editor no había considerado. Esta exploración se produce de formas distintas según el proyecto: mediante el Q&A de ideas, que hace visible lo que el editor ya sabe pero no ha articulado; mediante la búsqueda de semillas narrativas en material ya producido; o mediante la propuesta de ángulos alternativos para un mismo tema.</p>
+
+  <h3>Escribir con la voz del editor, no sin ella</h3>
+  <p>El sistema puede escribir capítulos completos, posts, introducciones y prólogos. Lo hace a partir de la estructura aprobada por el editor y aplicando el Perfil Editorial construido en las fases anteriores. Esa ejecución no es desatendida: cada bloque se produce para ser revisado y aprobado antes de continuar. El editor no delega la autoría —supervisa la ejecución de un plan que él mismo ha dirigido.</p>
+
+  <h3>El pulido como proceso, no como paso final</h3>
+  <p>La calidad no surge de una revisión al final. El sistema integra la evaluación en el propio proceso mediante dos mecanismos distintos: la evaluación de contenido, que analiza la coherencia argumental, el uso de las fuentes y la solidez de los razonamientos; y la evaluación de estilo, que mide la adherencia al Perfil Editorial y detecta desviaciones de voz. Ambas evaluaciones producen observaciones concretas que el editor revisa. Él decide qué corrige y qué mantiene.</p>
+
+  <h3>El texto como punto de partida, no como punto de llegada</h3>
+  <p>Una vez producido un libro o una serie de textos, el sistema tiene una última función: analizar ese material en busca de lo que todavía no ha sido contado. Las semillas narrativas son fragmentos de historia, conexiones entre ideas o perspectivas que el libro roza pero no desarrolla completamente. Identificarlas permite al editor convertir un libro terminado en el punto de partida de nuevos artículos, posts o proyectos. La Activación cierra el ciclo y lo reinicia.</p>
+
+  <div class="section-divider"></div>
+
+  <!-- ── 04 EL FLUJO EN DOS MODOS ── -->
+  <div id="s04" style="position:relative;top:-20px;"></div>
+  <div class="section-label">04</div>
+  <h1>El flujo en dos modos</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">D-X-OPUS puede activarse desde dos puntos de partida distintos. En el primero, el editor quiere crear algo nuevo: un libro, un post, una serie. En el segundo, el editor tiene material ya escrito y quiere encontrar en él nuevas historias que contar. Los dos modos comparten las fases finales del proceso —escribir y evaluar— pero tienen entradas y lógicas propias.</p>
+
+  <p>El sistema no exige que el editor sepa exactamente qué quiere producir antes de empezar. Cuando el punto de partida es incierto —una idea sin desarrollar, un tema sin referencias, un proyecto cuya forma todavía no está clara— el sistema inicia un breve diálogo de clarificación antes de proceder. El objetivo es entender qué tiene el editor y qué quiere conseguir, para poder sugerir el camino más adecuado. Nadie debería verse forzado a elegir un formato antes de saber qué tiene entre manos.</p>
+
+  <div class="diagram-wrap">
+    <div class="diagram-label">diagrama_B — El ciclo completo con dos puntos de entrada</div>
+    <svg width="100%" viewBox="0 0 680 450" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>D-X-OPUS — El ciclo completo con dos puntos de entrada</title>
+<desc>Las cinco fases del sistema en ciclo pentagonal con el editor como director central. Flujo A entra por Investigación y Planificación, Flujo B entra por Activación.</desc>
+<defs>
+  <marker id="ac3c" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#00D4D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="ag3c" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#595959" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="ad3c" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#434343" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+<rect x="270" y="64" width="140" height="50" rx="4" fill="#0A0A0A" stroke="#00D4D4" stroke-width="1"/>
+<text x="340" y="84" text-anchor="middle" font-family="Courier New,monospace" font-size="11" fill="#00D4D4">01 · 02</text>
+<text x="340" y="103" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF">INVESTIGACIÓN · PLAN</text>
+<rect x="419" y="162" width="110" height="50" rx="4" fill="#0A0A0A" stroke="#00D4D4" stroke-width="0.5"/>
+<text x="474" y="182" text-anchor="middle" font-family="Courier New,monospace" font-size="11" fill="#00D4D4">03</text>
+<text x="474" y="200" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF">ESCRITURA</text>
+<rect x="367" y="318" width="110" height="50" rx="4" fill="#0A0A0A" stroke="#00D4D4" stroke-width="0.5"/>
+<text x="422" y="338" text-anchor="middle" font-family="Courier New,monospace" font-size="11" fill="#00D4D4">04</text>
+<text x="422" y="356" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF">EVALUACIÓN</text>
+<rect x="203" y="318" width="110" height="50" rx="4" fill="#0A0A0A" stroke="#595959" stroke-width="1.5"/>
+<text x="258" y="338" text-anchor="middle" font-family="Courier New,monospace" font-size="11" fill="#595959">05</text>
+<text x="258" y="356" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF">ACTIVACIÓN</text>
+<rect x="141" y="162" width="130" height="50" rx="4" fill="#0A0A0A" stroke="#434343" stroke-width="0.5"/>
+<text x="206" y="182" text-anchor="middle" font-family="Courier New,monospace" font-size="11" fill="#434343">00</text>
+<text x="206" y="200" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF">PERFIL EDITORIAL</text>
+<line x1="410" y1="86" x2="432" y2="162" stroke="#00D4D4" stroke-width="1" marker-end="url(#ac3c)"/>
+<line x1="474" y1="212" x2="452" y2="318" stroke="#00D4D4" stroke-width="1" marker-end="url(#ac3c)"/>
+<line x1="367" y1="343" x2="313" y2="343" stroke="#00D4D4" stroke-width="1" marker-end="url(#ac3c)"/>
+<line x1="230" y1="318" x2="210" y2="212" stroke="#434343" stroke-width="1" marker-end="url(#ad3c)"/>
+<line x1="220" y1="162" x2="290" y2="114" stroke="#434343" stroke-width="1" marker-end="url(#ad3c)"/>
+<circle cx="340" cy="225" r="56" fill="#E8E4D9" stroke="#00D4D4" stroke-width="1"/>
+<text x="340" y="219" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="bold" fill="#0A0A0A" letter-spacing="2">EDITOR</text>
+<text x="340" y="236" text-anchor="middle" font-family="Courier New,monospace" font-size="9" fill="#595959">guiado por el perfil editorial</text>
+<line x1="246" y1="38" x2="296" y2="64" stroke="#00D4D4" stroke-width="2" marker-end="url(#ac3c)"/>
+<rect x="120" y="14" width="118" height="28" rx="3" fill="#0A0A0A" stroke="#00D4D4" stroke-width="0.5"/>
+<text x="179" y="26" text-anchor="middle" font-family="Courier New,monospace" font-size="10" fill="#00D4D4" letter-spacing="0.5">FLUJO A · CREAR</text>
+<text x="179" y="38" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#595959">Crear nuevo texto</text>
+<line x1="182" y1="400" x2="220" y2="368" stroke="#595959" stroke-width="2" marker-end="url(#ag3c)"/>
+<rect x="60" y="400" width="118" height="28" rx="3" fill="#0A0A0A" stroke="#595959" stroke-width="0.5"/>
+<text x="119" y="412" text-anchor="middle" font-family="Courier New,monospace" font-size="10" fill="#595959" letter-spacing="0.5">FLUJO B · ACTIVAR</text>
+<text x="119" y="424" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#595959">Activar contenido</text>
+<path d="M 218 322 C 90 265 110 130 280 82" fill="none" stroke="#434343" stroke-width="1" stroke-dasharray="5,3" marker-end="url(#ad3c)"/>
+<text x="64" y="215" font-family="Arial,sans-serif" font-size="10" fill="#595959" font-style="italic">semillas</text>
+<text x="64" y="228" font-family="Arial,sans-serif" font-size="10" fill="#595959" font-style="italic">→ research</text>
+<text x="340" y="448" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" fill="#434343">— las semillas narrativas pueden originar nuevos proyectos de investigación —</text>
+    </svg>
+  </div>
+
+  <h3>Modo A — Crear nuevo texto</h3>
+  <p>El editor llega con algo que quiere explorar o desarrollar. Puede ser un corpus de referencias consolidado sobre un tema, unas pocas fuentes de partida, o simplemente una idea o reflexión sin material externo todavía. Los tres son puntos de entrada válidos.</p>
+  <p>El proceso comienza con la investigación. El sistema procesa las fuentes disponibles, sintetiza el conocimiento existente sobre el tema y produce un mapa que el editor valida. Si las referencias son escasas, el sistema puede ayudar a identificar qué falta antes de continuar. Si el punto de partida es solo una idea, el sistema explora el terreno junto al editor antes de recomendar si tiene sentido profundizar con más investigación o ir directamente a estructurar.</p>
+  <p>Una vez consolidado el conocimiento, el proceso avanza hacia la planificación: estructura del texto, propuesta de índice, exploración de ángulos posibles. El editor aprueba la arquitectura antes de que empiece la escritura. A partir de ahí el sistema produce el texto fase a fase —capítulos, secciones o posts completos— con evaluación integrada en cada bloque. El resultado puede ser un libro, un post o una serie de posts, dependiendo de lo que el proceso haya ido revelando como el formato más adecuado para ese material.</p>
+
+  <h3>Modo B — Activar contenido existente</h3>
+  <p>El editor llega con un fondo ya escrito: una colección editorial, los textos acumulados de un escritor a lo largo de años, el archivo de una revista o una institución. El objetivo no es escribir desde cero sino encontrar en ese material las historias que todavía no han sido contadas.</p>
+  <p>El proceso empieza construyendo un mapa del fondo disponible. El sistema genera un documento de contexto que describe el alcance y los temas de la colección, una cronología de los hechos y periodos que cubre, y un elenco de los personajes, entidades y conceptos recurrentes. El editor valida ese mapa antes de continuar.</p>
+  <p>Sobre ese mapa el sistema ejecuta una minería narrativa. Lo que busca no son los temas principales ya desarrollados en los textos —esos ya están contados. Busca lo contrario: los fragmentos sin terminar, los nombres mencionados de pasada, las conexiones entre materiales que nadie ha explotado todavía, las historias que el fondo contiene en estado latente. A eso lo llamamos semillas narrativas.</p>
+  <p>Una semilla no es un resumen. Es un hilo suelto del que el editor puede tirar. Las semillas elegidas pueden desarrollarse como posts, artículos o nuevos libros. Y algunas de ellas, cuando requieren investigación adicional para ser contadas con rigor, pueden originar un nuevo ciclo del Modo A.</p>
+
+  <div class="section-divider"></div>
+
+  <!-- ── 05 LOS MÉTODOS ── -->
+  <div id="s05" style="position:relative;top:-20px;"></div>
+  <div class="section-label">05</div>
+  <h1>Los métodos del sistema</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">Si las secciones anteriores explican qué hace el sistema y en qué orden, esta explica cómo lo hace. Los métodos que describimos a continuación son las decisiones de diseño que distinguen D-X-OPUS de un generador de texto genérico. Cada uno responde a un problema concreto del proceso de escritura.</p>
+
+  <div class="diagram-wrap">
+    <div class="diagram-label">nuevo_diagrama_A — Los dos flujos: convergencia en Escritura y Evaluación</div>
+    <svg width="100%" viewBox="0 0 680 500" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>D-X-OPUS — Los dos flujos del sistema</title>
+<desc>Flujo A (Crear nuevo texto) y Flujo B (Activar contenido existente) convergen en las fases compartidas de Escritura y Evaluación.</desc>
+<defs>
+  <marker id="arc3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#00D4D4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="arg3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#595959" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+<text x="120" y="14" text-anchor="middle" font-family="Courier New,monospace" font-size="11" fill="#00D4D4" letter-spacing="1.5">FLUJO A · CREAR</text>
+<line x1="20" y1="19" x2="220" y2="19" stroke="#00D4D4" stroke-width="0.5"/>
+<text x="560" y="14" text-anchor="middle" font-family="Courier New,monospace" font-size="11" fill="#595959" letter-spacing="1.5">FLUJO B · ACTIVAR</text>
+<line x1="460" y1="19" x2="660" y2="19" stroke="#595959" stroke-width="0.5"/>
+<rect x="20" y="26" width="200" height="44" rx="4" fill="#0A0A0A" stroke="#00D4D4" stroke-width="0.5"/>
+<rect x="20" y="26" width="3" height="44" rx="1" fill="#00D4D4"/>
+<text x="32" y="45" font-family="Arial,sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF">Crear nuevo texto</text>
+<text x="32" y="61" font-family="Arial,sans-serif" font-size="11" fill="#595959">Referencias, ideas o reflexiones</text>
+<line x1="120" y1="70" x2="120" y2="93" stroke="#00D4D4" stroke-width="1" marker-end="url(#arc3)"/>
+<rect x="20" y="93" width="200" height="77" rx="4" fill="#0A0A0A" stroke="#434343" stroke-width="0.5"/>
+<rect x="20" y="93" width="3" height="77" rx="1" fill="#00D4D4"/>
+<text x="32" y="110" font-family="Courier New,monospace" font-size="11" fill="#00D4D4">01</text>
+<text x="32" y="126" font-family="Arial,sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF">INVESTIGACIÓN</text>
+<text x="32" y="144" font-family="Arial,sans-serif" font-size="11" fill="#595959">Síntesis de fuentes.</text>
+<text x="32" y="159" font-family="Arial,sans-serif" font-size="11" fill="#595959">Research Report validado.</text>
+<line x1="120" y1="170" x2="120" y2="193" stroke="#434343" stroke-width="1" marker-end="url(#arg3)"/>
+<rect x="20" y="193" width="200" height="77" rx="4" fill="#0A0A0A" stroke="#434343" stroke-width="0.5"/>
+<rect x="20" y="193" width="3" height="77" rx="1" fill="#00D4D4"/>
+<text x="32" y="210" font-family="Courier New,monospace" font-size="11" fill="#00D4D4">02</text>
+<text x="32" y="226" font-family="Arial,sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF">PLANIFICACIÓN</text>
+<text x="32" y="244" font-family="Arial,sans-serif" font-size="11" fill="#595959">Estructura del texto.</text>
+<text x="32" y="259" font-family="Arial,sans-serif" font-size="11" fill="#595959">Q&amp;A de ideas y ángulos.</text>
+<rect x="460" y="26" width="200" height="44" rx="4" fill="#0A0A0A" stroke="#595959" stroke-width="0.5"/>
+<rect x="460" y="26" width="3" height="44" rx="1" fill="#595959"/>
+<text x="472" y="45" font-family="Arial,sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF">Activar contenido</text>
+<text x="472" y="61" font-family="Arial,sans-serif" font-size="11" fill="#595959">Fondo editorial o archivo</text>
+<line x1="560" y1="70" x2="560" y2="93" stroke="#595959" stroke-width="1" marker-end="url(#arg3)"/>
+<rect x="460" y="93" width="200" height="77" rx="4" fill="#0A0A0A" stroke="#434343" stroke-width="0.5"/>
+<rect x="460" y="93" width="3" height="77" rx="1" fill="#595959"/>
+<text x="472" y="110" font-family="Courier New,monospace" font-size="11" fill="#595959">01</text>
+<text x="472" y="126" font-family="Arial,sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF">CONTEXTO</text>
+<text x="472" y="144" font-family="Arial,sans-serif" font-size="11" fill="#595959">Activation Context.</text>
+<text x="472" y="159" font-family="Arial,sans-serif" font-size="11" fill="#595959">Cronología. Elenco.</text>
+<line x1="560" y1="170" x2="560" y2="193" stroke="#595959" stroke-width="1" marker-end="url(#arg3)"/>
+<rect x="460" y="193" width="200" height="77" rx="4" fill="#0A0A0A" stroke="#434343" stroke-width="0.5"/>
+<rect x="460" y="193" width="3" height="77" rx="1" fill="#595959"/>
+<text x="472" y="210" font-family="Courier New,monospace" font-size="11" fill="#595959">02</text>
+<text x="472" y="226" font-family="Arial,sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF">SEMILLAS NARRATIVAS</text>
+<text x="472" y="244" font-family="Arial,sans-serif" font-size="11" fill="#595959">Minería del fondo.</text>
+<text x="472" y="259" font-family="Arial,sans-serif" font-size="11" fill="#595959">Narrative Seeds.</text>
+<path d="M 120 270 L 120 300 L 340 300" fill="none" stroke="#434343" stroke-width="1"/>
+<path d="M 560 270 L 560 300 L 340 300" fill="none" stroke="#434343" stroke-width="1"/>
+<circle cx="340" cy="300" r="3" fill="#434343"/>
+<line x1="340" y1="300" x2="340" y2="315" stroke="#434343" stroke-width="1.5" marker-end="url(#arg3)"/>
+<rect x="235" y="318" width="210" height="75" rx="4" fill="#0A0A0A" stroke="#00D4D4" stroke-width="1"/>
+<text x="340" y="336" text-anchor="middle" font-family="Courier New,monospace" font-size="11" fill="#00D4D4">03</text>
+<text x="340" y="352" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF">ESCRITURA</text>
+<text x="340" y="370" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#595959">Libros, posts o series.</text>
+<text x="340" y="385" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#595959">Perfil editorial del editor.</text>
+<line x1="340" y1="393" x2="340" y2="412" stroke="#00D4D4" stroke-width="1" marker-end="url(#arc3)"/>
+<rect x="235" y="412" width="210" height="55" rx="4" fill="#0A0A0A" stroke="#00D4D4" stroke-width="0.5"/>
+<text x="340" y="430" text-anchor="middle" font-family="Courier New,monospace" font-size="11" fill="#00D4D4">04</text>
+<text x="340" y="446" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" font-weight="bold" fill="#FFFFFF">EVALUACIÓN</text>
+<text x="340" y="462" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#595959">Coherencia argumental. Voz.</text>
+<line x1="340" y1="467" x2="340" y2="481" stroke="#00D4D4" stroke-width="1" marker-end="url(#arc3)"/>
+<text x="340" y="495" text-anchor="middle" font-family="Courier New,monospace" font-size="11" fill="#00D4D4" font-weight="bold" letter-spacing="1">TEXTO FINAL</text>
+    </svg>
+  </div>
+
+  <h3>El Q&amp;A de ideas</h3>
+  <p>Antes de escribir cualquier texto, el sistema puede hacer algo más útil que esperar instrucciones: preguntar. El Q&amp;A de ideas es un diálogo estructurado en el que el sistema hace preguntas secuenciales al editor sobre el tema, el argumento o el capítulo que va a escribir. No busca información que el editor no tiene —busca articular lo que el editor ya sabe pero no ha expresado todavía.</p>
+  <p>Las respuestas del editor no se reescriben ni se parafrasean. Se incorporan al texto tal cual. Lo que el editor dice en el Q&amp;A es el material más valioso del resultado: su perspectiva genuina, sus ejemplos propios, sus contradicciones productivas, su forma de ver el tema que ninguna fuente externa puede replicar. Ese mecanismo existe ya en el flujo de escritura de posts y debe extenderse al flujo de libros, tanto para configurar la estructura como para escribir cada capítulo.</p>
+
+  <h3>El Perfil Editorial</h3>
+  <p>El sistema no escribe con una voz genérica. Antes de producir cualquier texto aplica un modelo de voz construido específicamente para el editor que lo usa. Ese modelo —el Perfil Editorial— captura cómo escribe ese editor: qué estructuras prefiere, qué registro usa, qué temas le son propios, cómo de densa es su prosa, con qué tipo de ejemplos argumenta.</p>
+  <p>El perfil opera en segundo plano. No requiere que el editor lo active o lo configure explícitamente para que funcione —empieza a construirse desde la primera interacción y se refina con cada proyecto. Las correcciones que el editor hace sobre los textos producidos son también señales de voz que el perfil incorpora: cada vez que el editor reformula una frase, cambia el tono de un párrafo o rechaza una estructura propuesta, el sistema aprende algo sobre cómo escribe ese editor.</p>
+  <p>El editor puede consultar y ampliar su perfil en cualquier momento si quiere aportar información de forma explícita. Y puede tener perfiles distintos para proyectos distintos —una voz para libros académicos, otra para divulgación, otra para narrativa— con un perfil activo asignado a cada proyecto.</p>
+
+  <h3>La investigación con perspectivas múltiples</h3>
+  <p>El subsistema de Research no produce un único resumen de las fuentes. Puede analizar el mismo material desde distintos ángulos: el estado del arte sobre el tema, la perspectiva histórica, la lectura crítica de los argumentos existentes, las conexiones entre corrientes que no son evidentes a primera vista. El editor define el foco antes de que empiece el análisis y valida el resultado antes de que avance el proceso.</p>
+  <p>Para proyectos de no-ficción con componente narrativo o histórico, el Research produce además dos documentos de apoyo que alimentan directamente la escritura: una cronología de los hechos, eventos y periodos cubiertos por las fuentes, y un elenco de los personajes, instituciones y entidades relevantes identificados en el material. Estos dos documentos no son opcionales en ese tipo de proyectos —son la diferencia entre escribir con un mapa y escribir a ciegas.</p>
+
+  <h3>La identificación de semillas narrativas</h3>
+  <p>Cuando el editor trabaja con un fondo de textos ya escritos, el sistema ejecuta una búsqueda de lo que no ha sido contado todavía. La lógica es contraintuitiva: no busca las historias más desarrolladas y completas del material —esas ya están contadas. Busca los fragmentos sin terminar, los datos mencionados de pasada, las conexiones entre documentos que nadie ha explotado, los personajes que aparecen en varios textos sin que nadie haya reparado en el hilo que los une.</p>
+  <p>Una semilla narrativa no es un resumen. Es un detonante —una unidad mínima de información con potencial latente. Para identificarla el sistema cruza cada fragmento con el mapa de contexto construido en la fase anterior. Un dato aislado no es una semilla. Se convierte en semilla cuando al cruzarlo con el contexto activa simultáneamente varios nodos del mapa —un personaje, un conflicto, un territorio— y esa combinación revela una historia que el fondo contiene pero que todavía no ha sido escrita.</p>
+
+  <h3>La evaluación como proceso continuo</h3>
+  <p>El sistema evalúa en dos dimensiones. La evaluación de contenido analiza la coherencia argumental del texto, la solidez de los razonamientos y el uso correcto de las fuentes. La evaluación de estilo mide si el texto es fiel al Perfil Editorial del editor. Ambas pueden aplicarse en cualquier punto del proceso, no solo al final, y sobre cualquier texto —incluidos textos que el editor haya escrito antes de usar el sistema.</p>
+  <p>Cuando una evaluación de contenido requiere contrastar afirmaciones con la literatura disponible, el sistema no ejecuta ese Research de forma automática. Consulta al editor primero. El proceso de evaluación señala y propone —el editor juzga y decide qué corregir y qué mantiene.</p>
+
+  <div class="section-divider"></div>
+
+  <!-- ── 06 LO QUE NO HACE ── -->
+  <div id="s06" style="position:relative;top:-20px;"></div>
+  <div class="section-label">06</div>
+  <h1>Lo que el sistema no hace</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">Entender bien una herramienta incluye saber para qué no está diseñada. Estas tres cosas el sistema deliberadamente no hace, o no puede hacer por sí solo.</p>
+
+  <h3>No sustituye el proceso creativo del editor</h3>
+  <p>D-X-OPUS no está pensado para que el editor ceda la dirección de su trabajo y automatice la escritura de principio a fin. Todos los mecanismos del sistema —el Q&amp;A de ideas, el Research, la evaluación— están diseñados para acompañar al editor de forma crítica, no para reemplazarle. Lo que el sistema puede amplificar es lo que el editor ya tiene: ideas, conocimiento acumulado, perspectiva propia sobre un tema. Lo que no puede hacer es generarlo en su lugar. Sin esa materia prima aportada por el editor, el sistema no produce nada que merezca ser publicado.</p>
+  <p>La diferencia entre usar el sistema bien y usarlo mal pasa exactamente por ese punto. Un editor que dirige el proceso obtiene un texto que representa su visión. Un editor que delega el proceso obtiene un texto que no representa a nadie.</p>
+
+  <h3>Está optimizado para la no-ficción</h3>
+  <p>El diseño de D-X-OPUS —su arquitectura de investigación, su sistema de verificación de fuentes, sus criterios de evaluación argumental— está pensado para textos que se anclan en la realidad de los hechos. La no-ficción obliga al sistema a trabajar con rigor: cada afirmación tiene que poder rastrearse hasta una fuente, cada argumento tiene que poder sostenerse contra el conocimiento existente. Esa disciplina es parte del diseño.</p>
+  <p>El sistema puede usarse para otros tipos de narrativa, pero no todas sus capacidades serán igualmente relevantes fuera de la no-ficción. El Research profundo, la verificación de fuentes, la evaluación de coherencia argumental —esas herramientas pierden parte de su sentido cuando el texto no tiene la obligación de ser verdadero.</p>
+
+  <h3>No produce el texto final</h3>
+  <p>Los textos que produce el sistema necesitan revisión. Como cualquier texto. No solo del editor —también de otras personas que participen en el proceso de edición y publicación: correctores, editores externos, lectores de confianza. El sistema no es el último eslabón del proceso editorial sino una herramienta dentro de él.</p>
+
+  <div class="callout">
+    <p>Lo que sí puede garantizar es que el texto que entrega ha pasado por un proceso riguroso de investigación, planificación y evaluación —y que ese proceso ha estado dirigido en todo momento por el editor que lo firma.</p>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <div class="doc-footer">
+    <div class="doc-footer-brand">TINTA ARTIFICIAL</div>
+    <div class="doc-footer-meta">A-01 · SYSTEM DESIGN OVERVIEW · v1.0 · R1 · 2026</div>
+  </div>
+
+</div>
+
+</div>
+</body>
+</html>
