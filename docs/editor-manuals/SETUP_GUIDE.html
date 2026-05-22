@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GUÍA DE INSTALACIÓN — D-X-OPUS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Gentium+Plus:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ta-tinta:   #0A0A0A;
+    --ta-carbon:  #434343;
+    --ta-grafito: #595959;
+    --ta-papel:   #E8E4D9;
+    --ta-blanco:  #FFFFFF;
+    --ta-cian:    #00D4D4;
+    --ta-rojo:    #FF2D2C;
+    --ta-pizarra: #78909C;
+    --ta-ambar:   #FFAB40;
+    --font-display: 'Bebas Neue', Arial, sans-serif;
+    --font-body:    'Gentium Plus', Georgia, serif;
+    --font-mono:    'JetBrains Mono', 'Courier New', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: var(--font-body);
+    background: var(--ta-blanco);
+    color: var(--ta-tinta);
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  /* COVER */
+  .cover { background: var(--ta-tinta); padding: 60px 60px 48px; }
+  .cover-rule { width: 48px; height: 3px; background: var(--ta-cian); margin-bottom: 28px; }
+  .cover-eyebrow { font-family: var(--font-mono); font-size: 11px; color: var(--ta-cian); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px; }
+  .cover-title { font-family: var(--font-display); font-size: 72px; color: var(--ta-blanco); line-height: 0.95; letter-spacing: 0.01em; margin-bottom: 16px; }
+  .cover-subtitle { font-family: var(--font-body); font-size: 17px; color: var(--ta-papel); font-style: italic; margin-bottom: 48px; opacity: 0.85; }
+  .cover-meta { display: flex; gap: 40px; border-top: 0.5px solid #2a2a2a; padding-top: 20px; flex-wrap: wrap; }
+  .cover-meta-item strong { display: block; font-family: var(--font-mono); font-size: 10px; color: var(--ta-grafito); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; }
+  .cover-meta-item span { font-family: var(--font-mono); font-size: 12px; color: var(--ta-papel); }
+
+  /* BODY */
+  .body-wrap { padding: 48px 60px; }
+  .section-label { font-family: var(--font-mono); font-size: 10px; color: var(--ta-cian); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 6px; }
+  h1.doc-h1 { font-family: var(--font-display); font-size: 36px; color: var(--ta-tinta); letter-spacing: 0.02em; line-height: 1; margin-bottom: 6px; }
+  .h1-rule { height: 2px; background: var(--ta-cian); margin-bottom: 28px; width: 100%; }
+  h2.doc-h2 { font-family: var(--font-display); font-size: 22px; color: var(--ta-carbon); letter-spacing: 0.04em; margin: 36px 0 10px; }
+  h3.doc-h3 { font-family: var(--font-body); font-size: 16px; font-weight: 700; color: var(--ta-tinta); margin: 24px 0 8px; }
+  p { font-family: var(--font-body); font-size: 15px; line-height: 1.8; color: var(--ta-tinta); margin-bottom: 14px; }
+  p.lead { font-size: 17px; color: var(--ta-carbon); }
+
+  /* STEPS */
+  .steps { display: flex; flex-direction: column; gap: 0; margin: 24px 0; }
+  .step { display: grid; grid-template-columns: 48px 1fr; gap: 0; border-bottom: 0.5px solid var(--ta-papel); padding: 20px 0; }
+  .step:last-child { border-bottom: none; }
+  .step-num { font-family: var(--font-display); font-size: 32px; color: var(--ta-cian); line-height: 1; padding-top: 2px; }
+  .step-body { padding-left: 16px; }
+  .step-title { font-family: var(--font-display); font-size: 18px; color: var(--ta-tinta); letter-spacing: 0.03em; margin-bottom: 6px; }
+  .step-desc { font-family: var(--font-body); font-size: 14px; line-height: 1.7; color: var(--ta-carbon); margin-bottom: 10px; }
+  .step-time { font-family: var(--font-mono); font-size: 10px; color: var(--ta-pizarra); letter-spacing: 0.08em; text-transform: uppercase; }
+
+  /* DOWNLOAD BOX */
+  .download-box {
+    background: #F0FAFA;
+    border: 0.5px solid var(--ta-cian);
+    border-left: 3px solid var(--ta-cian);
+    border-radius: 0 6px 6px 0;
+    padding: 14px 18px;
+    margin: 10px 0 12px;
+  }
+  .download-box-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ta-cian);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .download-box-file {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ta-tinta);
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .download-box-url {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--ta-grafito);
+    word-break: break-all;
+  }
+  .download-box-url a { color: var(--ta-cian); text-decoration: none; }
+  .download-box-url a:hover { text-decoration: underline; }
+  .download-box-note {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--ta-grafito);
+    font-style: italic;
+    margin-top: 6px;
+  }
+
+  /* LOCATION BOX */
+  .location-box {
+    background: #FDFCFA;
+    border: 0.5px solid var(--ta-papel);
+    border-left: 3px solid var(--ta-ambar);
+    border-radius: 0 6px 6px 0;
+    padding: 12px 16px;
+    margin: 10px 0 12px;
+  }
+  .location-box-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ta-ambar);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  .location-box-path {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--ta-tinta);
+  }
+
+  /* CALLOUTS */
+  .callout { border-left: 3px solid var(--ta-cian); padding: 14px 18px; background: #F0FAFA; border-radius: 0 6px 6px 0; margin: 20px 0; }
+  .callout p { margin: 0; font-style: italic; font-size: 15px; }
+  .callout.warn { border-left-color: var(--ta-ambar); background: #FFFBF0; }
+  .callout.alert { border-left-color: var(--ta-rojo); background: #FFF5F5; }
+
+  /* CODE */
+  code.inline { font-family: var(--font-mono); font-size: 12px; background: var(--ta-papel); color: var(--ta-carbon); padding: 2px 6px; border-radius: 3px; }
+  .code-block { font-family: var(--font-mono); font-size: 12px; background: var(--ta-tinta); color: var(--ta-cian); padding: 16px 20px; border-radius: 6px; margin: 12px 0; display: block; white-space: pre; overflow-x: auto; line-height: 1.6; }
+
+  /* BADGES */
+  .badge { display: inline-block; font-family: var(--font-mono); font-size: 10px; font-weight: 500; padding: 3px 9px; border-radius: 4px; margin-right: 4px; letter-spacing: 0.04em; }
+  .badge-cian  { background: var(--ta-cian); color: #003333; }
+  .badge-papel { background: var(--ta-papel); color: var(--ta-carbon); }
+  .badge-tinta { background: var(--ta-tinta); color: var(--ta-blanco); }
+  .badge-ambar { background: var(--ta-ambar); color: #4A2900; }
+
+  /* TABLES */
+  table.doc-table { width: 100%; border-collapse: collapse; font-family: var(--font-body); font-size: 14px; margin: 16px 0; }
+  table.doc-table th { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ta-grafito); border-bottom: 1.5px solid var(--ta-cian); padding: 8px 12px; text-align: left; background: #FDFCFA; }
+  table.doc-table td { padding: 10px 12px; border-bottom: 0.5px solid var(--ta-papel); color: var(--ta-tinta); vertical-align: top; }
+  table.doc-table tr:last-child td { border-bottom: none; }
+
+  /* DIVIDER */
+  .section-divider { height: 0.5px; background: var(--ta-papel); margin: 48px 0; }
+
+  /* PHASE BAR */
+  .phase-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 24px 0; }
+  .phase-item { background: #FDFCFA; border: 0.5px solid var(--ta-papel); border-top: 2px solid var(--ta-cian); padding: 12px 14px; border-radius: 0 0 4px 4px; }
+  .phase-num { font-family: var(--font-mono); font-size: 9px; color: var(--ta-pizarra); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 4px; }
+  .phase-name { font-family: var(--font-display); font-size: 15px; color: var(--ta-tinta); letter-spacing: 0.03em; }
+  .phase-time { font-family: var(--font-mono); font-size: 10px; color: var(--ta-pizarra); margin-top: 4px; }
+
+  /* FOOTER */
+  .footer { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; padding-top: 16px; border-top: 0.5px solid var(--ta-papel); }
+  .footer-brand { font-family: var(--font-display); font-size: 20px; color: var(--ta-tinta); letter-spacing: 0.05em; }
+  .footer-meta { font-family: var(--font-mono); font-size: 10px; color: var(--ta-grafito); }
+
+  @media print { body { max-width: 100%; } .cover { padding: 40px; } .body-wrap { padding: 32px 40px; } }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-rule"></div>
+  <div class="cover-eyebrow">Sistema D-X-OPUS · Editor Manual · v1.1</div>
+  <div class="cover-title">GUÍA DE<br>INSTALACIÓN</div>
+  <div class="cover-subtitle">Cómo instalar D-X-OPUS y crear tu primer proyecto de escritura</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><strong>Versión sistema</strong><span>v1.4.1</span></div>
+    <div class="cover-meta-item"><strong>Release</strong><span>R1 · 2026</span></div>
+    <div class="cover-meta-item"><strong>Audiencia</strong><span>Editor (nuevo usuario)</span></div>
+    <div class="cover-meta-item"><strong>Tiempo total</strong><span>~15 minutos</span></div>
+    <div class="cover-meta-item"><strong>Estado</strong><span>ACTIVE</span></div>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="body-wrap">
+
+  <!-- 01 ANTES DE EMPEZAR -->
+  <div class="section-label">01</div>
+  <h1 class="doc-h1">Antes de empezar</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">D-X-OPUS es un sistema de escritura asistida por IA que funciona sobre Google Drive y Claude.ai. La instalación completa tarda unos 15 minutos y solo tienes que hacerla una vez.</p>
+
+  <h2 class="doc-h2">Lo que necesitas</h2>
+  <table class="doc-table">
+    <thead><tr><th>Requisito</th><th>Para qué se usa</th><th>¿Tienes?</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Cuenta Google</strong></td><td>Almacenar los archivos del sistema en Drive</td><td>☐</td></tr>
+      <tr><td><strong>Claude.ai Pro</strong></td><td>Ejecutar los flujos de escritura e investigación</td><td>☐</td></tr>
+      <tr><td><strong>Google Apps Script</strong></td><td>Instalar el sistema (script.google.com — incluido con Google)</td><td>☐</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="doc-h2">Las tres fases de la instalación</h2>
+  <div class="phase-bar">
+    <div class="phase-item">
+      <div class="phase-num">Fase 1</div>
+      <div class="phase-name">INSTALAR EL SISTEMA</div>
+      <div class="phase-time">~10 min · Una sola vez</div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-num">Fase 2</div>
+      <div class="phase-name">CREAR UN PROYECTO</div>
+      <div class="phase-time">~3 min · Por proyecto</div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-num">Fase 3</div>
+      <div class="phase-name">CONFIGURAR CLAUDE</div>
+      <div class="phase-time">~2 min · Por proyecto</div>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- 02 FASE 1 -->
+  <div class="section-label">02</div>
+  <h1 class="doc-h1">Fase 1 — Instalar el sistema en Drive</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">Descarga un único archivo, pégalo en Google Apps Script y ejecútalo. El script se encarga de descargar e instalar todo lo demás automáticamente.</p>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <div class="step-title">DESCARGAR EL SCRIPT DE INSTALACIÓN</div>
+        <div class="step-desc">Descarga el archivo de instalación desde la última versión del sistema:</div>
+        <div class="download-box">
+          <div class="download-box-label">↓ Descarga</div>
+          <div class="download-box-file">TOOL_SETUP_EDITOR_ENVIRONMENT.gs</div>
+          <div class="download-box-url">
+            <a href="https://github.com/TINTA-ARTIFICIAL/dx-opus/releases/latest" target="_blank">
+              github.com/TINTA-ARTIFICIAL/dx-opus/releases/latest
+            </a>
+          </div>
+          <div class="download-box-note">En la página de releases, busca el archivo bajo "Assets". Descárgalo y ábrelo con cualquier editor de texto.</div>
+        </div>
+        <div class="step-time">⏱ 1 minuto</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <div class="step-title">ABRIR GOOGLE APPS SCRIPT Y PEGAR EL CÓDIGO</div>
+        <div class="step-desc">
+          Ve a <a href="https://script.google.com" style="color:var(--ta-cian);font-family:var(--font-mono);font-size:12px;">script.google.com</a> e inicia sesión con tu cuenta Google.<br><br>
+          Haz clic en <strong>Nuevo proyecto</strong>.<br>
+          Cámbiale el nombre a <code class="inline">D-X-OPUS Tools</code> (clic en "Proyecto sin título" arriba a la izquierda).<br><br>
+          Borra el contenido por defecto del editor (<code class="inline">function myFunction() {}</code>).<br>
+          Pega el contenido del archivo que descargaste en el paso anterior.<br>
+          Guarda con <strong>Cmd+S</strong> (Mac) o <strong>Ctrl+S</strong> (Windows).
+        </div>
+        <div class="step-time">⏱ 2 minutos</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <div class="step-title">EJECUTAR LA INSTALACIÓN</div>
+        <div class="step-desc">
+          En el desplegable de funciones (junto al botón ▶), selecciona <code class="inline">setupEditorEnvironment</code>.<br>
+          Haz clic en ▶ <strong>Ejecutar</strong>.<br>
+          La primera vez te pedirá autorizar permisos — acepta todo.<br><br>
+          El script descargará e instalará automáticamente el paquete completo del sistema desde:
+        </div>
+        <div class="download-box">
+          <div class="download-box-label">↓ Descargado automáticamente por el script</div>
+          <div class="download-box-file">dx-opus-system-v1.4.1.zip</div>
+          <div class="download-box-url">
+            <a href="https://github.com/TINTA-ARTIFICIAL/dx-opus/releases/download/v1.4.1/dx-opus-system-v1.4.1.zip" target="_blank">
+              github.com/TINTA-ARTIFICIAL/dx-opus/releases/download/v1.4.1/dx-opus-system-v1.4.1.zip
+            </a>
+          </div>
+          <div class="download-box-note">No necesitas descargarlo manualmente — el script lo hace por ti.</div>
+        </div>
+        <div class="step-desc">Espera a ver <code class="inline">✅ Status: SUCCESS</code> en el panel de registro.</div>
+        <div class="step-time">⏱ 5–10 minutos</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="callout">
+    <p>Cuando termine, en tu Google Drive aparecerá una carpeta llamada <code class="inline">D-X-OPUS/</code> con subcarpetas <code class="inline">prompts/</code>, <code class="inline">templates/</code>, <code class="inline">resources/</code> y <code class="inline">tools/</code>. Eso significa que la instalación fue correcta.</p>
+  </div>
+
+  <div class="callout warn">
+    <p><strong>Si el script da error de permisos:</strong> asegúrate de que el archivo descargado es la versión v1.1.1 o superior — es la única que funciona en proyectos standalone de Apps Script.</p>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- 03 FASE 2 -->
+  <div class="section-label">03</div>
+  <h1 class="doc-h1">Fase 2 — Crear un proyecto</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">Cada texto que vayas a escribir es un proyecto independiente. Este proceso crea la estructura de carpetas del proyecto en tu Drive y prepara el archivo que necesitarás en Claude.</p>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <div class="step-title">ABRIR EL SCRIPT DE CREACIÓN DE PROYECTOS</div>
+        <div class="step-desc">
+          La Fase 1 ya instaló el script de creación de proyectos en tu Drive. Lo encontrarás aquí:
+        </div>
+        <div class="location-box">
+          <div class="location-box-label">📁 Ubicación en Google Drive</div>
+          <div class="location-box-path">D-X-OPUS / tools / TOOL_CREATE_PROJECT.gs</div>
+        </div>
+        <div class="step-desc">
+          Abre ese archivo desde Drive (clic derecho → Abrir con → Google Apps Script).<br>
+          O alternativamente: copia su contenido y pégalo en un nuevo proyecto de Apps Script en <a href="https://script.google.com" style="color:var(--ta-cian);font-family:var(--font-mono);font-size:12px;">script.google.com</a>.
+        </div>
+        <div class="step-time">⏱ 1 minuto</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <div class="step-title">CONFIGURAR Y EJECUTAR</div>
+        <div class="step-desc">Añade al final del código esta función con el nombre de tu proyecto:</div>
+        <code class="code-block">function runCreateProject() {
+  createProject("TA", "Mi Primer Proyecto");
+}</code>
+        <div class="step-desc" style="margin-top:10px;">
+          Sustituye <code class="inline">"TA"</code> por el código de tu proyecto (2–4 letras mayúsculas) y <code class="inline">"Mi Primer Proyecto"</code> por el nombre que quieras.<br><br>
+          Selecciona <code class="inline">runCreateProject</code> en el desplegable de funciones y haz clic en ▶ <strong>Ejecutar</strong>.<br>
+          Espera a ver <code class="inline">🎉 PROYECTO CREADO EXITOSAMENTE</code> en el log.
+        </div>
+        <div class="step-time">⏱ 2–3 minutos</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="callout">
+    <p>En tu Drive aparecerá una nueva carpeta dentro de <code class="inline">D-X-OPUS/projects/</code>. Dentro encontrarás el archivo <code class="inline">PROMPTS_PACKAGE.md</code> — lo necesitarás en el siguiente paso.</p>
+  </div>
+
+  <h2 class="doc-h2">Qué se crea en Drive</h2>
+  <table class="doc-table">
+    <thead><tr><th>Ubicación en Drive</th><th>Contenido</th></tr></thead>
+    <tbody>
+      <tr><td><code class="inline">D-X-OPUS/projects/[CODIGO]_[Nombre]/_discovery/</code></td><td>Notas iniciales del proyecto</td></tr>
+      <tr><td><code class="inline">D-X-OPUS/projects/[CODIGO]_[Nombre]/R_research/</code></td><td>Informes de investigación</td></tr>
+      <tr><td><code class="inline">D-X-OPUS/projects/[CODIGO]_[Nombre]/WP_writing_post/</code></td><td>Borradores y artefactos de posts</td></tr>
+      <tr><td><code class="inline">D-X-OPUS/projects/[CODIGO]_[Nombre]/WB_writing_book/</code></td><td>Borradores y artefactos de libro</td></tr>
+      <tr><td><code class="inline">D-X-OPUS/projects/[CODIGO]_[Nombre]/config/</code></td><td>Configuración del proyecto</td></tr>
+      <tr><td><code class="inline">D-X-OPUS/projects/[CODIGO]_[Nombre]/PROMPTS_PACKAGE.md</code></td><td><strong>Cargar en Claude Project Knowledge</strong></td></tr>
+    </tbody>
+  </table>
+
+  <div class="section-divider"></div>
+
+  <!-- 04 FASE 3 -->
+  <div class="section-label">04</div>
+  <h1 class="doc-h1">Fase 3 — Configurar Claude.ai</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">Crea un proyecto en Claude.ai y carga el paquete de prompts. Esto le da al asistente todo el conocimiento necesario sobre los flujos de trabajo del sistema.</p>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num">6</div>
+      <div class="step-body">
+        <div class="step-title">CREAR UN PROYECTO EN CLAUDE.AI</div>
+        <div class="step-desc">
+          Ve a <a href="https://claude.ai" style="color:var(--ta-cian);font-family:var(--font-mono);font-size:12px;">claude.ai</a> e inicia sesión con tu cuenta Pro.<br>
+          En el panel lateral, haz clic en <strong>New Project</strong>.<br>
+          Ponle el mismo nombre que a tu proyecto — por ejemplo: <code class="inline">TA — Mi Primer Proyecto</code>.
+        </div>
+        <div class="step-time">⏱ 1 minuto</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">7</div>
+      <div class="step-body">
+        <div class="step-title">CARGAR EL PAQUETE DE PROMPTS</div>
+        <div class="step-desc">Dentro del proyecto Claude, haz clic en <strong>Project Knowledge</strong> y sube este archivo:</div>
+        <div class="location-box">
+          <div class="location-box-label">📁 Ubicación en Google Drive</div>
+          <div class="location-box-path">D-X-OPUS / projects / [CODIGO]_[Nombre] / PROMPTS_PACKAGE.md</div>
+        </div>
+        <div class="step-desc" style="margin-top:8px;">
+          Si tienes un perfil de editor, súbelo también:
+        </div>
+        <div class="location-box">
+          <div class="location-box-label">📁 Perfil de editor (si existe)</div>
+          <div class="location-box-path">D-X-OPUS / prompts / EDITOR_PROFILE_[TuNombre].md</div>
+        </div>
+        <div class="step-time">⏱ 1 minuto</div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">8</div>
+      <div class="step-body">
+        <div class="step-title">INICIAR LA PRIMERA SESIÓN</div>
+        <div class="step-desc">
+          Abre un <strong>nuevo chat</strong> dentro del proyecto Claude que acabas de crear.<br>
+          Escribe en el chat:
+        </div>
+        <code class="code-block">PROMPT_PROJECT_DISCOVERY</code>
+        <div class="step-desc" style="margin-top:10px;">
+          El sistema reconocerá que es tu primera sesión y te guiará para definir el proyecto y el tipo de contenido que quieres escribir.
+        </div>
+        <div class="step-time">⏱ 5–10 minutos (primera sesión)</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="callout">
+    <p><strong>Ya estás dentro.</strong> A partir de aquí el sistema te guiará paso a paso. Cada vez que quieras continuar con un proyecto, abre el proyecto Claude correspondiente y empieza un nuevo chat.</p>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- 05 RESUMEN -->
+  <div class="section-label">05</div>
+  <h1 class="doc-h1">Resumen y próximos pasos</h1>
+  <div class="h1-rule"></div>
+
+  <table class="doc-table">
+    <thead><tr><th>Fase</th><th>Qué hiciste</th><th>Resultado en Drive / Claude</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge badge-cian">Fase 1</span></td><td>Ejecutaste <code class="inline">setupEditorEnvironment</code></td><td><code class="inline">D-X-OPUS/</code> en tu Drive con 35 archivos del sistema</td></tr>
+      <tr><td><span class="badge badge-cian">Fase 2</span></td><td>Ejecutaste <code class="inline">runCreateProject</code></td><td><code class="inline">D-X-OPUS/projects/[tu-proyecto]/</code> con estructura completa</td></tr>
+      <tr><td><span class="badge badge-cian">Fase 3</span></td><td>Proyecto Claude.ai con <code class="inline">PROMPTS_PACKAGE.md</code></td><td>Entorno listo para escribir</td></tr>
+    </tbody>
+  </table>
+
+  <h2 class="doc-h2">Para cada nuevo proyecto</h2>
+  <p>La Fase 1 es permanente — no tienes que repetirla. Para cada nuevo texto que quieras escribir, repite solo las Fases 2 y 3 (~5 minutos en total).</p>
+
+  <h2 class="doc-h2">Localización de todos los archivos del sistema</h2>
+  <table class="doc-table">
+    <thead><tr><th>Archivo</th><th>Dónde encontrarlo</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><code class="inline">TOOL_SETUP_EDITOR_ENVIRONMENT.gs</code></td>
+        <td>
+          <span style="font-family:var(--font-mono);font-size:11px;color:var(--ta-grafito);">
+            <a href="https://github.com/TINTA-ARTIFICIAL/dx-opus/releases/latest" style="color:var(--ta-cian);">github.com/TINTA-ARTIFICIAL/dx-opus/releases/latest</a>
+          </span><br>
+          <span style="font-family:var(--font-body);font-size:12px;color:var(--ta-grafito);font-style:italic;">Descarga manual — solo necesario para la Fase 1</span>
+        </td>
+      </tr>
+      <tr>
+        <td><code class="inline">dx-opus-system-v1.4.1.zip</code></td>
+        <td>
+          <span style="font-family:var(--font-mono);font-size:11px;color:var(--ta-grafito);">
+            Descargado automáticamente por el script durante la Fase 1
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td><code class="inline">TOOL_CREATE_PROJECT.gs</code></td>
+        <td>
+          <span style="font-family:var(--font-mono);font-size:11px;color:var(--ta-grafito);">D-X-OPUS / tools /</span><br>
+          <span style="font-family:var(--font-body);font-size:12px;color:var(--ta-grafito);font-style:italic;">Instalado automáticamente en tu Drive durante la Fase 1</span>
+        </td>
+      </tr>
+      <tr>
+        <td><code class="inline">PROMPTS_PACKAGE.md</code></td>
+        <td>
+          <span style="font-family:var(--font-mono);font-size:11px;color:var(--ta-grafito);">D-X-OPUS / projects / [CODIGO]_[Nombre] /</span><br>
+          <span style="font-family:var(--font-body);font-size:12px;color:var(--ta-grafito);font-style:italic;">Generado automáticamente en tu Drive durante la Fase 2</span>
+        </td>
+      </tr>
+      <tr>
+        <td>Todos los prompts del sistema</td>
+        <td>
+          <span style="font-family:var(--font-mono);font-size:11px;color:var(--ta-grafito);">D-X-OPUS / prompts /</span><br>
+          <span style="font-family:var(--font-body);font-size:12px;color:var(--ta-grafito);font-style:italic;">23 archivos instalados automáticamente durante la Fase 1</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 class="doc-h2">Solución de problemas</h2>
+  <table class="doc-table">
+    <thead><tr><th>Error</th><th>Solución</th></tr></thead>
+    <tbody>
+      <tr><td>Error <code class="inline">SpreadsheetApp.getUi()</code></td><td>Descarga la versión v1.1.1 del script desde <a href="https://github.com/TINTA-ARTIFICIAL/dx-opus/releases/latest" style="color:var(--ta-cian);font-family:var(--font-mono);font-size:11px;">releases/latest</a></td></tr>
+      <tr><td>Error <code class="inline">Carpeta prompts no encontrada</code></td><td>Ejecuta primero la Fase 1 completa antes de crear el proyecto.</td></tr>
+      <tr><td>El asistente no reconoce los prompts</td><td>Verifica que <code class="inline">PROMPTS_PACKAGE.md</code> está cargado en Project Knowledge del proyecto Claude.</td></tr>
+      <tr><td>Carpetas duplicadas en Drive</td><td>Bug conocido (v1.4.1). Los archivos están en las carpetas originales. Se corrige en la próxima versión.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="footer">
+    <div class="footer-brand">TINTA ARTIFICIAL</div>
+    <div class="footer-meta">SETUP_GUIDE · v1.1 · D-X-OPUS v1.4.1 · R1 · 2026</div>
+  </div>
+
+</div>
+</body>
+</html>
