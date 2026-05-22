@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía de Transparencia IA — D-X-OPUS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Gentium+Plus:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ta-tinta:   #0A0A0A;
+    --ta-carbon:  #434343;
+    --ta-grafito: #595959;
+    --ta-papel:   #E8E4D9;
+    --ta-blanco:  #FFFFFF;
+    --ta-cian:    #00D4D4;
+    --ta-rojo:    #FF2D2C;
+    --ta-pizarra: #78909C;
+    --ta-ambar:   #FFAB40;
+    --font-display: 'Bebas Neue', Arial, sans-serif;
+    --font-body:    'Gentium Plus', Georgia, serif;
+    --font-mono:    'JetBrains Mono', 'Courier New', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-body); background: var(--ta-blanco); color: var(--ta-tinta); padding: 0; }
+
+  .cover { background: var(--ta-tinta); padding: 56px 40px 44px; }
+  .cover-rule { width: 48px; height: 3px; background: var(--ta-cian); margin-bottom: 24px; }
+  .cover-eyebrow { font-family: var(--font-mono); font-size: 11px; color: var(--ta-cian); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px; }
+  .cover-title { font-family: var(--font-display); font-size: 72px; color: var(--ta-blanco); line-height: 0.95; letter-spacing: 0.01em; margin-bottom: 14px; }
+  .cover-subtitle { font-family: var(--font-body); font-size: 16px; color: var(--ta-papel); font-style: italic; margin-bottom: 40px; opacity: 0.85;
+    line-height: 22px;
+  }
+  .cover-meta { display: flex; gap: 36px; flex-wrap: wrap; border-top: 0.5px solid #2a2a2a; padding-top: 18px; }
+  .cover-meta-item strong { display: block; font-family: var(--font-mono); font-size: 10px; color: var(--ta-grafito); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 3px; }
+  .cover-meta-item span { font-family: var(--font-mono); font-size: 13px; color: var(--ta-papel); }
+
+  .body-wrap { padding: 52px 40px; }
+  .section-label { font-family: var(--font-mono); font-size: 10px; color: var(--ta-cian); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 6px; }
+  h1.doc-h1 { font-family: var(--font-display); font-size: 34px; color: var(--ta-tinta); letter-spacing: 0.02em; line-height: 1; margin-bottom: 6px; }
+  .h1-rule { height: 2px; background: var(--ta-cian); margin-bottom: 28px; width: 100%; }
+  h2.doc-h2 { font-family: var(--font-display); font-size: 20px; color: var(--ta-carbon); letter-spacing: 0.04em; margin: 36px 0 10px; }
+  .section-divider { height: 0.5px; background: var(--ta-papel); margin: 48px 0; }
+  p { font-family: var(--font-body); font-size: 18px; line-height: 26px; color: var(--ta-tinta); margin-bottom: 14px; }
+  p.lead { font-size: 18px; color: var(--ta-carbon);
+    line-height: 26px;
+  }
+
+  .callout { border-left: 3px solid var(--ta-cian); padding: 14px 18px; background: #F0FAFA; border-radius: 0 6px 6px 0; margin: 20px 0; }
+  .callout p { margin: 0; font-style: italic; font-size: 18px;
+    line-height: 26px;
+  }
+  .callout.warn { border-left-color: var(--ta-ambar); background: #FFFBF0; }
+  .callout.alert { border-left-color: var(--ta-rojo); background: #FFF5F5; }
+
+  .badge { display: inline-block; font-family: var(--font-mono); font-size: 9px; font-weight: 500; padding: 2px 7px; border-radius: 3px; margin-left: 4px; letter-spacing: 0.04em; vertical-align: middle; position: relative; top: -1px; }
+  .badge-cian    { background: var(--ta-cian); color: #003333; }
+  .badge-ambar   { background: var(--ta-ambar); color: #4A2900; }
+  .badge-pizarra { background: var(--ta-pizarra); color: #fff; }
+  .badge-rojo    { background: var(--ta-rojo); color: #fff; }
+
+  /* ── FORMAT COMPARISON ── */
+  .format-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0; }
+  .format-card { border-radius: 6px; padding: 22px; }
+  .format-obligatorio { background: #F0FAFA; border: 1px solid #AAEAEA; border-top: 3px solid var(--ta-cian); }
+  .format-opcional    { background: #F7F7FA; border: 1px solid #D0D0E0; border-top: 3px solid var(--ta-pizarra); }
+  .format-label { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+  .format-obligatorio .format-label { color: var(--ta-cian); }
+  .format-opcional    .format-label { color: var(--ta-pizarra); }
+  .format-title { font-family: var(--font-display); font-size: 20px; letter-spacing: 0.04em; margin-bottom: 10px; }
+  .format-stat { font-family: var(--font-mono); font-size: 10px; color: var(--ta-grafito); margin-bottom: 3px; }
+  .format-stat strong { color: var(--ta-tinta); }
+  .format-desc { font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito); line-height: 22px; margin-top: 10px; }
+
+  /* ── CONTENT BREAKDOWN ── */
+  .content-stack { display: flex; flex-direction: column; gap: 8px; margin: 20px 0; }
+  .content-row { display: flex; gap: 14px; align-items: flex-start; padding: 12px 16px; background: #FDFCFA; border: 0.5px solid #E8E8E8; border-radius: 5px; }
+  .content-obligatorio { border-left: 3px solid var(--ta-cian); }
+  .content-opcional    { border-left: 3px solid var(--ta-pizarra); }
+  .content-tag { font-family: var(--font-mono); font-size: 9px; min-width: 76px; font-weight: 500; padding-top: 1px; }
+  .content-obligatorio .content-tag { color: var(--ta-cian); }
+  .content-opcional    .content-tag { color: var(--ta-pizarra); }
+  .content-text { font-family: var(--font-body); font-size: 16px; color: var(--ta-grafito); line-height: 22px; }
+  .content-text strong { color: var(--ta-tinta); }
+
+  /* ── TONE EXAMPLES ── */
+  .tone-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+  .tone-card { border-radius: 5px; padding: 14px 16px; }
+  .tone-si  { background: #F0FAF4; border: 0.5px solid #A8E6BE; }
+  .tone-no  { background: #FFF5F5; border: 0.5px solid #FFAAAA; }
+  .tone-label { font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+  .tone-si .tone-label { color: #1A7A40; }
+  .tone-no .tone-label { color: var(--ta-rojo); }
+  .tone-example { font-family: var(--font-body); font-size: 16px; line-height: 22px; }
+  .tone-si .tone-example { color: var(--ta-tinta); }
+  .tone-no .tone-example { color: var(--ta-grafito); text-decoration: line-through; }
+
+  /* ── SAMPLE TEXT ── */
+  .sample-box { background: #FAFAFA; border: 0.5px solid #E0E0E0; border-radius: 6px; padding: 20px 24px; margin: 20px 0; }
+  .sample-label { font-family: var(--font-mono); font-size: 9px; color: var(--ta-pizarra); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; }
+  .sample-text { font-family: var(--font-body); font-size: 16px; color: var(--ta-carbon); line-height: 22px; font-style: italic; }
+  .sample-placeholder { color: var(--ta-cian); font-style: normal; font-family: var(--font-mono); font-size: 11px; }
+
+  /* ── NUMBERED LIST ── */
+  .doc-list { list-style: none; margin: 16px 0; }
+  .doc-list li { display: flex; gap: 14px; align-items: flex-start; padding: 10px 0; border-bottom: 0.5px solid #F0F0F0; font-size: 18px; line-height: 26px; }
+  .doc-list li:last-child { border-bottom: none; }
+  .li-num { font-family: var(--font-mono); font-size: 11px; color: var(--ta-cian); min-width: 22px; font-weight: 500; padding-top: 2px; }
+
+  /* ── TABLE ── */
+  table.doc-table { width: 100%; border-collapse: collapse; font-family: var(--font-body); font-size: 16px; margin: 16px 0;
+    line-height: 22px;
+  }
+  table.doc-table th { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ta-grafito); border-bottom: 1.5px solid var(--ta-cian); padding: 8px 12px; text-align: left; background: #FDFCFA; }
+  table.doc-table td { padding: 10px 12px; border-bottom: 0.5px solid var(--ta-papel); color: var(--ta-tinta); vertical-align: top; font-size: 16px; line-height: 1.6; }
+  table.doc-table tr:last-child td { border-bottom: none; }
+
+  .doc-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 48px; padding-top: 14px; border-top: 0.5px solid var(--ta-papel); }
+  .doc-footer-brand { font-family: var(--font-display); font-size: 20px; color: var(--ta-tinta); letter-spacing: 0.05em; }
+  .doc-footer-meta { font-family: var(--font-mono); font-size: 10px; color: var(--ta-grafito); }
+  .toc-num {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--ta-cian);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+  }
+
+
+  /* ── DOC SIDEBAR LAYOUT ── */
+  .doc-sidebar {
+    width: 260px;
+    min-height: 100vh;
+    background: var(--ta-tinta);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0;
+    overflow-y: auto;
+    z-index: 100;
+  }
+  .ds-brand { padding: 24px 22px 18px; border-bottom: 0.5px solid #1a1a1a; }
+  .ds-rule { width: 28px; height: 2px; background: var(--ta-cian); margin-bottom: 12px; }
+  .ds-type { font-family: var(--font-mono); font-size: 9px; color: var(--ta-grafito); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px; line-height: 1.5; }
+  .ds-title { font-family: var(--font-display); font-size: 24px; color: #fff; letter-spacing: 0.04em; line-height: 1.05; margin-bottom: 6px; }
+  .ds-version { font-family: var(--font-mono); font-size: 9px; color: #333; letter-spacing: 0.1em; }
+  .ds-nav { flex: 1; padding: 20px 0 16px; }
+  .ds-nav-label { font-family: var(--font-mono); font-size: 9px; color: var(--ta-grafito); letter-spacing: 0.16em; text-transform: uppercase; padding: 0 22px 8px; display: block; }
+  .ds-item { display: flex; align-items: center; gap: 10px; padding: 9px 22px; text-decoration: none; border-left: 2px solid transparent; transition: background 0.15s; }
+  .ds-item:hover { background: rgba(255,255,255,0.05); border-left-color: var(--ta-cian); }
+  .ds-item-num { font-family: var(--font-mono); font-size: 10px; color: var(--ta-cian); font-weight: 500; min-width: 20px; }
+  .ds-item-text { font-family: var(--font-mono); font-size: 12px; color: var(--ta-pizarra); transition: color 0.15s; line-height: 1.3; }
+  .ds-item:hover .ds-item-text { color: #fff; }
+  .ds-footer { padding: 16px 22px; border-top: 0.5px solid #1a1a1a; }
+  .ds-back { display: flex; align-items: center; gap: 8px; text-decoration: none; font-family: var(--font-mono); font-size: 11px; color: var(--ta-pizarra); transition: color 0.15s; padding: 8px 0; }
+  .ds-back:hover { color: var(--ta-cian); }
+  .ds-back-arrow { font-size: 13px; }
+  .doc-main { margin-left: 260px; flex: 1; min-width: 0; }
+
+
+  .ds-back-wrap {
+    padding: 10px 22px;
+    border-bottom: 0.5px solid #1a1a1a;
+  }
+</style>
+</head>
+<body>
+<nav class="doc-sidebar">
+  <div class="ds-brand">
+    <div class="ds-rule"></div>
+    <div class="ds-type">Guía C-07 · Editor</div>
+    <div class="ds-title">TRANSPARENCIA<br>IA</div>
+    <div class="ds-version">R1 · D-X-OPUS</div>
+  </div>
+  <div class="ds-back-wrap">
+    <a class="ds-back" href="INDEX.html"><span class="ds-back-arrow">←</span> Índice principal</a>
+  </div>
+  <div class="ds-nav">
+    <span class="ds-nav-label">Contenido</span>
+    <a class="ds-item" href="#s01"><span class="ds-item-num">01</span><span class="ds-item-text">La política</span></a>
+    <a class="ds-item" href="#s02"><span class="ds-item-num">02</span><span class="ds-item-text">Los formatos</span></a>
+    <a class="ds-item" href="#s03"><span class="ds-item-num">03</span><span class="ds-item-text">El tono</span></a>
+    <a class="ds-item" href="#s04"><span class="ds-item-num">04</span><span class="ds-item-text">Posts</span></a>
+    <a class="ds-item" href="#s05"><span class="ds-item-num">05</span><span class="ds-item-text">Generación</span></a>
+  </div>
+</nav>
+<div class="doc-main">
+
+
+<!-- ══ COVER ══ -->
+<div class="cover">
+  <div class="cover-rule"></div>
+  <div class="cover-eyebrow">Sistema D-X-OPUS · Guía C-07 — Editor</div>
+  <div class="cover-title">AI<br>TRANSPARENCY<br>GUIDE</div>
+  <div class="cover-subtitle">Cómo documentar y comunicar el uso de inteligencia artificial en los textos producidos con el sistema</div>
+  <div class="cover-meta">
+    <div class="cover-meta-item"><strong>Versión</strong><span>R1 · 2026</span></div>
+    <div class="cover-meta-item"><strong>Release</strong><span>R1 · 2026</span></div>
+    <div class="cover-meta-item"><strong>Doc</strong><span>C-07</span></div>
+    <div class="cover-meta-item"><strong>Audiencia</strong><span>Editor</span></div>
+    <div class="cover-meta-item"><strong>Estado</strong><span>ACTIVE</span></div>
+  </div>
+</div>
+
+
+</div>
+
+<div class="body-wrap">
+
+  <!-- ══════════════════════════
+       SECCIÓN 1 — LA POLÍTICA
+  ══════════════════════════ -->
+  <div id="s01" style="position:relative;top:-20px;"></div>
+  <div class="section-label">01 — La política</div>
+  <h1 class="doc-h1">Por qué la transparencia es parte del sistema</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">El sistema D-X-OPUS adopta una política de transparencia explícita y completa sobre el uso de inteligencia artificial en la producción de textos. No es una opción — es una condición de uso del sistema.</p>
+
+  <p>La razón es simple: la credibilidad de un texto de no-ficción depende de que el lector pueda evaluar cómo se produjo. Quién investigó, qué fuentes se usaron, qué decisiones tomó el editor y qué hizo el sistema son preguntas legítimas que el lector tiene derecho a responder. Ocultarlas no protege al editor — lo expone.</p>
+
+  <p>La transparencia tampoco es una concesión defensiva. En el contexto actual de proliferación de contenido generado automáticamente, declarar explícitamente el proceso — y hacerlo bien — es una ventaja competitiva. Un libro que explica cómo se hizo, con qué rigor se investigó y cómo se controló la calidad dice más sobre su seriedad que uno que no dice nada.</p>
+
+  <div class="callout">
+    <p>La inteligencia artificial es la herramienta. El editor es el autor. La transparencia sobre la herramienta no diluye la autoría — la aclara.</p>
+  </div>
+
+  <h2 class="doc-h2">Qué significa la autoría en este sistema</h2>
+
+  <p>El sistema distingue entre <strong>autoría material</strong> — quién escribió físicamente las palabras — y <strong>autoría editorial</strong> — quién tomó todas las decisiones que dan sentido al texto. En los textos producidos con D-X-OPUS, la autoría material es compartida entre el sistema y el editor. La autoría editorial es siempre del editor.</p>
+
+  <p>Las decisiones editoriales que el sistema no puede tomar: qué investigar, qué perspectiva adoptar, qué argumentar, qué incluir y qué descartar, cómo estructurar el libro, qué voz usar, si el texto es suficientemente bueno para publicar. Todas esas decisiones son del editor. El sistema las ejecuta, no las toma.</p>
+
+  <div class="callout warn">
+    <p>La declaración de transparencia no es una nota al pie discreta. Es un componente del libro, con su propio espacio, escrito con el mismo rigor que el resto del texto.</p>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ══════════════════════════
+       SECCIÓN 2 — LOS FORMATOS
+  ══════════════════════════ -->
+  <div id="s02" style="position:relative;top:-20px;"></div>
+  <div class="section-label">02 — Los formatos</div>
+  <h1 class="doc-h1">Dos formatos para dos contextos</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">El sistema produce dos formatos de declaración de transparencia con distinto alcance y audiencia. El primero es obligatorio en todos los libros. El segundo es opcional y está orientado a ediciones académicas o técnicas que requieren documentación completa del proceso.</p>
+
+  <div class="format-compare">
+    <div class="format-card format-obligatorio">
+      <div class="format-label">Obligatorio — todos los libros</div>
+      <div class="format-title">Sobre este libro</div>
+      <div class="format-stat"><strong>Extensión:</strong> 400–600 palabras</div>
+      <div class="format-stat"><strong>Formato:</strong> Prosa narrativa, sin listas ni tablas</div>
+      <div class="format-stat"><strong>Tono:</strong> Accesible, transparente, no defensivo</div>
+      <div class="format-stat"><strong>Audiencia:</strong> Cualquier lector</div>
+      <div class="format-stat"><strong>Posición en el libro:</strong> Al final, antes de los anexos</div>
+      <div class="format-desc">Explica en prosa fluida cómo se hizo el libro: el proceso de investigación, la colaboración humano-IA, cómo se tomaron las decisiones editoriales y qué control de calidad se aplicó. El lector lo lee como texto, no como documentación técnica.</div>
+    </div>
+    <div class="format-card format-opcional">
+      <div class="format-label">Opcional — ediciones académicas</div>
+      <div class="format-title">Ficha Técnica</div>
+      <div class="format-stat"><strong>Extensión:</strong> Variable — tablas + narrativa</div>
+      <div class="format-stat"><strong>Formato:</strong> Mixto — tablas de métricas + prosa</div>
+      <div class="format-stat"><strong>Tono:</strong> Técnico, objetivo, exhaustivo</div>
+      <div class="format-stat"><strong>Audiencia:</strong> Investigadores, revisores, instituciones</div>
+      <div class="format-stat"><strong>Posición en el libro:</strong> Anexo final o documento separado</div>
+      <div class="format-desc">Documentación completa con métricas estadísticas por capítulo, distribución de fuentes, resultados de evaluación de calidad y metadata técnico del proceso. Para contextos donde el rigor metodológico del proceso debe quedar formalmente documentado.</div>
+    </div>
+  </div>
+
+  <h2 class="doc-h2">Contenido de "Sobre este libro"</h2>
+
+  <div class="content-stack">
+    <div class="content-row content-obligatorio">
+      <div class="content-tag">OBLIGATORIO</div>
+      <div class="content-text"><strong>Descripción del proceso de investigación</strong> — cuántas fuentes se analizaron, de qué tipo (académicas, especializadas, primarias), y cómo se seleccionaron según criterios de autoridad.</div>
+    </div>
+    <div class="content-row content-obligatorio">
+      <div class="content-tag">OBLIGATORIO</div>
+      <div class="content-text"><strong>Descripción del proceso de escritura</strong> — cómo colaboraron el editor y el sistema: quién escribió, quién revisó, cuántas iteraciones hubo, cómo se aplicó el perfil editorial.</div>
+    </div>
+    <div class="content-row content-obligatorio">
+      <div class="content-tag">OBLIGATORIO</div>
+      <div class="content-text"><strong>Indicador de autoría material</strong> — porcentaje aproximado de texto generado por el sistema vs escrito directamente por el editor. Se presenta como indicador de proceso, no como atribución legal.</div>
+    </div>
+    <div class="content-row content-obligatorio">
+      <div class="content-tag">OBLIGATORIO</div>
+      <div class="content-text"><strong>Declaración de control de calidad</strong> — que el libro fue evaluado sistemáticamente antes de publicarse, con indicación de los resultados de evaluación de estilo y contenido.</div>
+    </div>
+    <div class="content-row content-obligatorio">
+      <div class="content-tag">OBLIGATORIO</div>
+      <div class="content-text"><strong>Identificación del sistema de IA</strong> — nombre del modelo y versión usada: Claude Sonnet (Anthropic). Actualizar si cambia el modelo entre proyectos.</div>
+    </div>
+    <div class="content-row content-opcional">
+      <div class="content-tag">OPCIONAL</div>
+      <div class="content-text"><strong>Limitaciones conocidas</strong> — sesgos de perspectiva, restricciones de idioma en las fuentes, fechas de corte de la investigación, gaps temáticos asumidos.</div>
+    </div>
+    <div class="content-row content-opcional">
+      <div class="content-tag">OPCIONAL</div>
+      <div class="content-text"><strong>Repositorio del proceso</strong> — si el editor documenta públicamente su metodología, enlace o referencia.</div>
+    </div>
+  </div>
+
+  <h2 class="doc-h2">Contenido adicional de la Ficha Técnica</h2>
+
+  <p>Además de todo lo incluido en "Sobre este libro", la Ficha Técnica añade:</p>
+
+  <ul class="doc-list">
+    <li><span class="li-num">→</span><span>Métricas por capítulo: palabras, citas, iteraciones de revisión, porcentaje de texto generado vs editado.</span></li>
+    <li><span class="li-num">→</span><span>Distribución de fuentes por capítulo y por nivel de autoridad (Tier 1/2/3).</span></li>
+    <li><span class="li-num">→</span><span>Resultados numéricos de las evaluaciones de estilo y contenido (score sobre 100).</span></li>
+    <li><span class="li-num">→</span><span>Tabla de atribución de fuentes más citadas.</span></li>
+    <li><span class="li-num">→</span><span>Información de citación del libro en formato estándar (APA, Chicago o IEEE según contexto).</span></li>
+  </ul>
+
+  <div class="section-divider"></div>
+
+  <!-- ══════════════════════════
+       SECCIÓN 3 — EL TONO
+  ══════════════════════════ -->
+  <div id="s03" style="position:relative;top:-20px;"></div>
+  <div class="section-label">03 — El tono</div>
+  <h1 class="doc-h1">Cómo escribir la declaración</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">El tono de la declaración de transparencia es tan importante como su contenido. El texto debe ser profesional, objetivo y directo — sin disculparse ni sobrevender. La IA es una herramienta; el proceso es riguroso; el editor es el autor. Eso es lo que dice el texto.</p>
+
+  <h2 class="doc-h2">Ejemplos de tono correcto e incorrecto</h2>
+
+  <div class="tone-grid">
+    <div class="tone-card tone-si">
+      <div class="tone-label">✓ Correcto</div>
+      <div class="tone-example">Este libro fue creado mediante un proceso de colaboración entre el editor y el sistema D-X-OPUS de Tinta Artificial.</div>
+    </div>
+    <div class="tone-card tone-no">
+      <div class="tone-label">✗ Evitar</div>
+      <div class="tone-example">En este fascinante viaje exploratorio que emprendimos juntos, la inteligencia artificial nos ayudó a dar vida a estas ideas.</div>
+    </div>
+    <div class="tone-card tone-si">
+      <div class="tone-label">✓ Correcto</div>
+      <div class="tone-example">Aproximadamente el 78% del texto fue generado por el sistema y el 22% fue escrito directamente por el editor.</div>
+    </div>
+    <div class="tone-card tone-no">
+      <div class="tone-label">✗ Evitar</div>
+      <div class="tone-example">El sistema implementó un framework metodológico de síntesis avanzada para la generación de contenido editorial de alta calidad.</div>
+    </div>
+    <div class="tone-card tone-si">
+      <div class="tone-label">✓ Correcto</div>
+      <div class="tone-example">Todas las decisiones sobre qué investigar, cómo estructurar el libro y qué perspectiva adoptar fueron tomadas por el editor.</div>
+    </div>
+    <div class="tone-card tone-no">
+      <div class="tone-label">✗ Evitar</div>
+      <div class="tone-example">A pesar de haber usado IA, podemos garantizar que este libro es completamente auténtico y refleja el pensamiento del autor.</div>
+    </div>
+  </div>
+
+  <h2 class="doc-h2">Texto de referencia — "Sobre este libro"</h2>
+
+  <p>El siguiente texto es el modelo de referencia producido por el sistema. El editor lo revisa, ajusta los valores entre corchetes y valida el tono antes de incorporarlo al libro.</p>
+
+  <div class="sample-box">
+    <div class="sample-label">Sobre este libro — modelo de referencia</div>
+    <div class="sample-text">
+      Este libro fue creado mediante el Sistema Tinta Artificial, una metodología de colaboración humano-IA desarrollada para la producción de libros de no-ficción con rigor académico y control editorial humano en todas las decisiones críticas.<br><br>
+      El proceso comenzó con el análisis de <span class="sample-placeholder">[N]</span> fuentes, incluyendo papers revisados por pares, libros académicos y documentación especializada. A partir de esa base, el editor diseñó la estructura completa del libro —el índice, el arco narrativo y la distribución de contenidos— antes de que comenzara la escritura.<br><br>
+      La escritura se realizó capítulo a capítulo: el sistema sintetizó el contenido de las fuentes siguiendo el perfil editorial del autor, y el editor revisó y aprobó cada capítulo antes de continuar. <span class="sample-placeholder">[M de N]</span> capítulos fueron editados manualmente antes de su aprobación final. En términos de autoría material del texto, aproximadamente el <span class="sample-placeholder">[X%]</span> fue generado por el sistema y el <span class="sample-placeholder">[Y%]</span> fue escrito directamente por el editor. Las decisiones sobre qué incluir, cómo argumentar, qué perspectiva adoptar y qué fuentes usar fueron tomadas en su totalidad por el editor.<br><br>
+      Antes de su publicación, el libro fue evaluado en dos dimensiones: coherencia de voz y estilo con el perfil editorial del autor, y calidad argumental y de fuentes del texto. Los resultados de ambas evaluaciones fueron <span class="sample-placeholder">[GREEN / satisfactorios]</span>.<br><br>
+      <strong>Inteligencia Artificial:</strong> Claude Sonnet (Anthropic) · <strong>Editor:</strong> <span class="sample-placeholder">[Nombre]</span> · <strong>Fecha:</strong> <span class="sample-placeholder">[Año]</span>
+    </div>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ══════════════════════════
+       SECCIÓN 4 — POSTS Y OTROS
+  ══════════════════════════ -->
+  <div id="s04" style="position:relative;top:-20px;"></div>
+  <div class="section-label">04 — Posts y otros formatos</div>
+  <h1 class="doc-h1">Transparencia en posts y artículos</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">Los posts y artículos no llevan una declaración de transparencia integrada en el propio texto — el formato no lo permite. La política de declaración para posts se define a nivel de publicación, no de pieza individual.</p>
+
+  <p>Cada publicación donde el editor publica posts — un blog, un newsletter, una revista — tiene su propio Perfil de Publicación con una política de declaración de IA. Esa política puede adoptar distintas formas según el contexto y las normas de la plataforma:</p>
+
+  <table class="doc-table">
+    <thead><tr><th>Política</th><th>Descripción</th><th>Cuándo usarla</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Sección dedicada</strong></td>
+        <td>La publicación tiene una página o sección permanente que explica el proceso de escritura con IA. Los posts individuales no incluyen nota.</td>
+        <td>Publicaciones propias del editor (blog, newsletter) donde el lector puede consultar la política.</td>
+      </tr>
+      <tr>
+        <td><strong>Nota por post</strong></td>
+        <td>Cada post incluye una nota breve al final que indica que fue producido con asistencia de IA.</td>
+        <td>Publicaciones externas o cuando la plataforma lo requiere explícitamente.</td>
+      </tr>
+      <tr>
+        <td><strong>Metadata</strong></td>
+        <td>La declaración se incluye en los metadatos del post, no en el cuerpo del texto.</td>
+        <td>Plataformas con campos específicos para declaración de IA.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout warn">
+    <p>La ausencia de nota en un post individual no implica falta de transparencia — implica que la política está declarada a nivel de publicación. Lo que no es aceptable es no declararla en ningún nivel.</p>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- ══════════════════════════
+       SECCIÓN 5 — CÓMO SE GENERA
+  ══════════════════════════ -->
+  <div id="s05" style="position:relative;top:-20px;"></div>
+  <div class="section-label">05 — Generación</div>
+  <h1 class="doc-h1">Cómo se produce la declaración</h1>
+  <div class="h1-rule"></div>
+
+  <p class="lead">La declaración de transparencia es el último paso del WORKFLOW_WRITING BOOK. Se genera automáticamente con PROMPT_CREATE_BOOK_SHEET, pero requiere que el libro esté completamente terminado y evaluado antes de ejecutarse.</p>
+
+  <h2 class="doc-h2">Prerequisitos antes de generar</h2>
+
+  <ul class="doc-list">
+    <li><span class="li-num">01</span><span>Todos los capítulos en versión FINAL o FINAL_EDITED.</span></li>
+    <li><span class="li-num">02</span><span>Introducción, prólogo y anexos completados (o descartados explícitamente).</span></li>
+    <li><span class="li-num">03</span><span>Referencias consolidadas con PROMPT_CONSOLIDATE_REFERENCES.</span></li>
+    <li><span class="li-num">04</span><span>EVALUATE_BOOK_STYLE ejecutado con reporte disponible.</span></li>
+    <li><span class="li-num">05</span><span>EVALUATE_BOOK_CONTENT ejecutado con reporte disponible.</span></li>
+  </ul>
+
+  <div class="callout alert">
+    <p>El sistema bloquea la generación de la ficha si faltan los reportes de evaluación. No hay atajos: la declaración de transparencia incluye los resultados de evaluación, y esos resultados deben existir antes de generar el texto.</p>
+  </div>
+
+  <h2 class="doc-h2">La atribución estadística — qué son los porcentajes</h2>
+
+  <p>El porcentaje de texto generado por el sistema vs escrito por el editor que aparece en "Sobre este libro" es un <strong>indicador de proceso</strong>, no una atribución legal de autoría. Indica cuánto del texto visible en el libro fue escrito directamente por el editor a mano — sin mediación del sistema — como indicador del nivel de intervención directa en la producción.</p>
+
+  <p>Lo que los porcentajes no dicen: cuánto pensó el editor, cuánto leyó, cuánto dirigió, cuántas veces corrigió el rumbo de la investigación, cuántos capítulos rechazó antes de aprobar. Todo eso es autoría editorial — y no aparece en el porcentaje.</p>
+
+  <div class="callout">
+    <p>Un libro con el 85% del texto generado por el sistema y el 15% escrito manualmente puede ser más "del editor" que uno escrito al 100% a mano si el primero está dirigido en cada decisión por el criterio editorial del autor y el segundo está escrito mecánicamente sin perspectiva propia.</p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="doc-footer">
+    <div class="doc-footer-brand">TINTA ARTIFICIAL</div>
+    <div class="doc-footer-meta">C-07 · AI TRANSPARENCY GUIDE · R1 · 2026</div>
+  </div>
+
+</div>
+
+</div>
+</body>
+</html>
