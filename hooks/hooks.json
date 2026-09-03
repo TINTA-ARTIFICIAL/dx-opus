@@ -9,6 +9,16 @@
           "timeout": 30
         }
       ]
+    },
+    {
+      "matcher": "Write|Edit",
+      "hooks": [
+        {
+          "type": "prompt",
+          "prompt": "Si esta escritura/edición ($TOOL_INPUT) no corresponde a la producción de un RESEARCH_REPORT via PROMPT_EXECUTE_RESEARCH_PLAN: responde approve inmediatamente. Si sí lo es: comprueba que en la conversación existe evidencia de que el editor ya revisó y aprobó explícitamente el RESEARCH_PLAN_DETAILED y las WRITING_INSTRUCTIONS_ADAPTED producidos por PROMPT_CREATE_RESEARCH_PLAN (no basta con que los archivos existan — deben estar aprobados). Si no hay esa aprobación explícita: responde ask_user. Si la hay: responde approve.",
+          "timeout": 30
+        }
+      ]
     }
   ]
 }
