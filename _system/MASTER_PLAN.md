@@ -2,10 +2,10 @@
 id:          MASTER_PLAN
 type:        SCHEMA
 subsystem:   SYSTEM
-version:     1.6
+version:     1.7
 status:      ACTIVE
 created:     2026-02-21
-updated:     2026-05-05
+updated:     2026-09-03
 owner_chat:  system-architecture
 ---
 
@@ -13,9 +13,15 @@ owner_chat:  system-architecture
 
 ## Consolidación de decisiones y trabajo pendiente
 
-**Versión:** 1.6  
-**Fecha:** 5 mayo 2026  
-**Scope:** Estado real del sistema con R1 completamente implementado + Sprint 4 Package System operacional
+**Versión:** 1.7  
+**Fecha:** 3 septiembre 2026  
+**Scope:** Planificación Sprint 5 — hardening de integridad de datos + spike de arquitectura de despliegue (Cowork plugin)
+
+**Changelog v1.7:**
+
+* Añadida PARTE 9: backlog Sprint 5, priorizado por severidad/impacto sobre las 49 issues abiertas (#40–#78) acumuladas sin triar desde el cierre del Sprint 4
+* Corregido GAP-R11: marcado como resuelto (PROMPT_CREATE_RESEARCH_PLAN v3.0 ya en repo, contradecía el estado "pendiente" registrado)
+* Nota de proceso: PARTE 3 (FASE 3) y PARTE 6 (Sprint 4) contenían varios ítems marcados "❌ Pendiente" que ya estaban completados en el repo (AC-01, AC-02, WR-01, RE-02) — verificado directamente contra los archivos, no corregido retroactivamente en esas tablas para preservar el histórico, pero el backlog de Sprint 5 en PARTE 9 parte del estado real verificado
 
 **Changelog v1.6:**
 
@@ -353,7 +359,7 @@ Estado actualizado con implementación R1 completa + Sprint 4 (05/05/2026).
 
 | GAP ID | Descripción | Severidad | Estado |
 |---|---|---|
-| GAP-R11 | Focus types embebidos en CREATE_RESEARCH_PLAN | 🟠 IMPORTANTE | ⏳ Pendiente Sprint 5 (RE-02) |
+| GAP-R11 | Focus types embebidos en CREATE_RESEARCH_PLAN | 🟠 IMPORTANTE | ✅ Resuelto (PROMPT_CREATE_RESEARCH_PLAN v3.0 en repo) |
 | GAP-R08 | "Practical Applications" sin consumidor | 🟡 MENOR | ❌ Pendiente Fase 5 |
 | GAP-R09 | NARRATIVE_BRIDGE secciones 4-6 sin consumidor | 🟡 MENOR | ❌ Pendiente Fase 5 |
 | GAP-R10 | Naming inconsistente SUMMARIZE_REFERENCES | 🟡 MENOR | ❌ Pendiente Fase 5 |
@@ -416,6 +422,74 @@ Estado actualizado con implementación R1 completa + Sprint 4 (05/05/2026).
 | Package creation script | ✅ Validado Sprint 4 |
 
 **R1 está listo para producción. Package system v1.4.0 operacional.**
+
+---
+
+## PARTE 9: BACKLOG SPRINT 5 (planificación 2026-09-03)
+
+**Contexto:** entre el cierre del Sprint 4 (05/05/2026) y esta planificación se acumularon 49 issues abiertas en GitHub (#40–#78, 06–20/05/2026) nunca triadas contra el MASTER_PLAN, producto de uso real del sistema en producción tras el package system. Esta sección las prioriza por severidad/impacto, no por subsistema.
+
+**Objetivo del sprint:** cerrar los riesgos de pérdida/corrupción de datos detectados en producción, y abrir el spike de arquitectura para migrar el modelo de despliegue de "Apps Script + Drive" a un **Cowork plugin** — eliminando la ceremonia de setup actual (TOOL_SETUP_EDITOR_ENVIRONMENT.gs, TOOL_CREATE_PROJECT.gs, el propio package system del Sprint 4).
+
+### 🔴 CRÍTICO — Integridad de datos y autorización del editor
+
+| ID | Issue | Descripción | Acción propuesta |
+|---|---|---|---|
+| S5-01 | #65 | Auto-save falla por permisos y pierde datos en silencio | Manejo de error explícito: nunca fallar sin notificar al editor |
+| S5-02 | #66 | El sistema modificó RESEARCH_PLAN sin autorización del editor | Gate de confirmación obligatorio antes de reescribir artefactos ya aprobados |
+| S5-03 | #49 | Auto-save crea subcarpetas duplicadas en vez de usar la estructura existente | Corregir la lógica de resolución de carpetas |
+| S5-04 | #50 | PROJECT_CONFIG debe incluir los Drive folder IDs de todos los subdirectorios | Prerequisito técnico de S5-03 |
+
+### 🔴 CRÍTICO — Correctitud de workflow
+
+| ID | Issue | Descripción |
+|---|---|---|
+| S5-05 | #52 | Research workflow se salta la fase de anotación y pasa directo a escritura |
+| S5-06 | #63 | POST workflow debe exigir RESEARCH_DEEP_DIVE como prerequisito obligatorio antes de escribir |
+| S5-07 | #73 | INVENTARIO_IDEAS debe incluirse en auto-save config y guardarse en WP_writing_post/ |
+
+### 🟠 ALTO — Estructura de carpetas y organización del repo
+
+Alimenta directamente el spike de plugin — entender qué estructura sobrevive a la migración.
+
+| ID | Issue | Descripción |
+|---|---|---|
+| S5-08 | #77 | Refactor de estructura de repo: separar artefactos de desarrollo de artefactos de producción |
+| S5-09 | #72 | Crear carpeta `workflows/` como ubicación dedicada para documentos de orquestación |
+| S5-10 | #74 | `WP_writing_post/` debe usar subcarpetas por post en proyectos multi-post |
+| S5-11 | #70 | Actualizaciones de SAH/CVC desde proyectos deben propagarse de vuelta a `D-X-OPUS/resources/` |
+
+### 🟠 ALTO — Spike de arquitectura: DX-OPUS como Cowork plugin
+
+Solo diseño en Sprint 5. La implementación se planifica en Sprint 6+.
+
+| ID | Tarea |
+|---|---|
+| S5-12 | Investigar el formato de Cowork plugin (skills, connectors, manifest) y mapear qué partes del sistema actual encajan directo — prompts → skills, `TOOL_*.gs` → ¿hooks de setup o eliminados? |
+| S5-13 | Diseñar cómo se gestiona la estructura de carpetas del proyecto sin Apps Script ni Drive como almacenamiento primario |
+| S5-14 | Documentar la decisión como nueva DL entry (SYSTEM): alcance, qué se elimina (Apps Script + Drive setup flow + package system del Sprint 4), qué se mantiene, roadmap S6+ |
+| S5-15 | Nota de diseño a futuro en la misma DL: se contempla una interfaz propia más adelante, fuera de scope de S5 (marcar como "Work futuro", no comprometer fecha) |
+
+**Nota:** el Package System (Sprint 4, PARTE 8) queda formalmente en producción durante el spike — no se desmantela hasta que S5-14 resuelva la migración.
+
+### 🟡 MEDIO — Deuda de Sprint 4 arrastrada (si hay capacidad)
+
+| ID | Ref. | Descripción |
+|---|---|---|
+| S5-16 | POST-R1-01 | Crear `GUIDE_DEV_PROTOCOL.md` v1.0 |
+| S5-17 | POST-R1-02 | Actualizar `SCHEMA_SYSTEM_ARCHITECTURE` v1.3 → v1.4 |
+| S5-18 | POST-R1-06 | Crear `PROMPT_EVALUATE_ACTIVATION` v1.0 |
+| S5-19 | DL_20260520_SYSTEM_040 (Nivel 1) | Añadir protocolo de cierre de sesión a las Project Instructions de los chats de desarrollo — cambio de bajo coste ya diseñado, pendiente de aplicar |
+
+### ⏸️ Explícitamente fuera de scope de Sprint 5
+
+| Tema | Issues | Razón para diferir |
+|---|---|---|
+| Completitud del PROMPTS_PACKAGE | #42, #61, #62, #64, #67, #68, #69, #71 | Depende del resultado del spike de plugin (S5-12 a S5-15) — arreglarlo ahora es trabajo que se puede tirar si el paquete se sustituye |
+| Epic EDITOR DIGITAL / SESSION_ORCHESTRATOR | #14, #46, #47, #48, #51, #54, #55, #56, #75, #76 | Grande (10 issues), y probablemente se rediseñe según cómo quede la arquitectura de plugin. Incluye DL_040 Nivel 2 (PROMPT_DEV_CLOSURE) |
+| Optimización de tokens | #57, #58, #59, #60 | Depende de si cambia el modelo de distribución de prompts |
+| UX de onboarding | #40, #41, #43, #44, #45 | El pivote a plugin redefine el onboarding completo — no vale la pena iterar sobre el modelo actual |
+| Calidad de escritura en textos largos | #78 | Importante pero no relacionado con el tema de este sprint — candidato fuerte para Sprint 6 |
 
 ---
 
