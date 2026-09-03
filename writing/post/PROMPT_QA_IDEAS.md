@@ -2,10 +2,10 @@
 id:          PROMPT_QA_IDEAS
 type:        PROMPT
 subsystem:   WRITING
-version:     1.0
+version:     1.1
 status:      ACTIVE
 created:     2026-04-11
-updated:     2026-04-11
+updated:     2026-09-03
 owner_chat:  writing-dev
 ---
 
@@ -13,6 +13,7 @@ owner_chat:  writing-dev
 
 | Version | Date | Author | Summary |
 |---------|------|--------|---------|
+| v1.1 | 2026-09-03 | writing-dev | Añadido PASO 6B: auto-save obligatorio del INVENTARIO_IDEAS según AUTO_SAVE_CONFIG.yaml — cierra issue #73. El registro ya tenía la entrada desde la implementación de R1, pero este prompt nunca la usaba. |
 | v1.0 | 2026-04-11 | writing-dev | Initial version. Sequential Q&A, always active per DL_20260411_WRITING_015. Produces INVENTARIO_IDEAS. |
 
 ## DEPENDENCIES
@@ -333,6 +334,28 @@ Señales de aprendizaje:      [N]
 → Siguiente paso: PROMPT_POST_ANGLES
   El INVENTARIO_IDEAS está disponible como input.
 ```
+
+---
+
+### PASO 6B: Auto-save del INVENTARIO_IDEAS (obligatorio, no opcional)
+
+**Esto cierra el issue #73: el INVENTARIO_IDEAS contiene el material más valioso de todo el workflow POST — las formulaciones literales del editor, sus ideas desarrolladas y su material personal — y hasta ahora se perdía si la sesión terminaba antes de llegar a PROMPT_POST_ANGLES, porque nunca se guardaba en Drive.**
+
+Inmediatamente después de producir el INVENTARIO_IDEAS (nunca lo dejes solo en el chat):
+
+1. Guardarlo según la configuración de `INVENTARIO_IDEAS` en `AUTO_SAVE_CONFIG.yaml` — carpeta `WP_writing_post/{post_folder}`, nombre `{project_code}_WP_IDEAS_{post_name}_v{version}.md`.
+2. Confirmar al editor con el mismo formato que el resto de artefactos con auto-save:
+
+```
+✅ INVENTARIO_IDEAS GUARDADO
+
+📄 {project_code}_WP_IDEAS_{post_name}_v{version}.md
+📁 WP_writing_post/{post_folder}/
+```
+
+3. Si el auto-save falla por cualquier motivo, **no lo pierdas en silencio**: presenta el INVENTARIO_IDEAS completo en el chat (ya lo tienes generado del PASO 6) e indica al editor la ruta y nombre exactos para guardarlo a mano — mismo criterio que el resto del sistema (ver `ERROR_HANDLING` en `AUTO_SAVE_CONFIG.yaml`).
+
+Las SEÑALES DE APRENDIZAJE incluidas en el INVENTARIO_IDEAS quedan preservadas junto con el resto del documento — su consumo por el mecanismo de `SPEC_LEARNING_SIGNALS` es un paso posterior, no requiere guardado separado.
 
 ---
 

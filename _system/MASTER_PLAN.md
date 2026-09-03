@@ -2,7 +2,7 @@
 id:          MASTER_PLAN
 type:        SCHEMA
 subsystem:   SYSTEM
-version:     1.9
+version:     2.0
 status:      ACTIVE
 created:     2026-02-21
 updated:     2026-09-03
@@ -13,9 +13,18 @@ owner_chat:  system-architecture
 
 ## Consolidación de decisiones y trabajo pendiente
 
-**Versión:** 1.9  
+**Versión:** 2.0  
 **Fecha:** 3 septiembre 2026  
-**Scope:** Sprint 5 — estructura de carpetas de proyecto resuelta (S5-10, S5-11); queda el bucket crítico de integridad de datos (S5-01 a S5-07)
+**Scope:** Sprint 5 — bucket crítico de integridad de datos cerrado en su mayoría (S5-02, S5-05, S5-06, S5-07); S5-01 parcial; S5-03/S5-04 diferidos a Sprint 6+ (Apps Script, coincide con el pivote a plugin)
+
+**Changelog v2.0:**
+
+* S5-02 (#66) y S5-05 (#52) cerrados con un único fix compartido: `PROMPT_SUMMARIZE_REFERENCES` v4.3 añade un checkpoint obligatorio que impide que el sistema regenere artefactos o salte fases sin petición explícita del editor
+* S5-06 (#63) cerrado: `PROMPT_POST_BRIEF` v1.1 verifica investigación previa (compartida o propia del post) antes de escribir
+* S5-07 (#73) cerrado: `PROMPT_QA_IDEAS` v1.1 conecta el INVENTARIO_IDEAS al auto-save (el registro ya existía, el prompt nunca lo usaba)
+* S5-01 (#65) parcial: contrato de error de `AUTO_SAVE_CONFIG.yaml` v1.3 prohíbe explícitamente el fallback silencioso a la carpeta raíz — la causa raíz completa sigue bloqueada por S5-03/S5-04
+* S5-03 (#49) y S5-04 (#50) diferidos deliberadamente — requieren Apps Script (`TOOL_CREATE_PROJECT.gs`), y se decidió no invertir ahí pensando en Sprint 6+. Causa raíz ya localizada en el código para cuando se retome: `createProjectStructure()` descarta los IDs de subcarpeta que Drive devuelve
+* Deuda pendiente por decisión explícita: S5-11 (propagación SAH/CVC) y la implementación completa de S5-01 quedan bloqueadas hasta que se retomen S5-03/S5-04
 
 **Changelog v1.9:**
 
@@ -446,20 +455,20 @@ Estado actualizado con implementación R1 completa + Sprint 4 (05/05/2026).
 
 ### 🔴 CRÍTICO — Integridad de datos y autorización del editor
 
-| ID | Issue | Descripción | Acción propuesta |
+| ID | Issue | Descripción | Estado |
 |---|---|---|---|
-| S5-01 | #65 | Auto-save falla por permisos y pierde datos en silencio | Manejo de error explícito: nunca fallar sin notificar al editor |
-| S5-02 | #66 | El sistema modificó RESEARCH_PLAN sin autorización del editor | Gate de confirmación obligatorio antes de reescribir artefactos ya aprobados |
-| S5-03 | #49 | Auto-save crea subcarpetas duplicadas en vez de usar la estructura existente | Corregir la lógica de resolución de carpetas |
-| S5-04 | #50 | PROJECT_CONFIG debe incluir los Drive folder IDs de todos los subdirectorios | Prerequisito técnico de S5-03 |
+| S5-01 | #65 | Auto-save falla por permisos y pierde datos en silencio | ⚠️ **Parcial** — contrato de error reescrito en `AUTO_SAVE_CONFIG.yaml` v1.3: prohibido el fallback silencioso a la carpeta raíz, nuevo tipo `folder_permission_denied` que exige presentar contenido + ruta manual exacta. La causa raíz completa (IDs de carpeta) sigue bloqueada por S5-03/S5-04, diferidos |
+| S5-02 | #66 | El sistema modificó RESEARCH_PLAN sin autorización del editor | ✅ Cerrado — `PROMPT_SUMMARIZE_REFERENCES` v4.3 añade un checkpoint obligatorio que prohíbe regenerar/actualizar cualquier artefacto sin petición explícita del editor |
+| S5-03 | #49 | Auto-save crea subcarpetas duplicadas en vez de usar la estructura existente | ⏸️ **Diferido** — requiere tocar `TOOL_CREATE_PROJECT.gs`; se decidió no invertir en Apps Script pensando en el pivote a plugin (Sprint 6+) |
+| S5-04 | #50 | PROJECT_CONFIG debe incluir los Drive folder IDs de todos los subdirectorios | ⏸️ **Diferido**, misma razón que S5-03. Causa raíz confirmada en el código: `createProjectStructure()` en `TOOL_CREATE_PROJECT.gs` crea las subcarpetas y descarta el ID que Drive devuelve — no hace falta rediseñar nada, solo capturarlo, cuando se retome |
 
 ### 🔴 CRÍTICO — Correctitud de workflow
 
-| ID | Issue | Descripción |
-|---|---|---|
-| S5-05 | #52 | Research workflow se salta la fase de anotación y pasa directo a escritura |
-| S5-06 | #63 | POST workflow debe exigir RESEARCH_DEEP_DIVE como prerequisito obligatorio antes de escribir |
-| S5-07 | #73 | INVENTARIO_IDEAS debe incluirse en auto-save config y guardarse en WP_writing_post/ |
+| ID | Issue | Descripción | Estado |
+|---|---|---|---|
+| S5-05 | #52 | Research workflow se salta la fase de anotación y pasa directo a escritura | ✅ Cerrado — mismo checkpoint de `PROMPT_SUMMARIZE_REFERENCES` v4.3 (comparte causa raíz con S5-02) |
+| S5-06 | #63 | POST workflow debe exigir RESEARCH_DEEP_DIVE como prerequisito obligatorio antes de escribir | ✅ Cerrado — `PROMPT_POST_BRIEF` v1.1 añade PASO 3B: verifica investigación (compartida o propia del post) antes de continuar; skip solo con confirmación explícita del editor, igual que el skip de Q&A |
+| S5-07 | #73 | INVENTARIO_IDEAS debe incluirse en auto-save config y guardarse en WP_writing_post/ | ✅ Cerrado — el registro ya existía desde R1; `PROMPT_QA_IDEAS` v1.1 añade PASO 6B que lo conecta de verdad al auto-save |
 
 ### 🟠 ALTO — Estructura de carpetas y organización del repo
 

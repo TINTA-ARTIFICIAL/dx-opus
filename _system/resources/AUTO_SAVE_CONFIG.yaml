@@ -9,7 +9,7 @@
 # fue eliminada en v1.1 de ese documento (2026-09-03, issue #74/#70).
 
 system_version: "R1"
-config_version: "1.2"
+config_version: "1.3"
 updated: "2026-09-03"
 
 # =============================================================================
@@ -370,17 +370,38 @@ NAMING_RULES:
 # =============================================================================
 # ERROR HANDLING
 # =============================================================================
+#
+# REGLA ABSOLUTA (issue #65 — pérdida silenciosa de datos): ante CUALQUIER
+# fallo al guardar en la carpeta destino (conexión, permisos, carpeta no
+# encontrada), está PROHIBIDO:
+#   - Guardar en la carpeta raíz del proyecto ni en ninguna otra carpeta
+#     distinta a la que corresponde al tipo de artefacto.
+#   - Reintentar con una búsqueda de carpeta "parecida" por nombre.
+#   - Continuar sin que el editor sepa que el guardado automático falló.
+# En su lugar, SIEMPRE: (1) reportar el error exacto — qué carpeta, qué tipo
+# de fallo; (2) presentar el contenido completo del artefacto en el chat;
+# (3) dar la ruta y nombre de archivo exactos para guardarlo a mano. Nunca
+# "guardo en la carpeta principal como alternativa" — eso es exactamente el
+# comportamiento que causó #65 en producción.
 
 ERROR_HANDLING:
   fallback_behavior: "present_manual_content"
   retry_attempts: 3
   timeout_seconds: 30
-  
+
   error_types:
     drive_connection:
       action: "present_content_for_manual_save"
       message: "Auto-save no disponible. Contenido presentado para guardado manual."
-      
+
+    folder_permission_denied:
+      action: "present_content_for_manual_save"
+      message: "Sin permiso de escritura en la carpeta destino. NUNCA guardar en otra carpeta como alternativa — presentar contenido completo + ruta/nombre exactos para guardado manual, y reportar el ID/nombre de la carpeta que falló."
+      # Añadido issue #65: caso específico y más frecuente que drive_connection
+      # genérico — un fallo de permisos en UNA subcarpeta no significa que
+      # Drive esté inaccesible, así que el editor necesita saber exactamente
+      # cuál fue.
+
     file_exists:
       action: "increment_version"
       message: "Archivo existente detectado. Versión incrementada automáticamente."

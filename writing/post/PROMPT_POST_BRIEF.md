@@ -2,10 +2,10 @@
 id:          PROMPT_POST_BRIEF
 type:        PROMPT
 subsystem:   WRITING
-version:     1.0
+version:     1.1
 status:      ACTIVE
 created:     2026-04-11
-updated:     2026-04-11
+updated:     2026-09-03
 owner_chat:  writing-dev
 ---
 
@@ -13,11 +13,12 @@ owner_chat:  writing-dev
 
 | Version | Date | Author | Summary |
 |---------|------|--------|---------|
+| v1.1 | 2026-09-03 | writing-dev | Añadido PASO 3B: verificación explícita de RESEARCH_DEEP_DIVE (compartido del proyecto o propio del post) antes de continuar — cierra issue #63. El skip sin investigación ahora requiere confirmación explícita del editor, igual que el skip de Q&A. |
 | v1.0 | 2026-04-11 | writing-dev | Initial version. Entry point of POST workflow. |
 
 ## DEPENDENCIES
 
-inputs:  [WRITING_CONTEXT, EDITOR_PROFILE, RESOURCE_PUBLICATION_PROFILE]
+inputs:  [WRITING_CONTEXT, EDITOR_PROFILE, RESOURCE_PUBLICATION_PROFILE, RESEARCH_DEEP_DIVE (compartido o por post, verificado no cargado)]
 outputs: [WRITING_CONTEXT (creado si no existe), SESSION_BRIEF]
 calls:   []
 
@@ -193,6 +194,32 @@ Encuentro texto con estructura de borrador:
 
 ---
 
+### PASO 3B: Verificar prerequisito de investigación (RESEARCH_DEEP_DIVE)
+
+**Esto cierra el issue #63: hoy este prompt puede arrancar una sesión de escritura sin verificar nunca si existe investigación previa — el sistema "sabe" que es obligatoria (según WORKFLOW_RESEARCH) pero nada lo comprueba aquí, en el punto de entrada real.**
+
+Antes de declarar el siguiente paso (PASO 5), comprobar:
+
+1. ¿Existe un `RESEARCH_DEEP_DIVE` o `RESEARCH_REPORT` **compartido del proyecto** en `R_research/`?
+2. Si esta sesión continúa un post ya empezado (`WP_writing_post/{post_folder}/` ya existe): ¿existe un `RESEARCH_DEEP_DIVE` **propio de ese post** dentro de su carpeta? (ver `AUTO_SAVE_CONFIG.yaml` — la investigación puede ser compartida o específica de un post)
+
+**Si se encuentra investigación (compartida o propia del post):** continuar normalmente. Mencionar en el SESSION_BRIEF cuál se usará.
+
+**Si NO se encuentra ninguna:** no asumas que "no hace falta" ni sigas hacia PASO 5 en silencio. Presenta al editor:
+
+```
+No encuentro investigación previa (RESEARCH_DEEP_DIVE) para este proyecto ni para este post.
+
+¿Cómo quieres continuar?
+a) Hacer la investigación primero — te dirijo a WORKFLOW_RESEARCH, RAMA A
+b) Este post no necesita investigación propia (ej. opinión, análisis desde tu propio conocimiento) — seguimos sin ella
+c) Otra cosa
+```
+
+Si el editor elige (b), registrar la decisión explícitamente en el estado del post: `research_skipped: true`, `research_skip_reason: [razón declarada por el editor]` — igual que se hace con el skip de Q&A en el PASO 4. Nunca inferir esta decisión ni tomarla por el editor.
+
+---
+
 ### PASO 4: Gestionar skip de Q&A
 
 El Q&A (PROMPT_QA_IDEAS) está siempre activo en el workflow POST. Si el editor declara explícitamente que quiere saltárselo, emitir aviso en una línea y registrar la decisión:
@@ -218,6 +245,7 @@ SESSION_BRIEF
 Contexto:      [publication_name] / [format] / [word_count_target] palabras
 Editor:        [nombre]
 Material:      [N fuentes] / [notas: sí/no] / [borrador: sí/no]
+Investigación: [compartida del proyecto / propia del post / omitida — razón: ...]
 Modo híbrido:  [activo / inactivo]
 Q&A:           [activo / omitido]
 ─────────────────────────────────────────────
