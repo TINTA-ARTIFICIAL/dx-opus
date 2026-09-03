@@ -4,14 +4,14 @@ title: Skill writing-book
 type: skill
 subsystem: SYSTEM
 sprint: 7
-status: TODO
+status: IN_PROGRESS
 priority: P1
 depends_on: []
 blocks: []
-assignee: null
-started: null
+assignee: D-developer
+started: 2026-09-03
 completed: null
-branch: null
+branch: feat/s7-04-writing-book-skill
 ---
 
 # S7-04 — Skill `writing-book`

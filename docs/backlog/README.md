@@ -34,14 +34,14 @@ Objetivo: migrar los 7 skills restantes (los 6 subsistemas con workflow propio, 
 
 | ID | Título | Prioridad | Status | Depende de |
 |---|---|---|---|---|
-| S7-01 | Skill `research` (+ hook aprobación EXECUTE_RESEARCH_PLAN) | P1 | TODO | — |
-| S7-02 | Skill `editorial-profile` | P2 | TODO | — |
-| S7-03 | Skill `shared-writing` | P1 | TODO | — |
-| S7-04 | Skill `writing-book` | P1 | TODO | — |
-| S7-05 | Crear `PROMPT_EVALUATE_ACTIVATION` (contenido, no skill) | P1 | TODO | — |
-| S7-06 | Skill `evaluation` | P1 | TODO | S7-05 |
-| S7-07 | Skill `writing-post` (+ hook prerequisito de investigación) | P1 | TODO | — |
-| S7-08 | Skill `activation` | P2 | TODO | — |
+| S7-01 | Skill `research` (+ hook aprobación EXECUTE_RESEARCH_PLAN) | P1 | IN_PROGRESS | — |
+| S7-02 | Skill `editorial-profile` | P2 | IN_PROGRESS | — |
+| S7-03 | Skill `shared-writing` | P1 | IN_PROGRESS | — |
+| S7-04 | Skill `writing-book` | P1 | IN_PROGRESS | — |
+| S7-05 | Crear `PROMPT_EVALUATE_ACTIVATION` (contenido, no skill) | P1 | IN_PROGRESS | — |
+| S7-06 | Skill `evaluation` | P1 | TODO (bloqueado por S7-05) | S7-05 |
+| S7-07 | Skill `writing-post` (+ hook prerequisito de investigación) | P1 | IN_PROGRESS | — |
+| S7-08 | Skill `activation` | P2 | IN_PROGRESS | — |
 
 **Grafo de dependencias:** una única dependencia real — S7-06 (`evaluation`) necesita que S7-05 (`PROMPT_EVALUATE_ACTIVATION`) exista con contenido real antes de poder darse por completa, porque referencia ese archivo directamente. El resto (S7-01, S7-02, S7-03, S7-04, S7-07, S7-08) son independientes entre sí y de S7-05/S7-06 — pueden despacharse en paralelo. `S7-03` (`shared-writing`) tiene su interfaz pública pre-especificada en el propio ticket precisamente para que `S7-07` y `S7-08` no necesiten esperar a que esté `DONE`.
 

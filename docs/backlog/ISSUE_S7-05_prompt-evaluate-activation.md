@@ -4,14 +4,14 @@ title: Crear PROMPT_EVALUATE_ACTIVATION
 type: content
 subsystem: SYSTEM
 sprint: 7
-status: TODO
+status: IN_PROGRESS
 priority: P1
 depends_on: []
 blocks: [S7-06]
-assignee: null
-started: null
+assignee: D-developer
+started: 2026-09-03
 completed: null
-branch: null
+branch: feat/s7-05-prompt-evaluate-activation
 ---
 
 # S7-05 — Crear `PROMPT_EVALUATE_ACTIVATION`

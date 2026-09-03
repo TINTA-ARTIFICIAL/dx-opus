@@ -4,14 +4,14 @@ title: Skill activation
 type: skill
 subsystem: SYSTEM
 sprint: 7
-status: TODO
+status: IN_PROGRESS
 priority: P2
 depends_on: []
 blocks: []
-assignee: null
-started: null
+assignee: D-developer
+started: 2026-09-03
 completed: null
-branch: null
+branch: feat/s7-08-activation-skill
 ---
 
 # S7-08 — Skill `activation`
