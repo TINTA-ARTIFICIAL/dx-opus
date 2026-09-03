@@ -2,10 +2,10 @@
 id:          PROMPT_SUMMARIZE_REFERENCES
 type:        PROMPT
 subsystem:   RESEARCH
-version:     4.2
+version:     4.3
 status:      ACTIVE
 created:     2026-02-20
-updated:     2026-05-04
+updated:     2026-09-03
 owner_chat:  research-dev
 ---
 
@@ -13,6 +13,7 @@ owner_chat:  research-dev
 
 | Version | Date | Author | Summary |
 |---------|------|--------|---------|
+| v4.3 | 2026-09-03 | system-architecture | Añadido CHECKPOINT OBLIGATORIO tras generar los tres artefactos — cierra issues #52 (el sistema saltaba directo a escritura, saltándose anotación/UPDATE_VALIDATION_CHECKLIST/RESEARCH_DEEP_DIVE) y #66 (el sistema generaba autónomamente un RESEARCH_PLAN actualizado sin que el editor lo pidiera). El prompt ahora es autocontenido: no depende de que WORKFLOW_RESEARCH esté cargado en la sesión para saber que debe parar aquí. |
 | v4.2 | 2026-05-04 | system-architecture | AUTO-SAVE GENÉRICO integrado: REFERENCE_SUMMARY, RESEARCH_PLAN, NARRATIVE_BRIDGE se guardan automáticamente según ARQUITECTURA_AUTO_SAVE_GENERICA. Compatible con TOOL_CREATE_PROJECT. |
 | v4.1 | 2026-02-20 | research-dev | Processing logic improvements + NARRATIVE_BRIDGE integration |
 | v4.0 | 2026-01-25 | research-dev | Rewrite from v3.1. Simplified processing. Focus on actionable outputs. |
@@ -292,13 +293,29 @@ Al finalizar, informar sobre el auto-save múltiple:
 
 📁 **Todos los archivos en:** R_research/ de tu proyecto Drive
 
-🔄 **SIGUIENTE PASO:** PROMPT_UPDATE_VALIDATION_CHECKLIST
+🔄 **SIGUIENTE PASO RECOMENDADO:** PROMPT_UPDATE_VALIDATION_CHECKLIST
    └─ Actualizar SAH y CVC con las fuentes procesadas
 
-Los artefactos están listos para continuar el workflow.
+¿Cómo quieres continuar?
+a) Actualizar SAH/CVC ahora (PROMPT_UPDATE_VALIDATION_CHECKLIST)
+b) Anotar tú mismo estos artefactos (TASK:/LINE:/COMMENT:) antes de seguir
+c) Ya los anoté externamente — aquí están las versiones anotadas
+d) Otra cosa
 ```
 
 ---
+
+## CHECKPOINT OBLIGATORIO — NO AVANZAR SIN CONFIRMACIÓN
+
+**Esto es lo que causó los bugs #52 y #66 en producción: el sistema decidía por su cuenta que la investigación ya era "suficiente" y avanzaba solo — saltándose la anotación del editor, `PROMPT_UPDATE_VALIDATION_CHECKLIST`, la decisión POST vs LIBRO, y `PROMPT_RESEARCH_DEEP_DIVE` — o generaba directamente un `RESEARCH_PLAN` actualizado que nadie pidió.**
+
+Al llegar a este punto (los tres artefactos generados y guardados):
+
+1. **PARA AQUÍ.** No generes, actualices ni regeneres ningún otro artefacto (ni `RESEARCH_PLAN`, ni `RESEARCH_DEEP_DIVE`, ni nada de escritura) sin que el editor lo haya pedido explícitamente en su siguiente mensaje.
+2. **Presenta las 4 opciones** del mensaje de cierre (arriba) y espera la respuesta del editor. No asumas cuál va a elegir.
+3. Si el editor no menciona anotación ni parece saber que es un paso disponible, **pregúntaselo explícitamente** — no lo saltes asumiendo que "no hace falta" o que "las referencias ya bastan".
+4. Si el editor responde con algo ambiguo ("sigue", "continúa", "lo que tú veas"), **no lo interpretes como autorización para saltar fases** — pide que confirme una de las 4 opciones.
+5. Esta prohibición aplica aunque tú, como modelo, "sepas" cuál es el siguiente paso correcto según `WORKFLOW_RESEARCH` — saberlo no es lo mismo que estar autorizado a ejecutarlo sin el editor.
 
 ## TROUBLESHOOTING AUTO-SAVE
 
