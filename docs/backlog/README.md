@@ -39,7 +39,7 @@ Objetivo: migrar los 7 skills restantes (los 6 subsistemas con workflow propio, 
 | S7-03 | Skill `shared-writing` | P1 | TODO | — |
 | S7-04 | Skill `writing-book` | P1 | DONE | — |
 | S7-05 | Crear `PROMPT_EVALUATE_ACTIVATION` (contenido, no skill) | P1 | DONE | — |
-| S7-06 | Skill `evaluation` | P1 | TODO (desbloqueado — S7-05 ya DONE) | S7-05 |
+| S7-06 | Skill `evaluation` | P1 | IN_PROGRESS | S7-05 |
 | S7-07 | Skill `writing-post` (+ hook prerequisito de investigación) | P1 | DONE | — |
 | S7-08 | Skill `activation` | P2 | TODO | — |
 

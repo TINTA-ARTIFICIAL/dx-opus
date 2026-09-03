@@ -4,14 +4,14 @@ title: Skill evaluation
 type: skill
 subsystem: SYSTEM
 sprint: 7
-status: TODO
+status: IN_PROGRESS
 priority: P1
 depends_on: [S7-05]
 blocks: []
-assignee: null
-started: null
+assignee: D-developer
+started: 2026-09-03
 completed: null
-branch: null
+branch: feat/s7-06-evaluation-skill
 ---
 
 # S7-06 — Skill `evaluation`
