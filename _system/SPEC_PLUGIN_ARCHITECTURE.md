@@ -2,7 +2,7 @@
 id:          SPEC_PLUGIN_ARCHITECTURE
 type:        SPEC
 subsystem:   SYSTEM
-version:     0.2
+version:     0.4
 status:      DRAFT
 created:     2026-09-03
 updated:     2026-09-03
@@ -13,6 +13,8 @@ owner_chat:  system-architecture
 
 ## CHANGELOG
 
+* v0.4 (2026-09-03) — Corrección: la investigación no es *solo* compartida — un post puede tener research propia además de la compartida del proyecto. `R_research/` sigue siendo la ruta por defecto (scope compartido); research específica de un post pasa a vivir en su propia carpeta de `WP_writing_post/` (`AUTO_SAVE_CONFIG.yaml` v1.2). Actualizado §5.3 item 2 en consecuencia.
+* v0.3 (2026-09-03) — Aclarado el alcance del hook de prerequisito de research (§5.3, item 2): la investigación es compartida a nivel de proyecto, no por post — confirma por qué `R_research/` se queda con naming plano mientras `WP_writing_post/` sí necesitó subcarpetas por post (issue #74).
 * v0.2 (2026-09-03) — Resueltas las dos preguntas abiertas de v0.1: `PROMPT_QA_IDEAS` confirmado como shared (ver DL_20260416_SYSTEM_025, sección "CORRECCIÓN"), `shared-writing` confirmada como skill dedicada. Estado sigue en DRAFT — falta convertirse en DL formal (S5-14).
 * v0.1 (2026-09-03) — Primer borrador. Spike de diseño Sprint 5 (S5-12/S5-13/S5-14). Mapeo completo de dependencias entre los ~55 artefactos del sistema, producido leyendo cada prompt/workflow/resource completo (no solo grep). Estado: DRAFT — pendiente de validación con el editor antes de convertirse en DL formal y en implementación (Sprint 6+).
 
@@ -100,7 +102,7 @@ Decisión revisada respecto a la propuesta original (donde KB vivía como `refer
 ### 5.3 Candidatos a hook, priorizados por riesgo real
 
 1. **Gobernanza de KB** (5.1) — evita reescritura no autorizada del framework universal. Directamente relacionado con #66.
-2. **`RESEARCH_DEEP_DIVE` como prerequisito antes de escribir POST** — issue #63, ya en el backlog de Sprint 5 (S5-06). El hook vive naturalmente en `writing-post`.
+2. **`RESEARCH_DEEP_DIVE` como prerequisito antes de escribir POST** — issue #63, ya en el backlog de Sprint 5 (S5-06). El hook vive naturalmente en `writing-post`. **Alcance del check aclarado (2026-09-03):** la investigación tiene dos alcances posibles — compartida a nivel de proyecto (una serie de N posts se alimenta de un único `RESEARCH_DEEP_DIVE`/`RESEARCH_REPORT` en `R_research/`, caso por defecto) o específica de un post (un post concreto necesita profundizar por su cuenta, y ese artefacto vive dentro de la carpeta de ese post en `WP_writing_post/`, no en `R_research/` — ver `AUTO_SAVE_CONFIG.yaml` v1.2). El hook debe verificar que exista *al menos un* artefacto de research válido para ese post, ya sea el compartido del proyecto o uno propio del post.
 3. **Aprobación editorial antes de `PROMPT_EXECUTE_RESEARCH_PLAN`** — hoy es un checklist de prosa ("Do not proceed without approved planning documents") sin verificación real de que el editor aprobó, solo de que el archivo existe.
 4. **Aprobación editorial antes de reescribir un artefacto ya aprobado** — forma general del bug #66, aplica potencialmente a cualquier skill que reescriba un artefacto existente.
 5. **Verificación de escritura exitosa en `project-setup`** (relacionado con #49/#50/#65) — no es exactamente una dependencia cruzada, pero es la misma familia de problema: un `PostToolUse` que confirme que la escritura ocurrió donde debía, en vez de fallar en silencio.

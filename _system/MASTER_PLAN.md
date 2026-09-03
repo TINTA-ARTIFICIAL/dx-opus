@@ -2,7 +2,7 @@
 id:          MASTER_PLAN
 type:        SCHEMA
 subsystem:   SYSTEM
-version:     1.8
+version:     1.9
 status:      ACTIVE
 created:     2026-02-21
 updated:     2026-09-03
@@ -13,9 +13,17 @@ owner_chat:  system-architecture
 
 ## Consolidación de decisiones y trabajo pendiente
 
-**Versión:** 1.8  
+**Versión:** 1.9  
 **Fecha:** 3 septiembre 2026  
-**Scope:** Sprint 5 — spike de arquitectura de plugin completado (S5-12 a S5-15); hardening de integridad de datos sigue en curso
+**Scope:** Sprint 5 — estructura de carpetas de proyecto resuelta (S5-10, S5-11); queda el bucket crítico de integridad de datos (S5-01 a S5-07)
+
+**Changelog v1.9:**
+
+* S5-10 (#74) completado: `WP_writing_post/` con subcarpetas por post en `AUTO_SAVE_CONFIG.yaml` v1.1
+* S5-11 (#70) diseño completado (`DL_20260903_KB_004`); implementación bloqueada por S5-03/#49 como el propio issue anticipaba
+* S5-08 (#77) y S5-09 (#72) diferidos — el primero probablemente redundante con el plugin, el segundo acoplado al epic SESSION_ORCHESTRATOR fuera de scope
+* Corregido un problema estructural encontrado de paso: `ARQUITECTURA_AUTO_SAVE_GENERICA.md` tenía una copia embebida y desincronizada del registro de rutas de `AUTO_SAVE_CONFIG.yaml` (le faltaban 2 tipos de artefacto). Eliminada — el YAML es ahora la única fuente de verdad
+* Hallazgo para la siguiente fase (auto-save, S5-01/S5-02): `PROMPT_WRITE_POST` no referencia `AUTO_SAVE_CONFIG.yaml` en absoluto pese a declarar auto-save activo — candidato fuerte a causa raíz de #65
 
 **Changelog v1.8:**
 
@@ -459,10 +467,10 @@ Alimenta directamente el spike de plugin — entender qué estructura sobrevive 
 
 | ID | Issue | Descripción |
 |---|---|---|
-| S5-08 | #77 | Refactor de estructura de repo: separar artefactos de desarrollo de artefactos de producción |
-| S5-09 | #72 | Crear carpeta `workflows/` como ubicación dedicada para documentos de orquestación |
-| S5-10 | #74 | `WP_writing_post/` debe usar subcarpetas por post en proyectos multi-post |
-| S5-11 | #70 | Actualizaciones de SAH/CVC desde proyectos deben propagarse de vuelta a `D-X-OPUS/resources/` |
+| S5-08 | #77 | ⏸️ Diferido — probablemente redundante con la reorganización nativa que trae el plugin (Sprint 6+); referencia a "DL_..._SYSTEM_041" en el issue quedó obsoleta, el número correcto si se retoma es 042 |
+| S5-09 | #72 | ⏸️ Diferido — acoplado al epic SESSION_ORCHESTRATOR, ya fuera de scope de Sprint 5 |
+| S5-10 | #74 | ✅ **Completado** — `WP_writing_post/` con subcarpetas por post (`Post{N}_{post_name}`) implementado en `AUTO_SAVE_CONFIG.yaml` v1.1. De paso, se eliminó una copia duplicada y desincronizada del registro de rutas en `ARQUITECTURA_AUTO_SAVE_GENERICA.md` (le faltaban 2 tipos de artefacto) |
+| S5-11 | #70 | ✅ Diseño completado (`DL_20260903_KB_004`) — propagación aprobada por el editor, paso dedicado, no efecto colateral de `PROMPT_UPDATE_VALIDATION_CHECKLIST`. ⏸️ Implementación bloqueada por S5-03 (#49), tal como el propio issue declaraba |
 
 ### 🟠 ALTO — Spike de arquitectura: DX-OPUS como Cowork plugin
 

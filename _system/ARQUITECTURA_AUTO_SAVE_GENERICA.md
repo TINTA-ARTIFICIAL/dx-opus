@@ -1,8 +1,25 @@
+---
+id:          ARQUITECTURA_AUTO_SAVE_GENERICA
+type:        SCHEMA
+subsystem:   SYSTEM
+version:     1.1
+status:      ACTIVE
+created:     2026-05-04
+updated:     2026-09-03
+owner_chat:  system-architecture
+---
+
+## CHANGELOG
+
+| Version | Date | Author | Summary |
+|---------|------|--------|---------|
+| v1.1 | 2026-09-03 | system-architecture | Eliminada la copia embebida del registro de artefactos y de niveles de metadata — habían quedado desincronizados de `_system/resources/AUTO_SAVE_CONFIG.yaml` (faltaban ANGLES_REPORT y VERIFICATION_MAP; sintaxis de placeholders distinta). Este documento ahora remite al YAML como fuente única. Añadida cabecera YAML estándar, ausente hasta ahora. Ver issue #74, DL pendiente de estructura de carpetas. |
+| v1.0 | 2026-05-04 | system-architecture | Versión inicial |
+
 # ARQUITECTURA GENÉRICA AUTO-SAVE D-X-OPUS R1
 
 **Sistema:** D-X-OPUS  
 **Componente:** Auto-save genérico para todos los artefactos  
-**Versión:** 1.0  
 **Alcance:** Todos los workflows de R1
 
 ---
@@ -19,163 +36,11 @@ Definir una arquitectura genérica de auto-save que cualquier prompt de D-X-OPUS
 
 ### 1. REGISTRO DE TIPOS DE ARTEFACTO
 
-```yaml
-# ARTIFACT_TYPES_REGISTRY.yaml
-# Configuración central de todos los artefactos del sistema
-
-RESEARCH:
-  REFERENCE_SUMMARY:
-    folder: "R_research"
-    prefix: "REF_SUM"
-    template: "[COD]_R_REF_SUM_v[VER].md"
-    metadata_level: "standard"
-    
-  RESEARCH_PLAN:
-    folder: "R_research"
-    prefix: "PLAN"
-    template: "[COD]_R_PLAN_v[VER].md"
-    metadata_level: "standard"
-    
-  RESEARCH_DEEP_DIVE:
-    folder: "R_research"
-    prefix: "DEEP_DIVE"
-    template: "[COD]_R_DEEP_DIVE_v[VER].md"
-    metadata_level: "extended"
-    
-  RESEARCH_REPORT:
-    folder: "R_research"
-    prefix: "REPORT"
-    template: "[COD]_R_REPORT_[SUBTYPE]_v[VER].md"
-    metadata_level: "extended"
-    subtypes: ["HIST", "ECON", "TECH", "SOCIAL", "CUSTOM"]
-    
-  NARRATIVE_BRIDGE:
-    folder: "R_research"
-    prefix: "BRIDGE"
-    template: "[COD]_R_BRIDGE_v[VER].md"
-    metadata_level: "standard"
-
-WRITING_BOOK:
-  BOOK_INDEX:
-    folder: "WB_writing_book"
-    prefix: "INDEX"
-    template: "[COD]_WB_INDEX_v[VER].md"
-    metadata_level: "standard"
-    
-  SAMPLE_CHAPTER:
-    folder: "WB_writing_book"
-    prefix: "SAMPLE"
-    template: "[COD]_WB_SAMPLE_CH[N]_v[VER].md"
-    metadata_level: "extended"
-    
-  CHAPTER_DRAFT:
-    folder: "WB_writing_book"
-    prefix: "CHAPTER"
-    template: "[COD]_WB_CHAPTER_CH[N]_v[VER].md"
-    metadata_level: "extended"
-    
-  INTRODUCTION:
-    folder: "WB_writing_book"
-    prefix: "INTRO"
-    template: "[COD]_WB_INTRO_v[VER].md"
-    metadata_level: "extended"
-    
-  PROLOGUE:
-    folder: "WB_writing_book"
-    prefix: "PROLOGUE"
-    template: "[COD]_WB_PROLOGUE_v[VER].md"
-    metadata_level: "extended"
-    
-  BOOK_SHEET:
-    folder: "WB_writing_book"
-    prefix: "SHEET"
-    template: "[COD]_WB_SHEET_v[VER].md"
-    metadata_level: "standard"
-
-WRITING_POST:
-  POST_SEED:
-    folder: "WP_writing_post"
-    prefix: "SEED"
-    template: "[COD]_WP_SEED_[NAME]_v[VER].md"
-    metadata_level: "standard"
-    
-  POST_DRAFT:
-    folder: "WP_writing_post"
-    prefix: "POST"
-    template: "[COD]_WP_POST_[NAME]_v[VER].md"
-    metadata_level: "extended"
-    
-  INVENTARIO_IDEAS:
-    folder: "WP_writing_post"
-    prefix: "IDEAS"
-    template: "[COD]_WP_IDEAS_[NAME]_v[VER].md"
-    metadata_level: "standard"
-    
-  SOURCE_MAP:
-    folder: "WP_writing_post"
-    prefix: "SOURCES"
-    template: "[COD]_WP_SOURCES_[NAME]_v[VER].md"
-    metadata_level: "standard"
-    
-  POST_BRIEFING:
-    folder: "WP_writing_post"
-    prefix: "BRIEFING"
-    template: "[COD]_WP_BRIEFING_[NAME]_v[VER].md"
-    metadata_level: "standard"
-
-ACTIVATION:
-  ACTIVATION_CONTEXT:
-    folder: "A_activation"
-    prefix: "CONTEXT"
-    template: "[COD]_A_CONTEXT_v[VER].md"
-    metadata_level: "extended"
-    
-  BOOK_BRIEF:
-    folder: "A_activation"
-    prefix: "BRIEF"
-    template: "[COD]_A_BRIEF_v[VER].md"
-    metadata_level: "standard"
-    
-  POST_PLAN:
-    folder: "A_activation"
-    prefix: "POST_PLAN"
-    template: "[COD]_A_POST_PLAN_[N]_v[VER].md"
-    metadata_level: "standard"
-
-EVALUATION:
-  EVALUATION_RESULT:
-    folder: "[WORKFLOW_FOLDER]"  # Dinámico según el workflow que evalúa
-    prefix: "EVAL"
-    template: "[COD]_EVAL_[TARGET_TYPE]_v[VER].md"
-    metadata_level: "standard"
-    target_types: ["RESEARCH", "BOOK", "POST", "ACTIVATION"]
-
-SYSTEM:
-  PROJECT_NOTES:
-    folder: "_discovery"
-    prefix: "NOTES"
-    template: "PROJECT_NOTES.md"  # Único por proyecto
-    metadata_level: "standard"
-    
-  WRITING_CONTEXT:
-    folder: "config"
-    prefix: "CONTEXT"
-    template: "WRITING_CONTEXT_[ID].md"
-    metadata_level: "standard"
-```
+**No se duplica aquí.** La configuración viva de rutas, prefijos, plantillas de nombre y niveles de metadata por tipo de artefacto vive exclusivamente en `_system/resources/AUTO_SAVE_CONFIG.yaml` — es la única fuente de verdad que cualquier prompt o herramienta debe consultar. Una copia embebida en este documento existió hasta v1.0 y quedó desincronizada del YAML real (le faltaban dos tipos de artefacto de WRITING_POST); se eliminó en v1.1 precisamente para que no vuelva a pasar.
 
 ### 2. NIVELES DE METADATA
 
-```yaml
-METADATA_LEVELS:
-
-  standard:
-    fields: [id, type, project, version, created, status, prompt_used]
-    
-  extended:
-    fields: [id, type, project, version, created, updated, status, prompt_used, 
-             word_count, processing_time, source_artifacts, quality_metrics]
-```
+Igual que el registro de artefactos: definidos en `AUTO_SAVE_CONFIG.yaml` bajo `METADATA_LEVELS`, no aquí.
 
 ---
 
@@ -377,17 +242,7 @@ generated_by:   [PROMPT_ID] v[PROMPT_VERSION]
 
 ## MANEJO DE ERRORES
 
-### Error: No se puede conectar con Drive
-**Fallback:** Presentar contenido completo para copia manual + instrucciones de guardado
-
-### Error: Archivo ya existe con misma versión  
-**Fallback:** Incrementar versión automáticamente (v1.0 → v1.1)
-
-### Error: Configuración de proyecto incompleta
-**Fallback:** Usar naming genérico + solicitar configuración manual
-
-### Error: Tipo de artefacto no reconocido
-**Fallback:** Usar configuración genérica + notificar para actualizar registry
+Tampoco se duplica aquí — la tabla completa de tipos de error y su fallback (incluido el caso de carpeta destino inexistente, añadido en `AUTO_SAVE_CONFIG.yaml` v1.1 tras el bug de subcarpetas duplicadas) vive en `ERROR_HANDLING` dentro de `AUTO_SAVE_CONFIG.yaml`.
 
 ---
 
