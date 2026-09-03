@@ -1,0 +1,14 @@
+{
+  "PreToolUse": [
+    {
+      "matcher": "Write|Edit",
+      "hooks": [
+        {
+          "type": "prompt",
+          "prompt": "Check the target file path of this write/edit ($TOOL_INPUT). If it is NOT exactly knowledge-base/RESOURCE_SOURCE_AUTHORITY.md and NOT exactly knowledge-base/RESOURCE_CLAIM_VALIDATION.md: respond approve immediately, with no further analysis — this check does not apply to any other file in the system. If it IS one of those two files: read that file's own 'CANONICAL UPDATE SCHEMA' section to identify which parts are marked as protected/universal (e.g. the schema definitions themselves, the Universal Framework layer in RESOURCE_CLAIM_VALIDATION.md, or any content the schema states must not be modified autonomously by Research) versus the topic-specific content sections where the documented update procedures (A-D) apply. If the proposed change touches protected/universal content, or it is not clearly an additive update following one of the documented procedures: respond ask_user with a brief explanation of which section appears protected and why. If the change is a topic-content update that follows the documented schema and procedures: respond approve.",
+          "timeout": 30
+        }
+      ]
+    }
+  ]
+}
