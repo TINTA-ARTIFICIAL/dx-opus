@@ -9,6 +9,16 @@
           "timeout": 30
         }
       ]
+    },
+    {
+      "matcher": "Write|Edit",
+      "hooks": [
+        {
+          "type": "prompt",
+          "prompt": "Comprueba qué artefacto va a producir esta escritura/edición ($TOOL_INPUT). Si NO es un POST_DRAFT (el borrador final de un post, producido por PROMPT_WRITE_POST — ver el artefacto POST_DRAFT en _system/resources/AUTO_SAVE_CONFIG.yaml): responde approve inmediatamente, sin más análisis — este hook no aplica a ninguna otra escritura del sistema (por ejemplo, un INVENTARIO_IDEAS u otro artefacto intermedio del workflow POST no dispara este chequeo). Si SÍ es un POST_DRAFT: comprueba si existe evidencia de investigación para este post — un RESEARCH_DEEP_DIVE o RESEARCH_REPORT compartido del proyecto en R_research/, o uno propio de este post dentro de su carpeta en WP_writing_post/ (ver _system/resources/AUTO_SAVE_CONFIG.yaml para el alcance dual shared/post de estos artefactos). Si existe cualquiera de los dos: responde approve. Si no existe ninguno, comprueba si en la conversación el editor ya confirmó explícitamente saltarse la investigación — registrado como research_skipped: true con una razón, tal como describe writing/post/PROMPT_POST_BRIEF.md PASO 3B. Si esa confirmación explícita existe: responde approve. Si no existe investigación NI confirmación explícita de skip: responde ask_user explicando que falta investigación previa para este post y que no hay constancia de que el editor haya decidido conscientemente prescindir de ella.",
+          "timeout": 30
+        }
+      ]
     }
   ]
 }
