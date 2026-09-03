@@ -2,7 +2,7 @@
 id:          MASTER_PLAN
 type:        SCHEMA
 subsystem:   SYSTEM
-version:     1.7
+version:     1.8
 status:      ACTIVE
 created:     2026-02-21
 updated:     2026-09-03
@@ -13,9 +13,14 @@ owner_chat:  system-architecture
 
 ## Consolidación de decisiones y trabajo pendiente
 
-**Versión:** 1.7  
+**Versión:** 1.8  
 **Fecha:** 3 septiembre 2026  
-**Scope:** Planificación Sprint 5 — hardening de integridad de datos + spike de arquitectura de despliegue (Cowork plugin)
+**Scope:** Sprint 5 — spike de arquitectura de plugin completado (S5-12 a S5-15); hardening de integridad de datos sigue en curso
+
+**Changelog v1.8:**
+
+* Cerrado el spike de arquitectura de plugin: S5-12, S5-13, S5-14, S5-15 completados. Ver `_system/SPEC_PLUGIN_ARCHITECTURE.md` v0.2 y `DL_20260903_SYSTEM_041`
+* Corregida `DL_20260416_SYSTEM_025`: su pregunta abierta sobre `PROMPT_QA_IDEAS` ya estaba resuelta por `DL_20260411_ACTIVATION_022` (INTEGRATED) — vacío de coordinación entre DLs, no una decisión de producto pendiente
 
 **Changelog v1.7:**
 
@@ -465,10 +470,10 @@ Solo diseño en Sprint 5. La implementación se planifica en Sprint 6+.
 
 | ID | Tarea |
 |---|---|
-| S5-12 | Investigar el formato de Cowork plugin (skills, connectors, manifest) y mapear qué partes del sistema actual encajan directo — prompts → skills, `TOOL_*.gs` → ¿hooks de setup o eliminados? |
-| S5-13 | Diseñar cómo se gestiona la estructura de carpetas del proyecto sin Apps Script ni Drive como almacenamiento primario |
-| S5-14 | Documentar la decisión como nueva DL entry (SYSTEM): alcance, qué se elimina (Apps Script + Drive setup flow + package system del Sprint 4), qué se mantiene, roadmap S6+ |
-| S5-15 | Nota de diseño a futuro en la misma DL: se contempla una interfaz propia más adelante, fuera de scope de S5 (marcar como "Work futuro", no comprometer fecha) |
+| S5-12 | ✅ **Completado** — Investigado el formato de Cowork plugin y mapeadas las ~150 dependencias cruzadas entre los 55 artefactos del sistema. Ver `_system/SPEC_PLUGIN_ARCHITECTURE.md` v0.2 |
+| S5-13 | ✅ **Completado** — Diseño de 9 skills (`research`, `editorial-profile`, `writing-book`, `writing-post`, `shared-writing`, `evaluation`, `activation`, `knowledge-base`, `project-setup`, `editor-onboarding`), sin Apps Script ni Drive como almacenamiento primario |
+| S5-14 | ✅ **Completado** — `DL_20260903_SYSTEM_041` documenta la decisión: alcance, qué se elimina (`TOOL_CREATE_PROJECT.gs`, `TOOL_SETUP_EDITOR_ENVIRONMENT.gs`), roadmap Sprint 6+ para implementación |
+| S5-15 | ✅ **Completado** — Nota de interfaz propia registrada como "Work futuro" sin fecha en `SPEC_PLUGIN_ARCHITECTURE.md` sección 6 |
 
 **Nota:** el Package System (Sprint 4, PARTE 8) queda formalmente en producción durante el spike — no se desmantela hasta que S5-14 resuelva la migración.
 
