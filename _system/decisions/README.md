@@ -23,7 +23,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 | Subsystem | Latest DL# | Last Decision | Date |
 |-----------|------------|---------------|------|
 | **SYSTEM** | **041** | Plugin architecture spike — DX-OPUS as Cowork plugin (9 skills), replaces Apps Script + Drive setup | 2026-09-03 |
-| KB | 003 | CANONICAL UPDATE SCHEMA for SAH/CVC | 2026-02-22 |
+| KB | 004 | SAH/CVC propagation governance — editor-approved, dedicated step, blocked by #49 | 2026-09-03 |
 | RESEARCH | — | (No DL entries yet) | — |
 | WRITING | 015 | Q&A always active in POST workflow | 2026-04-11 |
 | EVALUATION | — | (No DL entries yet) | — |
@@ -32,7 +32,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 | DOCS | — | (No DL entries yet) | — |
 
 ### Total Decisions Logged
-**41 total DL entries** across all subsystems
+**42 total DL entries** across all subsystems
 
 ---
 
@@ -42,6 +42,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 
 | DL ID | Decision | Status |
 |-------|----------|---------|
+| DL_20260903_KB_004 | SAH/CVC propagation governance (issue #70) — editor-approved, dedicated step (not a side effect of PROMPT_UPDATE_VALIDATION_CHECKLIST). Design only; implementation blocked by issue #49 (S5-03) | OPEN |
 | DL_20260903_SYSTEM_041 | Plugin architecture spike — DX-OPUS migrates to a Cowork plugin (9 skills, replaces TOOL_CREATE_PROJECT.gs + TOOL_SETUP_EDITOR_ENVIRONMENT.gs). Design only (S5-12/13/14); build deferred to Sprint 6+. See SPEC_PLUGIN_ARCHITECTURE.md v0.2 | OPEN |
 
 ### Sprint 5 Design (May 2026)
@@ -123,7 +124,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 | Status | Count | Description |
 |--------|--------|-------------|
 | **INTEGRATED** | 35 | Implemented and operational |
-| **OPEN** | 4 | Approved, pending Sprint 5/6 implementation |
+| **OPEN** | 5 | Approved, pending Sprint 5/6 implementation |
 | **SUPERSEDED** | 2 | Replaced by newer decisions |
 
 ### By Subsystem
@@ -131,7 +132,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 | Subsystem | Total | Integrated | Open | Superseded |
 |-----------|-------|------------|------|------------|
 | **SYSTEM** | **34** | **28** | **4** | **2** |
-| KB | 3 | 3 | 0 | 0 |
+| KB | 4 | 3 | 1 | 0 |
 | WRITING | 4 | 4 | 0 | 0 |
 | RESEARCH | 0 | 0 | 0 | 0 |
 | EVALUATION | 0 | 0 | 0 | 0 |
@@ -213,7 +214,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 
 **Next DL Numbers:**
 - **SYSTEM:** DL_YYYYMMDD_SYSTEM_042
-- **KB:** DL_YYYYMMDD_KB_004
+- **KB:** DL_YYYYMMDD_KB_005
 - **WRITING:** DL_YYYYMMDD_WRITING_016
 - **Other subsystems:** DL_YYYYMMDD_[SUBSYSTEM]_001
 

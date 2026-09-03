@@ -1,47 +1,85 @@
 # AUTO_SAVE_CONFIG.yaml
 # Configuración central para auto-save de artefactos D-X-OPUS R1
+#
+# FUENTE ÚNICA DE VERDAD: este es el único registro de rutas/naming que
+# cualquier prompt o herramienta debe consultar. _system/ARQUITECTURA_AUTO_SAVE_GENERICA.md
+# describe el MECANISMO (contrato de la función, manejo de errores, plantilla de
+# integración) pero NO debe embeber una copia de este registro — la copia que
+# tenía quedó desincronizada (le faltaban ANGLES_REPORT y VERIFICATION_MAP) y
+# fue eliminada en v1.1 de ese documento (2026-09-03, issue #74/#70).
 
 system_version: "R1"
-config_version: "1.0"
-updated: "2026-05-04"
+config_version: "1.2"
+updated: "2026-09-03"
 
 # =============================================================================
 # RESEARCH ARTIFACTS
 # =============================================================================
+#
+# ALCANCE DE LA INVESTIGACIÓN (v1.2, aclarado 2026-09-03): la investigación
+# puede ser COMPARTIDA (alimenta a todo el proyecto/serie — caso por defecto,
+# ej. una serie de posts que parte de un único RESEARCH_DEEP_DIVE) o
+# ESPECÍFICA DE UN POST (un post concreto necesita profundizar por su cuenta,
+# más allá o en vez de la investigación compartida).
+#
+# scope: "shared" (default) → guarda en R_research/, plano, sin diferenciador
+#   por post — es la investigación de base del proyecto.
+# scope: "post" → guarda dentro de la carpeta de ESE post en WP_writing_post/,
+#   junto al resto de sus artefactos (SEED, IDEAS, ANGLES...), no en R_research/.
+#   Se diferencia con el mismo {post_name} que ya usan los demás artefactos de
+#   post — sigue el mismo principio que el resto del sistema: si un artefacto
+#   pertenece a un post concreto, vive en la carpeta de ese post.
+#
+# El scope lo determina el contexto de la sesión (¿el research se pidió desde
+# el workflow general del proyecto, o desde dentro de la sesión de un post
+# específico?), no una elección de naming. El MECANISMO de detección (cómo
+# sabe el prompt que está en scope "post") queda pendiente de definir en la
+# fase de auto-save del Sprint 5 (S5-01/S5-02) — esta entrada solo fija las
+# dos rutas/plantillas posibles, no cómo se elige entre ellas en runtime.
 
 RESEARCH:
   REFERENCE_SUMMARY:
-    folder: "R_research"
+    folder: "R_research"                              # shared (default)
+    folder_if_post_scoped: "WP_writing_post/{post_folder}"
     prefix: "REF_SUM"
-    template: "{project_code}_R_REF_SUM_v{version}.md"
+    template: "{project_code}_R_REF_SUM_v{version}.md"                       # shared
+    template_if_post_scoped: "{project_code}_R_REF_SUM_{post_name}_v{version}.md"
     metadata_level: "standard"
     description: "Resumen de referencias procesadas"
-    
+
   RESEARCH_PLAN:
     folder: "R_research"
+    folder_if_post_scoped: "WP_writing_post/{post_folder}"
     prefix: "PLAN"
     template: "{project_code}_R_PLAN_v{version}.md"
+    template_if_post_scoped: "{project_code}_R_PLAN_{post_name}_v{version}.md"
     metadata_level: "standard"
     description: "Plan de investigación orientativo"
-    
+
   NARRATIVE_BRIDGE:
     folder: "R_research"
+    folder_if_post_scoped: "WP_writing_post/{post_folder}"
     prefix: "BRIDGE"
     template: "{project_code}_R_BRIDGE_v{version}.md"
+    template_if_post_scoped: "{project_code}_R_BRIDGE_{post_name}_v{version}.md"
     metadata_level: "standard"
     description: "Puente narrativo para escritura"
-    
+
   RESEARCH_DEEP_DIVE:
     folder: "R_research"
+    folder_if_post_scoped: "WP_writing_post/{post_folder}"
     prefix: "DEEP_DIVE"
     template: "{project_code}_R_DEEP_DIVE_v{version}.md"
+    template_if_post_scoped: "{project_code}_R_DEEP_DIVE_{post_name}_v{version}.md"
     metadata_level: "extended"
-    description: "Investigación profunda (RAMA A)"
-    
+    description: "Investigación profunda (RAMA A) — la más habitual como research específica de un post, por ser la rama que usa POST"
+
   RESEARCH_REPORT:
     folder: "R_research"
+    folder_if_post_scoped: "WP_writing_post/{post_folder}"
     prefix: "REPORT"
     template: "{project_code}_R_REPORT_{subtype}_v{version}.md"
+    template_if_post_scoped: "{project_code}_R_REPORT_{subtype}_{post_name}_v{version}.md"
     metadata_level: "extended"
     description: "Reporte de investigación estructurado (RAMA B)"
     subtypes: ["HIST", "ECON", "TECH", "SOCIAL", "POL", "SCI", "CUSTOM"]
@@ -96,52 +134,64 @@ WRITING_BOOK:
 # =============================================================================
 # WRITING POST ARTIFACTS
 # =============================================================================
+#
+# ESTRUCTURA POR POST (v1.1, issue #74): cada post de una serie vive en su
+# propia subcarpeta dentro de WP_writing_post/, no en una carpeta plana
+# compartida. {post_folder} se calcula como Post{post_number}_{post_name}
+# (ver NAMING_RULES.post_folder más abajo). La subcarpeta se crea de forma
+# dinámica al guardar el primer artefacto de un post nuevo — no se pre-crea
+# en TOOL_CREATE_PROJECT.
+#
+# Artefactos específicos de un capítulo dentro del mismo post (ej. una serie
+# de posts sobre un libro, con ideas/ángulos por capítulo) NO usan
+# sub-subcarpetas — se diferencian por sufijo en el nombre de archivo dentro
+# de la misma carpeta del post (ej. {..}_WP_ANGLES_Cap5_v1.0.md).
 
 WRITING_POST:
   POST_SEED:
-    folder: "WP_writing_post"
+    folder: "WP_writing_post/{post_folder}"
     prefix: "SEED"
     template: "{project_code}_WP_SEED_{post_name}_v{version}.md"
     metadata_level: "standard"
     description: "Arquitectura y material para el post"
-    
+
   POST_DRAFT:
-    folder: "WP_writing_post"
+    folder: "WP_writing_post/{post_folder}"
     prefix: "POST"
     template: "{project_code}_WP_POST_{post_name}_v{version}.md"
     metadata_level: "extended"
     description: "Borrador del post completo"
-    
+
   INVENTARIO_IDEAS:
-    folder: "WP_writing_post"
+    folder: "WP_writing_post/{post_folder}"
     prefix: "IDEAS"
     template: "{project_code}_WP_IDEAS_{post_name}_v{version}.md"
     metadata_level: "standard"
     description: "Q&A de ideas del editor"
-    
+
   SOURCE_MAP:
-    folder: "WP_writing_post"
+    folder: "WP_writing_post/{post_folder}"
     prefix: "SOURCES"
     template: "{project_code}_WP_SOURCES_{post_name}_v{version}.md"
     metadata_level: "standard"
     description: "Mapa de fuentes procesadas"
-    
+
   VERIFICATION_MAP:
-    folder: "WP_writing_post"
+    folder: "WP_writing_post/{post_folder}"
     prefix: "VERIFY"
     template: "{project_code}_WP_VERIFY_{post_name}_v{version}.md"
     metadata_level: "standard"
     description: "Resultado de verificación de fuentes"
-    
+
   ANGLES_REPORT:
-    folder: "WP_writing_post"
+    folder: "WP_writing_post/{post_folder}"
     prefix: "ANGLES"
     template: "{project_code}_WP_ANGLES_{post_name}_v{version}.md"
     metadata_level: "standard"
     description: "Ángulos y enfoques propuestos"
-    
+
   POST_BRIEFING:
-    folder: "WP_writing_post"
+    folder: "WP_writing_post/{post_folder}"
     prefix: "BRIEFING"
     template: "{project_code}_WP_BRIEFING_{post_name}_v{version}.md"
     metadata_level: "standard"
@@ -302,7 +352,13 @@ NAMING_RULES:
     max_length: 40
     transform: "title_case_to_snake_case"  # "Frankenstein Tenía Razón" → "Frankenstein_Tenia_Razon"
     remove_chars: [".", ",", ":", ";", "!", "?", "'", '"']
-    
+
+  post_folder:
+    format: "Post{post_number}_{post_name}"  # "Post1_Frankenstein_Tenia_Razon"
+    post_number: "sequential"  # 1, 2, 3... — el siguiente número del proyecto, no se reutiliza
+    scope: "per_project"  # el contador vive en PROJECT_CONFIG, no es global
+    created_when: "primer artefacto de un post nuevo"  # no se pre-crea en TOOL_CREATE_PROJECT
+
   chapter_number:
     format: "zero_padded"  # 1 → 01, 10 → 10
     max_digits: 2
@@ -336,3 +392,10 @@ ERROR_HANDLING:
     unknown_artifact:
       action: "use_generic_template"
       message: "Tipo de artefacto no reconocido. Registry necesita actualización."
+
+    folder_missing:
+      action: "create_folder_before_write"
+      message: "Carpeta destino no existe (ej. {post_folder} de un post nuevo). Se crea antes de guardar — nunca se reutiliza ni se adivina una carpeta existente por coincidencia de nombre."
+      # Añadido v1.1 (issue #74/#49): la resolución de carpeta debe ser explícita
+      # (crear si falta) en vez de buscar/reutilizar la carpeta "más parecida",
+      # que es el patrón que causó las subcarpetas duplicadas de #49.
