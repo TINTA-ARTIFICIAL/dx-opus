@@ -2,7 +2,7 @@
 id:          SPEC_PLUGIN_ARCHITECTURE
 type:        SPEC
 subsystem:   SYSTEM
-version:     0.4
+version:     0.5
 status:      DRAFT
 created:     2026-09-03
 updated:     2026-09-03
@@ -13,6 +13,7 @@ owner_chat:  system-architecture
 
 ## CHANGELOG
 
+* v0.5 (2026-09-03) — Añadida sección 8: dónde vive físicamente el plugin en el repo. Decisión: el root del plugin ES el root del repo — `research/`, `writing/`, `evaluation/`, etc. no se mueven ni se duplican dentro de `skills/*/references/`; cada `SKILL.md` instruye a Claude a leer los archivos existentes por su ruta actual. Evita recrear la clase de bug que resolvimos en Sprint 5 (registros duplicados y desincronizados). Preparado como base para el scaffolding de `docs/backlog/` y los tickets de Sprint 6.
 * v0.4 (2026-09-03) — Corrección: la investigación no es *solo* compartida — un post puede tener research propia además de la compartida del proyecto. `R_research/` sigue siendo la ruta por defecto (scope compartido); research específica de un post pasa a vivir en su propia carpeta de `WP_writing_post/` (`AUTO_SAVE_CONFIG.yaml` v1.2). Actualizado §5.3 item 2 en consecuencia.
 * v0.3 (2026-09-03) — Aclarado el alcance del hook de prerequisito de research (§5.3, item 2): la investigación es compartida a nivel de proyecto, no por post — confirma por qué `R_research/` se queda con naming plano mientras `WP_writing_post/` sí necesitó subcarpetas por post (issue #74).
 * v0.2 (2026-09-03) — Resueltas las dos preguntas abiertas de v0.1: `PROMPT_QA_IDEAS` confirmado como shared (ver DL_20260416_SYSTEM_025, sección "CORRECCIÓN"), `shared-writing` confirmada como skill dedicada. Estado sigue en DRAFT — falta convertirse en DL formal (S5-14).
@@ -143,3 +144,19 @@ Quedan solo las notas para el futuro, sin decisión pendiente en este spike:
 ## 7. Siguiente paso
 
 Con las respuestas a la sección 6, este documento pasa a DL formal (S5-14) y a `MASTER_PLAN.md`. La implementación (crear los `.claude-plugin/`, `skills/*/SKILL.md`, hooks) es Sprint 6+, no este sprint.
+
+---
+
+## 8. Dónde vive físicamente el plugin en el repo
+
+**Decisión (2026-09-03, al preparar el scaffolding de Sprint 6):** el root del plugin **es** el root de este repositorio. No se crea un árbol nuevo tipo `plugin/dx-opus/` que copie contenido.
+
+- `.claude-plugin/plugin.json` vive en la raíz del repo, junto a `research/`, `writing/`, `evaluation/`, etc.
+- `skills/{nombre}/SKILL.md` es un archivo **nuevo y ligero** — no una copia del contenido existente. Su cuerpo instruye a Claude a leer los prompts/resources reales por su ruta actual en el repo (`research/PROMPT_CREATE_RESEARCH_PLAN.md`, `knowledge-base/RESOURCE_SOURCE_AUTHORITY.md`, etc.), no a través de una carpeta `references/` que los duplique.
+- `hooks/hooks.json` vive en la raíz, junto al resto.
+
+**Por qué:** duplicar contenido dentro de `skills/*/references/` recrearía exactamente la clase de bug que ocupó media Sprint 5 — dos copias del mismo registro (`AUTO_SAVE_CONFIG.yaml` vs. la tabla embebida en `ARQUITECTURA_AUTO_SAVE_GENERICA.md`, y otra más en `TOOL_CREATE_PROJECT.gs`) que se desincronizaron sin que nadie se diera cuenta. Un `SKILL.md` que apunta al archivo real, en vez de copiarlo, no puede desincronizarse — no hay una segunda copia que mantener.
+
+**Consecuencia práctica:** construir una skill es sobre todo escribir un `SKILL.md` corto (metadata + instrucciones de cuándo y cómo usar cada prompt existente), no migrar contenido. Los subsistemas (`research/`, `writing/`, `evaluation/`...) no cambian de sitio ni de owner_chat por este pivote — solo cambia el mecanismo por el que un editor los invoca.
+
+Esta decisión es la base del scaffolding de `docs/backlog/` para Sprint 6 (`docs/DEV_STANDARDS.md`, tickets `S6-01` a `S6-04`).
