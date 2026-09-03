@@ -28,6 +28,27 @@ Objetivo: validar el patrón de skill/hook con el menor riesgo posible antes de 
 
 ---
 
-## Sprints 7 y 8
+## Sprint 7 — Skills de workflow
 
-Todavía no desglosados en tickets — se preparan cuando Sprint 6 esté cerrado y validado. Ver `_system/MASTER_PLAN.md` PARTE 9 para el alcance de cada uno a alto nivel.
+Objetivo: migrar los 7 skills restantes (los 6 subsistemas con workflow propio, más `shared-writing` como skill de soporte dedicada) y cerrar la deuda de `PROMPT_EVALUATE_ACTIVATION` arrastrada desde Sprint 4.
+
+| ID | Título | Prioridad | Status | Depende de |
+|---|---|---|---|---|
+| S7-01 | Skill `research` (+ hook aprobación EXECUTE_RESEARCH_PLAN) | P1 | TODO | — |
+| S7-02 | Skill `editorial-profile` | P2 | TODO | — |
+| S7-03 | Skill `shared-writing` | P1 | TODO | — |
+| S7-04 | Skill `writing-book` | P1 | TODO | — |
+| S7-05 | Crear `PROMPT_EVALUATE_ACTIVATION` (contenido, no skill) | P1 | TODO | — |
+| S7-06 | Skill `evaluation` | P1 | TODO | S7-05 |
+| S7-07 | Skill `writing-post` (+ hook prerequisito de investigación) | P1 | TODO | — |
+| S7-08 | Skill `activation` | P2 | TODO | — |
+
+**Grafo de dependencias:** una única dependencia real — S7-06 (`evaluation`) necesita que S7-05 (`PROMPT_EVALUATE_ACTIVATION`) exista con contenido real antes de poder darse por completa, porque referencia ese archivo directamente. El resto (S7-01, S7-02, S7-03, S7-04, S7-07, S7-08) son independientes entre sí y de S7-05/S7-06 — pueden despacharse en paralelo. `S7-03` (`shared-writing`) tiene su interfaz pública pre-especificada en el propio ticket precisamente para que `S7-07` y `S7-08` no necesiten esperar a que esté `DONE`.
+
+Dos tickets (`S7-01`, `S7-07`) añaden entradas nuevas a `hooks/hooks.json` — el archivo ya existe desde `S6-04`. Si se despachan en paralelo con otros tickets que también tocan `hooks.json`, el dispatcher debe fusionar las entradas del array, nunca sobrescribir.
+
+---
+
+## Sprint 8
+
+Todavía no desglosado en tickets — se prepara cuando Sprint 7 esté cerrado y validado. Ver `_system/MASTER_PLAN.md` PARTE 10 para el alcance a alto nivel.

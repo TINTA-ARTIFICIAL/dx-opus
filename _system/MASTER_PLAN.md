@@ -2,7 +2,7 @@
 id:          MASTER_PLAN
 type:        SCHEMA
 subsystem:   SYSTEM
-version:     2.1
+version:     2.2
 status:      ACTIVE
 created:     2026-02-21
 updated:     2026-09-03
@@ -13,9 +13,15 @@ owner_chat:  system-architecture
 
 ## Consolidación de decisiones y trabajo pendiente
 
-**Versión:** 2.1  
+**Versión:** 2.2  
 **Fecha:** 3 septiembre 2026  
-**Scope:** Roadmap de migración a plugin confirmado (PARTE 10, 3 sprints); Sprint 6 desglosado en tickets bajo el contrato D-team, listos para aprobación
+**Scope:** Sprint 6 completado (4/4 tickets DONE en `main`); Sprint 7 desglosado en 8 tickets, aprobados, listos para despachar
+
+**Changelog v2.2:**
+
+* Sprint 6 marcado ✅ COMPLETADO — los 4 tickets (`S6-01` a `S6-04`) están `DONE` y mergeados en `main`, validados de forma independiente (no solo por autoinforme del subagente)
+* Sprint 7 desglosado en 8 tickets (`S7-01` a `S7-08`): las 7 skills de workflow restantes más `PROMPT_EVALUATE_ACTIVATION` como ticket de contenido independiente. Una única dependencia real (`S7-06` evaluation ← `S7-05` PROMPT_EVALUATE_ACTIVATION); el resto paralelizable — la interfaz pública de `shared-writing` (S7-03) se especificó en su propio ticket precisamente para no bloquear a `writing-post`/`activation`
+* Dos hooks nuevos diseñados en los tickets de Sprint 7: aprobación editorial antes de `EXECUTE_RESEARCH_PLAN` (S7-01) e investigación previa antes de escribir el borrador final de un post (S7-07) — capa estructural complementaria a los checkpoints de prompt ya aplicados en Sprint 5
 
 **Changelog v2.1:**
 
@@ -540,15 +546,17 @@ Objetivo: llegar al modelo de plugin de Cowork sin construir versiones intermedi
 
 | Sprint | Objetivo | Contenido |
 |---|---|---|
-| **6 — Fundamentos** | Validar el patrón con el menor riesgo antes de construir las 9 skills | `plugin.json`, skill `project-setup` (cierra #49/#50/#65 por construcción), skill `editor-onboarding`, skill `knowledge-base` + hook de gobernanza. Prueba: crear un proyecto real sin tocar Apps Script. **Backlog desglosado en tickets:** `docs/backlog/README.md` (S6-01 a S6-04) |
-| **7 — Skills de workflow** | Migrar los 6 subsistemas con workflow propio | `research`, `editorial-profile`, `shared-writing`, `writing-book`, `writing-post`, `evaluation`, `activation` + hooks de prerequisito (RESEARCH_DEEP_DIVE, aprobación antes de reescribir). Incluye escribir `PROMPT_EVALUATE_ACTIVATION` directamente como contenido de la skill. Tickets pendientes de desglosar — se preparan al cerrar Sprint 6 |
-| **8 — Validación y corte** | Probar en paralelo, luego apagar Apps Script | Correr con 1-2 editores reales en paralelo al sistema actual, comparar contra los E2E tests existentes (`TEST_PACKAGE_SYSTEM_E2E`), retirar `TOOL_CREATE_PROJECT.gs`/`TOOL_SETUP_EDITOR_ENVIRONMENT.gs`/`create-release-package.sh` con DL formal de deprecación, actualizar READMEs. Tickets pendientes de desglosar |
+| **6 — Fundamentos** ✅ COMPLETADO | Validar el patrón con el menor riesgo antes de construir las 9 skills | `plugin.json`, skill `project-setup` (cierra #49/#50/#65 por construcción), skill `editor-onboarding`, skill `knowledge-base` + hook de gobernanza. Prueba: crear un proyecto real sin tocar Apps Script. **4/4 tickets DONE y en `main`** (S6-01 a S6-04) — ver `docs/backlog/README.md` |
+| **7 — Skills de workflow** | Migrar los 6 subsistemas con workflow propio + `shared-writing` | `research`, `editorial-profile`, `shared-writing`, `writing-book`, `writing-post`, `evaluation`, `activation` + hooks de prerequisito (aprobación antes de `EXECUTE_RESEARCH_PLAN`, investigación previa antes de escribir POST). Incluye escribir `PROMPT_EVALUATE_ACTIVATION` como ticket de contenido independiente. **8 tickets desglosados y aprobados:** `docs/backlog/README.md` (S7-01 a S7-08) — una sola dependencia real (S7-06 depende de S7-05), el resto paralelizable |
+| **8 — Validación y corte** | Probar en paralelo, luego apagar Apps Script | Correr con 1-2 editores reales en paralelo al sistema actual, comparar contra los E2E tests existentes (`TEST_PACKAGE_SYSTEM_E2E`), retirar `TOOL_CREATE_PROJECT.gs`/`TOOL_SETUP_EDITOR_ENVIRONMENT.gs`/`create-release-package.sh` con DL formal de deprecación, actualizar READMEs. Tickets pendientes de desglosar — se preparan al cerrar Sprint 7 |
 
 ### Mecanismo de implementación
 
-A partir de Sprint 6, la implementación se gestiona con el contrato de tickets D-team (`docs/backlog/`), orquestado por `D-dispatcher` → subagentes `D-developer`. Estándar vinculante para toda implementación: `docs/DEV_STANDARDS.md`. Decisión de arquitectura base para escribir cualquier ticket de skill: `_system/SPEC_PLUGIN_ARCHITECTURE.md` §8 — el root del plugin es el root del repo, ninguna skill duplica contenido existente en su propia `references/`.
+Desde Sprint 6, la implementación se gestiona con el contrato de tickets D-team (`docs/backlog/`), orquestado por `D-dispatcher` → subagentes `D-developer`. Estándar vinculante para toda implementación: `docs/DEV_STANDARDS.md`. Decisión de arquitectura base para escribir cualquier ticket de skill: `_system/SPEC_PLUGIN_ARCHITECTURE.md` §8 — el root del plugin es el root del repo, ninguna skill duplica contenido existente en su propia `references/`.
 
-Los 4 tickets de Sprint 6 están creados y aprobados (`Aprobado: 2026-09-03`) — listos para que `D-dispatcher` los despache.
+**Sprint 6:** 4/4 tickets `DONE`, mergeados en `main`. S6-01 necesitó un reintento por un fallo de aislamiento intermitente entre el subagente y el worktree pre-creado; sin escrituras erróneas, sin impacto en el resultado final.
+
+**Sprint 7:** 8 tickets creados y aprobados (`Aprobado: 2026-09-03`) — listos para que `D-dispatcher` los despache.
 
 ---
 
