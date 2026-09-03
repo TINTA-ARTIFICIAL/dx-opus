@@ -2,7 +2,7 @@
 id:          MASTER_PLAN
 type:        SCHEMA
 subsystem:   SYSTEM
-version:     2.0
+version:     2.1
 status:      ACTIVE
 created:     2026-02-21
 updated:     2026-09-03
@@ -13,9 +13,16 @@ owner_chat:  system-architecture
 
 ## Consolidación de decisiones y trabajo pendiente
 
-**Versión:** 2.0  
+**Versión:** 2.1  
 **Fecha:** 3 septiembre 2026  
-**Scope:** Sprint 5 — bucket crítico de integridad de datos cerrado en su mayoría (S5-02, S5-05, S5-06, S5-07); S5-01 parcial; S5-03/S5-04 diferidos a Sprint 6+ (Apps Script, coincide con el pivote a plugin)
+**Scope:** Roadmap de migración a plugin confirmado (PARTE 10, 3 sprints); Sprint 6 desglosado en tickets bajo el contrato D-team, listos para aprobación
+
+**Changelog v2.1:**
+
+* Añadida PARTE 10: roadmap de migración a plugin en 3 sprints (6, 7, 8), con clasificación completa del backlog abierto de GitHub frente al pivote (irrelevante por construcción / efecto colateral / absorbido / fuera de scope / independiente)
+* Sprint 6 desglosado en 4 tickets bajo el contrato D-team: `docs/backlog/README.md` + `ISSUE_S6-01` a `ISSUE_S6-04` — aprobados por el editor (`Aprobado: 2026-09-03`), listos para despachar
+* Creado `docs/DEV_STANDARDS.md` — estándar vinculante para `D-dispatcher`/`D-developer`, consolida las reglas aprendidas en Sprint 5 (fuente única de verdad, patrón de checkpoint obligatorio, formato de skill)
+* `_system/SPEC_PLUGIN_ARCHITECTURE.md` v0.5 — añadida sección 8: el root del plugin es el root del repo, ninguna skill duplica contenido existente
 
 **Changelog v2.0:**
 
@@ -512,6 +519,36 @@ Solo diseño en Sprint 5. La implementación se planifica en Sprint 6+.
 | Optimización de tokens | #57, #58, #59, #60 | Depende de si cambia el modelo de distribución de prompts |
 | UX de onboarding | #40, #41, #43, #44, #45 | El pivote a plugin redefine el onboarding completo — no vale la pena iterar sobre el modelo actual |
 | Calidad de escritura en textos largos | #78 | Importante pero no relacionado con el tema de este sprint — candidato fuerte para Sprint 6 |
+
+---
+
+## PARTE 10: ROADMAP MIGRACIÓN A PLUGIN (Sprint 6–8, confirmado 2026-09-03)
+
+Objetivo: llegar al modelo de plugin de Cowork sin construir versiones intermedias de Apps Script que se vayan a tirar. Casi todo el backlog abierto de GitHub deja de ser un problema por construcción en cuanto la skill correspondiente existe — no hace falta arreglarlo, hace falta dejar de necesitarlo.
+
+### Clasificación del backlog abierto frente al pivote
+
+| Categoría | Issues | Qué significa |
+|---|---|---|
+| **Irrelevantes por construcción** | #49, #50, #65 (parcial), #61, #64, #67, #68, #71, #40, #41, #42, #43, #44, #72, #77 | No son tickets — desaparecen cuando la skill correspondiente sustituye al mecanismo Apps Script/package que las causaba |
+| **Se resuelven como efecto colateral, a verificar no a construir** | #57, #58, #59, #60 | La disclosure progresiva de skills (`SKILL.md` ligero + lectura bajo demanda de los prompts reales) ya es optimización de tokens por diseño |
+| **Se absorben dentro de construir la skill, no como ticket aparte** | #45, #62, `PROMPT_EVALUATE_ACTIVATION` (S5-18) | Contenido que de todos modos hay que escribir al construir la skill — se escribe una vez, no dos |
+| **Fuera del roadmap de migración, deliberadamente** | Epic EDITOR DIGITAL/SESSION_ORCHESTRATOR (#54,55,56,46,47,48,51,75,76,14) | No bloquea el corte; los hooks que el plugin deja construidos le dan mejor base que hoy — se planifica después |
+| **Independiente del modelo de despliegue** | #78, #2, #3, #5, #6, y el resto de contenido de mejora en `PARTE 6`/`PARTE 7` | No gatea nada — entra cuando haya hueco, en paralelo o después |
+
+### Los 3 sprints
+
+| Sprint | Objetivo | Contenido |
+|---|---|---|
+| **6 — Fundamentos** | Validar el patrón con el menor riesgo antes de construir las 9 skills | `plugin.json`, skill `project-setup` (cierra #49/#50/#65 por construcción), skill `editor-onboarding`, skill `knowledge-base` + hook de gobernanza. Prueba: crear un proyecto real sin tocar Apps Script. **Backlog desglosado en tickets:** `docs/backlog/README.md` (S6-01 a S6-04) |
+| **7 — Skills de workflow** | Migrar los 6 subsistemas con workflow propio | `research`, `editorial-profile`, `shared-writing`, `writing-book`, `writing-post`, `evaluation`, `activation` + hooks de prerequisito (RESEARCH_DEEP_DIVE, aprobación antes de reescribir). Incluye escribir `PROMPT_EVALUATE_ACTIVATION` directamente como contenido de la skill. Tickets pendientes de desglosar — se preparan al cerrar Sprint 6 |
+| **8 — Validación y corte** | Probar en paralelo, luego apagar Apps Script | Correr con 1-2 editores reales en paralelo al sistema actual, comparar contra los E2E tests existentes (`TEST_PACKAGE_SYSTEM_E2E`), retirar `TOOL_CREATE_PROJECT.gs`/`TOOL_SETUP_EDITOR_ENVIRONMENT.gs`/`create-release-package.sh` con DL formal de deprecación, actualizar READMEs. Tickets pendientes de desglosar |
+
+### Mecanismo de implementación
+
+A partir de Sprint 6, la implementación se gestiona con el contrato de tickets D-team (`docs/backlog/`), orquestado por `D-dispatcher` → subagentes `D-developer`. Estándar vinculante para toda implementación: `docs/DEV_STANDARDS.md`. Decisión de arquitectura base para escribir cualquier ticket de skill: `_system/SPEC_PLUGIN_ARCHITECTURE.md` §8 — el root del plugin es el root del repo, ninguna skill duplica contenido existente en su propia `references/`.
+
+Los 4 tickets de Sprint 6 están creados y aprobados (`Aprobado: 2026-09-03`) — listos para que `D-dispatcher` los despache.
 
 ---
 
