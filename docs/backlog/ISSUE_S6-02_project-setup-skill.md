@@ -4,14 +4,14 @@ title: Skill project-setup
 type: skill
 subsystem: SYSTEM
 sprint: 6
-status: TODO
+status: IN_PROGRESS
 priority: P1
 depends_on: []
 blocks: []
-assignee: null
-started: null
+assignee: D-developer
+started: 2026-09-03
 completed: null
-branch: null
+branch: feat/s6-02-project-setup-skill
 ---
 
 # S6-02 — Skill `project-setup`
