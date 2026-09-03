@@ -4,13 +4,13 @@ title: Skill research
 type: skill
 subsystem: SYSTEM
 sprint: 7
-status: IN_PROGRESS
+status: DONE
 priority: P1
 depends_on: []
 blocks: []
 assignee: D-developer
 started: 2026-09-03
-completed: null
+completed: 2026-09-03
 branch: feat/s7-01-research-skill
 ---
 
