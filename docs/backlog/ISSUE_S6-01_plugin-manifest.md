@@ -4,13 +4,13 @@ title: Manifest del plugin (plugin.json)
 type: infra
 subsystem: SYSTEM
 sprint: 6
-status: IN_PROGRESS
+status: DONE
 priority: P1
 depends_on: []
 blocks: []
 assignee: D-developer
 started: 2026-09-03
-completed: null
+completed: 2026-09-03
 branch: feat/s6-01-plugin-manifest
 ---
 

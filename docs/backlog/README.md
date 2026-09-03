@@ -17,12 +17,12 @@ Objetivo: validar el patrón de skill/hook con el menor riesgo posible antes de 
 
 | ID | Título | Prioridad | Status | Depende de |
 |---|---|---|---|---|
-| S6-01 | Manifest del plugin (`plugin.json`) | P1 | TODO | — |
+| S6-01 | Manifest del plugin (`plugin.json`) | P1 | DONE | — |
 | S6-02 | Skill `project-setup` | P1 | DONE | — |
 | S6-03 | Skill `editor-onboarding` | P1 | DONE | — |
 | S6-04 | Skill `knowledge-base` + hook de gobernanza | P1 | DONE | — |
 
-**S6-01** volvió a `TODO`: el primer intento de despacho falló por un conflicto de aislamiento entre el mecanismo automático de worktree del subagente y el worktree que el dispatcher había pre-creado — el agente no escribió nada, se relanza.
+**Sprint 6 completado (2026-09-03).** S6-01 necesitó un reintento: el primer despacho falló por un conflicto de aislamiento entre el mecanismo automático de worktree del subagente y el worktree que el dispatcher había pre-creado (el agente no escribió nada, se relanzó y el segundo intento sí operó correctamente en la ruta indicada — parece haber sido intermitente, S6-02/03/04 no lo sufrieron con las mismas instrucciones).
 
 **Grafo de dependencias:** ninguno de los cuatro depende de otro — cada uno toca rutas de archivo distintas (`​.claude-plugin/plugin.json`, `skills/project-setup/`, `skills/editor-onboarding/`, `skills/knowledge-base/` + `hooks/hooks.json`) y las interfaces compartidas que necesitan ya existen (`_system/templates/TEMPLATE_EDITOR_CONFIG.md`, `_system/resources/AUTO_SAVE_CONFIG.yaml`). Los cuatro pueden despacharse en paralelo.
 
