@@ -51,6 +51,17 @@ Dos tickets (`S7-01`, `S7-07`) añaden entradas nuevas a `hooks/hooks.json` — 
 
 ---
 
-## Sprint 8
+## Sprint 8 — Validación y corte
 
-Todavía no desglosado en tickets — se prepara cuando Sprint 7 esté cerrado y validado. Ver `_system/MASTER_PLAN.md` PARTE 10 para el alcance a alto nivel.
+Objetivo: probar el plugin en uso real y retirar el sistema Apps Script/Drive.
+
+| ID | Título | Prioridad | Status | Depende de |
+|---|---|---|---|---|
+| S8-01 | DL de deprecación y retiro de Apps Script | P1 | TODO — **no despachar** hasta confirmar validación real | — |
+| S8-02 | Mecanismo real de empaquetado del plugin (issue #77) | P1 | TODO | — |
+| S8-03 | Actualizar READMEs | P2 | TODO | S8-01, S8-02 |
+| S8-04 | Guión de validación end-to-end del plugin | P1 | TODO | — |
+
+**Nota especial sobre S8-01:** a diferencia de todos los tickets anteriores, este no se despacha solo porque esté `TODO` y sin `depends_on` técnico pendiente — depende de una confirmación humana (validación con editor real usando el guión de S8-04) que no se puede codificar como dependencia entre tickets. `D-dispatcher` debe excluirlo del conjunto listo hasta que el editor lo autorice explícitamente.
+
+**Listos para despachar ahora:** S8-02 y S8-04 (independientes entre sí, ninguno requiere la validación humana). S8-01 y S8-03 esperan.

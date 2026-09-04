@@ -2,7 +2,7 @@
 id:          MASTER_PLAN
 type:        SCHEMA
 subsystem:   SYSTEM
-version:     2.2
+version:     2.3
 status:      ACTIVE
 created:     2026-02-21
 updated:     2026-09-03
@@ -13,9 +13,18 @@ owner_chat:  system-architecture
 
 ## Consolidación de decisiones y trabajo pendiente
 
-**Versión:** 2.2  
+**Versión:** 2.3  
 **Fecha:** 3 septiembre 2026  
-**Scope:** Sprint 6 completado (4/4 tickets DONE en `main`); Sprint 7 desglosado en 8 tickets, aprobados, listos para despachar
+**Scope:** Sprint 7 completado (8/8 tickets DONE en `main`); re-triage de 19 issues de GitHub cerradas; Sprint 8 desglosado en 4 tickets
+
+**Changelog v2.3:**
+
+* Sprint 7 marcado ✅ COMPLETADO — los 8 tickets están `DONE` y mergeados en `main`, incluido un conflicto real (pero mecánico) en `hooks/hooks.json` resuelto conservando ambas entradas
+* Re-triage del backlog de GitHub: 19 issues cerradas (6 por trabajo ya hecho: #52,#63,#65-parcial→comentada,#66,#70-parcial→comentada,#73,#49/#50-comentadas; 13 por quedar irrelevantes ante la arquitectura de plugin). De 58 abiertas a 43
+* Corrección sobre #77: mi cierre inicial era incorrecto — el plugin instala más que `.claude-plugin/`+`skills/`+`hooks/`, porque cada `SKILL.md` referencia contenido de producción del resto del repo. Reabierto y corregido: los 6 `CONTEXT_*.md` de subsistema se movieron a `{subsistema}/dev/` (límite estructural, no un patrón de nombre) — `SCHEMA_SYSTEM_ARCHITECTURE.md` v1.5, `SPEC_PLUGIN_ARCHITECTURE.md` v0.6
+* `SCHEMA_SYSTEM_ARCHITECTURE.md` actualizado a v1.4→v1.5: nueva PARTE 8 documentando la arquitectura de plugin, árbol de PARTE 6 refrescado
+* Limpiados los 3 hallazgos menores señalados durante Sprint 7 (etiqueta stale en `WORKFLOW_ACTIVATION.md`, inventario desincronizado en `RESOURCE_EVALUATION_FRAMEWORK.md`)
+* Sprint 8 desglosado en 4 tickets (`S8-01` a `S8-04`) — ver PARTE 10 y `docs/backlog/README.md`. `S8-01` (retiro de Apps Script) espera confirmación humana de validación real antes de despacharse
 
 **Changelog v2.2:**
 
@@ -548,7 +557,7 @@ Objetivo: llegar al modelo de plugin de Cowork sin construir versiones intermedi
 |---|---|---|
 | **6 — Fundamentos** ✅ COMPLETADO | Validar el patrón con el menor riesgo antes de construir las 9 skills | `plugin.json`, skill `project-setup` (cierra #49/#50/#65 por construcción), skill `editor-onboarding`, skill `knowledge-base` + hook de gobernanza. Prueba: crear un proyecto real sin tocar Apps Script. **4/4 tickets DONE y en `main`** (S6-01 a S6-04) — ver `docs/backlog/README.md` |
 | **7 — Skills de workflow** | Migrar los 6 subsistemas con workflow propio + `shared-writing` | `research`, `editorial-profile`, `shared-writing`, `writing-book`, `writing-post`, `evaluation`, `activation` + hooks de prerequisito (aprobación antes de `EXECUTE_RESEARCH_PLAN`, investigación previa antes de escribir POST). Incluye escribir `PROMPT_EVALUATE_ACTIVATION` como ticket de contenido independiente. **8 tickets desglosados y aprobados:** `docs/backlog/README.md` (S7-01 a S7-08) — una sola dependencia real (S7-06 depende de S7-05), el resto paralelizable |
-| **8 — Validación y corte** | Probar en paralelo, luego apagar Apps Script | Correr con 1-2 editores reales en paralelo al sistema actual, comparar contra los E2E tests existentes (`TEST_PACKAGE_SYSTEM_E2E`), retirar `TOOL_CREATE_PROJECT.gs`/`TOOL_SETUP_EDITOR_ENVIRONMENT.gs`/`create-release-package.sh` con DL formal de deprecación, actualizar READMEs. Tickets pendientes de desglosar — se preparan al cerrar Sprint 7 |
+| **8 — Validación y corte** | Probar en uso real, luego apagar Apps Script | Mecanismo real de empaquetado del `.plugin` respetando el límite instalable/desarrollo (issue #77, reabierto — mi cierre anterior era incorrecto), guión de validación end-to-end, DL de deprecación + retiro de Apps Script, actualizar READMEs. **4 tickets desglosados:** `docs/backlog/README.md` (S8-01 a S8-04) — S8-02 y S8-04 despachables ya; S8-01 (retiro de Apps Script) y S8-03 (que depende de él) esperan confirmación humana de que la validación con editor real salió bien, no se despachan solo por estar `TODO` |
 
 ### Mecanismo de implementación
 
