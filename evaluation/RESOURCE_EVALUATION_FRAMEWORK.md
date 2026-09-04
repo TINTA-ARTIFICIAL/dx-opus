@@ -2,10 +2,10 @@
 id:          RESOURCE_EVALUATION_FRAMEWORK
 type:        RESOURCE
 subsystem:   EVALUATION
-version:     1.1
+version:     1.2
 status:      ACTIVE
 created:     2026-02-22
-updated:     2026-04-16
+updated:     2026-09-03
 owner_chat:  evaluation-dev
 implements:  DL-20260221-003
 ---
@@ -14,6 +14,7 @@ implements:  DL-20260221-003
 
 | Version | Date | Author | Summary |
 |---------|------|--------|---------|
+| v1.2 | 2026-09-03 | system-architecture | Inventario de evaluadores sincronizado tras Sprint 7 (S7-05): EVALUATE_ACTIVATION marcado ACTIVE, objeto evaluado aclarado (artefactos de preparación, no piezas publicadas) para no confundirlo con el futuro EVALUATE_ACTIVATION_CONTENT de WORKFLOW_ACTIVATION FASE 5. |
 | v1.1 | 2026-04-16 | JM | Updated evaluator inventory: EVALUATE_POST marked ACTIVE (created 2026-04-12). EVALUATE_BOOK_STYLE ownership corrected — now lives in evaluation/ not editorial-profile/ (DL_20260330_SYSTEM_004). |
 | v1.0 | 2026-02-22 | evaluation-dev | Initial version. Define contrato de evaluación, protocolo de invocación y filosofía del subsistema. |
 
@@ -67,9 +68,11 @@ El subsistema EVALUATION gestiona los siguientes evaluadores:
 | EVALUATE_BOOK_CONTENT | v1.1 | Capítulo o libro completo | ACTIVE |
 | EVALUATE_BOOK_STYLE | v1.1 | Adherencia al perfil editorial del autor | ACTIVE |
 | EVALUATE_POST | v1.0 | Post o artículo | ACTIVE |
-| EVALUATE_ACTIVATION | — | Campaña de contenido | PENDING |
+| EVALUATE_ACTIVATION | v1.0 | ACTIVATION_CONTEXT / BOOK_BRIEF / CONTENT_STRATEGY (artefactos de preparación de Activation) | ACTIVE |
 
 **Nota sobre EVALUATE_BOOK_STYLE:** Pertenece al subsistema **EVALUATION**. Aunque necesita EDITOR_PROFILE como input, el ownership lo determina su función (evaluar), no sus inputs. El archivo vive en `evaluation/PROMPT_EVALUATE_BOOK_STYLE.md`. Ver DL_20260330_SYSTEM_004.
+
+**Nota sobre EVALUATE_ACTIVATION (v1.4, corregida 2026-09-03):** esta fila describía originalmente el objeto evaluado como "campaña de contenido" — ambiguo, y fácil de confundir con las piezas ya publicadas de la campaña. `PROMPT_EVALUATE_ACTIVATION.md` v1.0 (Sprint 7, S7-05) evalúa los artefactos de **preparación** del workflow de Activation (ACTIVATION_CONTEXT, BOOK_BRIEF, CONTENT_STRATEGY) — no las piezas finales publicables. Un evaluador distinto para las piezas ya escritas, hoy sin diseñar, se referencia en `WORKFLOW_ACTIVATION.md` FASE 5 como `EVALUATE_ACTIVATION_CONTENT` — nombre parecido, objeto evaluado distinto. No lo confundas con este.
 
 ---
 
@@ -179,7 +182,7 @@ Cuando se actualice el contrato a v1.1 o v2.0, actualizar este campo en todos lo
 | PROMPT_EVALUATE_BOOK_CONTENT | RESOURCE_EVALUATION_FRAMEWORK_v1.0 | ✅ |
 | PROMPT_EVALUATE_BOOK_STYLE | RESOURCE_EVALUATION_FRAMEWORK_v1.0 | ✅ |
 | PROMPT_EVALUATE_POST | RESOURCE_EVALUATION_FRAMEWORK_v1.0 | ✅ |
-| PROMPT_EVALUATE_ACTIVATION | — | PENDING |
+| PROMPT_EVALUATE_ACTIVATION | RESOURCE_EVALUATION_FRAMEWORK_v1.0 | ✅ |
 
 ---
 

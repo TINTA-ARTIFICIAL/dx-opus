@@ -2,10 +2,10 @@
 id:          WORKFLOW_ACTIVATION
 type:        WORKFLOW
 subsystem:   ACTIVATION
-version:     1.6
+version:     1.7
 status:      ACTIVE
 created:     2026-02-10
-updated:     2026-04-19
+updated:     2026-09-03
 owner_chat:  activation-dev
 ---
 
@@ -13,6 +13,7 @@ owner_chat:  activation-dev
 
 | Version | Date | Author | Summary |
 |---------|------|--------|---------|
+| v1.7 | 2026-09-03 | system-architecture | Corregidas 6 menciones de `PROMPT_QA_IDEAS` etiquetadas como "Writing/shared" — su ubicación real es `writing/post/` (compartido con Activation vía `DL_20260411_ACTIVATION_022`, no por vivir en `writing/shared/`). Hallazgo señalado durante Sprint 7 (S7-08) sin corregir en su momento, conforme al scope de ese ticket; corregido aquí. |
 | v1.6 | 2026-04-19 | JM | Arquitectura dual-output: Ruta P (contenido → Writing POST) y Ruta L (BOOK_BRIEF → Research → Writing BOOK) como tracks paralelos desde CHECKPOINT DE ROUTING post-FASE 1. FASE 1: ANALYZE_BOOK_FOR_ACTIVATION [DISEÑAR] → IDENTIFY_NARRATIVE_SEEDS v2.0 [ACTIVE]. PROMPT_CREATE_BOOK_BRIEF reposicionado como FASE 2B (Ruta L), paralela a FASES 2A–5. [P+L] simultáneo posible. Implementa DL-A, DL-B, DL-C, DL-D (DL_20260420_ACTIVATION_023–026). |
 | v1.5 | 2026-04-16 | JM | Q&A de posicionamiento (PROMPT_QA_IDEAS) añadido en Fase 4 antes de escritura. POST_SEED como input canónico de PROMPT_WRITE_POST. Skip declarable por el editor. Referencias a CONTEXT_WRITING y TEMPLATE_POST_SEED. Cabecera YAML estándar añadida. PROMPT_WRITE_POST v2.0 confirmado como existente en /writing/shared/. WRITE_POST/WRITE_ARTICLE/WRITE_THREAD eliminados como pendientes. WRITING_CONTEXT añadido como artefacto de configuración requerido (writing/post/RESOURCE_WRITING_CONTEXT.md). Nota de scope R1: flujo completo /writing/post/ no compartido con Activation; generación POST_SEED propio de Activation pendiente Sprint 4. Implementa DL_20260411_ACTIVATION_022, DL_20260416_SYSTEM_025. |
 | v1.4 | 2026-02-12 | JM | NICHOS LITERARIOS integrados en FASE 0. Objetivos de activación integrados en ANALYZE_COLLECTION v1.4. |
@@ -60,7 +61,7 @@ calls:   [PROMPT_QA_IDEAS, PROMPT_WRITE_POST, PROMPT_CREATE_TIMELINE, PROMPT_CRE
 - ✅ Fecha de actualización: 2026-04-16
 
 **v1.5 (12 abril 2026 — DL_20260411_ACTIVATION_022):**
-- ✅ **Q&A DE POSICIONAMIENTO:** `PROMPT_QA_IDEAS` (Writing/shared) añadido en FASE 4 antes de escritura
+- ✅ **Q&A DE POSICIONAMIENTO:** `PROMPT_QA_IDEAS` (`writing/post/`, compartido con Activation vía `DL_20260411_ACTIVATION_022` — expuesto por la skill `shared-writing`, ver `_system/SCHEMA_SYSTEM_ARCHITECTURE.md` PARTE 4/8) añadido en FASE 4 antes de escritura
 - ✅ **POST_SEED como input canónico:** combina contenido del libro + voz posicionada del editor
 - ✅ Skip declarable por el editor con mismo mecanismo que en RAMA POST autónoma
 - ✅ Añadidas referencias a `CONTEXT_WRITING` y `TEMPLATE_POST_SEED` (Writing/shared)
@@ -237,7 +238,7 @@ WORKFLOW RESEARCH
    - Libro completo es input principal
    - EDITOR_PROFILE puede reutilizarse si existe
    - TIMELINE y CAST pueden reutilizarse si existen
-   - **FASE 4:** Activation invoca `PROMPT_QA_IDEAS` y `PROMPT_WRITE_POST` de Writing/shared
+   - **FASE 4:** Activation invoca `PROMPT_QA_IDEAS` (`writing/post/`, compartido) y `PROMPT_WRITE_POST` (`writing/shared/`) — ambos expuestos por la skill `shared-writing`
    - Ver `CONTEXT_WRITING` para documentación completa de estos prompts
 
 3. **Independiente:**
@@ -482,7 +483,7 @@ WORKFLOW RESEARCH
                            ↓
 ┌────────────────────────────────────────────────────────────────┐
 │ FASE 4: PRODUCCIÓN DE CONTENIDO (SECUENCIAL)                  │
-│ Herramientas: PROMPT_QA_IDEAS [Writing/shared] +              │
+│ Herramientas: PROMPT_QA_IDEAS [writing/post/, compartido] +   │
 │               PROMPT_WRITE_POST v2.0 [Writing/shared]         │
 │ Configuración: WRITING_CONTEXT (/writing/post/)               │
 │ Actor: Editor + IA (Q&A) → IA escribe, Editor valida          │
@@ -2648,7 +2649,7 @@ Editor + IA (Q&A de posicionamiento) → IA escribe, Editor valida
 ### Herramientas
 
 **Q&A de posicionamiento (NUEVO en v1.5):**
-- ✅ **`PROMPT_QA_IDEAS`** — Writing/shared, owner: Writing
+- ✅ **`PROMPT_QA_IDEAS`** — `writing/post/`, compartido con Activation (`DL_20260411_ACTIVATION_022`), owner: Writing
   Ver documentación completa en `CONTEXT_WRITING`
 
 **Escritura (todos los formatos):**
@@ -2711,7 +2712,7 @@ INPUT A LA ESCRITURA (PASOS 4.3-4.7):
 
 **PASO 4.1: Q&A de Posicionamiento** ⭐ NUEVO EN v1.5
 
-**Herramienta:** `PROMPT_QA_IDEAS` (Writing/shared — ver `CONTEXT_WRITING`)
+**Herramienta:** `PROMPT_QA_IDEAS` (`writing/post/`, compartido con Activation — ver `CONTEXT_WRITING`)
 
 **Objetivo:** Capturar la posición del editor sobre el contenido del POST_PLAN antes de escribir. El POST_PLAN contiene estructura y contenido del libro, pero no la posición del editor sobre ese contenido. Sin este paso, el post puede sonar correcto en forma pero carecer de la voz real del editor.
 

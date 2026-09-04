@@ -2,16 +2,17 @@
 id:          SCHEMA_SYSTEM_ARCHITECTURE
 type:        SCHEMA
 subsystem:   SYSTEM
-version:     1.3
+version:     1.4
 status:      ACTIVE
 created:     2026-02-21
-updated:     2026-03-30
+updated:     2026-09-03
 owner_chat:  system-architecture
 ---
 
 ## CHANGELOG
 | Version | Date | Author | Summary |
 |---------|------|--------|---------|
+| v1.4 | 2026-09-03 | system-architecture | Añadida PARTE 8: arquitectura de plugin (Sprint 6-7 — 9 skills, 3 hooks). PARTE 4 actualizada: PROMPT_QA_IDEAS añadido como prompt compartido (ya formalizado por DL_022, expuesto por la skill `shared-writing`). PARTE 6 (árbol del repo) refrescada: `.claude-plugin/`, `skills/`, `hooks/`, `docs/backlog/`, `docs/DEV_STANDARDS.md` añadidos; marcadores `[pendiente]` obsoletos limpiados (GUIDE_ANNOTATION_PHASE3, WORKFLOW_WRITING v2.0, writing/post/, PROMPT_EVALUATE_BOOK_STYLE v1.1, PROMPT_CREATE_BOOK_BRIEF ya existen). |
 | v1.3 | 2026-03-30 | JM | EVALUATE_BOOK_STYLE moved from Editorial Profile to Evaluation (DL_20260330_SYSTEM_004). Updated subsystem descriptions and evaluator map. |
 | v1.2 | 2026-02-21 | JM | Removed versions from all filenames in repo tree |
 | v1.1 | 2026-02-21 | JM | Moved shared prompts to /writing/shared/ — Writing is owner |
@@ -263,8 +264,11 @@ Prompts desarrollados y mantenidos por Writing pero invocados también por Activ
 | WRITE_POST | writing-dev | Writing (Rama Post), Activation |
 | CREATE_TIMELINE | writing-dev | Writing Book, Activation |
 | CREATE_CAST | writing-dev | Writing Book, Activation |
+| QA_IDEAS | writing-dev | Writing (Rama Post), Activation |
 
 **Regla:** writing-dev desarrolla y versiona estos prompts. Cuando hace un cambio, notifica a activation-dev via DECISION_LOG entry antes de mergear a main.
+
+**Nota (v1.4):** `QA_IDEAS` se formalizó como compartido en `DL_20260411_ACTIVATION_022` (INTEGRATED) — quedó fuera de esta tabla por un vacío de coordinación entre DLs, corregido en `DL_20260416_SYSTEM_025` (ver nota "CORRECCIÓN 2026-09-03" en ese archivo). Su archivo físico sigue en `writing/post/`, no en `writing/shared/` — deuda técnica de ubicación, no de scope. En la arquitectura de plugin (PARTE 8), los cuatro prompts de esta tabla se exponen a través de la skill `shared-writing`.
 
 ---
 
@@ -292,20 +296,54 @@ Prompts desarrollados y mantenidos por Writing pero invocados también por Activ
 ```
 dx-opus/
 ├── README.md
+├── .claude-plugin/
+│   └── plugin.json                    # manifest del plugin — root del plugin = root del repo (SPEC_PLUGIN_ARCHITECTURE §8)
+├── skills/                            # 9 skills — ver PARTE 8
+│   ├── project-setup/SKILL.md
+│   ├── editor-onboarding/SKILL.md
+│   ├── knowledge-base/SKILL.md
+│   ├── research/SKILL.md
+│   ├── editorial-profile/SKILL.md
+│   ├── shared-writing/SKILL.md
+│   ├── writing-book/SKILL.md
+│   ├── writing-post/SKILL.md
+│   ├── evaluation/SKILL.md
+│   └── activation/SKILL.md
+├── hooks/
+│   └── hooks.json                     # 3 hooks — ver PARTE 8
+│
 ├── _system/
 │   ├── RESOURCE_ARTIFACT_HEADER_STANDARD.md
 │   ├── SCHEMA_SYSTEM_ARCHITECTURE.md
 │   ├── SCHEMA_DECISION_LOG.md
+│   ├── SPEC_PLUGIN_ARCHITECTURE.md
 │   ├── TEMPLATE_SUBSYSTEM_CONTEXT.md
 │   ├── NAMING_CONVENTION_ANALYSIS.md
 │   ├── MASTER_PLAN.md
+│   ├── resources/
+│   │   └── AUTO_SAVE_CONFIG.yaml      # fuente única de rutas/naming de artefactos
+│   ├── templates/
+│   │   └── TEMPLATE_EDITOR_CONFIG.md
 │   ├── decisions/
 │   │   └── [DL_YYYYMMDD_[SUBSYSTEM]_[NNN].md]
 │   └── audits/
 │       └── RESEARCH_COMPONENT_AUDIT.md
 │
+├── docs/
+│   ├── DEV_STANDARDS.md               # estándar vinculante para D-dispatcher/D-developer
+│   ├── backlog/                       # contrato de tickets D-team
+│   │   ├── README.md
+│   │   └── ISSUE_{ID}_{slug}.md
+│   ├── CONTEXT_DOCS.md
+│   ├── system-design/
+│   ├── subsystem-docs/
+│   ├── editor-manuals/
+│   └── developer-manuals/
+│
 ├── tools/
-│   ├── TOOL_SETUP_PROJECT.gs
+│   ├── TOOL_CREATE_PROJECT.gs         # [Apps Script — retirar en Sprint 8]
+│   ├── TOOL_SETUP_EDITOR_ENVIRONMENT.gs   # [Apps Script — retirar en Sprint 8]
+│   ├── create-release-package.sh      # [retirar en Sprint 8]
 │   └── TOOL_GITHUB_REPO_STRUCTURE.md
 │
 ├── knowledge-base/
@@ -322,17 +360,20 @@ dx-opus/
 │   ├── PROMPT_CREATE_RESEARCH_PLAN.md
 │   ├── PROMPT_EXECUTE_RESEARCH_PLAN.md
 │   ├── PROMPT_UPDATE_VALIDATION_CHECKLIST.md
-│   └── GUIDE_ANNOTATION_PHASE3.md     [pendiente]
+│   └── GUIDE_ANNOTATION_PHASE3.md
 │
 ├── editorial-profile/
 │   ├── CONTEXT_EDITORIAL_PROFILE.md
 │   ├── PROMPT_CREATE_EDITOR_PROFILE.md
 │   ├── RESOURCE_EDITORIAL_STYLE.md
-│   └── RESOURCE_BOOK_TYPES.md
+│   ├── RESOURCE_BOOK_TYPES.md
+│   ├── TEMPLATE_EDITOR_PROFILE.md
+│   ├── TEMPLATE_EDITOR_NOTES.md
+│   └── GUIDE_EDITOR_NOTES.md
 │
 ├── writing/
 │   ├── CONTEXT_WRITING.md
-│   ├── WORKFLOW_WRITING.md            [pendiente v2.0]
+│   ├── WORKFLOW_WRITING.md
 │   ├── book/
 │   │   ├── PROMPT_CREATE_BOOK_INDEX.md
 │   │   ├── PROMPT_WRITE_SAMPLE_CHAPTER.md
@@ -341,7 +382,16 @@ dx-opus/
 │   │   ├── PROMPT_WRITE_PROLOGUE.md
 │   │   ├── PROMPT_CONSOLIDATE_REFERENCES.md
 │   │   └── PROMPT_CREATE_BOOK_SHEET.md
-│   ├── post/                          [pendiente diseño]
+│   ├── post/
+│   │   ├── PROMPT_POST_BRIEF.md
+│   │   ├── PROMPT_POST_EXPLORE.md
+│   │   ├── PROMPT_SUMMARIZE_REF.md
+│   │   ├── PROMPT_VERIFY_RESEARCH.md
+│   │   ├── PROMPT_QA_IDEAS.md         # compartido — ver PARTE 4
+│   │   ├── PROMPT_POST_ANGLES.md
+│   │   ├── PROMPT_PLAN_POST.md
+│   │   ├── PROMPT_SPLIT_POST.md
+│   │   └── [RESOURCE_/TEMPLATE_/SPEC_ de apoyo]
 │   └── shared/
 │       ├── PROMPT_WRITE_POST.md
 │       ├── PROMPT_CREATE_TIMELINE.md
@@ -352,19 +402,16 @@ dx-opus/
 │   ├── RESOURCE_EVALUATION_FRAMEWORK.md
 │   ├── PROMPT_EVALUATE_RESEARCH_REPORT.md
 │   ├── PROMPT_EVALUATE_BOOK_CONTENT.md
-│   └── PROMPT_EVALUATE_BOOK_STYLE.md  [pendiente v1.1]
+│   ├── PROMPT_EVALUATE_BOOK_STYLE.md
+│   ├── PROMPT_EVALUATE_POST.md
+│   └── PROMPT_EVALUATE_ACTIVATION.md
 │
-├── activation/
-│   ├── CONTEXT_ACTIVATION.md
-│   ├── WORKFLOW_ACTIVATION.md
-│   └── PROMPT_CREATE_BOOK_BRIEF.md    [pendiente]
-│
-└── docs/
-    ├── CONTEXT_DOCS.md
-    ├── system-design/
-    ├── subsystem-docs/
-    ├── editor-manuals/
-    └── developer-manuals/
+└── activation/
+    ├── CONTEXT_ACTIVATION.md
+    ├── WORKFLOW_ACTIVATION.md
+    ├── PROMPT_ANALYZE_COLLECTION_FOR_ACTIVATION.md
+    ├── PROMPT_IDENTIFY_NARRATIVE_SEEDS.md
+    └── PROMPT_CREATE_BOOK_BRIEF.md
 ```
 
 ---
@@ -409,6 +456,47 @@ dx-opus/
          │
          └──► [RESEARCH] nuevo ciclo orientado por el brief
 ```
+
+---
+
+## PARTE 8: ARQUITECTURA DE PLUGIN (Sprint 6-7)
+
+Detalle completo de decisiones y mapa de dependencias: `_system/SPEC_PLUGIN_ARCHITECTURE.md`. Esta sección resume el resultado ya construido, en `main`.
+
+### Principio base
+
+El root del plugin es el root de este repositorio. Ningún subsistema (`research/`, `writing/`, `evaluation/`...) se mueve ni se duplica dentro de una skill — cada `SKILL.md` es un archivo nuevo y ligero que instruye a Claude a leer los prompts reales por su ruta existente. Evita recrear la clase de bug de registros duplicados y desincronizados que se corrigió en Sprint 5 (`AUTO_SAVE_CONFIG.yaml` como única fuente de verdad de rutas/naming).
+
+### Las 9 skills
+
+| Skill | Sustituye a / cubre | Sprint |
+|---|---|---|
+| `project-setup` | `TOOL_CREATE_PROJECT.gs` — crea la estructura de carpetas de un proyecto nuevo, determinista (sin búsqueda de carpeta por nombre) | 6 |
+| `editor-onboarding` | `TOOL_SETUP_EDITOR_ENVIRONMENT.gs` — setup único por editor, genera `EDITOR_CONFIG` | 6 |
+| `knowledge-base` | Subsistema KNOWLEDGE_BASE — SAH/CVC/FOCUS_TYPES, con hook de gobernanza | 6 |
+| `research` | Subsistema RESEARCH completo | 7 |
+| `editorial-profile` | Subsistema EDITORIAL_PROFILE completo | 7 |
+| `shared-writing` | Los 4 prompts compartidos de PARTE 4 (WRITE_POST, CREATE_TIMELINE, CREATE_CAST, QA_IDEAS) — invocada por `writing-post` y `activation`, no disparada directamente por el editor | 7 |
+| `writing-book` | RAMA BOOK de WRITING | 7 |
+| `writing-post` | RAMA POST de WRITING, con hook de prerequisito de investigación | 7 |
+| `evaluation` | Subsistema EVALUATION completo (5 evaluadores, incluido `PROMPT_EVALUATE_ACTIVATION` nuevo) | 7 |
+| `activation` | Subsistema ACTIVATION completo | 7 |
+
+DOCS y SYSTEM no son skills — son documentación de desarrollo del propio plugin, no capacidades que el editor invoque directamente.
+
+### Los 3 hooks (`hooks/hooks.json`)
+
+| # | Protege | Tipo | Decisión que aplica |
+|---|---|---|---|
+| 1 | Escrituras a `RESOURCE_SOURCE_AUTHORITY.md`/`RESOURCE_CLAIM_VALIDATION.md` | `PreToolUse`, prompt-based | No modificar autónomamente secciones del Universal Framework — misma clase de riesgo que el bug #66 |
+| 2 | Producción de `RESEARCH_REPORT` vía `PROMPT_EXECUTE_RESEARCH_PLAN` | `PreToolUse`, prompt-based | Exige evidencia de aprobación editorial explícita del `RESEARCH_PLAN_DETAILED`, no solo que el archivo exista |
+| 3 | Producción del `POST_DRAFT` final vía `PROMPT_WRITE_POST` | `PreToolUse`, prompt-based | Exige investigación previa (compartida o propia del post) o skip explícito registrado — cierra issue #63 a nivel estructural, complementario al checkpoint ya aplicado en `PROMPT_POST_BRIEF.md` v1.1 |
+
+**Criterio de diseño:** los gates de *calidad/evaluación* (un resultado RED de cualquier evaluador) se quedan como instrucción soft, nunca hook — es confianza editorial por diseño (`RESOURCE_EVALUATION_FRAMEWORK.md`). Solo los gates de *integridad de datos/autorización* se convirtieron en hooks.
+
+### Pendiente (Sprint 8)
+
+Validar en paralelo con editores reales y retirar `tools/TOOL_CREATE_PROJECT.gs`, `tools/TOOL_SETUP_EDITOR_ENVIRONMENT.gs` y `tools/create-release-package.sh` — marcados `[Apps Script — retirar en Sprint 8]` en el árbol de PARTE 6.
 
 ---
 
