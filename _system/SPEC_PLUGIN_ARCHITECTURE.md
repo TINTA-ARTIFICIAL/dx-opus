@@ -2,7 +2,7 @@
 id:          SPEC_PLUGIN_ARCHITECTURE
 type:        SPEC
 subsystem:   SYSTEM
-version:     0.5
+version:     0.6
 status:      DRAFT
 created:     2026-09-03
 updated:     2026-09-03
@@ -12,6 +12,8 @@ owner_chat:  system-architecture
 # SPEC — Arquitectura de plugin DX-OPUS (Cowork)
 
 ## CHANGELOG
+
+* v0.6 (2026-09-03) — Corrección en §8: aclarado que el root del plugin = root del repo implica que hace falta un límite instalable/desarrollo explícito (issue #77, reabierto). Ver `_system/SCHEMA_SYSTEM_ARCHITECTURE.md` PARTE 8 para el límite completo.
 
 * v0.5 (2026-09-03) — Añadida sección 8: dónde vive físicamente el plugin en el repo. Decisión: el root del plugin ES el root del repo — `research/`, `writing/`, `evaluation/`, etc. no se mueven ni se duplican dentro de `skills/*/references/`; cada `SKILL.md` instruye a Claude a leer los archivos existentes por su ruta actual. Evita recrear la clase de bug que resolvimos en Sprint 5 (registros duplicados y desincronizados). Preparado como base para el scaffolding de `docs/backlog/` y los tickets de Sprint 6.
 * v0.4 (2026-09-03) — Corrección: la investigación no es *solo* compartida — un post puede tener research propia además de la compartida del proyecto. `R_research/` sigue siendo la ruta por defecto (scope compartido); research específica de un post pasa a vivir en su propia carpeta de `WP_writing_post/` (`AUTO_SAVE_CONFIG.yaml` v1.2). Actualizado §5.3 item 2 en consecuencia.
@@ -160,3 +162,5 @@ Con las respuestas a la sección 6, este documento pasa a DL formal (S5-14) y a 
 **Consecuencia práctica:** construir una skill es sobre todo escribir un `SKILL.md` corto (metadata + instrucciones de cuándo y cómo usar cada prompt existente), no migrar contenido. Los subsistemas (`research/`, `writing/`, `evaluation/`...) no cambian de sitio ni de owner_chat por este pivote — solo cambia el mecanismo por el que un editor los invoca.
 
 Esta decisión es la base del scaffolding de `docs/backlog/` para Sprint 6 (`docs/DEV_STANDARDS.md`, tickets `S6-01` a `S6-04`).
+
+**Corrección (2026-09-03, issue #77 reabierto):** que el root del plugin sea el root del repo no significa que solo se instale `.claude-plugin/` + `skills/` + `hooks/` — cada `SKILL.md` referencia contenido de producción fuera de esas tres carpetas (`research/PROMPT_*.md`, etc.), y eso también es parte de lo instalable. Falta excluir estructuralmente lo que es solo de desarrollo (`_system/decisions/`, `_system/audits/`, `docs/backlog/`, los `CONTEXT_*.md` de cada subsistema, ahora movidos a `{subsistema}/dev/`). Ver `_system/SCHEMA_SYSTEM_ARCHITECTURE.md` PARTE 8 para el límite completo instalable/desarrollo — mecanismo real de empaquetado pendiente de Sprint 8.

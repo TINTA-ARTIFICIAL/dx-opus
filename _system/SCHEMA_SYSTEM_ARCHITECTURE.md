@@ -2,7 +2,7 @@
 id:          SCHEMA_SYSTEM_ARCHITECTURE
 type:        SCHEMA
 subsystem:   SYSTEM
-version:     1.4
+version:     1.5
 status:      ACTIVE
 created:     2026-02-21
 updated:     2026-09-03
@@ -12,6 +12,7 @@ owner_chat:  system-architecture
 ## CHANGELOG
 | Version | Date | Author | Summary |
 |---------|------|--------|---------|
+| v1.5 | 2026-09-03 | system-architecture | Corrección sobre v1.4: la afirmación de que el plugin "solo instala .claude-plugin/, skills/ y hooks/" era incorrecta — los SKILL.md referencian contenido fuera de esas carpetas por diseño (root del plugin = root del repo). Movidos los 6 CONTEXT_*.md de subsistema a `{subsistema}/dev/` (issue #77, reabierto y corregido) para que la exclusión de contenido de desarrollo del paquete instalable sea estructural (carpeta), no un patrón de nombre a recordar. PARTE 8 actualizada con el límite de empaquetado real. |
 | v1.4 | 2026-09-03 | system-architecture | Añadida PARTE 8: arquitectura de plugin (Sprint 6-7 — 9 skills, 3 hooks). PARTE 4 actualizada: PROMPT_QA_IDEAS añadido como prompt compartido (ya formalizado por DL_022, expuesto por la skill `shared-writing`). PARTE 6 (árbol del repo) refrescada: `.claude-plugin/`, `skills/`, `hooks/`, `docs/backlog/`, `docs/DEV_STANDARDS.md` añadidos; marcadores `[pendiente]` obsoletos limpiados (GUIDE_ANNOTATION_PHASE3, WORKFLOW_WRITING v2.0, writing/post/, PROMPT_EVALUATE_BOOK_STYLE v1.1, PROMPT_CREATE_BOOK_BRIEF ya existen). |
 | v1.3 | 2026-03-30 | JM | EVALUATE_BOOK_STYLE moved from Editorial Profile to Evaluation (DL_20260330_SYSTEM_004). Updated subsystem descriptions and evaluator map. |
 | v1.2 | 2026-02-21 | JM | Removed versions from all filenames in repo tree |
@@ -347,13 +348,15 @@ dx-opus/
 │   └── TOOL_GITHUB_REPO_STRUCTURE.md
 │
 ├── knowledge-base/
-│   ├── CONTEXT_KNOWLEDGE_BASE.md
+│   ├── dev/
+│   │   └── CONTEXT_KNOWLEDGE_BASE.md  # dev-only, excluido del paquete instalable (PARTE 8)
 │   ├── RESOURCE_SOURCE_AUTHORITY.md
 │   ├── RESOURCE_CLAIM_VALIDATION.md
 │   └── RESOURCE_RESEARCH_FOCUS_TYPES.md
 │
 ├── research/
-│   ├── CONTEXT_RESEARCH.md
+│   ├── dev/
+│   │   └── CONTEXT_RESEARCH.md        # dev-only
 │   ├── WORKFLOW_RESEARCH.md
 │   ├── PROMPT_SUMMARIZE_REFERENCES.md
 │   ├── PROMPT_RESEARCH_DEEP_DIVE.md
@@ -363,7 +366,8 @@ dx-opus/
 │   └── GUIDE_ANNOTATION_PHASE3.md
 │
 ├── editorial-profile/
-│   ├── CONTEXT_EDITORIAL_PROFILE.md
+│   ├── dev/
+│   │   └── CONTEXT_EDITORIAL_PROFILE.md   # dev-only
 │   ├── PROMPT_CREATE_EDITOR_PROFILE.md
 │   ├── RESOURCE_EDITORIAL_STYLE.md
 │   ├── RESOURCE_BOOK_TYPES.md
@@ -372,7 +376,8 @@ dx-opus/
 │   └── GUIDE_EDITOR_NOTES.md
 │
 ├── writing/
-│   ├── CONTEXT_WRITING.md
+│   ├── dev/
+│   │   └── CONTEXT_WRITING.md         # dev-only
 │   ├── WORKFLOW_WRITING.md
 │   ├── book/
 │   │   ├── PROMPT_CREATE_BOOK_INDEX.md
@@ -398,7 +403,8 @@ dx-opus/
 │       └── PROMPT_CREATE_CAST.md
 │
 ├── evaluation/
-│   ├── CONTEXT_EVALUATION.md
+│   ├── dev/
+│   │   └── CONTEXT_EVALUATION.md      # dev-only
 │   ├── RESOURCE_EVALUATION_FRAMEWORK.md
 │   ├── PROMPT_EVALUATE_RESEARCH_REPORT.md
 │   ├── PROMPT_EVALUATE_BOOK_CONTENT.md
@@ -407,7 +413,8 @@ dx-opus/
 │   └── PROMPT_EVALUATE_ACTIVATION.md
 │
 └── activation/
-    ├── CONTEXT_ACTIVATION.md
+    ├── dev/
+    │   └── CONTEXT_ACTIVATION.md      # dev-only
     ├── WORKFLOW_ACTIVATION.md
     ├── PROMPT_ANALYZE_COLLECTION_FOR_ACTIVATION.md
     ├── PROMPT_IDENTIFY_NARRATIVE_SEEDS.md
@@ -467,6 +474,13 @@ Detalle completo de decisiones y mapa de dependencias: `_system/SPEC_PLUGIN_ARCH
 
 El root del plugin es el root de este repositorio. Ningún subsistema (`research/`, `writing/`, `evaluation/`...) se mueve ni se duplica dentro de una skill — cada `SKILL.md` es un archivo nuevo y ligero que instruye a Claude a leer los prompts reales por su ruta existente. Evita recrear la clase de bug de registros duplicados y desincronizados que se corrigió en Sprint 5 (`AUTO_SAVE_CONFIG.yaml` como única fuente de verdad de rutas/naming).
 
+**Corrección (v1.5, issue #77):** que el root del plugin sea el root del repo significa que quien instale/empaquete el plugin se lleva potencialmente *todo* lo que hay en ese árbol — no solo `.claude-plugin/`, `skills/` y `hooks/`. Hace falta un límite explícito entre lo instalable (lo que un editor necesita para usar el plugin) y lo que es solo de desarrollo (decisiones, specs, backlog, estándares). Ese límite es estructural, no una lista mantenida a mano:
+
+- **Se incluye:** `.claude-plugin/`, `skills/`, `hooks/`, el contenido de producción de cada subsistema (`research/`, `writing/`, `evaluation/`, `activation/`, `editorial-profile/`, `knowledge-base/` — todo excepto sus subcarpetas `dev/`), y `_system/resources/` + `_system/templates/` (referenciados directamente por `project-setup`/`editor-onboarding`).
+- **Se excluye:** cualquier ruta que contenga `/dev/` (los `CONTEXT_*.md` de cada subsistema viven ahí desde esta versión), el resto de `_system/` (`decisions/`, `audits/`, `MASTER_PLAN.md`, `SPEC_*.md`, `SCHEMA_*.md`, `NAMING_CONVENTION_ANALYSIS.md`), todo `docs/`, todo `tools/`, y los `README.md`.
+
+No existe todavía un mecanismo automatizado que aplique este límite al generar el `.plugin` instalable — es trabajo de Sprint 8.
+
 ### Las 9 skills
 
 | Skill | Sustituye a / cubre | Sprint |
@@ -496,7 +510,7 @@ DOCS y SYSTEM no son skills — son documentación de desarrollo del propio plug
 
 ### Pendiente (Sprint 8)
 
-Validar en paralelo con editores reales y retirar `tools/TOOL_CREATE_PROJECT.gs`, `tools/TOOL_SETUP_EDITOR_ENVIRONMENT.gs` y `tools/create-release-package.sh` — marcados `[Apps Script — retirar en Sprint 8]` en el árbol de PARTE 6.
+Validar en paralelo con editores reales; retirar `tools/TOOL_CREATE_PROJECT.gs`, `tools/TOOL_SETUP_EDITOR_ENVIRONMENT.gs` y `tools/create-release-package.sh` — marcados `[Apps Script — retirar en Sprint 8]` en el árbol de PARTE 6; y construir el mecanismo real de empaquetado que aplique el límite instalable/desarrollo descrito arriba (issue #77).
 
 ---
 
