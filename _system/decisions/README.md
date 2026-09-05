@@ -22,7 +22,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 
 | Subsystem | Latest DL# | Last Decision | Date |
 |-----------|------------|---------------|------|
-| **SYSTEM** | **041** | Plugin architecture spike — DX-OPUS as Cowork plugin (9 skills), replaces Apps Script + Drive setup | 2026-09-03 |
+| **SYSTEM** | **041** | Plugin architecture spike — DX-OPUS as Cowork plugin (10 skills), replaces Apps Script + Drive setup | 2026-09-03 |
 | KB | 004 | SAH/CVC propagation governance — editor-approved, dedicated step, blocked by #49 | 2026-09-03 |
 | RESEARCH | — | (No DL entries yet) | — |
 | WRITING | 015 | Q&A always active in POST workflow | 2026-04-11 |
@@ -43,7 +43,7 @@ This directory contains all decisions that affect the D-X-OPUS system architectu
 | DL ID | Decision | Status |
 |-------|----------|---------|
 | DL_20260903_KB_004 | SAH/CVC propagation governance (issue #70) — editor-approved, dedicated step (not a side effect of PROMPT_UPDATE_VALIDATION_CHECKLIST). Design only; implementation blocked by issue #49 (S5-03) | OPEN |
-| DL_20260903_SYSTEM_041 | Plugin architecture spike — DX-OPUS migrates to a Cowork plugin (9 skills, replaces TOOL_CREATE_PROJECT.gs + TOOL_SETUP_EDITOR_ENVIRONMENT.gs). Design only (S5-12/13/14); build deferred to Sprint 6+. See SPEC_PLUGIN_ARCHITECTURE.md v0.2 | OPEN |
+| DL_20260903_SYSTEM_041 | Plugin architecture spike — DX-OPUS migrates to a Cowork plugin (10 skills, replaces TOOL_CREATE_PROJECT.gs + TOOL_SETUP_EDITOR_ENVIRONMENT.gs). Design only (S5-12/13/14); build deferred to Sprint 6+. See SPEC_PLUGIN_ARCHITECTURE.md v0.2 | OPEN |
 
 ### Sprint 5 Design (May 2026)
 

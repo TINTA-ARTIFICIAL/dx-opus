@@ -4,13 +4,13 @@ title: Mecanismo real de empaquetado del plugin (issue #77)
 type: infra
 subsystem: SYSTEM
 sprint: 8
-status: IN_PROGRESS
+status: DONE
 priority: P1
 depends_on: []
 blocks: [S8-03]
 assignee: D-developer
 started: 2026-09-03
-completed: null
+completed: 2026-09-04
 branch: feat/s8-02-packaging-mechanism
 ---
 

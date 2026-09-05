@@ -299,7 +299,7 @@ dx-opus/
 ├── README.md
 ├── .claude-plugin/
 │   └── plugin.json                    # manifest del plugin — root del plugin = root del repo (SPEC_PLUGIN_ARCHITECTURE §8)
-├── skills/                            # 9 skills — ver PARTE 8
+├── skills/                            # 10 skills — ver PARTE 8
 │   ├── project-setup/SKILL.md
 │   ├── editor-onboarding/SKILL.md
 │   ├── knowledge-base/SKILL.md
@@ -481,7 +481,7 @@ El root del plugin es el root de este repositorio. Ningún subsistema (`research
 
 No existe todavía un mecanismo automatizado que aplique este límite al generar el `.plugin` instalable — es trabajo de Sprint 8.
 
-### Las 9 skills
+### Las 10 skills
 
 | Skill | Sustituye a / cubre | Sprint |
 |---|---|---|

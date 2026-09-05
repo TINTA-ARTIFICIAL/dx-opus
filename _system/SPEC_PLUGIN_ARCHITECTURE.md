@@ -62,7 +62,7 @@ El detalle completo (tabla artefacto por artefacto, ~150 filas) vive en el regis
 | Setup de proyecto (reemplaza `TOOL_CREATE_PROJECT.gs` + `PROMPT_PROJECT_DISCOVERY`) | `project-setup` | Acción iniciada por el usuario/sistema al arrancar un proyecto |
 | Onboarding de editor (reemplaza `TOOL_SETUP_EDITOR_ENVIRONMENT.gs`) | `editor-onboarding` | Acción única por editor |
 
-**Total: 9 skills.** DOCS y SYSTEM no se convierten en skills — son documentación de desarrollo del propio plugin, no capacidades que el editor invoque.
+**Total: 10 skills.** DOCS y SYSTEM no se convierten en skills — son documentación de desarrollo del propio plugin, no capacidades que el editor invoque.
 
 ---
 

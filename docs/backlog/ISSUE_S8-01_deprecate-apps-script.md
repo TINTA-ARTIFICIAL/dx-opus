@@ -22,7 +22,7 @@ Este ticket **no se dispatcha** hasta que el editor confirme explícitamente que
 
 ## Contexto
 
-Cierre formal del pivote a plugin — Sprints 6 y 7 ya construyeron el reemplazo completo (9 skills, 3 hooks). Este ticket retira lo que sustituyen.
+Cierre formal del pivote a plugin — Sprints 6 y 7 ya construyeron el reemplazo completo (10 skills, 3 hooks). Este ticket retira lo que sustituyen.
 
 ## Interfaces
 

@@ -510,7 +510,7 @@ Solo diseño en Sprint 5. La implementación se planifica en Sprint 6+.
 | ID | Tarea |
 |---|---|
 | S5-12 | ✅ **Completado** — Investigado el formato de Cowork plugin y mapeadas las ~150 dependencias cruzadas entre los 55 artefactos del sistema. Ver `_system/SPEC_PLUGIN_ARCHITECTURE.md` v0.2 |
-| S5-13 | ✅ **Completado** — Diseño de 9 skills (`research`, `editorial-profile`, `writing-book`, `writing-post`, `shared-writing`, `evaluation`, `activation`, `knowledge-base`, `project-setup`, `editor-onboarding`), sin Apps Script ni Drive como almacenamiento primario |
+| S5-13 | ✅ **Completado** — Diseño de 10 skills (`research`, `editorial-profile`, `writing-book`, `writing-post`, `shared-writing`, `evaluation`, `activation`, `knowledge-base`, `project-setup`, `editor-onboarding`), sin Apps Script ni Drive como almacenamiento primario |
 | S5-14 | ✅ **Completado** — `DL_20260903_SYSTEM_041` documenta la decisión: alcance, qué se elimina (`TOOL_CREATE_PROJECT.gs`, `TOOL_SETUP_EDITOR_ENVIRONMENT.gs`), roadmap Sprint 6+ para implementación |
 | S5-15 | ✅ **Completado** — Nota de interfaz propia registrada como "Work futuro" sin fecha en `SPEC_PLUGIN_ARCHITECTURE.md` sección 6 |
 
@@ -555,7 +555,7 @@ Objetivo: llegar al modelo de plugin de Cowork sin construir versiones intermedi
 
 | Sprint | Objetivo | Contenido |
 |---|---|---|
-| **6 — Fundamentos** ✅ COMPLETADO | Validar el patrón con el menor riesgo antes de construir las 9 skills | `plugin.json`, skill `project-setup` (cierra #49/#50/#65 por construcción), skill `editor-onboarding`, skill `knowledge-base` + hook de gobernanza. Prueba: crear un proyecto real sin tocar Apps Script. **4/4 tickets DONE y en `main`** (S6-01 a S6-04) — ver `docs/backlog/README.md` |
+| **6 — Fundamentos** ✅ COMPLETADO | Validar el patrón con el menor riesgo antes de construir las 10 skills | `plugin.json`, skill `project-setup` (cierra #49/#50/#65 por construcción), skill `editor-onboarding`, skill `knowledge-base` + hook de gobernanza. Prueba: crear un proyecto real sin tocar Apps Script. **4/4 tickets DONE y en `main`** (S6-01 a S6-04) — ver `docs/backlog/README.md` |
 | **7 — Skills de workflow** | Migrar los 6 subsistemas con workflow propio + `shared-writing` | `research`, `editorial-profile`, `shared-writing`, `writing-book`, `writing-post`, `evaluation`, `activation` + hooks de prerequisito (aprobación antes de `EXECUTE_RESEARCH_PLAN`, investigación previa antes de escribir POST). Incluye escribir `PROMPT_EVALUATE_ACTIVATION` como ticket de contenido independiente. **8 tickets desglosados y aprobados:** `docs/backlog/README.md` (S7-01 a S7-08) — una sola dependencia real (S7-06 depende de S7-05), el resto paralelizable |
 | **8 — Validación y corte** | Probar en uso real, luego apagar Apps Script | Mecanismo real de empaquetado del `.plugin` respetando el límite instalable/desarrollo (issue #77, reabierto — mi cierre anterior era incorrecto), guión de validación end-to-end, DL de deprecación + retiro de Apps Script, actualizar READMEs. **4 tickets desglosados:** `docs/backlog/README.md` (S8-01 a S8-04) — S8-02 y S8-04 despachables ya; S8-01 (retiro de Apps Script) y S8-03 (que depende de él) esperan confirmación humana de que la validación con editor real salió bien, no se despachan solo por estar `TODO` |
 

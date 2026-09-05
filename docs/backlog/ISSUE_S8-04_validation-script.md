@@ -4,13 +4,13 @@ title: Guión de validación end-to-end del plugin
 type: content
 subsystem: SYSTEM
 sprint: 8
-status: IN_PROGRESS
+status: DONE
 priority: P1
 depends_on: []
 blocks: []
 assignee: D-developer
 started: 2026-09-03
-completed: null
+completed: 2026-09-04
 branch: feat/s8-04-validation-script
 ---
 
@@ -58,7 +58,7 @@ Ninguna nueva — el propio documento de test es el artefacto.
 
 1. `_system/test-records/TEST_PLUGIN_E2E.md` existe y cubre los 9 puntos de la sección Interfaces.
 2. Recorre tú mismo el guión paso a paso (simulado, sin un editor real) siguiendo exactamente las instrucciones tal como están escritas — si en algún punto las instrucciones son ambiguas o insuficientes para saber qué hacer, corrígelas antes de entregar.
-3. Confirma que los 3 hooks del sistema tienen un caso de validación explícito en el guión, no solo las 9 skills.
+3. Confirma que los 3 hooks del sistema tienen un caso de validación explícito en el guión, no solo las 10 skills.
 4. Confirma que el formato de casillas de resultado sigue el precedente de `TEST_PACKAGE_SYSTEM_E2E.md`.
 
 ## Estado de revisión
