@@ -4,13 +4,13 @@ title: project-setup verifica EDITOR_CONFIG antes de crear un proyecto
 type: skill
 subsystem: SYSTEM
 sprint: 8
-status: IN_PROGRESS
+status: DONE
 priority: P1
 depends_on: []
 blocks: []
 assignee: D-developer
 started: 2026-09-09
-completed: null
+completed: 2026-09-09
 branch: feat/s8-06-project-setup-prerequisite-check
 ---
 

@@ -62,7 +62,9 @@ Objetivo: probar el plugin en uso real y retirar el sistema Apps Script/Drive.
 | S8-03 | Actualizar READMEs | P2 | TODO | S8-01, S8-02 |
 | S8-04 | Guión de validación end-to-end del plugin | P1 | DONE | — |
 | S8-05 | Hook de bienvenida `SessionStart` + trigger phrases de `editor-onboarding` | P1 | DONE | — |
-| S8-06 | `project-setup` verifica `EDITOR_CONFIG` antes de crear proyecto | P1 | IN_PROGRESS | — |
+| S8-06 | `project-setup` verifica `EDITOR_CONFIG` antes de crear proyecto | P1 | DONE | — |
+
+**Nota de seguimiento (S8-06):** el `D-developer` señaló, sin corregirlo por estar fuera del scope literal del ticket, que la sección "FUERA DE SCOPE DE ESTE SKILL" del propio `project-setup/SKILL.md` seguía diciendo que la skill "puede asumir que existe" `EDITOR_CONFIG` — contradicho por el PASO 0 nuevo. El dispatcher lo corrigió como parte de la validación antes de mergear (un cambio de una frase para mantener el archivo internamente consistente, no una ampliación de scope).
 
 **Nota especial sobre S8-01:** a diferencia de todos los tickets anteriores, este no se despacha solo porque esté `TODO` y sin `depends_on` técnico pendiente — depende de una confirmación humana (validación con editor real usando el guión de S8-04) que no se puede codificar como dependencia entre tickets. `D-dispatcher` debe excluirlo del conjunto listo hasta que el editor lo autorice explícitamente.
 
