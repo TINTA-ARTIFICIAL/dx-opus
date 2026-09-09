@@ -61,7 +61,7 @@ Objetivo: probar el plugin en uso real y retirar el sistema Apps Script/Drive.
 | S8-02 | Mecanismo real de empaquetado del plugin (issue #77) | P1 | DONE | — |
 | S8-03 | Actualizar READMEs | P2 | TODO | S8-01, S8-02 |
 | S8-04 | Guión de validación end-to-end del plugin | P1 | DONE | — |
-| S8-05 | Hook de bienvenida `SessionStart` + trigger phrases de `editor-onboarding` | P1 | IN_PROGRESS | — |
+| S8-05 | Hook de bienvenida `SessionStart` + trigger phrases de `editor-onboarding` | P1 | DONE | — |
 | S8-06 | `project-setup` verifica `EDITOR_CONFIG` antes de crear proyecto | P1 | IN_PROGRESS | — |
 
 **Nota especial sobre S8-01:** a diferencia de todos los tickets anteriores, este no se despacha solo porque esté `TODO` y sin `depends_on` técnico pendiente — depende de una confirmación humana (validación con editor real usando el guión de S8-04) que no se puede codificar como dependencia entre tickets. `D-dispatcher` debe excluirlo del conjunto listo hasta que el editor lo autorice explícitamente.

@@ -4,13 +4,13 @@ title: Hook de bienvenida SessionStart + ampliar trigger phrases de editor-onboa
 type: infra
 subsystem: SYSTEM
 sprint: 8
-status: IN_PROGRESS
+status: DONE
 priority: P1
 depends_on: []
 blocks: []
 assignee: D-developer
 started: 2026-09-09
-completed: null
+completed: 2026-09-09
 branch: feat/s8-05-session-welcome-hook
 ---
 
