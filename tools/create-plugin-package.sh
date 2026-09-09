@@ -23,11 +23,14 @@
 #       excepto sus subcarpetas dev/
 #     - _system/resources/
 #     - _system/templates/
+#     - _system/PROMPT_PROJECT_DISCOVERY.md (prompt operativo real, no
+#       documentación de desarrollo — ver nota S8-08 más abajo)
 #
 #   Excluido:
 #     - Cualquier ruta que contenga /dev/
-#     - El resto de _system/ (decisions/, audits/, SPEC_*.md, SCHEMA_*.md,
-#       MASTER_PLAN.md, etc. — todo lo que no sea resources/ o templates/)
+#     - El resto de _system/ (decisions/, audits/, test-records/,
+#       SPEC_*.md, SCHEMA_*.md, MASTER_PLAN.md, etc. — todo lo que no sea
+#       resources/, templates/ o PROMPT_PROJECT_DISCOVERY.md)
 #     - docs/, tools/ completos
 #     - Todos los README.md
 #     - .git/, .DS_Store
@@ -45,6 +48,12 @@
 #
 # CHANGELOG:
 #   v1.0 - Versión inicial (S8-02, issue #77)
+#   v1.1 - Añadido _system/PROMPT_PROJECT_DISCOVERY.md a INCLUDE_PATHS —
+#          se había colado en la exclusión de "resto de _system/" por
+#          error de diseño; es un prompt operativo real (usado por
+#          project-setup en su checkpoint de cierre), no documentación de
+#          desarrollo. Hallado durante la validación real de instalación
+#          de Sprint 8, ver ticket S8-08.
 
 set -euo pipefail
 IFS=$'\n\t'
@@ -75,6 +84,7 @@ INCLUDE_PATHS=(
     "knowledge-base"
     "_system/resources"
     "_system/templates"
+    "_system/PROMPT_PROJECT_DISCOVERY.md"
 )
 
 # Patrones de exclusión estructurales (no archivos individuales):
