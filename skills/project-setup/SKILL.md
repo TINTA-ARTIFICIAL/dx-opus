@@ -224,8 +224,9 @@ generado), **para aquí.**
 - Sincronización o colaboración vía Google Drive.
 - Migrar proyectos ya existentes creados con `TOOL_CREATE_PROJECT.gs` al
   formato nuevo.
-- Crear o validar `EDITOR_CONFIG` en profundidad — este skill puede
-  asumir que existe según `_system/templates/TEMPLATE_EDITOR_CONFIG.md`,
-  pero su creación es responsabilidad de `editor-onboarding`.
+- Crear o validar `EDITOR_CONFIG` en profundidad — el PASO 0 solo
+  comprueba que existe, no valida su contenido según
+  `_system/templates/TEMPLATE_EDITOR_CONFIG.md`; su creación sigue siendo
+  responsabilidad de `editor-onboarding`.
 - Contenido de `knowledge-base` (SAH/CVC) — no lo copies ni lo
   referencies en detalle aquí.
