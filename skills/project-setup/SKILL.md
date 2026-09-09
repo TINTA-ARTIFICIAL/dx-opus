@@ -29,6 +29,33 @@ YAML cambia (la razón exacta por la que `TOOL_CREATE_PROJECT.gs` y
 
 ---
 
+### PASO 0: Verificar que existe EDITOR_CONFIG
+
+Comprueba si existe `_editor/config/EDITOR_CONFIG.md` (ruta fijada en la
+sección "Decisión de diseño: ubicación de EDITOR_CONFIG.md" de
+`skills/editor-onboarding/SKILL.md` — reutilízala tal cual, no la
+redefinas aquí) antes de continuar.
+
+**Si NO existe: para aquí.** No crees el proyecto. Informa al editor de
+que primero hace falta configurar su entorno, por ejemplo:
+
+```
+No encuentro EDITOR_CONFIG.md (_editor/config/EDITOR_CONFIG.md) en este
+entorno.
+
+Antes de crear un proyecto nuevo hace falta configurar tu entorno de
+editor.
+
+¿Cómo quieres continuar?
+a) Configurar el entorno ahora (skill editor-onboarding)
+b) Otra cosa
+```
+
+No ejecutes tú mismo la skill `editor-onboarding` ni asumas que el editor
+quiere hacerlo ya — ofrécela y espera su confirmación explícita.
+
+**Si existe:** continúa con el PASO 1, sin fricción añadida.
+
 ### PASO 1: Determinar `project_code` y `project_name`
 
 Si el editor no los ha dado explícitamente en su mensaje, pregúntaselos
@@ -197,8 +224,9 @@ generado), **para aquí.**
 - Sincronización o colaboración vía Google Drive.
 - Migrar proyectos ya existentes creados con `TOOL_CREATE_PROJECT.gs` al
   formato nuevo.
-- Crear o validar `EDITOR_CONFIG` en profundidad — este skill puede
-  asumir que existe según `_system/templates/TEMPLATE_EDITOR_CONFIG.md`,
-  pero su creación es responsabilidad de `editor-onboarding`.
+- Crear o validar `EDITOR_CONFIG` en profundidad — el PASO 0 solo
+  comprueba que existe, no valida su contenido según
+  `_system/templates/TEMPLATE_EDITOR_CONFIG.md`; su creación sigue siendo
+  responsabilidad de `editor-onboarding`.
 - Contenido de `knowledge-base` (SAH/CVC) — no lo copies ni lo
   referencies en detalle aquí.
