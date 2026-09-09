@@ -29,6 +29,33 @@ YAML cambia (la razón exacta por la que `TOOL_CREATE_PROJECT.gs` y
 
 ---
 
+### PASO 0: Verificar que existe EDITOR_CONFIG
+
+Comprueba si existe `_editor/config/EDITOR_CONFIG.md` (ruta fijada en la
+sección "Decisión de diseño: ubicación de EDITOR_CONFIG.md" de
+`skills/editor-onboarding/SKILL.md` — reutilízala tal cual, no la
+redefinas aquí) antes de continuar.
+
+**Si NO existe: para aquí.** No crees el proyecto. Informa al editor de
+que primero hace falta configurar su entorno, por ejemplo:
+
+```
+No encuentro EDITOR_CONFIG.md (_editor/config/EDITOR_CONFIG.md) en este
+entorno.
+
+Antes de crear un proyecto nuevo hace falta configurar tu entorno de
+editor.
+
+¿Cómo quieres continuar?
+a) Configurar el entorno ahora (skill editor-onboarding)
+b) Otra cosa
+```
+
+No ejecutes tú mismo la skill `editor-onboarding` ni asumas que el editor
+quiere hacerlo ya — ofrécela y espera su confirmación explícita.
+
+**Si existe:** continúa con el PASO 1, sin fricción añadida.
+
 ### PASO 1: Determinar `project_code` y `project_name`
 
 Si el editor no los ha dado explícitamente en su mensaje, pregúntaselos
