@@ -67,12 +67,13 @@ specifies for that step.
 ## Evaluate activation content — soft, non-blocking
 
 To evaluate activation content (posts, articles, threads produced through
-this workflow, or a `BOOK_BRIEF`), invoke the `evaluation` skill (S7-06),
-which routes to `${CLAUDE_PLUGIN_ROOT}/evaluation/PROMPT_EVALUATE_ACTIVATION.md` (S7-05). This
-invocation is soft and non-blocking, the same criterion used across the
-rest of the system: a `RED` evaluation result never prevents the editor
-from continuing — it is feedback, not a gate. Do not add any gate or hook
-here that would block on the evaluation result.
+this workflow, or a `BOOK_BRIEF`), invoke the `evaluation` skill (S7-06)
+asking for its `EVALUATE_ACTIVATION` function (S7-05), passing the
+artifact to evaluate — do not read the evaluator prompt by path directly.
+This invocation is soft and non-blocking, the same criterion used across
+the rest of the system: a `RED` evaluation result never prevents the
+editor from continuing — it is feedback, not a gate. Do not add any gate
+or hook here that would block on the evaluation result.
 
 ## Known documentation inconsistency — do not fix here
 

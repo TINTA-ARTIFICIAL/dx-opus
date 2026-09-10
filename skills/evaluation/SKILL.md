@@ -6,7 +6,11 @@ description: >
   "evalúa este capítulo", "revisa el estilo de este post", "¿esta
   investigación es sólida?", "dame feedback de calidad", "¿esto está bien
   escrito?", "necesito una segunda opinión sobre esto", "revísame esto
-  antes de publicar", "¿qué le falta a este texto?".
+  antes de publicar", "¿qué le falta a este texto?". It is also typically
+  invoked internally by other skills (`write-book`, `write-post`,
+  `activation`) rather than triggered directly by the editor — they ask
+  for one of the functions below instead of reading an evaluator prompt by
+  path.
 metadata:
   version: "0.1.0"
 ---
@@ -15,46 +19,78 @@ metadata:
 
 ## When to use this skill
 
-Use this skill whenever the editor wants quality feedback on an artifact
-already produced by another subsystem — a research report, book prose,
-a book's adherence to editorial style, a post, or an activation planning
-artifact. This skill orchestrates the EVALUATION subsystem; it does not
-contain evaluation logic of its own — all scoring, dimensions and
-thresholds live in the five evaluator prompts referenced below.
+Use this skill whenever the editor — or another skill on the editor's
+behalf — wants quality feedback on an artifact already produced by another
+subsystem: a research report, book prose, a book's adherence to editorial
+style, a post, or an activation planning artifact. This skill orchestrates
+the EVALUATION subsystem; it does not contain evaluation logic of its own —
+all scoring, dimensions and thresholds live in the five evaluator prompts
+wrapped by the functions below. Calling skills do not need to know the
+internal implementation, only which function to request and which artifact
+to pass it.
 
 ## Canonical contract — read before invoking any evaluator
 
-Read `${CLAUDE_PLUGIN_ROOT}/evaluation/RESOURCE_EVALUATION_FRAMEWORK.md` in full before invoking
-any evaluator — it is the single source of truth for the `EVALUATION_RESULT`
-output contract (`status`, `score`, `decision_guidance`, `blocking_issues`,
-`improvement_areas`, `strengths`) that all five evaluators below implement.
-Do not reproduce that schema here — always read the file itself, since the
-contract can be versioned independently of this skill.
+Read `${CLAUDE_PLUGIN_ROOT}/skills/evaluation/RESOURCE_EVALUATION_FRAMEWORK.md` in full before
+invoking any evaluator — it is the single source of truth for the
+`EVALUATION_RESULT` output contract (`status`, `score`, `decision_guidance`,
+`blocking_issues`, `improvement_areas`, `strengths`) that all five
+evaluators below implement. Do not reproduce that schema here — always read
+the file itself, since the contract can be versioned independently of this
+skill.
 
-## Evaluators and when to use each
+## Functions
 
-Read the evaluator directly, by its real path, once you know which artifact
-the editor wants evaluated — do not copy, summarize, or cache their content
-into this file:
+This skill wraps five existing evaluator prompts. Read the prompt file in
+full at the path given below whenever the function is invoked — do not
+copy, summarize, or cache its instructions here. Each file is the single
+source of truth for its own evaluation criteria and is versioned
+independently of this skill. Every function's canonical input is the
+artifact to evaluate, passed by the calling skill (not read from a file by
+this skill).
 
-- `${CLAUDE_PLUGIN_ROOT}/evaluation/PROMPT_EVALUATE_RESEARCH_REPORT.md` — evaluates a
-  RESEARCH_REPORT or RESEARCH_DEEP_DIVE, pre-writing (before the editor
-  starts drafting from it). Central question: is the investigation solid?
-- `${CLAUDE_PLUGIN_ROOT}/evaluation/PROMPT_EVALUATE_BOOK_CONTENT.md` — evaluates the already-written
-  text of a book or chapter, post-writing / pre-publication. Central
-  question: does the text cite well and avoid overclaiming beyond its
-  sources?
-- `${CLAUDE_PLUGIN_ROOT}/evaluation/PROMPT_EVALUATE_BOOK_STYLE.md` — evaluates a book or chapter's
-  adherence to the editor's editorial profile (voice, tone, patterns). Does
-  not apply to posts, articles, or research reports — see its own
-  "NO aplicable a" list.
-- `${CLAUDE_PLUGIN_ROOT}/evaluation/PROMPT_EVALUATE_POST.md` — evaluates a post or article ready
-  for publication: narrative core, structure, editorial voice, rigor of
-  claims, editorial completeness.
-- `${CLAUDE_PLUGIN_ROOT}/evaluation/PROMPT_EVALUATE_ACTIVATION.md` — evaluates activation
-  *planning* artifacts (ACTIVATION_CONTEXT, BOOK_BRIEF, CONTENT_STRATEGY)
-  produced before any publishable content exists. Does not evaluate
-  finished pieces of content.
+1. **`EVALUATE_RESEARCH_REPORT`** — evaluates a RESEARCH_REPORT or
+   RESEARCH_DEEP_DIVE, pre-writing (before the editor starts drafting from
+   it). Central question: is the investigation solid?
+   Read `${CLAUDE_PLUGIN_ROOT}/skills/evaluation/PROMPT_EVALUATE_RESEARCH_REPORT.md` and follow it
+   as written.
+2. **`EVALUATE_BOOK_CONTENT`** — evaluates the already-written text of a
+   book or chapter, post-writing / pre-publication. Central question: does
+   the text cite well and avoid overclaiming beyond its sources?
+   Read `${CLAUDE_PLUGIN_ROOT}/skills/evaluation/PROMPT_EVALUATE_BOOK_CONTENT.md` and follow it as
+   written.
+3. **`EVALUATE_BOOK_STYLE`** — evaluates a book or chapter's adherence to
+   the editor's editorial profile (voice, tone, patterns). Does not apply
+   to posts, articles, or research reports — see the prompt's own "NO
+   aplicable a" list.
+   Read `${CLAUDE_PLUGIN_ROOT}/skills/evaluation/PROMPT_EVALUATE_BOOK_STYLE.md` and follow it as
+   written.
+4. **`EVALUATE_POST`** — evaluates a post or article ready for
+   publication: narrative core, structure, editorial voice, rigor of
+   claims, editorial completeness.
+   Read `${CLAUDE_PLUGIN_ROOT}/skills/evaluation/PROMPT_EVALUATE_POST.md` and follow it as written.
+5. **`EVALUATE_ACTIVATION`** — evaluates activation *planning* artifacts
+   (ACTIVATION_CONTEXT, BOOK_BRIEF, CONTENT_STRATEGY) produced before any
+   publishable content exists. Does not evaluate finished pieces of
+   content.
+   Read `${CLAUDE_PLUGIN_ROOT}/skills/evaluation/PROMPT_EVALUATE_ACTIVATION.md` and follow it as
+   written.
+
+## How to use this skill
+
+1. Identify which of the five functions the calling skill (or the editor,
+   if invoking this skill directly) requested (`EVALUATE_RESEARCH_REPORT`,
+   `EVALUATE_BOOK_CONTENT`, `EVALUATE_BOOK_STYLE`, `EVALUATE_POST`, or
+   `EVALUATE_ACTIVATION`), and the artifact passed to evaluate. If the
+   request is ambiguous between two functions, use "Choosing the right
+   evaluator" below before proceeding.
+2. Read the corresponding prompt file in full, at the real path listed
+   above.
+3. Execute the prompt exactly as it is written on the artifact provided —
+   its own steps, dimensions, and thresholds are authoritative. This skill
+   does not add, remove, or reorder any step of the wrapped prompts.
+4. Return the resulting `EVALUATION_RESULT` to the caller (the calling
+   skill, or the editor directly).
 
 ## Choosing the right evaluator
 
@@ -92,8 +128,10 @@ decide.
 ## Out of scope
 
 - Modifying the content of any of the five evaluator prompts or of
-  `${CLAUDE_PLUGIN_ROOT}/evaluation/RESOURCE_EVALUATION_FRAMEWORK.md`.
-- Building `${CLAUDE_PLUGIN_ROOT}/evaluation/PROMPT_EVALUATE_ACTIVATION.md` — already built in
-  S7-05, not part of this skill.
+  `${CLAUDE_PLUGIN_ROOT}/skills/evaluation/RESOURCE_EVALUATION_FRAMEWORK.md`.
+- Building `${CLAUDE_PLUGIN_ROOT}/skills/evaluation/PROMPT_EVALUATE_ACTIVATION.md` — already built
+  in S7-05, not part of this skill.
 - Any hook — evaluation gates stay as soft instruction, not structural
   enforcement (see "Editorial confidence by design" above).
+- Deciding when `write-book`, `write-post`, or `activation` should invoke
+  each function — that logic belongs to those skills, not to this one.

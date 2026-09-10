@@ -93,11 +93,14 @@ Al completar el output de cualquiera de las fases anteriores (`BOOK_INDEX`,
 ## EVALUACIÓN — invocación soft, no bloqueante
 
 `${CLAUDE_PLUGIN_ROOT}/skills/write-book/PROMPT_WRITE_CHAPTER.md` invoca auto-evaluación de estilo
-en su PASO 5, referenciando `${CLAUDE_PLUGIN_ROOT}/evaluation/PROMPT_EVALUATE_BOOK_STYLE.md`.
-El cierre del libro contempla además una evaluación de contenido vía
-`${CLAUDE_PLUGIN_ROOT}/evaluation/PROMPT_EVALUATE_BOOK_CONTENT.md` (ver
-`${CLAUDE_PLUGIN_ROOT}/writing/WORKFLOW_WRITING.md` §3, PASO 5D). Ambas referencias apuntan a
-la skill `evaluation` (S7-06).
+en su PASO 5. El cierre del libro contempla además una evaluación de
+contenido (ver `${CLAUDE_PLUGIN_ROOT}/writing/WORKFLOW_WRITING.md` §3, PASO 5D). En ambos casos,
+no leas el prompt evaluador por ruta directa — invoca la skill `evaluation`
+(herramienta `Skill`) pidiéndole su función `EVALUATE_BOOK_STYLE` (para el
+PASO 5 de `PROMPT_WRITE_CHAPTER.md`) o `EVALUATE_BOOK_CONTENT` (para el
+cierre del libro, PASO 5D), pasándole el capítulo o el libro a evaluar como
+input. `evaluation` decide internamente qué prompt ejecutar para cada
+función — esta skill no necesita conocer su ruta real.
 
 Esta invocación es una **instrucción soft, no un gate bloqueante** —
 según `_system/SPEC_PLUGIN_ARCHITECTURE.md` §4, un resultado RED de
@@ -106,9 +109,7 @@ obligatoriedad es de confianza editorial, no técnica. El editor puede
 declinar la evaluación o decidir avanzar igualmente aunque el resultado
 no sea positivo. No conviertas esta invocación en un hook ni la trates
 como un paso que impide continuar si el editor no la ejecuta o no la
-aprueba. Esto sigue siendo válido aunque la skill `evaluation` (S7-06) no
-esté `DONE` todavía — los prompts de esta rama ya referencian el archivo
-real (`PROMPT_EVALUATE_BOOK_STYLE.md`).
+aprueba.
 
 ## FUERA DE SCOPE DE ESTE SKILL
 
