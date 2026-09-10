@@ -95,7 +95,7 @@ Objetivo: cerrar la brecha entre "funciona en local" y "funciona en cloud" halla
 | S9-08 | Renombrar skills a forma de comando (`write-book`, `write-post`, `setup`, `new-project`) | P2 | DONE | — |
 | S9-09 | Nota de limitación conocida (primer mensaje) en el hook de bienvenida | P2 | DONE | — |
 | S9-10 | Envolver `hooks.json` en el objeto `"hooks"` que exige el esquema real | P0 | DONE | — |
-| S9-11 | Auditar prompts/skills — hablar con el editor en tarea, no en nombre de artefacto | P2 | TODO | — |
+| S9-11 | Auditar prompts/skills — hablar con el editor en tarea, no en nombre de artefacto | P2 | IN_PROGRESS | — |
 
 **S9-06 — reportar a Anthropic el bug de `${CLAUDE_PLUGIN_ROOT}` en cloud — no es un ticket D-team** (acción externa, sin código que implementar ni tests que correr). Issues ya verificados uno a uno y citados en `_system/SPEC_CLOUD_COMPATIBILITY.md` §3: #59713, #43380, #66557, #24529, #63028, #47179, #61485 — todos cerrados por inactividad (`NOT_PLANNED`), nunca resueltos por Anthropic. Pendiente de que el editor decida el canal (`/feedback` dentro de la app, o reabrir alguno de los issues).
 

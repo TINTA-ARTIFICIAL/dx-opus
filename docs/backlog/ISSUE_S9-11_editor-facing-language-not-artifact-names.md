@@ -4,14 +4,14 @@ title: Auditar prompts/skills — hablar con el editor en tarea, no en nombre de
 type: content
 subsystem: SYSTEM
 sprint: 9
-status: TODO
+status: IN_PROGRESS
 priority: P2
 depends_on: []
 blocks: []
-assignee: null
-started: null
+assignee: D-developer
+started: 2026-09-10
 completed: null
-branch: null
+branch: feat/s9-11-editor-facing-language
 ---
 
 # S9-11 — Auditar prompts/skills: hablar con el editor en tarea, no en nombre de artefacto
