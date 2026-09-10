@@ -6,7 +6,7 @@ description: >
 ---
 
 Sigue íntegramente las instrucciones de
-`${CLAUDE_PLUGIN_ROOT}/skills/project-setup/SKILL.md` para crear la
+`${CLAUDE_PLUGIN_ROOT}/skills/new-project/SKILL.md` para crear la
 estructura de un proyecto nuevo D-X-OPUS, tal como harías si esta skill se
 hubiera invocado por lenguaje natural. No dupliques ni resumas su contenido
 aquí — léelo. $ARGUMENTS
