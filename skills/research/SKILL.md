@@ -81,5 +81,5 @@ it lives.
 - Modifying the content of any `PROMPT_*.md`, `WORKFLOW_RESEARCH.md`, or
   `GUIDE_ANNOTATION_PHASE3.md` — this skill only orients toward them.
 - The `knowledge-base` skill — already built (S6-04), only referenced above.
-- Any logic in `writing-post`/`writing-book` about when to require prior
+- Any logic in `write-post`/`write-book` about when to require prior
   research — that lives in those skills, not here.

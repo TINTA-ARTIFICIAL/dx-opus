@@ -53,14 +53,14 @@ El detalle completo (tabla artefacto por artefacto, ~150 filas) vive en el regis
 |---|---|---|
 | RESEARCH | `research` | Workflow completo, con KB embebido como referencia de lectura |
 | EDITORIAL PROFILE | `editorial-profile` | Workflow de onboarding + recurso de config por editor |
-| WRITING (book) | `writing-book` | Workflow |
-| WRITING (post) | `writing-post` | Workflow |
-| WRITING (shared: WRITE_POST, CREATE_TIMELINE, CREATE_CAST, PROMPT_QA_IDEAS, TEMPLATE_POST_SEED, TEMPLATE_POST_BRIEFING) | `shared-writing` | Skill dedicada (fuente única), invocada por `writing-post` y `activation` — no diseñada para triggering directo del usuario |
+| WRITING (book) | `write-book` | Workflow |
+| WRITING (post) | `write-post` | Workflow |
+| WRITING (shared: WRITE_POST, CREATE_TIMELINE, CREATE_CAST, PROMPT_QA_IDEAS, TEMPLATE_POST_SEED, TEMPLATE_POST_BRIEFING) | `shared-writing` | Skill dedicada (fuente única), invocada por `write-post` y `activation` — no diseñada para triggering directo del usuario |
 | EVALUATION | `evaluation` | Workflow invocable, un skill con las 4 (pronto 5) evaluaciones |
 | ACTIVATION | `activation` | Workflow |
 | KNOWLEDGE BASE (SAH, CVC, FOCUS_TYPES) | `knowledge-base` | **Nueva decisión** (ver sección 5.1): promovida a skill propia en vez de duplicarse dentro de `research` |
-| Setup de proyecto (reemplaza `TOOL_CREATE_PROJECT.gs` + `PROMPT_PROJECT_DISCOVERY`) | `project-setup` | Acción iniciada por el usuario/sistema al arrancar un proyecto |
-| Onboarding de editor (reemplaza `TOOL_SETUP_EDITOR_ENVIRONMENT.gs`) | `editor-onboarding` | Acción única por editor |
+| Setup de proyecto (reemplaza `TOOL_CREATE_PROJECT.gs` + `PROMPT_PROJECT_DISCOVERY`) | `new-project` | Acción iniciada por el usuario/sistema al arrancar un proyecto |
+| Onboarding de editor (reemplaza `TOOL_SETUP_EDITOR_ENVIRONMENT.gs`) | `setup` | Acción única por editor |
 
 **Total: 10 skills.** DOCS y SYSTEM no se convierten en skills — son documentación de desarrollo del propio plugin, no capacidades que el editor invoque.
 
@@ -78,7 +78,7 @@ El detalle completo (tabla artefacto por artefacto, ~150 filas) vive en el regis
 | SHARED — mismo contenido pero pequeño y estable | Duplicar en `references/` de cada skill consumidora | Simplicidad; el coste de mantener sincronía manual es bajo si cambia poco |
 | SHARED — **datos de runtime específicos del editor** (perfil editorial, config) | No se duplica ni convierte en skill de contenido — cada skill lee el archivo de datos real (`EDITOR_CONFIG`) en tiempo de ejecución | Es información del editor, no lógica del sistema — distinto problema al de contenido compartido |
 | Contradictorio / declarado pero roto en la práctica hoy | **No se migra tal cual** — requiere decisión explícita antes de construir la skill (ver 5.2) | Migrar un bug documentado al plugin lo perpetúa con más fricción para corregirlo después |
-| Referencia a un artefacto que no existe formalmente (dependencia fantasma) | Se resuelve por construcción al implementar la skill correspondiente | Ej. `PROJECT_CONFIG.md`/`TOOL_CREATE_PROJECT` que hoy no existen como artefactos formales quedan cubiertos nativamente por `project-setup` |
+| Referencia a un artefacto que no existe formalmente (dependencia fantasma) | Se resuelve por construcción al implementar la skill correspondiente | Ej. `PROJECT_CONFIG.md`/`TOOL_CREATE_PROJECT` que hoy no existen como artefactos formales quedan cubiertos nativamente por `new-project` |
 | Bloqueado por un artefacto del backlog aún no creado | No requiere nueva decisión — ya está en Sprint 5 (PARTE 9 de MASTER_PLAN) | Ej. `PROMPT_EVALUATE_ACTIVATION` (S5-18) |
 
 ---
@@ -105,10 +105,10 @@ Decisión revisada respecto a la propuesta original (donde KB vivía como `refer
 ### 5.3 Candidatos a hook, priorizados por riesgo real
 
 1. **Gobernanza de KB** (5.1) — evita reescritura no autorizada del framework universal. Directamente relacionado con #66.
-2. **`RESEARCH_DEEP_DIVE` como prerequisito antes de escribir POST** — issue #63, ya en el backlog de Sprint 5 (S5-06). El hook vive naturalmente en `writing-post`. **Alcance del check aclarado (2026-09-03):** la investigación tiene dos alcances posibles — compartida a nivel de proyecto (una serie de N posts se alimenta de un único `RESEARCH_DEEP_DIVE`/`RESEARCH_REPORT` en `R_research/`, caso por defecto) o específica de un post (un post concreto necesita profundizar por su cuenta, y ese artefacto vive dentro de la carpeta de ese post en `WP_writing_post/`, no en `R_research/` — ver `AUTO_SAVE_CONFIG.yaml` v1.2). El hook debe verificar que exista *al menos un* artefacto de research válido para ese post, ya sea el compartido del proyecto o uno propio del post.
+2. **`RESEARCH_DEEP_DIVE` como prerequisito antes de escribir POST** — issue #63, ya en el backlog de Sprint 5 (S5-06). El hook vive naturalmente en `write-post`. **Alcance del check aclarado (2026-09-03):** la investigación tiene dos alcances posibles — compartida a nivel de proyecto (una serie de N posts se alimenta de un único `RESEARCH_DEEP_DIVE`/`RESEARCH_REPORT` en `R_research/`, caso por defecto) o específica de un post (un post concreto necesita profundizar por su cuenta, y ese artefacto vive dentro de la carpeta de ese post en `WP_writing_post/`, no en `R_research/` — ver `AUTO_SAVE_CONFIG.yaml` v1.2). El hook debe verificar que exista *al menos un* artefacto de research válido para ese post, ya sea el compartido del proyecto o uno propio del post.
 3. **Aprobación editorial antes de `PROMPT_EXECUTE_RESEARCH_PLAN`** — hoy es un checklist de prosa ("Do not proceed without approved planning documents") sin verificación real de que el editor aprobó, solo de que el archivo existe.
 4. **Aprobación editorial antes de reescribir un artefacto ya aprobado** — forma general del bug #66, aplica potencialmente a cualquier skill que reescriba un artefacto existente.
-5. **Verificación de escritura exitosa en `project-setup`** (relacionado con #49/#50/#65) — no es exactamente una dependencia cruzada, pero es la misma familia de problema: un `PostToolUse` que confirme que la escritura ocurrió donde debía, en vez de fallar en silencio.
+5. **Verificación de escritura exitosa en `new-project`** (relacionado con #49/#50/#65) — no es exactamente una dependencia cruzada, pero es la misma familia de problema: un `PostToolUse` que confirme que la escritura ocurrió donde debía, en vez de fallar en silencio.
 
 ### 5.4 Nombres confusamente parecidos (consolidado)
 
@@ -125,7 +125,7 @@ Al construir las skills, cada uno de estos pares vive en un archivo físicamente
 
 ### 5.5 Dependencia fantasma
 
-`PROMPT_WRITE_POST` v2.1 declara el auto-save como funcionalidad central, dependiente de detectar `PROJECT_CONFIG.md` y de `TOOL_CREATE_PROJECT` — **ninguno de los dos existe como artefacto formal del sistema** (no tienen `id` YAML, no están en ningún inventario). El propio prompt admite un fallback silencioso ("AUTO-SAVE NO DISPONIBLE en esta sesión") — la misma raíz que el bug de pérdida de datos #65. Se resuelve por construcción: `project-setup` asume esta responsabilidad de forma nativa y verificable.
+`PROMPT_WRITE_POST` v2.1 declara el auto-save como funcionalidad central, dependiente de detectar `PROJECT_CONFIG.md` y de `TOOL_CREATE_PROJECT` — **ninguno de los dos existe como artefacto formal del sistema** (no tienen `id` YAML, no están en ningún inventario). El propio prompt admite un fallback silencioso ("AUTO-SAVE NO DISPONIBLE en esta sesión") — la misma raíz que el bug de pérdida de datos #65. Se resuelve por construcción: `new-project` asume esta responsabilidad de forma nativa y verificable.
 
 ---
 

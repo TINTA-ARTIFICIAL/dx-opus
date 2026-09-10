@@ -1,5 +1,5 @@
 ---
-name: editor-onboarding
+name: setup
 description: >
   This skill should be used the first time an editor sets up D-X-OPUS, or
   when they explicitly want to review/update their personal configuration —
@@ -14,15 +14,15 @@ metadata:
   version: "0.1.0"
 ---
 
-# Skill: editor-onboarding
+# Skill: setup
 
-Configura por única vez el `EDITOR_CONFIG` de un editor en el modelo de plugin. No es una skill por proyecto — eso lo cubre `project-setup`.
+Configura por única vez el `EDITOR_CONFIG` de un editor en el modelo de plugin. No es una skill por proyecto — eso lo cubre `new-project`.
 
 ## Decisión de diseño: ubicación de EDITOR_CONFIG.md
 
 `${CLAUDE_PLUGIN_ROOT}/_system/resources/AUTO_SAVE_CONFIG.yaml` (sección `EDITOR.EDITOR_CONFIG`) ya declara `folder: "_editor/config"`, `unique: true`, `scope: "global"` para este artefacto — es la fuente única de verdad para su naming y unicidad, no la reproduzcas aquí.
 
-Esa entrada se escribió para el modelo anterior (Apps Script/Drive), donde la ruta completa era `D-X-OPUS/_editor/config/EDITOR_CONFIG.md` con `D-X-OPUS/` como raíz de Drive (ver "Ubicación" en `${CLAUDE_PLUGIN_ROOT}/_system/templates/TEMPLATE_EDITOR_CONFIG.md`). En el modelo de plugin, `_system/SPEC_PLUGIN_ARCHITECTURE.md` §8 fija que **la raíz del plugin es la raíz de este repositorio**. Aplicando ese mismo criterio aquí — igual que `project-setup` (S6-02) crea `projects/{project_code}_{project_name}/` directamente en la raíz del repo — el `folder: "_editor/config"` de `AUTO_SAVE_CONFIG.yaml` se resuelve **relativo a la raíz del repo/plugin**, no relativo a ninguna carpeta de Drive.
+Esa entrada se escribió para el modelo anterior (Apps Script/Drive), donde la ruta completa era `D-X-OPUS/_editor/config/EDITOR_CONFIG.md` con `D-X-OPUS/` como raíz de Drive (ver "Ubicación" en `${CLAUDE_PLUGIN_ROOT}/_system/templates/TEMPLATE_EDITOR_CONFIG.md`). En el modelo de plugin, `_system/SPEC_PLUGIN_ARCHITECTURE.md` §8 fija que **la raíz del plugin es la raíz de este repositorio**. Aplicando ese mismo criterio aquí — igual que `new-project` (S6-02) crea `projects/{project_code}_{project_name}/` directamente en la raíz del repo — el `folder: "_editor/config"` de `AUTO_SAVE_CONFIG.yaml` se resuelve **relativo a la raíz del repo/plugin**, no relativo a ninguna carpeta de Drive.
 
 **Ruta resultante y vinculante para esta skill: `_editor/config/EDITOR_CONFIG.md`** (ruta relativa a la raíz del repo). Es un dato global del editor, no de un proyecto — no vive dentro de `projects/`.
 
@@ -65,7 +65,7 @@ Genera el `EDITOR_CONFIG.md` copiando esa segunda parte íntegra, con estas regl
 
 1. Sustituye `[NOMBRE_EDITOR]` en el encabezado por el nombre real del editor.
 2. Rellena la sección "INFORMACIÓN PERSONAL" con los datos recogidos en el PASO 2 (`editor_name`, `setup_completed`, `system_version`, `last_config_update` = fecha/hora actual, `config_version: 1.0`).
-3. Deja el resto de secciones (Configuración Técnica, Configuración Editorial, Biblioteca Personal, Proyectos Activos, Estadísticas de Uso, etc.) con los placeholders del template tal cual — esta skill no tiene la información para rellenarlas todavía; se completan progresivamente con el uso real (otras skills, ej. `project-setup`, actualizan la tabla de proyectos).
+3. Deja el resto de secciones (Configuración Técnica, Configuración Editorial, Biblioteca Personal, Proyectos Activos, Estadísticas de Uso, etc.) con los placeholders del template tal cual — esta skill no tiene la información para rellenarlas todavía; se completan progresivamente con el uso real (otras skills, ej. `new-project`, actualizan la tabla de proyectos).
 4. No añadas, quites ni reordenes secciones o campos que no estén ya en ese rango del template.
 
 Crea la carpeta `_editor/config/` si no existe, y guarda el archivo en `_editor/config/EDITOR_CONFIG.md`.
@@ -83,7 +83,7 @@ Comprueba si existe ya un `EDITOR_PROFILE` para este editor en `_editor/profiles
 
 ### CHECKPOINT — no avances de forma autónoma al siguiente paso
 
-Al terminar el setup (`EDITOR_CONFIG.md` creado o actualizado, `EDITOR_PROFILE` comprobado), **para aquí**. No inicies tú mismo la skill `project-setup` ni ningún otro workflow.
+Al terminar el setup (`EDITOR_CONFIG.md` creado o actualizado, `EDITOR_PROFILE` comprobado), **para aquí**. No inicies tú mismo la skill `new-project` ni ningún otro workflow.
 
 Presenta un resumen breve:
 
@@ -91,7 +91,7 @@ Presenta un resumen breve:
 ✅ EDITOR_CONFIG configurado en _editor/config/EDITOR_CONFIG.md
 [Si no había EDITOR_PROFILE: nota de que puede crearlo con la skill `editorial-profile` cuando quiera]
 
-Siguiente paso natural: crear tu primer proyecto con la skill `project-setup`.
+Siguiente paso natural: crear tu primer proyecto con la skill `new-project`.
 ```
 
-Espera a que el editor decida si quiere continuar ahora o más adelante — no asumas ni ejecutes `project-setup` en su nombre.
+Espera a que el editor decida si quiere continuar ahora o más adelante — no asumas ni ejecutes `new-project` en su nombre.

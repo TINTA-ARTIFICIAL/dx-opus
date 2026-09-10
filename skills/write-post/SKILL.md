@@ -1,5 +1,5 @@
 ---
-name: writing-post
+name: write-post
 description: >
   This skill should be used when the user wants to write a standalone post
   or a post series — trigger phrases like "quiero escribir un post sobre X",

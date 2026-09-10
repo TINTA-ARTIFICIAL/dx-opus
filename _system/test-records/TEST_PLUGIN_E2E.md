@@ -45,9 +45,9 @@ Marca una sola casilla por TC. Si un TC falla, no continúes asumiendo el resto 
 
 ---
 
-## TEST SUITE 1: SETUP — `editor-onboarding`, `project-setup`
+## TEST SUITE 1: SETUP — `setup`, `new-project`
 
-### TC-1.1 — `editor-onboarding`: crear `EDITOR_CONFIG` desde cero
+### TC-1.1 — `setup`: crear `EDITOR_CONFIG` desde cero
 **Cubre:** Interfaces punto 1.
 
 **Pasos:**
@@ -59,19 +59,19 @@ Marca una sola casilla por TC. Si un TC falla, no continúes asumiendo el resto 
 - Claude detecta que no existe `_editor/config/EDITOR_CONFIG.md` y pasa directamente a recoger tus datos — no pregunta si quieres sobrescribir nada (esa pregunta solo aplica si ya existiera un `EDITOR_CONFIG.md`).
 - Solo pide los campos que `_system/templates/TEMPLATE_EDITOR_CONFIG.md` requiere en su sección "INFORMACIÓN PERSONAL" — no inventa ni pide campos fuera de ese template.
 - Genera `_editor/config/EDITOR_CONFIG.md` con la estructura completa del template (todas sus secciones), con "Información Personal" rellena con tus datos y el resto en placeholder.
-- Al terminar, presenta un resumen y **para** — no arranca `project-setup` por su cuenta. Te pregunta explícitamente cómo quieres continuar.
+- Al terminar, presenta un resumen y **para** — no arranca `new-project` por su cuenta. Te pregunta explícitamente cómo quieres continuar.
 
 **Qué comprobar:**
 - [ ] `_editor/config/EDITOR_CONFIG.md` existe y contiene todas las secciones de `TEMPLATE_EDITOR_CONFIG.md`.
 - [ ] La sección "Información Personal" tiene tus datos reales; el resto de secciones está en placeholder, sin inventar contenido.
-- [ ] Claude se detiene tras el resumen y pregunta cómo continuar — no invoca `project-setup` por iniciativa propia.
+- [ ] Claude se detiene tras el resumen y pregunta cómo continuar — no invoca `new-project` por iniciativa propia.
 
 **Resultado:** `[ ] ✅ PASS   [ ] ❌ FAIL   [ ] ⚠️ PARCIAL`
 **Notas:** _______________________________________________
 
 ---
 
-### TC-1.2 — `project-setup`: proyecto de tipo libro
+### TC-1.2 — `new-project`: proyecto de tipo libro
 **Cubre:** Interfaces punto 2 (rama libro).
 
 **Pasos:**
@@ -89,20 +89,20 @@ Marca una sola casilla por TC. Si un TC falla, no continúes asumiendo el resto 
 - [ ] `projects/E2ETESTBK_libro-prueba-e2e/` existe con subcarpetas.
 - [ ] Las subcarpetas creadas coinciden con el conjunto de valores `folder` distintos para artefactos de proyecto en `_system/resources/AUTO_SAVE_CONFIG.yaml` (ábrelo tú mismo y compáralo — no lo copies de otro sitio).
 - [ ] `PROJECT_CONFIG.md` existe, sin tabla de auto-save embebida.
-- [ ] Claude se detiene y pregunta cómo continuar, con las 3 opciones descritas en `skills/project-setup/SKILL.md` (o equivalentes).
+- [ ] Claude se detiene y pregunta cómo continuar, con las 3 opciones descritas en `skills/new-project/SKILL.md` (o equivalentes).
 
 **Resultado:** `[ ] ✅ PASS   [ ] ❌ FAIL   [ ] ⚠️ PARCIAL`
 **Notas:** _______________________________________________
 
 ---
 
-### TC-1.3 — `project-setup`: proyecto de tipo serie de posts
+### TC-1.3 — `new-project`: proyecto de tipo serie de posts
 **Cubre:** Interfaces punto 2 (rama serie de posts — proyecto independiente para no mezclar con TC-1.2 en las suites posteriores).
 
 **Pasos:**
 1. En una conversación nueva (o tras cerrar el contexto del proyecto anterior), pide: *"Quiero crear un proyecto nuevo para una serie de posts. Código: E2ETESTPS, nombre: posts-prueba-e2e."*
 
-**Qué debería pasar:** Igual que TC-1.2, aplicado a este segundo proyecto — mismo skill, mismo comportamiento, sin distinción especial de "tipo libro" vs "tipo posts" en la estructura de carpetas que crea (`project-setup` crea siempre el mismo conjunto de subcarpetas estándar; la diferencia libro/posts la determinan las skills de escritura que se usen después, no esta).
+**Qué debería pasar:** Igual que TC-1.2, aplicado a este segundo proyecto — mismo skill, mismo comportamiento, sin distinción especial de "tipo libro" vs "tipo posts" en la estructura de carpetas que crea (`new-project` crea siempre el mismo conjunto de subcarpetas estándar; la diferencia libro/posts la determinan las skills de escritura que se usen después, no esta).
 
 **Qué comprobar:**
 - [ ] `projects/E2ETESTPS_posts-prueba-e2e/` existe con el mismo conjunto de subcarpetas que TC-1.2.
@@ -120,13 +120,13 @@ Marca una sola casilla por TC. Si un TC falla, no continúes asumiendo el resto 
 **Cubre:** skill `editorial-profile` (no listada en las 9 interfaces originales del ticket S8-04 — vacío de cobertura detectado al revisar este guión, corregido aquí antes de dar el ticket por completo).
 
 **Pasos:**
-1. Tras TC-1.1, si `editor-onboarding` te señaló que no tienes `EDITOR_PROFILE`, pide: *"Quiero definir mi perfil editorial."*
+1. Tras TC-1.1, si `setup` te señaló que no tienes `EDITOR_PROFILE`, pide: *"Quiero definir mi perfil editorial."*
 2. Responde a las preguntas sobre tu voz/estilo con datos reales o plausibles.
 
 **Qué debería pasar:**
 - Claude usa `editorial-profile/PROMPT_CREATE_EDITOR_PROFILE.md` y rellena `editorial-profile/TEMPLATE_EDITOR_PROFILE.md` completo — sin inventar secciones fuera del template.
 - Genera `_editor/profiles/EDITOR_PROFILE_{tu_nombre}.md`.
-- Al terminar, presenta un resumen y **para** — no arranca `project-setup` ni ningún workflow por su cuenta.
+- Al terminar, presenta un resumen y **para** — no arranca `new-project` ni ningún workflow por su cuenta.
 
 **Qué comprobar:**
 - [ ] `_editor/profiles/EDITOR_PROFILE_{tu_nombre}.md` existe con la estructura completa del template.
@@ -210,7 +210,7 @@ Marca una sola casilla por TC. Si un TC falla, no continúes asumiendo el resto 
 
 ---
 
-## TEST SUITE 4: WRITING POST — `writing-post`, `shared-writing`, hook de prerequisito de investigación, `evaluation`
+## TEST SUITE 4: WRITING POST — `write-post`, `shared-writing`, hook de prerequisito de investigación, `evaluation`
 
 ### TC-4.1 — HOOK: prerequisito de investigación antes del `POST_DRAFT` (hook 3 de 3)
 **Cubre:** Interfaces punto 5, Decisiones de diseño (segundo hook explícito).
@@ -233,24 +233,24 @@ Marca una sola casilla por TC. Si un TC falla, no continúes asumiendo el resto 
 
 ---
 
-### TC-4.2 — `writing-post` + `shared-writing`: producir el `POST_DRAFT` (con investigación)
+### TC-4.2 — `write-post` + `shared-writing`: producir el `POST_DRAFT` (con investigación)
 **Cubre:** Interfaces puntos 5 y 6.
 
 **Pasos:**
 1. En una sesión nueva del mismo proyecto `E2ETESTPS`, procesa primero un mínimo de investigación para este post (usa la skill `research` sobre el mismo tema, o confirma que ya exista un `RESEARCH_DEEP_DIVE` compartido o propio del post).
 2. Arranca la sesión de post de nuevo: *"Quiero escribir un post sobre [el mismo tema]."*
-3. Recorre con normalidad el flujo que orienta `writing-post` (brief, fuentes si aplica, verificación, Q&A de posicionamiento o su skip explícito, ángulos, arquitectura) hasta obtener el `POST_SEED`.
+3. Recorre con normalidad el flujo que orienta `write-post` (brief, fuentes si aplica, verificación, Q&A de posicionamiento o su skip explícito, ángulos, arquitectura) hasta obtener el `POST_SEED`.
 4. Con el `POST_SEED` ya generado, pide explícitamente: *"Escribe ya el borrador final del post."*
 
 **Qué debería pasar:**
 - Esta vez, PASO 3B encuentra investigación y continúa con normalidad, sin preguntar por el skip.
-- `writing-post` recorre el flujo delegando en la skill `shared-writing` (función `WRITE_POST`) para el borrador final — no reimplementa `PROMPT_WRITE_POST.md` por su cuenta.
+- `write-post` recorre el flujo delegando en la skill `shared-writing` (función `WRITE_POST`) para el borrador final — no reimplementa `PROMPT_WRITE_POST.md` por su cuenta.
 - El hook de prerequisito de investigación (TC-4.1) responde `approve` esta vez, y el `POST_DRAFT` se guarda en la carpeta del post sin fricción.
 
 **Qué comprobar:**
 - [ ] El `POST_SEED` se genera antes de pedir el borrador final.
 - [ ] El `POST_DRAFT` final existe en la carpeta del post dentro del proyecto.
-- [ ] Es reconocible (explícito en la respuesta de Claude, o claro por el resultado) que la escritura final se delegó a `shared-writing`, no una reimplementación directa de `writing-post`.
+- [ ] Es reconocible (explícito en la respuesta de Claude, o claro por el resultado) que la escritura final se delegó a `shared-writing`, no una reimplementación directa de `write-post`.
 
 **Resultado:** `[ ] ✅ PASS   [ ] ❌ FAIL   [ ] ⚠️ PARCIAL`
 **Notas:** _______________________________________________
@@ -278,21 +278,21 @@ Marca una sola casilla por TC. Si un TC falla, no continúes asumiendo el resto 
 
 ---
 
-## TEST SUITE 5: WRITING BOOK — `writing-book`
+## TEST SUITE 5: WRITING BOOK — `write-book`
 
-### TC-5.1 — `writing-book`: índice → muestra → capítulo, con auto-evaluación soft
+### TC-5.1 — `write-book`: índice → muestra → capítulo, con auto-evaluación soft
 **Cubre:** Interfaces punto 8.
 
 **Pasos:**
 1. En el proyecto `E2ETESTBK` (TC-1.2), con la investigación de TC-2.1 ya disponible, pide: *"Quiero escribir un libro sobre [el tema investigado], créame el índice."*
-2. Deja que `writing-book` ejecute `writing/book/PROMPT_CREATE_BOOK_INDEX.md` y produzca el `BOOK_INDEX`. Confirma que Claude para tras presentarlo y pregunta cómo seguir.
+2. Deja que `write-book` ejecute `writing/book/PROMPT_CREATE_BOOK_INDEX.md` y produzca el `BOOK_INDEX`. Confirma que Claude para tras presentarlo y pregunta cómo seguir.
 3. Aprueba el índice y pide el capítulo de muestra: *"Aprobado, dame el capítulo de muestra."*
 4. Deja que ejecute `writing/book/PROMPT_WRITE_SAMPLE_CHAPTER.md` y produzca `SAMPLE_CHAPTER` + `STYLE_GUIDE_LIBRO`. Confirma que vuelve a parar.
 5. Aprueba y pide el primer capítulo: *"Escribe el capítulo 1."*
 6. Deja que ejecute `writing/book/PROMPT_WRITE_CHAPTER.md`.
 
 **Qué debería pasar:**
-- Cada fase respeta el checkpoint obligatorio de `writing-book` — presenta el output y para, sin encadenar automáticamente la fase siguiente, aunque respondas de forma ambigua.
+- Cada fase respeta el checkpoint obligatorio de `write-book` — presenta el output y para, sin encadenar automáticamente la fase siguiente, aunque respondas de forma ambigua.
 - `PROMPT_WRITE_CHAPTER.md` invoca en su PASO 5 una auto-evaluación de estilo (referenciando `evaluation/PROMPT_EVALUATE_BOOK_STYLE.md`) como instrucción **soft, no bloqueante**: un resultado no positivo no te impide seguir o iterar.
 
 **Qué comprobar:**
@@ -342,12 +342,12 @@ Marca una sola casilla por TC. Si un TC falla, no continúes asumiendo el resto 
 
 | Test Suite | TCs | Passed | Failed | Parcial |
 |---|---|---|---|---|
-| Suite 1: Setup (editor-onboarding, project-setup) | 3 | ___ | ___ | ___ |
+| Suite 1: Setup (setup, new-project) | 3 | ___ | ___ | ___ |
 | Suite 1B: Editorial Profile (editorial-profile) | 1 | ___ | ___ | ___ |
 | Suite 2: Research (research, hook EXECUTE_RESEARCH_PLAN) | 2 | ___ | ___ | ___ |
 | Suite 3: Knowledge Base (hook gobernanza SAH/CVC) | 1 | ___ | ___ | ___ |
-| Suite 4: Writing Post (writing-post, shared-writing, hook research, evaluation) | 3 | ___ | ___ | ___ |
-| Suite 5: Writing Book (writing-book) | 1 | ___ | ___ | ___ |
+| Suite 4: Writing Post (write-post, shared-writing, hook research, evaluation) | 3 | ___ | ___ | ___ |
+| Suite 5: Writing Book (write-book) | 1 | ___ | ___ | ___ |
 | Suite 6: Activation (activation) | 1 | ___ | ___ | ___ |
 | **Total** | **12** | **___** | **___** | **___** |
 

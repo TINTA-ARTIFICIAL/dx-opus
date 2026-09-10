@@ -300,14 +300,14 @@ dx-opus/
 ├── .claude-plugin/
 │   └── plugin.json                    # manifest del plugin — root del plugin = root del repo (SPEC_PLUGIN_ARCHITECTURE §8)
 ├── skills/                            # 10 skills — ver PARTE 8
-│   ├── project-setup/SKILL.md
-│   ├── editor-onboarding/SKILL.md
+│   ├── new-project/SKILL.md
+│   ├── setup/SKILL.md
 │   ├── knowledge-base/SKILL.md
 │   ├── research/SKILL.md
 │   ├── editorial-profile/SKILL.md
 │   ├── shared-writing/SKILL.md
-│   ├── writing-book/SKILL.md
-│   ├── writing-post/SKILL.md
+│   ├── write-book/SKILL.md
+│   ├── write-post/SKILL.md
 │   ├── evaluation/SKILL.md
 │   └── activation/SKILL.md
 ├── hooks/
@@ -476,7 +476,7 @@ El root del plugin es el root de este repositorio. Ningún subsistema (`research
 
 **Corrección (v1.5, issue #77):** que el root del plugin sea el root del repo significa que quien instale/empaquete el plugin se lleva potencialmente *todo* lo que hay en ese árbol — no solo `.claude-plugin/`, `skills/` y `hooks/`. Hace falta un límite explícito entre lo instalable (lo que un editor necesita para usar el plugin) y lo que es solo de desarrollo (decisiones, specs, backlog, estándares). Ese límite es estructural, no una lista mantenida a mano:
 
-- **Se incluye:** `.claude-plugin/`, `skills/`, `hooks/`, el contenido de producción de cada subsistema (`research/`, `writing/`, `evaluation/`, `activation/`, `editorial-profile/`, `knowledge-base/` — todo excepto sus subcarpetas `dev/`), y `_system/resources/` + `_system/templates/` (referenciados directamente por `project-setup`/`editor-onboarding`).
+- **Se incluye:** `.claude-plugin/`, `skills/`, `hooks/`, el contenido de producción de cada subsistema (`research/`, `writing/`, `evaluation/`, `activation/`, `editorial-profile/`, `knowledge-base/` — todo excepto sus subcarpetas `dev/`), y `_system/resources/` + `_system/templates/` (referenciados directamente por `new-project`/`setup`).
 - **Se excluye:** cualquier ruta que contenga `/dev/` (los `CONTEXT_*.md` de cada subsistema viven ahí desde esta versión), el resto de `_system/` (`decisions/`, `audits/`, `MASTER_PLAN.md`, `SPEC_*.md`, `SCHEMA_*.md`, `NAMING_CONVENTION_ANALYSIS.md`), todo `docs/`, todo `tools/`, y los `README.md`.
 
 No existe todavía un mecanismo automatizado que aplique este límite al generar el `.plugin` instalable — es trabajo de Sprint 8.
@@ -485,14 +485,14 @@ No existe todavía un mecanismo automatizado que aplique este límite al generar
 
 | Skill | Sustituye a / cubre | Sprint |
 |---|---|---|
-| `project-setup` | `TOOL_CREATE_PROJECT.gs` — crea la estructura de carpetas de un proyecto nuevo, determinista (sin búsqueda de carpeta por nombre) | 6 |
-| `editor-onboarding` | `TOOL_SETUP_EDITOR_ENVIRONMENT.gs` — setup único por editor, genera `EDITOR_CONFIG` | 6 |
+| `new-project` | `TOOL_CREATE_PROJECT.gs` — crea la estructura de carpetas de un proyecto nuevo, determinista (sin búsqueda de carpeta por nombre) | 6 |
+| `setup` | `TOOL_SETUP_EDITOR_ENVIRONMENT.gs` — setup único por editor, genera `EDITOR_CONFIG` | 6 |
 | `knowledge-base` | Subsistema KNOWLEDGE_BASE — SAH/CVC/FOCUS_TYPES, con hook de gobernanza | 6 |
 | `research` | Subsistema RESEARCH completo | 7 |
 | `editorial-profile` | Subsistema EDITORIAL_PROFILE completo | 7 |
-| `shared-writing` | Los 4 prompts compartidos de PARTE 4 (WRITE_POST, CREATE_TIMELINE, CREATE_CAST, QA_IDEAS) — invocada por `writing-post` y `activation`, no disparada directamente por el editor | 7 |
-| `writing-book` | RAMA BOOK de WRITING | 7 |
-| `writing-post` | RAMA POST de WRITING, con hook de prerequisito de investigación | 7 |
+| `shared-writing` | Los 4 prompts compartidos de PARTE 4 (WRITE_POST, CREATE_TIMELINE, CREATE_CAST, QA_IDEAS) — invocada por `write-post` y `activation`, no disparada directamente por el editor | 7 |
+| `write-book` | RAMA BOOK de WRITING | 7 |
+| `write-post` | RAMA POST de WRITING, con hook de prerequisito de investigación | 7 |
 | `evaluation` | Subsistema EVALUATION completo (5 evaluadores, incluido `PROMPT_EVALUATE_ACTIVATION` nuevo) | 7 |
 | `activation` | Subsistema ACTIVATION completo | 7 |
 

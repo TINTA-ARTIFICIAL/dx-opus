@@ -14,7 +14,7 @@
 #
 #     - No existe (o no es parseable): instruye a Claude a presentarse como
 #       DX-OPUS, explicar en una frase qué hace el sistema, y ofrecer — sin
-#       ejecutarla automáticamente — iniciar la skill `editor-onboarding`.
+#       ejecutarla automáticamente — iniciar la skill `setup`.
 #     - Existe: contexto mínimo, no repetitivo, con el `editor_name` leído
 #       del propio archivo (formato real: ver
 #       _system/templates/TEMPLATE_EDITOR_CONFIG.md, sección
@@ -50,7 +50,7 @@ No se encontró configuración de editor (_editor/config/EDITOR_CONFIG.md no exi
 Instrucciones para Claude en este primer mensaje:
 1. Preséntate brevemente como DX-OPUS.
 2. Explica en una sola frase qué hace el sistema.
-3. Ofrece iniciar la skill `editor-onboarding` para configurar su entorno — NO la ejecutes automáticamente, ni asumas que el editor ya quiere hacerlo.
+3. Ofrece iniciar la skill `setup` para configurar su entorno — NO la ejecutes automáticamente, ni asumas que el editor ya quiere hacerlo.
 4. Si el editor pide otra cosa directamente en su primer mensaje, responde a eso primero — esta bienvenida no tiene prioridad sobre una petición explícita del editor.
 
 Nota: si el primer intento de usar una skill de DXOPUS falla o no se reconoce, prueba de nuevo con un segundo mensaje antes de asumir que algo está roto.
