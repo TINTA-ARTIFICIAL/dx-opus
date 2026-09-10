@@ -4,7 +4,9 @@ description: >
   This skill should be used when the user wants to write a standalone post
   or a post series — trigger phrases like "quiero escribir un post sobre X",
   "empezar una serie de posts", "continuar mi post", "necesito el brief de
-  este post".
+  este post", "sigamos con este post", "vamos a escribir el siguiente post
+  de la serie", "ayúdame a terminar este post", "retomemos el post donde
+  lo dejamos".
 metadata:
   version: "0.1.0"
 ---

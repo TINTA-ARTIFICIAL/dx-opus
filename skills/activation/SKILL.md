@@ -4,7 +4,10 @@ description: >
   This skill should be used when the user wants to turn a finished book (or
   a collection of posts) into a content campaign — trigger phrases like
   "quiero activar mi libro", "generar posts a partir de este libro",
-  "proponer ideas para un nuevo libro desde este material".
+  "proponer ideas para un nuevo libro desde este material", "qué puedo sacar
+  de este material ya escrito", "vamos a convertir este libro en
+  contenido", "cómo exprimo este libro para redes", "dame ideas para
+  activar este contenido".
 metadata:
   version: "0.1.0"
 ---

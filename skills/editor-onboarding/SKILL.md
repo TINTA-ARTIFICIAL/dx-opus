@@ -4,10 +4,12 @@ description: >
   This skill should be used the first time an editor sets up D-X-OPUS, or
   when they explicitly want to review/update their personal configuration —
   trigger phrases like "configurar mi entorno", "primera vez que uso esto",
-  "quiero cambiar mi configuración de editor". It should also be used when a
-  new, disoriented editor greets Claude or asks a generic question about the
+  "quiero cambiar mi configuración de editor", "no sé por dónde empezar con
+  esto", "esto es nuevo para mí". It should also be used when a new,
+  disoriented editor greets Claude or asks a generic question about the
   system without knowing the exact setup phrase — trigger phrases like
-  "hola", "¿qué es esto?", "¿cómo funciona esto?".
+  "hola", "buenas", "¿qué es esto?", "¿cómo funciona esto?", "¿qué puedes
+  hacer por mí?".
 metadata:
   version: "0.1.0"
 ---

@@ -5,7 +5,9 @@ description: >
   writing-post and activation skills — drafting a post from a POST_SEED,
   building a timeline or cast of characters, or running the editor
   positioning Q&A. It is typically invoked by those skills rather than
-  triggered directly by the editor.
+  triggered directly by the editor, though it may also match direct trigger
+  phrases like "ayúdame a construir la línea de tiempo", "arma el elenco
+  de personajes", "hagamos el cuestionario de posicionamiento".
 metadata:
   version: "0.1.0"
 ---
