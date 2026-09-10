@@ -29,20 +29,20 @@ or cache its instructions here. Each file is the single source of truth for
 its own workflow and is versioned independently of this skill.
 
 1. **`WRITE_POST`** — drafts a post from a `POST_SEED`.
-   Read `writing/shared/PROMPT_WRITE_POST.md` and follow it as written. Its
+   Read `${CLAUDE_PLUGIN_ROOT}/writing/shared/PROMPT_WRITE_POST.md` and follow it as written. Its
    canonical input is a `POST_SEED` and, depending on the workflow stage, a
    `POST_BRIEFING` — see "Data structures consumed" below for where those are
    defined.
 
 2. **`CREATE_TIMELINE`** — builds a chronology.
-   Read `writing/shared/PROMPT_CREATE_TIMELINE.md` and follow it as written.
+   Read `${CLAUDE_PLUGIN_ROOT}/writing/shared/PROMPT_CREATE_TIMELINE.md` and follow it as written.
 
 3. **`CREATE_CAST`** — builds a cast of characters.
-   Read `writing/shared/PROMPT_CREATE_CAST.md` and follow it as written.
+   Read `${CLAUDE_PLUGIN_ROOT}/writing/shared/PROMPT_CREATE_CAST.md` and follow it as written.
 
 4. **`QA_IDEAS`** — runs the editor's positioning Q&A.
-   Read `writing/post/PROMPT_QA_IDEAS.md` and follow it as written. **This
-   file lives in `writing/post/`, not `writing/shared/`** — its physical
+   Read `${CLAUDE_PLUGIN_ROOT}/writing/post/PROMPT_QA_IDEAS.md` and follow it as written. **This
+   file lives in `${CLAUDE_PLUGIN_ROOT}/writing/post/`, not `${CLAUDE_PLUGIN_ROOT}/writing/shared/`** — its physical
    location is known technical debt (flagged in the correction applied to
    `DL_20260416_SYSTEM_025`) that is out of scope for this skill to fix; the
    path above is where the file actually is today, not an assumption based
@@ -65,14 +65,14 @@ its own workflow and is versioned independently of this skill.
 ## Data structures consumed
 
 No new data structures are defined by this skill. `WRITE_POST` reads and
-produces the structures defined in `writing/post/TEMPLATE_POST_SEED.md` and
-`writing/post/TEMPLATE_POST_BRIEFING.md` — read those files directly when
+produces the structures defined in `${CLAUDE_PLUGIN_ROOT}/writing/post/TEMPLATE_POST_SEED.md` and
+`${CLAUDE_PLUGIN_ROOT}/writing/post/TEMPLATE_POST_BRIEFING.md` — read those files directly when
 their structure is needed, do not copy their fields here.
 
 ## Out of scope
 
 - Deciding when `writing-post` or `activation` should invoke each of the four
   functions — that logic belongs to those skills, not to this one.
-- Moving `PROMPT_QA_IDEAS.md` into `writing/shared/` — that is separate,
+- Moving `PROMPT_QA_IDEAS.md` into `${CLAUDE_PLUGIN_ROOT}/writing/shared/` — that is separate,
   not-yet-scheduled technical debt.
 - Modifying the content of any of the four wrapped prompts.

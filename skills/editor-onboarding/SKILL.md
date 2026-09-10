@@ -18,9 +18,9 @@ Configura por única vez el `EDITOR_CONFIG` de un editor en el modelo de plugin.
 
 ## Decisión de diseño: ubicación de EDITOR_CONFIG.md
 
-`_system/resources/AUTO_SAVE_CONFIG.yaml` (sección `EDITOR.EDITOR_CONFIG`) ya declara `folder: "_editor/config"`, `unique: true`, `scope: "global"` para este artefacto — es la fuente única de verdad para su naming y unicidad, no la reproduzcas aquí.
+`${CLAUDE_PLUGIN_ROOT}/_system/resources/AUTO_SAVE_CONFIG.yaml` (sección `EDITOR.EDITOR_CONFIG`) ya declara `folder: "_editor/config"`, `unique: true`, `scope: "global"` para este artefacto — es la fuente única de verdad para su naming y unicidad, no la reproduzcas aquí.
 
-Esa entrada se escribió para el modelo anterior (Apps Script/Drive), donde la ruta completa era `D-X-OPUS/_editor/config/EDITOR_CONFIG.md` con `D-X-OPUS/` como raíz de Drive (ver "Ubicación" en `_system/templates/TEMPLATE_EDITOR_CONFIG.md`). En el modelo de plugin, `_system/SPEC_PLUGIN_ARCHITECTURE.md` §8 fija que **la raíz del plugin es la raíz de este repositorio**. Aplicando ese mismo criterio aquí — igual que `project-setup` (S6-02) crea `projects/{project_code}_{project_name}/` directamente en la raíz del repo — el `folder: "_editor/config"` de `AUTO_SAVE_CONFIG.yaml` se resuelve **relativo a la raíz del repo/plugin**, no relativo a ninguna carpeta de Drive.
+Esa entrada se escribió para el modelo anterior (Apps Script/Drive), donde la ruta completa era `D-X-OPUS/_editor/config/EDITOR_CONFIG.md` con `D-X-OPUS/` como raíz de Drive (ver "Ubicación" en `${CLAUDE_PLUGIN_ROOT}/_system/templates/TEMPLATE_EDITOR_CONFIG.md`). En el modelo de plugin, `_system/SPEC_PLUGIN_ARCHITECTURE.md` §8 fija que **la raíz del plugin es la raíz de este repositorio**. Aplicando ese mismo criterio aquí — igual que `project-setup` (S6-02) crea `projects/{project_code}_{project_name}/` directamente en la raíz del repo — el `folder: "_editor/config"` de `AUTO_SAVE_CONFIG.yaml` se resuelve **relativo a la raíz del repo/plugin**, no relativo a ninguna carpeta de Drive.
 
 **Ruta resultante y vinculante para esta skill: `_editor/config/EDITOR_CONFIG.md`** (ruta relativa a la raíz del repo). Es un dato global del editor, no de un proyecto — no vive dentro de `projects/`.
 
@@ -42,7 +42,7 @@ Si no existe, continúa con el PASO 2.
 
 ## PASO 2: Recoger información personal mínima
 
-Lee `_system/templates/TEMPLATE_EDITOR_CONFIG.md` completo antes de generar nada — la estructura de `EDITOR_CONFIG.md` es exactamente la de ese template, no un formato nuevo ni una versión abreviada.
+Lee `${CLAUDE_PLUGIN_ROOT}/_system/templates/TEMPLATE_EDITOR_CONFIG.md` completo antes de generar nada — la estructura de `EDITOR_CONFIG.md` es exactamente la de ese template, no un formato nuevo ni una versión abreviada.
 
 Pregunta al editor solo los datos mínimos que el propio template requiere para la sección "INFORMACIÓN PERSONAL":
 
@@ -56,7 +56,7 @@ No inventes ni pidas campos que no estén en el template.
 
 El template tiene dos partes claramente distintas — no las confundas:
 
-- **Envoltura del template como artefacto** (cabecera YAML `id/type/subsystem/...`, `CHANGELOG`, `DEPENDENCIES`, `DESCRIPTION`, el título "# TEMPLATE: EDITOR_CONFIG", la sección "INSTRUCCIONES DE USO" y la nota "**Ubicación:** ..."). Esto describe el template en sí dentro de `_system/templates/` — **no se copia** al `EDITOR_CONFIG.md` generado.
+- **Envoltura del template como artefacto** (cabecera YAML `id/type/subsystem/...`, `CHANGELOG`, `DEPENDENCIES`, `DESCRIPTION`, el título "# TEMPLATE: EDITOR_CONFIG", la sección "INSTRUCCIONES DE USO" y la nota "**Ubicación:** ..."). Esto describe el template en sí dentro de `${CLAUDE_PLUGIN_ROOT}/_system/templates/` — **no se copia** al `EDITOR_CONFIG.md` generado.
 - **Estructura real a copiar**: desde el encabezado `# EDITOR_CONFIG :: [NOMBRE_EDITOR]` hasta `**FIN DEL TEMPLATE EDITOR_CONFIG**` inclusive, con todas las secciones intermedias en el mismo orden (Información Personal, Configuración Técnica, Configuración Editorial, Biblioteca Personal, Proyectos Activos, Estadísticas de Uso, Configuración Avanzada, Troubleshooting Log, Notas Personales, Metadatos de Configuración, Acciones Automáticas, Próximos Pasos).
 
 Genera el `EDITOR_CONFIG.md` copiando esa segunda parte íntegra, con estas reglas:
@@ -68,11 +68,11 @@ Genera el `EDITOR_CONFIG.md` copiando esa segunda parte íntegra, con estas regl
 
 Crea la carpeta `_editor/config/` si no existe, y guarda el archivo en `_editor/config/EDITOR_CONFIG.md`.
 
-Si falla la escritura (permisos, ruta no accesible), no guardes en ninguna otra carpeta como alternativa — presenta el contenido completo del archivo en el chat junto con la ruta exacta (`_editor/config/EDITOR_CONFIG.md`) para que el editor lo guarde manualmente. Mismo criterio que `ERROR_HANDLING` en `_system/resources/AUTO_SAVE_CONFIG.yaml`.
+Si falla la escritura (permisos, ruta no accesible), no guardes en ninguna otra carpeta como alternativa — presenta el contenido completo del archivo en el chat junto con la ruta exacta (`_editor/config/EDITOR_CONFIG.md`) para que el editor lo guarde manualmente. Mismo criterio que `ERROR_HANDLING` en `${CLAUDE_PLUGIN_ROOT}/_system/resources/AUTO_SAVE_CONFIG.yaml`.
 
 ## PASO 4: Comprobar EDITOR_PROFILE (sin crearlo)
 
-Comprueba si existe ya un `EDITOR_PROFILE` para este editor en `_editor/profiles/EDITOR_PROFILE_{editor_name}.md` (ruta y naming según `_system/resources/AUTO_SAVE_CONFIG.yaml`, sección `EDITOR.EDITOR_PROFILE`).
+Comprueba si existe ya un `EDITOR_PROFILE` para este editor en `_editor/profiles/EDITOR_PROFILE_{editor_name}.md` (ruta y naming según `${CLAUDE_PLUGIN_ROOT}/_system/resources/AUTO_SAVE_CONFIG.yaml`, sección `EDITOR.EDITOR_PROFILE`).
 
 - **Si existe:** menciónalo al editor, sin leerlo en profundidad ni modificarlo — no es responsabilidad de esta skill.
 - **Si no existe:** esta skill **no lo crea**. Informa al editor de que puede definir su perfil editorial (voz, estilo) cuando quiera, invocando la skill `editorial-profile` — aclara que esa skill todavía no está construida (Sprint 7) si el editor pregunta cuándo estará disponible. No bloquees el resto del setup por su ausencia.

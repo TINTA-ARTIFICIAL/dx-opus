@@ -13,7 +13,7 @@ owner_chat:  activation-dev
 
 | Version | Date | Author | Summary |
 |---------|------|--------|---------|
-| v1.7 | 2026-09-03 | system-architecture | Corregidas 6 menciones de `PROMPT_QA_IDEAS` etiquetadas como "Writing/shared" — su ubicación real es `writing/post/` (compartido con Activation vía `DL_20260411_ACTIVATION_022`, no por vivir en `writing/shared/`). Hallazgo señalado durante Sprint 7 (S7-08) sin corregir en su momento, conforme al scope de ese ticket; corregido aquí. |
+| v1.7 | 2026-09-03 | system-architecture | Corregidas 6 menciones de `PROMPT_QA_IDEAS` etiquetadas como "Writing/shared" — su ubicación real es `${CLAUDE_PLUGIN_ROOT}/writing/post/` (compartido con Activation vía `DL_20260411_ACTIVATION_022`, no por vivir en `${CLAUDE_PLUGIN_ROOT}/writing/shared/`). Hallazgo señalado durante Sprint 7 (S7-08) sin corregir en su momento, conforme al scope de ese ticket; corregido aquí. |
 | v1.6 | 2026-04-19 | JM | Arquitectura dual-output: Ruta P (contenido → Writing POST) y Ruta L (BOOK_BRIEF → Research → Writing BOOK) como tracks paralelos desde CHECKPOINT DE ROUTING post-FASE 1. FASE 1: ANALYZE_BOOK_FOR_ACTIVATION [DISEÑAR] → IDENTIFY_NARRATIVE_SEEDS v2.0 [ACTIVE]. PROMPT_CREATE_BOOK_BRIEF reposicionado como FASE 2B (Ruta L), paralela a FASES 2A–5. [P+L] simultáneo posible. Implementa DL-A, DL-B, DL-C, DL-D (DL_20260420_ACTIVATION_023–026). |
 | v1.5 | 2026-04-16 | JM | Q&A de posicionamiento (PROMPT_QA_IDEAS) añadido en Fase 4 antes de escritura. POST_SEED como input canónico de PROMPT_WRITE_POST. Skip declarable por el editor. Referencias a CONTEXT_WRITING y TEMPLATE_POST_SEED. Cabecera YAML estándar añadida. PROMPT_WRITE_POST v2.0 confirmado como existente en /writing/shared/. WRITE_POST/WRITE_ARTICLE/WRITE_THREAD eliminados como pendientes. WRITING_CONTEXT añadido como artefacto de configuración requerido (writing/post/RESOURCE_WRITING_CONTEXT.md). Nota de scope R1: flujo completo /writing/post/ no compartido con Activation; generación POST_SEED propio de Activation pendiente Sprint 4. Implementa DL_20260411_ACTIVATION_022, DL_20260416_SYSTEM_025. |
 | v1.4 | 2026-02-12 | JM | NICHOS LITERARIOS integrados en FASE 0. Objetivos de activación integrados en ANALYZE_COLLECTION v1.4. |
@@ -55,13 +55,13 @@ calls:   [PROMPT_QA_IDEAS, PROMPT_WRITE_POST, PROMPT_CREATE_TIMELINE, PROMPT_CRE
 - ✅ **PROMPT_WRITE_POST v2.0 CONFIRMADO:** ya existe en `/writing/shared/` — no es pendiente de diseño
 - ✅ `WRITE_POST v1.0`, `WRITE_ARTICLE v1.0`, `WRITE_THREAD v1.0` eliminados como herramientas pendientes
 - ✅ **PROMPT_WRITE_POST v2.0** maneja todos los formatos (post_estandar, post_largo, hilo)
-- ✅ **`WRITING_CONTEXT`** añadido como artefacto de configuración requerido — definido en `writing/post/RESOURCE_WRITING_CONTEXT.md`
+- ✅ **`WRITING_CONTEXT`** añadido como artefacto de configuración requerido — definido en `${CLAUDE_PLUGIN_ROOT}/writing/post/RESOURCE_WRITING_CONTEXT.md`
 - ✅ **Nota de scope R1 (DL_20260416_SYSTEM_025):** flujo completo `/writing/post/` NO compartido con Activation en R1
 - ✅ Mecanismo de generación del POST_SEED propio de Activation: **pendiente diseño Sprint 4**
 - ✅ Fecha de actualización: 2026-04-16
 
 **v1.5 (12 abril 2026 — DL_20260411_ACTIVATION_022):**
-- ✅ **Q&A DE POSICIONAMIENTO:** `PROMPT_QA_IDEAS` (`writing/post/`, compartido con Activation vía `DL_20260411_ACTIVATION_022` — expuesto por la skill `shared-writing`, ver `_system/SCHEMA_SYSTEM_ARCHITECTURE.md` PARTE 4/8) añadido en FASE 4 antes de escritura
+- ✅ **Q&A DE POSICIONAMIENTO:** `PROMPT_QA_IDEAS` (`${CLAUDE_PLUGIN_ROOT}/writing/post/`, compartido con Activation vía `DL_20260411_ACTIVATION_022` — expuesto por la skill `shared-writing`, ver `_system/SCHEMA_SYSTEM_ARCHITECTURE.md` PARTE 4/8) añadido en FASE 4 antes de escritura
 - ✅ **POST_SEED como input canónico:** combina contenido del libro + voz posicionada del editor
 - ✅ Skip declarable por el editor con mismo mecanismo que en RAMA POST autónoma
 - ✅ Añadidas referencias a `CONTEXT_WRITING` y `TEMPLATE_POST_SEED` (Writing/shared)
@@ -238,7 +238,7 @@ WORKFLOW RESEARCH
    - Libro completo es input principal
    - EDITOR_PROFILE puede reutilizarse si existe
    - TIMELINE y CAST pueden reutilizarse si existen
-   - **FASE 4:** Activation invoca `PROMPT_QA_IDEAS` (`writing/post/`, compartido) y `PROMPT_WRITE_POST` (`writing/shared/`) — ambos expuestos por la skill `shared-writing`
+   - **FASE 4:** Activation invoca `PROMPT_QA_IDEAS` (`${CLAUDE_PLUGIN_ROOT}/writing/post/`, compartido) y `PROMPT_WRITE_POST` (`${CLAUDE_PLUGIN_ROOT}/writing/shared/`) — ambos expuestos por la skill `shared-writing`
    - Ver `CONTEXT_WRITING` para documentación completa de estos prompts
 
 3. **Independiente:**
@@ -2649,16 +2649,16 @@ Editor + IA (Q&A de posicionamiento) → IA escribe, Editor valida
 ### Herramientas
 
 **Q&A de posicionamiento (NUEVO en v1.5):**
-- ✅ **`PROMPT_QA_IDEAS`** — `writing/post/`, compartido con Activation (`DL_20260411_ACTIVATION_022`), owner: Writing
+- ✅ **`PROMPT_QA_IDEAS`** — `${CLAUDE_PLUGIN_ROOT}/writing/post/`, compartido con Activation (`DL_20260411_ACTIVATION_022`), owner: Writing
   Ver documentación completa en `CONTEXT_WRITING`
 
 **Escritura (todos los formatos):**
 - ✅ **`PROMPT_WRITE_POST v2.0`** — EXISTENTE, Writing/shared (owner: Writing)
   Maneja todos los formatos: `post_estandar`, `post_largo`, `hilo`.
-  Input canónico: POST_SEED. Documentación completa: `writing/shared/PROMPT_WRITE_POST.md`
+  Input canónico: POST_SEED. Documentación completa: `${CLAUDE_PLUGIN_ROOT}/writing/shared/PROMPT_WRITE_POST.md`
 
 **Artefacto de configuración:**
-- ✅ **`WRITING_CONTEXT`** — Definido en `writing/post/RESOURCE_WRITING_CONTEXT.md`
+- ✅ **`WRITING_CONTEXT`** — Definido en `${CLAUDE_PLUGIN_ROOT}/writing/post/RESOURCE_WRITING_CONTEXT.md`
   Combina EDITOR_PROFILE + publicación de destino + formato de texto.
   Activation lo prepara en el paso de Q&A de posicionamiento o manualmente.
 
@@ -2712,7 +2712,7 @@ INPUT A LA ESCRITURA (PASOS 4.3-4.7):
 
 **PASO 4.1: Q&A de Posicionamiento** ⭐ NUEVO EN v1.5
 
-**Herramienta:** `PROMPT_QA_IDEAS` (`writing/post/`, compartido con Activation — ver `CONTEXT_WRITING`)
+**Herramienta:** `PROMPT_QA_IDEAS` (`${CLAUDE_PLUGIN_ROOT}/writing/post/`, compartido con Activation — ver `CONTEXT_WRITING`)
 
 **Objetivo:** Capturar la posición del editor sobre el contenido del POST_PLAN antes de escribir. El POST_PLAN contiene estructura y contenido del libro, pero no la posición del editor sobre ese contenido. Sin este paso, el post puede sonar correcto en forma pero carecer de la voz real del editor.
 
@@ -2781,7 +2781,7 @@ No se requiere seleccionar entre herramientas distintas: siempre se usa
 
 **Input obligatorio:** POST_SEED_[N] (aprobado por editor) + WRITING_CONTEXT
 
-**Herramienta:** `PROMPT_WRITE_POST v2.0` (Writing/shared — ver `writing/shared/PROMPT_WRITE_POST.md`)
+**Herramienta:** `PROMPT_WRITE_POST v2.0` (Writing/shared — ver `${CLAUDE_PLUGIN_ROOT}/writing/shared/PROMPT_WRITE_POST.md`)
 
 El prompt escribe el post sección a sección desde el POST_SEED como input canónico.
 El WRITING_CONTEXT determina el formato, la extensión objetivo y la publicación de destino.
@@ -3176,7 +3176,7 @@ CONTENT_PACKAGE_[PROYECTO]/
 8. ✅ `PROMPT_QA_IDEAS` — EXISTENTE, shared (owner: Writing) ⭐ NUEVO EN v1.5
    Ver: `CONTEXT_WRITING`
 9. ✅ `PROMPT_WRITE_POST v2.0` — EXISTENTE, shared (owner: Writing) ⭐ ACTUALIZADO EN v1.5
-   Ver: `writing/shared/PROMPT_WRITE_POST.md`. Maneja todos los formatos (post_estandar, post_largo, hilo).
+   Ver: `${CLAUDE_PLUGIN_ROOT}/writing/shared/PROMPT_WRITE_POST.md`. Maneja todos los formatos (post_estandar, post_largo, hilo).
 
 **FASE 5: Validación**
 12. ⚠️ `EVALUATE_ACTIVATION_CONTENT v1.0` — PENDIENTE DISEÑO (bloqueado por RESOURCE_EVALUATION_FRAMEWORK)
@@ -3192,7 +3192,7 @@ CONTENT_PACKAGE_[PROYECTO]/
 | `TEMPLATE_POST_SEED` | TEMPLATE | v1.0 | Input canónico de PROMPT_WRITE_POST. Combina estructura del POST_PLAN + voz posicionada del Q&A. ⭐ NUEVO EN v1.5 |
 | `PROMPT_QA_IDEAS` | PROMPT | — | Q&A de posicionamiento. Captura la posición del editor sobre el contenido antes de escribir. ⭐ NUEVO EN v1.5 |
 | `PROMPT_WRITE_POST` | PROMPT | v2.0 | Escritura del post. Input canónico: POST_SEED. Maneja todos los formatos. ⭐ ACTUALIZADO EN v1.5 |
-| `WRITING_CONTEXT` | RESOURCE | v1.0 | Artefacto de configuración: EDITOR_PROFILE + publicación de destino + formato. Definido en `writing/post/RESOURCE_WRITING_CONTEXT.md`. ⭐ NUEVO EN v1.5 |
+| `WRITING_CONTEXT` | RESOURCE | v1.0 | Artefacto de configuración: EDITOR_PROFILE + publicación de destino + formato. Definido en `${CLAUDE_PLUGIN_ROOT}/writing/post/RESOURCE_WRITING_CONTEXT.md`. ⭐ NUEVO EN v1.5 |
 | `PROMPT_CREATE_TIMELINE` | PROMPT | v1.0 | Cronología exhaustiva. |
 | `PROMPT_CREATE_CAST` | PROMPT | v1.0 | Catálogo de actores. |
 

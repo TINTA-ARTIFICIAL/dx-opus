@@ -22,7 +22,7 @@ thresholds live in the five evaluator prompts referenced below.
 
 ## Canonical contract — read before invoking any evaluator
 
-Read `evaluation/RESOURCE_EVALUATION_FRAMEWORK.md` in full before invoking
+Read `${CLAUDE_PLUGIN_ROOT}/evaluation/RESOURCE_EVALUATION_FRAMEWORK.md` in full before invoking
 any evaluator — it is the single source of truth for the `EVALUATION_RESULT`
 output contract (`status`, `score`, `decision_guidance`, `blocking_issues`,
 `improvement_areas`, `strengths`) that all five evaluators below implement.
@@ -35,21 +35,21 @@ Read the evaluator directly, by its real path, once you know which artifact
 the editor wants evaluated — do not copy, summarize, or cache their content
 into this file:
 
-- `evaluation/PROMPT_EVALUATE_RESEARCH_REPORT.md` — evaluates a
+- `${CLAUDE_PLUGIN_ROOT}/evaluation/PROMPT_EVALUATE_RESEARCH_REPORT.md` — evaluates a
   RESEARCH_REPORT or RESEARCH_DEEP_DIVE, pre-writing (before the editor
   starts drafting from it). Central question: is the investigation solid?
-- `evaluation/PROMPT_EVALUATE_BOOK_CONTENT.md` — evaluates the already-written
+- `${CLAUDE_PLUGIN_ROOT}/evaluation/PROMPT_EVALUATE_BOOK_CONTENT.md` — evaluates the already-written
   text of a book or chapter, post-writing / pre-publication. Central
   question: does the text cite well and avoid overclaiming beyond its
   sources?
-- `evaluation/PROMPT_EVALUATE_BOOK_STYLE.md` — evaluates a book or chapter's
+- `${CLAUDE_PLUGIN_ROOT}/evaluation/PROMPT_EVALUATE_BOOK_STYLE.md` — evaluates a book or chapter's
   adherence to the editor's editorial profile (voice, tone, patterns). Does
   not apply to posts, articles, or research reports — see its own
   "NO aplicable a" list.
-- `evaluation/PROMPT_EVALUATE_POST.md` — evaluates a post or article ready
+- `${CLAUDE_PLUGIN_ROOT}/evaluation/PROMPT_EVALUATE_POST.md` — evaluates a post or article ready
   for publication: narrative core, structure, editorial voice, rigor of
   claims, editorial completeness.
-- `evaluation/PROMPT_EVALUATE_ACTIVATION.md` — evaluates activation
+- `${CLAUDE_PLUGIN_ROOT}/evaluation/PROMPT_EVALUATE_ACTIVATION.md` — evaluates activation
   *planning* artifacts (ACTIVATION_CONTEXT, BOOK_BRIEF, CONTENT_STRATEGY)
   produced before any publishable content exists. Does not evaluate
   finished pieces of content.
@@ -90,8 +90,8 @@ decide.
 ## Out of scope
 
 - Modifying the content of any of the five evaluator prompts or of
-  `evaluation/RESOURCE_EVALUATION_FRAMEWORK.md`.
-- Building `evaluation/PROMPT_EVALUATE_ACTIVATION.md` — already built in
+  `${CLAUDE_PLUGIN_ROOT}/evaluation/RESOURCE_EVALUATION_FRAMEWORK.md`.
+- Building `${CLAUDE_PLUGIN_ROOT}/evaluation/PROMPT_EVALUATE_ACTIVATION.md` — already built in
   S7-05, not part of this skill.
 - Any hook — evaluation gates stay as soft instruction, not structural
   enforcement (see "Editorial confidence by design" above).

@@ -2,10 +2,10 @@
 id:          DEV_STANDARDS
 type:        SCHEMA
 subsystem:   SYSTEM
-version:     1.0
+version:     1.1
 status:      ACTIVE
 created:     2026-09-03
-updated:     2026-09-03
+updated:     2026-09-10
 owner_chat:  system-architecture
 ---
 
@@ -14,6 +14,7 @@ owner_chat:  system-architecture
 | Version | Date | Author | Summary |
 |---------|------|--------|---------|
 | v1.0 | 2026-09-03 | system-architecture | Creación inicial — estándar vinculante para D-dispatcher/D-developer al implementar el backlog de `docs/backlog/`. |
+| v1.1 | 2026-09-10 | system-architecture | §4: exige el prefijo `${CLAUDE_PLUGIN_ROOT}/` en toda ruta fuera de la propia carpeta de la skill — hallazgo real de instalación (Sprint 8, ticket S8-08) que bloqueaba la ejecución de todas las skills en un plugin instalado. |
 
 ---
 
@@ -53,8 +54,9 @@ Si tu ticket te pide crear una skill que necesita ese dato, el `SKILL.md` debe d
 Ver `_system/SPEC_PLUGIN_ARCHITECTURE.md` §8 para el razonamiento completo. Regla operativa:
 
 - El root del plugin es el root de este repo. `research/`, `writing/`, `evaluation/`, `activation/`, `editorial-profile/`, `knowledge-base/` **no se mueven ni se copian**.
-- Un `SKILL.md` es un archivo nuevo y corto: metadata (`name`, `description` con frases disparadoras concretas en tercera persona) + instrucciones de cuándo usar cada prompt existente **por su ruta real** (`research/PROMPT_CREATE_RESEARCH_PLAN.md`, no una copia en `skills/research/references/PROMPT_CREATE_RESEARCH_PLAN.md`).
+- Un `SKILL.md` es un archivo nuevo y corto: metadata (`name`, `description` con frases disparadoras concretas en tercera persona) + instrucciones de cuándo usar cada prompt existente **por su ruta real** (no una copia en `skills/research/references/PROMPT_CREATE_RESEARCH_PLAN.md`).
 - Si un ticket de skill te pide crear una carpeta `references/` con contenido copiado de otro sitio del repo, es una señal de que el ticket está mal escrito — para y pregunta antes de duplicar.
+- **Toda ruta a un archivo fuera de la propia carpeta de la skill (`skills/{nombre}/`) debe llevar el prefijo `${CLAUDE_PLUGIN_ROOT}/`** — p. ej. `` `${CLAUDE_PLUGIN_ROOT}/research/PROMPT_CREATE_RESEARCH_PLAN.md` ``, nunca `` `research/PROMPT_CREATE_RESEARCH_PLAN.md` `` a secas. Hallazgo real de instalación (Sprint 8, ver ticket S8-08): sin ese prefijo, Claude resuelve la ruta contra el directorio de trabajo de la sesión del editor (donde esos archivos no existen), no contra la raíz real del plugin instalado — aunque el contenido esté correctamente empaquetado. `${CLAUDE_PLUGIN_ROOT}` se sustituye tanto en el cuerpo markdown de un `SKILL.md` como en comandos de `hooks/hooks.json` (documentado en la referencia oficial de Claude Code, sección "Available string substitutions" de `skills.md`). Excepción: citas a documentación de desarrollo no empaquetada (`_system/SPEC_*.md`, `_system/SCHEMA_*.md`, etc.) — esas quedan sin prefijo porque no son instrucciones de lectura en tiempo de ejecución, son referencias de contexto para quien desarrolla.
 
 ## 5. Formato de skill (Cowork plugin)
 

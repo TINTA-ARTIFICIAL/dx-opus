@@ -16,7 +16,7 @@ No es lo mismo que `editor-onboarding` (S6-03): esa skill configura el `EDITOR_C
 
 ## Decisión de diseño: ubicación de EDITOR_PROFILE
 
-`_system/resources/AUTO_SAVE_CONFIG.yaml` (sección `EDITOR.EDITOR_PROFILE`) ya declara `folder: "_editor/profiles"`, `template: "EDITOR_PROFILE_{editor_name}.md"`, `scope: "global"` para este artefacto — es la fuente única de verdad para su naming, no la reproduzcas aquí.
+`${CLAUDE_PLUGIN_ROOT}/_system/resources/AUTO_SAVE_CONFIG.yaml` (sección `EDITOR.EDITOR_PROFILE`) ya declara `folder: "_editor/profiles"`, `template: "EDITOR_PROFILE_{editor_name}.md"`, `scope: "global"` para este artefacto — es la fuente única de verdad para su naming, no la reproduzcas aquí.
 
 Igual que `editor-onboarding` (S6-03) resolvió `_editor/config` como relativo a la raíz del plugin (`_system/SPEC_PLUGIN_ARCHITECTURE.md` §8: la raíz del plugin es la raíz de este repositorio), aplica el mismo criterio aquí: `folder: "_editor/profiles"` se resuelve **relativo a la raíz del repo/plugin**, no relativo a ninguna carpeta de Drive del modelo anterior.
 
@@ -47,24 +47,24 @@ Si no existe, continúa con el PASO 3.
 
 ## PASO 3: Generar el EDITOR_PROFILE
 
-Lee `editorial-profile/PROMPT_CREATE_EDITOR_PROFILE.md` completo y sigue su metodología tal cual — ese prompt define el proceso completo (recopilación de fuentes, análisis por sección, extracción de ejemplos, síntesis, validación) y los inputs mínimos/opcionales/ideales que debes recoger del editor antes de generar nada. No reproduzcas aquí esa metodología, ni la resumas de forma que sustituya la lectura del prompt.
+Lee `${CLAUDE_PLUGIN_ROOT}/editorial-profile/PROMPT_CREATE_EDITOR_PROFILE.md` completo y sigue su metodología tal cual — ese prompt define el proceso completo (recopilación de fuentes, análisis por sección, extracción de ejemplos, síntesis, validación) y los inputs mínimos/opcionales/ideales que debes recoger del editor antes de generar nada. No reproduzcas aquí esa metodología, ni la resumas de forma que sustituya la lectura del prompt.
 
-La estructura del documento resultante es la de `editorial-profile/TEMPLATE_EDITOR_PROFILE.md` — léelo antes de generar nada y respétalo íntegro: todas sus secciones, en el mismo orden, sin añadir ni inventar campos que el template no contempla. Si alguna sección no aplica por falta de información, márcala como corresponde según las instrucciones del propio `PROMPT_CREATE_EDITOR_PROFILE.md` (p. ej. "[INFORMACIÓN INSUFICIENTE]"), no la omitas ni la rellenes con contenido inventado.
+La estructura del documento resultante es la de `${CLAUDE_PLUGIN_ROOT}/editorial-profile/TEMPLATE_EDITOR_PROFILE.md` — léelo antes de generar nada y respétalo íntegro: todas sus secciones, en el mismo orden, sin añadir ni inventar campos que el template no contempla. Si alguna sección no aplica por falta de información, márcala como corresponde según las instrucciones del propio `PROMPT_CREATE_EDITOR_PROFILE.md` (p. ej. "[INFORMACIÓN INSUFICIENTE]"), no la omitas ni la rellenes con contenido inventado.
 
 Recursos adicionales que pueden informar el perfil, si el editor los menciona o resultan relevantes:
 
-- `editorial-profile/RESOURCE_EDITORIAL_STYLE.md` — estilos editoriales ya definidos en el sistema (útil para situar la voz del editor respecto al estilo de casa de Tinta Artificial).
-- `editorial-profile/RESOURCE_BOOK_TYPES.md` — tipos de libro que el sistema soporta (útil al completar la sección de "Aplicación al Workflow de Escritura" del template).
+- `${CLAUDE_PLUGIN_ROOT}/editorial-profile/RESOURCE_EDITORIAL_STYLE.md` — estilos editoriales ya definidos en el sistema (útil para situar la voz del editor respecto al estilo de casa de Tinta Artificial).
+- `${CLAUDE_PLUGIN_ROOT}/editorial-profile/RESOURCE_BOOK_TYPES.md` — tipos de libro que el sistema soporta (útil al completar la sección de "Aplicación al Workflow de Escritura" del template).
 
 Léelos por su ruta real cuando los necesites — no copies su contenido en este archivo ni en el `EDITOR_PROFILE` generado.
 
 Guarda el resultado en `_editor/profiles/EDITOR_PROFILE_{editor_name}.md` (crea la carpeta `_editor/profiles/` si no existe).
 
-Si falla la escritura (permisos, ruta no accesible), no guardes en ninguna otra carpeta como alternativa — presenta el contenido completo del archivo en el chat junto con la ruta exacta para que el editor lo guarde manualmente. Mismo criterio que `ERROR_HANDLING` en `_system/resources/AUTO_SAVE_CONFIG.yaml`.
+Si falla la escritura (permisos, ruta no accesible), no guardes en ninguna otra carpeta como alternativa — presenta el contenido completo del archivo en el chat junto con la ruta exacta para que el editor lo guarde manualmente. Mismo criterio que `ERROR_HANDLING` en `${CLAUDE_PLUGIN_ROOT}/_system/resources/AUTO_SAVE_CONFIG.yaml`.
 
 ## PASO 4: Mencionar el mecanismo de notas del editor
 
-Informa al editor de que, durante la producción de un libro, puede usar `editorial-profile/TEMPLATE_EDITOR_NOTES.md` (con la guía `editorial-profile/GUIDE_EDITOR_NOTES.md`) para capturar reflexiones y decisiones editoriales a medida que avanza — material que luego alimenta el prólogo y la introducción del libro. Esto es independiente del `EDITOR_PROFILE`: no lo actives ni lo crees en esta skill, solo menciónalo.
+Informa al editor de que, durante la producción de un libro, puede usar `${CLAUDE_PLUGIN_ROOT}/editorial-profile/TEMPLATE_EDITOR_NOTES.md` (con la guía `${CLAUDE_PLUGIN_ROOT}/editorial-profile/GUIDE_EDITOR_NOTES.md`) para capturar reflexiones y decisiones editoriales a medida que avanza — material que luego alimenta el prólogo y la introducción del libro. Esto es independiente del `EDITOR_PROFILE`: no lo actives ni lo crees en esta skill, solo menciónalo.
 
 ## PASO 5: Cierre
 

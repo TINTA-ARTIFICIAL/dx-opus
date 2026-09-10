@@ -22,7 +22,7 @@ logic of its own.
 
 ## Canonical sequence
 
-Read `activation/WORKFLOW_ACTIVATION.md` in full before orienting the
+Read `${CLAUDE_PLUGIN_ROOT}/activation/WORKFLOW_ACTIVATION.md` in full before orienting the
 editor — it is the single source of truth for the phase sequence (Fase 0 to
 Fase 5), the dual-output architecture (Ruta P vs Ruta L, and the
 CHECKPOINT DE ROUTING that splits them), phase inputs/outputs, and
@@ -36,15 +36,15 @@ Read each artifact directly, by its real path, at the point in the workflow
 where `WORKFLOW_ACTIVATION.md` calls for it — do not copy, summarize, or
 cache their content into this file:
 
-- `activation/PROMPT_ANALYZE_COLLECTION_FOR_ACTIVATION.md` — Fase 0, the
+- `${CLAUDE_PLUGIN_ROOT}/activation/PROMPT_ANALYZE_COLLECTION_FOR_ACTIVATION.md` — Fase 0, the
   entry point. Analyzes the book(s)/corpus and produces the
   `ACTIVATION_CONTEXT`, with or without existing `RESEARCH_REPORT`(s) as
   enrichment.
-- `activation/PROMPT_IDENTIFY_NARRATIVE_SEEDS.md` — Fase 1. Exhaustive
+- `${CLAUDE_PLUGIN_ROOT}/activation/PROMPT_IDENTIFY_NARRATIVE_SEEDS.md` — Fase 1. Exhaustive
   mining of narrative seeds from `ACTIVATION_CONTEXT`, timeline, cast and
   editor profile. Feeds the routing checkpoint that classifies seeds into
   Ruta P / Ruta L / Ruta P+L.
-- `activation/PROMPT_CREATE_BOOK_BRIEF.md` — Fase 2B (Ruta L), parallel to
+- `${CLAUDE_PLUGIN_ROOT}/activation/PROMPT_CREATE_BOOK_BRIEF.md` — Fase 2B (Ruta L), parallel to
   the post-production phases of Ruta P. Produces the `BOOK_BRIEF`, a set of
   structured proposals for a new book — the closing step of the
   Activation → Research loop.
@@ -65,7 +65,7 @@ specifies for that step.
 
 To evaluate activation content (posts, articles, threads produced through
 this workflow, or a `BOOK_BRIEF`), invoke the `evaluation` skill (S7-06),
-which routes to `evaluation/PROMPT_EVALUATE_ACTIVATION.md` (S7-05). This
+which routes to `${CLAUDE_PLUGIN_ROOT}/evaluation/PROMPT_EVALUATE_ACTIVATION.md` (S7-05). This
 invocation is soft and non-blocking, the same criterion used across the
 rest of the system: a `RED` evaluation result never prevents the editor
 from continuing — it is feedback, not a gate. Do not add any gate or hook
@@ -73,10 +73,10 @@ here that would block on the evaluation result.
 
 ## Known documentation inconsistency — do not fix here
 
-`activation/WORKFLOW_ACTIVATION.md` still tags `PROMPT_QA_IDEAS` as
+`${CLAUDE_PLUGIN_ROOT}/activation/WORKFLOW_ACTIVATION.md` still tags `PROMPT_QA_IDEAS` as
 `[Writing/shared]` in several places (its `DEPENDENCIES` block, the Fase 4
 header, and older changelog entries), which is inconsistent with the
-artifact's real path, `writing/post/PROMPT_QA_IDEAS.md`. This has already
+artifact's real path, `${CLAUDE_PLUGIN_ROOT}/writing/post/PROMPT_QA_IDEAS.md`. This has already
 been resolved conceptually in `_system/SPEC_PLUGIN_ARCHITECTURE.md` §5.2 —
 `PROMPT_QA_IDEAS` is shared by design (`DL_20260411_ACTIVATION_022`,
 correction applied to `DL_20260416_SYSTEM_025`) and is exposed through the
@@ -85,19 +85,19 @@ correction applied to `DL_20260416_SYSTEM_025`) and is exposed through the
 This skill does not rewrite `WORKFLOW_ACTIVATION.md` to fix that tag — out
 of scope for this ticket (S7-08). When orienting the editor to that prompt,
 always use its real path via `shared-writing`
-(`writing/post/PROMPT_QA_IDEAS.md`), not the `[Writing/shared]` tag as
+(`${CLAUDE_PLUGIN_ROOT}/writing/post/PROMPT_QA_IDEAS.md`), not the `[Writing/shared]` tag as
 currently written in the workflow document.
 
 ## Reusable data structures
 
 No new structures. `ACTIVATION_CONTEXT`, `BOOK_BRIEF`, `POST_PLAN` and
 `CONTENT_STRATEGY` already have their path and naming defined in
-`_system/resources/AUTO_SAVE_CONFIG.yaml`, section `ACTIVATION` — read that
+`${CLAUDE_PLUGIN_ROOT}/_system/resources/AUTO_SAVE_CONFIG.yaml`, section `ACTIVATION` — read that
 file, do not reproduce its naming rules here.
 
 ## Out of scope
 
-- Modifying the content of any prompt in `activation/`, or of
+- Modifying the content of any prompt in `${CLAUDE_PLUGIN_ROOT}/activation/`, or of
   `WORKFLOW_ACTIVATION.md` — including the `PROMPT_QA_IDEAS` location tag
   described above.
 - The `shared-writing` skill (S7-03) and the `evaluation` skill (S7-06) —
