@@ -12,13 +12,13 @@ metadata:
 
 Crea o actualiza el `EDITOR_PROFILE` de un editor: el documento que modela su voz, registro, estilo y restricciones como comunicador, y que luego se usa como input de contexto en Writing, Activation y Evaluation.
 
-No es lo mismo que `editor-onboarding` (S6-03): esa skill configura el `EDITOR_CONFIG` (datos técnicos y de proyectos del editor) y, si no encuentra un `EDITOR_PROFILE`, orienta hacia esta skill para crearlo — pero no depende de que `editor-onboarding` se haya ejecutado antes en la misma sesión.
+No es lo mismo que `setup` (S6-03): esa skill configura el `EDITOR_CONFIG` (datos técnicos y de proyectos del editor) y, si no encuentra un `EDITOR_PROFILE`, orienta hacia esta skill para crearlo — pero no depende de que `setup` se haya ejecutado antes en la misma sesión.
 
 ## Decisión de diseño: ubicación de EDITOR_PROFILE
 
 `${CLAUDE_PLUGIN_ROOT}/_system/resources/AUTO_SAVE_CONFIG.yaml` (sección `EDITOR.EDITOR_PROFILE`) ya declara `folder: "_editor/profiles"`, `template: "EDITOR_PROFILE_{editor_name}.md"`, `scope: "global"` para este artefacto — es la fuente única de verdad para su naming, no la reproduzcas aquí.
 
-Igual que `editor-onboarding` (S6-03) resolvió `_editor/config` como relativo a la raíz del plugin (`_system/SPEC_PLUGIN_ARCHITECTURE.md` §8: la raíz del plugin es la raíz de este repositorio), aplica el mismo criterio aquí: `folder: "_editor/profiles"` se resuelve **relativo a la raíz del repo/plugin**, no relativo a ninguna carpeta de Drive del modelo anterior.
+Igual que `setup` (S6-03) resolvió `_editor/config` como relativo a la raíz del plugin (`_system/SPEC_PLUGIN_ARCHITECTURE.md` §8: la raíz del plugin es la raíz de este repositorio), aplica el mismo criterio aquí: `folder: "_editor/profiles"` se resuelve **relativo a la raíz del repo/plugin**, no relativo a ninguna carpeta de Drive del modelo anterior.
 
 **Ruta resultante y vinculante para esta skill: `_editor/profiles/EDITOR_PROFILE_{editor_name}.md`** (ruta relativa a la raíz del repo, con `{editor_name}` sustituido por el nombre del editor). Es un dato global del editor, no de un proyecto — no vive dentro de `projects/`.
 
@@ -26,7 +26,7 @@ Igual que `editor-onboarding` (S6-03) resolvió `_editor/config` como relativo a
 
 Necesitas `editor_name` para resolver la ruta del archivo.
 
-1. Si existe `_editor/config/EDITOR_CONFIG.md` (creado por `editor-onboarding`), léelo y toma `editor_name` de ahí.
+1. Si existe `_editor/config/EDITOR_CONFIG.md` (creado por `setup`), léelo y toma `editor_name` de ahí.
 2. Si no existe, o el campo no está presente, pregunta directamente al editor su nombre.
 
 ## PASO 2: Detectar si ya existe un EDITOR_PROFILE para este editor
@@ -70,7 +70,7 @@ Informa al editor de que, durante la producción de un libro, puede usar `${CLAU
 
 ### CHECKPOINT — no avances de forma autónoma al siguiente paso
 
-Al terminar (perfil creado o actualizado), **para aquí**. No inicies tú mismo `project-setup` ni ningún otro workflow.
+Al terminar (perfil creado o actualizado), **para aquí**. No inicies tú mismo `new-project` ni ningún otro workflow.
 
 Presenta un resumen breve:
 

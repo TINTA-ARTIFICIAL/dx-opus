@@ -80,20 +80,20 @@ Mover el contenido que **solo usa una skill** dentro de la carpeta de esa skill,
 | Carpeta origen | Uso exclusivo de | Destino |
 |---|---|---|
 | `research/*` | `research` | `skills/research/` |
-| `writing/book/*` | `writing-book` | `skills/writing-book/` |
+| `writing/book/*` | `write-book` | `skills/write-book/` |
 | `activation/PROMPT_ANALYZE_COLLECTION_FOR_ACTIVATION.md`, `PROMPT_IDENTIFY_NARRATIVE_SEEDS.md`, `PROMPT_CREATE_BOOK_BRIEF.md`, `WORKFLOW_ACTIVATION.md` | `activation` | `skills/activation/` |
-| `writing/post/PROMPT_POST_BRIEF.md`, `PROMPT_POST_EXPLORE.md`, `PROMPT_SUMMARIZE_REF.md`, `PROMPT_VERIFY_RESEARCH.md`, `PROMPT_POST_ANGLES.md`, `PROMPT_PLAN_POST.md`, `PROMPT_SPLIT_POST.md` | `writing-post` | `skills/writing-post/` |
+| `writing/post/PROMPT_POST_BRIEF.md`, `PROMPT_POST_EXPLORE.md`, `PROMPT_SUMMARIZE_REF.md`, `PROMPT_VERIFY_RESEARCH.md`, `PROMPT_POST_ANGLES.md`, `PROMPT_PLAN_POST.md`, `PROMPT_SPLIT_POST.md` | `write-post` | `skills/write-post/` |
 
 ### 5.c Contenido compartido → delegación por skill, no por ruta (sin duplicación)
 
-`evaluation` y `knowledge-base` ya son skills propias. En vez de que `writing-book`, `writing-post` y `activation` lean sus prompts por ruta directa, deben invocarlas con la herramienta `Skill` (mecanismo que sí funciona en cloud, confirmado hoy) y dejar que cada una gestione su propio contenido, ahora auto-contenido dentro de su propia carpeta:
+`evaluation` y `knowledge-base` ya son skills propias. En vez de que `write-book`, `write-post` y `activation` lean sus prompts por ruta directa, deben invocarlas con la herramienta `Skill` (mecanismo que sí funciona en cloud, confirmado hoy) y dejar que cada una gestione su propio contenido, ahora auto-contenido dentro de su propia carpeta:
 
 | Carpeta origen | Se convierte en contenido interno de | Quién deja de leerla por ruta directa |
 |---|---|---|
-| `evaluation/*` | `skills/evaluation/` | `writing-book`, `writing-post`, `activation` (pasan a invocar la skill) |
+| `evaluation/*` | `skills/evaluation/` | `write-book`, `write-post`, `activation` (pasan a invocar la skill) |
 | `knowledge-base/*` | `skills/knowledge-base/` | `research` (pasa a invocar la skill) |
-| `writing/shared/*`, `writing/post/PROMPT_QA_IDEAS.md`, `writing/post/TEMPLATE_POST_SEED.md`, `writing/post/TEMPLATE_POST_BRIEFING.md` | `skills/shared-writing/` | `writing-post`, `activation` (ya la invocan por nombre — confirmar que sea invocación real de skill, no lectura de archivo) |
-| `editorial-profile/*` (a confirmar) | `skills/editorial-profile/` | `writing-book` (a confirmar el patrón exacto de su referencia) |
+| `writing/shared/*`, `writing/post/PROMPT_QA_IDEAS.md`, `writing/post/TEMPLATE_POST_SEED.md`, `writing/post/TEMPLATE_POST_BRIEFING.md` | `skills/shared-writing/` | `write-post`, `activation` (ya la invocan por nombre — confirmar que sea invocación real de skill, no lectura de archivo) |
+| `editorial-profile/*` (a confirmar) | `skills/editorial-profile/` | `write-book` (a confirmar el patrón exacto de su referencia) |
 
 **Nota de diseño:** esto reintroduce, a propósito, un único punto de verdad por capacidad compartida — no es duplicación, es que quien necesita "evaluar" o "consultar autoridad de fuentes" se lo pide a quien lo sabe hacer, en vez de leer sus apuntes por encima del hombro.
 
@@ -102,7 +102,7 @@ Mover el contenido que **solo usa una skill** dentro de la carpeta de esa skill,
 No encajan en el patrón "invocar una skill" (no son una capacidad, son datos de referencia). Tres opciones sobre la mesa, pendientes de decidir en el kickoff del sprint:
 
 1. Aceptar exposición al bug en cloud hasta que Anthropic lo resuelva (funcionan en local).
-2. Copiarlos a la carpeta de trabajo del editor en el primer arranque (vía `editor-onboarding`/`project-setup`, que ya escriben ahí) — aprovecha que 2.a sí es fiable en cloud. Riesgo bajo de desincronización porque son datos, no lógica versionada con frecuencia.
+2. Copiarlos a la carpeta de trabajo del editor en el primer arranque (vía `setup`/`new-project`, que ya escriben ahí) — aprovecha que 2.a sí es fiable en cloud. Riesgo bajo de desincronización porque son datos, no lógica versionada con frecuencia.
 3. Convertirlos en su propia skill mínima invocable — mismo patrón que 5.c, pero pesado para una simple consulta de configuración.
 
 ### 5.e Carpeta `commands/` para invocación `/comando` explícita

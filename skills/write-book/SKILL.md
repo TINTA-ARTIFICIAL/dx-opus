@@ -1,5 +1,5 @@
 ---
-name: writing-book
+name: write-book
 description: >
   This skill should be used when the user wants to write a non-fiction
   book — trigger phrases like "quiero escribir un libro sobre X", "crear

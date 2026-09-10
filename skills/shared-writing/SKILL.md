@@ -2,7 +2,7 @@
 name: shared-writing
 description: >
   This skill provides shared writing capabilities used by both the
-  writing-post and activation skills — drafting a post from a POST_SEED,
+  write-post and activation skills — drafting a post from a POST_SEED,
   building a timeline or cast of characters, or running the editor
   positioning Q&A. It is typically invoked by those skills rather than
   triggered directly by the editor.
@@ -15,7 +15,7 @@ metadata:
 ## When to use this skill
 
 This skill has no workflow of its own that the editor typically triggers
-directly. It exists so that `writing-post` and `activation` do not each
+directly. It exists so that `write-post` and `activation` do not each
 maintain their own copy of the same prompts — both invoke this skill by its
 `name` (`shared-writing`) and tell it which of the four functions below they
 need. The calling skill does not need to know the internal implementation,
@@ -59,7 +59,7 @@ its own workflow and is versioned independently of this skill.
 3. Execute the prompt exactly as it is written — its own steps, checkpoints,
    and auto-save behavior (where present) are authoritative. This skill does
    not add, remove, or reorder any step of the wrapped prompts.
-4. Return the prompt's output to the calling skill (`writing-post` or
+4. Return the prompt's output to the calling skill (`write-post` or
    `activation`).
 
 ## Data structures consumed
@@ -71,7 +71,7 @@ their structure is needed, do not copy their fields here.
 
 ## Out of scope
 
-- Deciding when `writing-post` or `activation` should invoke each of the four
+- Deciding when `write-post` or `activation` should invoke each of the four
   functions — that logic belongs to those skills, not to this one.
 - Moving `PROMPT_QA_IDEAS.md` into `${CLAUDE_PLUGIN_ROOT}/writing/shared/` — that is separate,
   not-yet-scheduled technical debt.
