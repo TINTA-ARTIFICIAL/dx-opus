@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # create-plugin-package.sh
-# D-X-OPUS Plugin Package Creation Script v1.4
+# D-X-OPUS Plugin Package Creation Script v1.5
 #
 # Usage:   tools/create-plugin-package.sh
 #          tools/create-plugin-package.sh --output /path/to/dx-opus.plugin
@@ -20,12 +20,14 @@
 #     - commands/
 #     - hooks/
 #     - Contenido de producción de los subsistemas que aún conservan
-#       contenido a nivel de repo (writing/, evaluation/, editorial-profile/,
-#       knowledge-base/) excepto sus subcarpetas dev/ — research/ y
-#       activation/ ya no aparecen aquí: todo su contenido exclusivo se
-#       movió dentro de skills/research/ y skills/activation/ (S9-01), y lo
-#       único que queda en esas dos carpetas de nivel superior es README.md
-#       y dev/, ambos excluidos de todas formas
+#       contenido a nivel de repo (writing/, editorial-profile/) excepto sus
+#       subcarpetas dev/ — research/, activation/, evaluation/ y
+#       knowledge-base/ ya no aparecen aquí: todo su contenido (exclusivo,
+#       S9-01, o compartido entre skills, S9-02) se movió dentro de
+#       skills/research/, skills/activation/, skills/evaluation/ y
+#       skills/knowledge-base/, y lo único que queda en esas cuatro carpetas
+#       de nivel superior es, según el caso, README.md y/o dev/, ambos
+#       excluidos de todas formas
 #     - _system/resources/
 #     - _system/templates/
 #     - _system/PROMPT_PROJECT_DISCOVERY.md (prompt operativo real, no
@@ -82,6 +84,17 @@
 #          este cambio esas dos entradas de INCLUDE_PATHS seguirían siendo
 #          válidas (las carpetas existen) pero no aportarían nada al
 #          paquete.
+#   v1.5 - Quitadas "evaluation" y "knowledge-base" de INCLUDE_PATHS (S9-02,
+#          delegación de contenido compartido por skill — ver
+#          _system/SPEC_CLOUD_COMPATIBILITY.md §5.c). A diferencia de S9-01,
+#          este contenido es compartido entre varias skills (`write-book`,
+#          `write-post`, `activation`, `research`), no exclusivo de una —
+#          pero el mecanismo de empaquetado es el mismo: se movió (git mv)
+#          dentro de skills/evaluation/ y skills/knowledge-base/, que ya se
+#          empaquetan vía la entrada "skills", y las skills que antes leían
+#          estos archivos por ruta cruzada ahora invocan la skill dueña del
+#          contenido en su lugar. Lo único que queda en evaluation/ y
+#          knowledge-base/ es dev/, siempre excluido.
 
 set -euo pipefail
 IFS=$'\n\t'
@@ -106,9 +119,7 @@ INCLUDE_PATHS=(
     "commands"
     "hooks"
     "writing"
-    "evaluation"
     "editorial-profile"
-    "knowledge-base"
     "_system/resources"
     "_system/templates"
     "_system/PROMPT_PROJECT_DISCOVERY.md"

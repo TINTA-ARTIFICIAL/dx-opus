@@ -44,13 +44,14 @@ their content into this file:
   #52 and #66 and lives entirely inside the prompt itself. This skill must
   not repeat, summarize, or weaken that checkpoint, nor offer any shortcut
   around it.**
-- `${CLAUDE_PLUGIN_ROOT}/skills/research/PROMPT_UPDATE_VALIDATION_CHECKLIST.md` — Fase 2. Updates
-  `${CLAUDE_PLUGIN_ROOT}/knowledge-base/RESOURCE_SOURCE_AUTHORITY.md` and
-  `${CLAUDE_PLUGIN_ROOT}/knowledge-base/RESOURCE_CLAIM_VALIDATION.md` with sources and validation
-  checks specific to the current topic. Writes to those two files are
-  additionally governed by the `PreToolUse` hook declared in
-  `hooks/hooks.json` (S6-04) — see the `knowledge-base` skill for details,
-  this skill does not duplicate that logic.
+- `${CLAUDE_PLUGIN_ROOT}/skills/research/PROMPT_UPDATE_VALIDATION_CHECKLIST.md` — Fase 2. Proposes
+  updates to the source authority hierarchy and claim validation criteria
+  for the current topic. Do not read those resources by path directly —
+  invoke the `knowledge-base` skill (S6-04) instead (see "Delegate to
+  knowledge-base" below). Writes to those resources are additionally
+  governed by the `PreToolUse` hook declared in `hooks/hooks.json` (S6-04)
+  — see the `knowledge-base` skill for details, this skill does not
+  duplicate that logic.
 - `${CLAUDE_PLUGIN_ROOT}/skills/research/GUIDE_ANNOTATION_PHASE3.md` — Fase 3. Guides the editor (manual,
   no AI execution) through annotating REFERENCE_SUMMARY and RESEARCH_PLAN
   with TASK/LINE/COMMENT flags before deep research begins.
@@ -62,6 +63,17 @@ their content into this file:
   RESEARCH_PLAN_DETAILED and WRITING_INSTRUCTIONS_ADAPTED for editor
   review and approval; `EXECUTE_RESEARCH_PLAN` then executes the research
   jobs and writes the RESEARCH_REPORT.
+
+## Delegate to knowledge-base — do not read its resources by path
+
+For the source authority hierarchy, claim validation criteria, or research
+focus types, invoke the `knowledge-base` skill (S6-04) — do not read
+`RESOURCE_SOURCE_AUTHORITY.md`, `RESOURCE_CLAIM_VALIDATION.md`, or
+`RESOURCE_RESEARCH_FOCUS_TYPES.md` directly by path here. Tell
+`knowledge-base` which resource is needed (source authority, claim
+validation, or research focus type) and, when proposing an update to the
+first two, the update itself — `knowledge-base` reads the resource, applies
+its own `CANONICAL UPDATE SCHEMA`, and returns the result.
 
 ## Editorial approval before executing the research plan
 
@@ -80,6 +92,6 @@ it lives.
 
 - Modifying the content of any `PROMPT_*.md`, `WORKFLOW_RESEARCH.md`, or
   `GUIDE_ANNOTATION_PHASE3.md` — this skill only orients toward them.
-- The `knowledge-base` skill — already built (S6-04), only referenced above.
+- The `knowledge-base` skill — already built (S6-04), only invoked above.
 - Any logic in `write-post`/`write-book` about when to require prior
   research — that lives in those skills, not here.

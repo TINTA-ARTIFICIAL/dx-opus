@@ -28,14 +28,15 @@ Read these files directly, in full, whenever their content is needed. Do not
 copy, summarize into this file, or cache their content elsewhere — they are
 the single source of truth and are updated independently of this skill:
 
-- `${CLAUDE_PLUGIN_ROOT}/knowledge-base/RESOURCE_SOURCE_AUTHORITY.md` — source authority hierarchy
-  (Tier 1/2/3) organized by research topic, plus the `CANONICAL UPDATE SCHEMA`
-  that governs how new sources and topics are added.
-- `${CLAUDE_PLUGIN_ROOT}/knowledge-base/RESOURCE_CLAIM_VALIDATION.md` — claim validation criteria
-  (Universal Framework + Topic-Specific Criteria), plus its own
+- `${CLAUDE_PLUGIN_ROOT}/skills/knowledge-base/RESOURCE_SOURCE_AUTHORITY.md` — source authority
+  hierarchy (Tier 1/2/3) organized by research topic, plus the
+  `CANONICAL UPDATE SCHEMA` that governs how new sources and topics are
+  added.
+- `${CLAUDE_PLUGIN_ROOT}/skills/knowledge-base/RESOURCE_CLAIM_VALIDATION.md` — claim validation
+  criteria (Universal Framework + Topic-Specific Criteria), plus its own
   `CANONICAL UPDATE SCHEMA`.
-- `${CLAUDE_PLUGIN_ROOT}/knowledge-base/RESOURCE_RESEARCH_FOCUS_TYPES.md` — the 7 research focus
-  types (A–G) used to scope a research plan.
+- `${CLAUDE_PLUGIN_ROOT}/skills/knowledge-base/RESOURCE_RESEARCH_FOCUS_TYPES.md` — the 7 research
+  focus types (A–G) used to scope a research plan.
 
 ## How to use them
 
