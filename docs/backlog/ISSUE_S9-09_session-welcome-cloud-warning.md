@@ -4,13 +4,13 @@ title: Nota de limitación conocida (primer mensaje) en el hook de bienvenida
 type: content
 subsystem: SYSTEM
 sprint: 9
-status: IN_PROGRESS
+status: DONE
 priority: P2
 depends_on: []
 blocks: []
 assignee: D-developer
 started: 2026-09-10
-completed: null
+completed: 2026-09-10
 branch: feat/s9-09-session-welcome-cloud-warning
 ---
 
