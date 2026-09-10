@@ -4,14 +4,14 @@ title: Añadir carpeta commands/ para invocación explícita /comando
 type: feature
 subsystem: SYSTEM
 sprint: 9
-status: TODO
+status: IN_PROGRESS
 priority: P1
 depends_on: []
 blocks: []
-assignee: null
-started: null
+assignee: D-developer
+started: 2026-09-10
 completed: null
-branch: null
+branch: feat/s9-05-add-commands-folder
 ---
 
 # S9-05 — Añadir carpeta `commands/` para invocación explícita `/comando`

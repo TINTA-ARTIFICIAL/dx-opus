@@ -4,14 +4,14 @@ title: Copiar AUTO_SAVE_CONFIG.yaml y templates a la carpeta de trabajo en el pr
 type: feature
 subsystem: SYSTEM
 sprint: 9
-status: TODO
+status: IN_PROGRESS
 priority: P0
 depends_on: []
 blocks: []
-assignee: null
-started: null
+assignee: D-developer
+started: 2026-09-10
 completed: null
-branch: null
+branch: feat/s9-04-seed-config-templates
 ---
 
 # S9-04 — Copiar `AUTO_SAVE_CONFIG.yaml` y templates a la carpeta de trabajo en el primer arranque

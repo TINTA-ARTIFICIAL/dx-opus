@@ -4,14 +4,14 @@ title: Ampliar las frases disparadoras de description en los 10 SKILL.md
 type: content
 subsystem: SYSTEM
 sprint: 9
-status: TODO
+status: IN_PROGRESS
 priority: P1
 depends_on: []
 blocks: []
-assignee: null
-started: null
+assignee: D-developer
+started: 2026-09-10
 completed: null
-branch: null
+branch: feat/s9-07-broaden-trigger-descriptions
 ---
 
 # S9-07 — Ampliar las frases disparadoras de `description` en los 10 `SKILL.md`

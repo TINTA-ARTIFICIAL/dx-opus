@@ -89,11 +89,11 @@ Objetivo: cerrar la brecha entre "funciona en local" y "funciona en cloud" halla
 | S9-01 | Mover contenido exclusivo de subsistema dentro de su carpeta de skill | P0 | TODO | S9-08 |
 | S9-02 | `evaluation`/`knowledge-base` invocadas por skill, no por ruta | P0 | TODO | S9-01 |
 | S9-03 | Confirmar y aplicar el patrón a `shared-writing`/`editorial-profile` | P1 | TODO | S9-01 |
-| S9-04 | Copiar `AUTO_SAVE_CONFIG.yaml`/templates a la carpeta de trabajo en el primer arranque | P0 | TODO | — |
-| S9-05 | Carpeta `commands/` para invocación explícita `/comando` | P1 | TODO | — |
-| S9-07 | Ampliar frases disparadoras de `description` en los 10 `SKILL.md` | P1 | TODO | — |
-| S9-08 | Renombrar skills a forma de comando (`write-book`, `write-post`, `setup`, `new-project`) | P2 | TODO | — |
-| S9-09 | Nota de limitación conocida (primer mensaje) en el hook de bienvenida | P2 | TODO | — |
+| S9-04 | Copiar `AUTO_SAVE_CONFIG.yaml`/templates a la carpeta de trabajo en el primer arranque | P0 | IN_PROGRESS | — |
+| S9-05 | Carpeta `commands/` para invocación explícita `/comando` | P1 | IN_PROGRESS | — |
+| S9-07 | Ampliar frases disparadoras de `description` en los 10 `SKILL.md` | P1 | IN_PROGRESS | — |
+| S9-08 | Renombrar skills a forma de comando (`write-book`, `write-post`, `setup`, `new-project`) | P2 | IN_PROGRESS | — |
+| S9-09 | Nota de limitación conocida (primer mensaje) en el hook de bienvenida | P2 | IN_PROGRESS | — |
 
 **S9-06 — reportar a Anthropic el bug de `${CLAUDE_PLUGIN_ROOT}` en cloud — no es un ticket D-team** (acción externa, sin código que implementar ni tests que correr). Issues ya verificados uno a uno y citados en `_system/SPEC_CLOUD_COMPATIBILITY.md` §3: #59713, #43380, #66557, #24529, #63028, #47179, #61485 — todos cerrados por inactividad (`NOT_PLANNED`), nunca resueltos por Anthropic. Pendiente de que el editor decida el canal (`/feedback` dentro de la app, o reabrir alguno de los issues).
 

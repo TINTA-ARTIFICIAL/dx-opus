@@ -4,14 +4,14 @@ title: Renombrar skills a forma de comando (writing-book, writing-post, editor-o
 type: refactor
 subsystem: SYSTEM
 sprint: 9
-status: TODO
+status: IN_PROGRESS
 priority: P2
 depends_on: []
 blocks: [S9-01]
-assignee: null
-started: null
+assignee: D-developer
+started: 2026-09-10
 completed: null
-branch: null
+branch: feat/s9-08-rename-skills-command-friendly
 ---
 
 # S9-08 — Renombrar skills a forma de comando
