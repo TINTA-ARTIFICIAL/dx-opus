@@ -4,13 +4,13 @@ title: Copiar AUTO_SAVE_CONFIG.yaml y templates a la carpeta de trabajo en el pr
 type: feature
 subsystem: SYSTEM
 sprint: 9
-status: IN_PROGRESS
+status: DONE
 priority: P0
 depends_on: []
 blocks: []
 assignee: D-developer
 started: 2026-09-10
-completed: null
+completed: 2026-09-10
 branch: feat/s9-04-seed-config-templates
 ---
 
