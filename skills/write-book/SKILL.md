@@ -121,6 +121,6 @@ real (`PROMPT_EVALUATE_BOOK_STYLE.md`).
   pero no lo crea ni lo valida.
 - Rutas y naming de los artefactos que produce esta rama (`BOOK_INDEX`,
   `SAMPLE_CHAPTER`, `CHAPTER_DRAFT`, etc.) — ya están definidos en
-  `${CLAUDE_PLUGIN_ROOT}/_system/resources/AUTO_SAVE_CONFIG.yaml`, sección `WRITING_BOOK`; lee
+  `_system/resources/AUTO_SAVE_CONFIG.yaml`, sección `WRITING_BOOK`; lee
   ese archivo en el momento de guardar o buscar cualquier artefacto de
   esta rama, no reproduzcas esa tabla aquí.

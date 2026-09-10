@@ -19,7 +19,7 @@ No es lo mismo que `setup` (S6-03): esa skill configura el `EDITOR_CONFIG` (dato
 
 ## Decisión de diseño: ubicación de EDITOR_PROFILE
 
-`${CLAUDE_PLUGIN_ROOT}/_system/resources/AUTO_SAVE_CONFIG.yaml` (sección `EDITOR.EDITOR_PROFILE`) ya declara `folder: "_editor/profiles"`, `template: "EDITOR_PROFILE_{editor_name}.md"`, `scope: "global"` para este artefacto — es la fuente única de verdad para su naming, no la reproduzcas aquí.
+`_system/resources/AUTO_SAVE_CONFIG.yaml` (sección `EDITOR.EDITOR_PROFILE`) ya declara `folder: "_editor/profiles"`, `template: "EDITOR_PROFILE_{editor_name}.md"`, `scope: "global"` para este artefacto — es la fuente única de verdad para su naming, no la reproduzcas aquí.
 
 Igual que `setup` (S6-03) resolvió `_editor/config` como relativo a la raíz del plugin (`_system/SPEC_PLUGIN_ARCHITECTURE.md` §8: la raíz del plugin es la raíz de este repositorio), aplica el mismo criterio aquí: `folder: "_editor/profiles"` se resuelve **relativo a la raíz del repo/plugin**, no relativo a ninguna carpeta de Drive del modelo anterior.
 
@@ -63,7 +63,7 @@ Léelos por su ruta real cuando los necesites — no copies su contenido en este
 
 Guarda el resultado en `_editor/profiles/EDITOR_PROFILE_{editor_name}.md` (crea la carpeta `_editor/profiles/` si no existe).
 
-Si falla la escritura (permisos, ruta no accesible), no guardes en ninguna otra carpeta como alternativa — presenta el contenido completo del archivo en el chat junto con la ruta exacta para que el editor lo guarde manualmente. Mismo criterio que `ERROR_HANDLING` en `${CLAUDE_PLUGIN_ROOT}/_system/resources/AUTO_SAVE_CONFIG.yaml`.
+Si falla la escritura (permisos, ruta no accesible), no guardes en ninguna otra carpeta como alternativa — presenta el contenido completo del archivo en el chat junto con la ruta exacta para que el editor lo guarde manualmente. Mismo criterio que `ERROR_HANDLING` en `_system/resources/AUTO_SAVE_CONFIG.yaml`.
 
 ## PASO 4: Mencionar el mecanismo de notas del editor
 

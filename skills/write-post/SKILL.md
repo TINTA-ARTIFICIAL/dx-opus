@@ -74,7 +74,7 @@ Writes/edits that produce a `POST_DRAFT` (the final post draft, via
 declared in `hooks/hooks.json`. That hook checks, before the write is
 applied, whether research evidence exists (shared in `R_research/` or
 post-specific in `WP_writing_post/` — see
-`${CLAUDE_PLUGIN_ROOT}/_system/resources/AUTO_SAVE_CONFIG.yaml` for the dual scope) or whether the
+`_system/resources/AUTO_SAVE_CONFIG.yaml` for the dual scope) or whether the
 editor already gave an explicit, recorded skip decision (`research_skipped:
 true`, per `PROMPT_POST_BRIEF.md` PASO 3B). This skill does not duplicate
 that logic — it only points to where the checkpoint (PASO 3B) and its
