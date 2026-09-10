@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # create-plugin-package.sh
-# D-X-OPUS Plugin Package Creation Script v1.3
+# D-X-OPUS Plugin Package Creation Script v1.4
 #
 # Usage:   tools/create-plugin-package.sh
 #          tools/create-plugin-package.sh --output /path/to/dx-opus.plugin
@@ -19,9 +19,13 @@
 #     - skills/
 #     - commands/
 #     - hooks/
-#     - Contenido de producción de cada subsistema (research/, writing/,
-#       evaluation/, activation/, editorial-profile/, knowledge-base/)
-#       excepto sus subcarpetas dev/
+#     - Contenido de producción de los subsistemas que aún conservan
+#       contenido a nivel de repo (writing/, evaluation/, editorial-profile/,
+#       knowledge-base/) excepto sus subcarpetas dev/ — research/ y
+#       activation/ ya no aparecen aquí: todo su contenido exclusivo se
+#       movió dentro de skills/research/ y skills/activation/ (S9-01), y lo
+#       único que queda en esas dos carpetas de nivel superior es README.md
+#       y dev/, ambos excluidos de todas formas
 #     - _system/resources/
 #     - _system/templates/
 #     - _system/PROMPT_PROJECT_DISCOVERY.md (prompt operativo real, no
@@ -68,6 +72,16 @@
 #          sección "Standard plugin layout"). Sin este cambio, los
 #          archivos de commands/ quedarían fuera del .plugin instalable y
 #          el comando tecleado seguiría sin funcionar tras instalar.
+#   v1.4 - Quitadas "research" y "activation" de INCLUDE_PATHS (S9-01,
+#          restructuración de contenido exclusivo de subsistema — ver
+#          _system/SPEC_CLOUD_COMPATIBILITY.md §5.b). Todo el contenido
+#          exclusivo de esas dos carpetas se movió (git mv) dentro de
+#          skills/research/ y skills/activation/, que ya se empaquetan vía
+#          la entrada "skills". Lo único que queda en research/ y
+#          activation/ es README.md y dev/, ambos excluidos siempre — sin
+#          este cambio esas dos entradas de INCLUDE_PATHS seguirían siendo
+#          válidas (las carpetas existen) pero no aportarían nada al
+#          paquete.
 
 set -euo pipefail
 IFS=$'\n\t'
@@ -91,10 +105,8 @@ INCLUDE_PATHS=(
     "skills"
     "commands"
     "hooks"
-    "research"
     "writing"
     "evaluation"
-    "activation"
     "editorial-profile"
     "knowledge-base"
     "_system/resources"

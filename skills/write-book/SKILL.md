@@ -41,35 +41,35 @@ con cualquier fase de RAMA BOOK.
 Sigue siempre este orden (`${CLAUDE_PLUGIN_ROOT}/writing/WORKFLOW_WRITING.md` §3):
 
 1. **Índice** — trigger: "crear el índice de mi libro", "quiero escribir
-   un libro sobre X". Prompt: `${CLAUDE_PLUGIN_ROOT}/writing/book/PROMPT_CREATE_BOOK_INDEX.md`.
+   un libro sobre X". Prompt: `${CLAUDE_PLUGIN_ROOT}/skills/write-book/PROMPT_CREATE_BOOK_INDEX.md`.
    Output: `BOOK_INDEX`.
 
 2. **Capítulo de muestra y fijación de estilo** — trigger: "necesito un
    capítulo de muestra". Prompt:
-   `${CLAUDE_PLUGIN_ROOT}/writing/book/PROMPT_WRITE_SAMPLE_CHAPTER.md`. Requiere `BOOK_INDEX`
+   `${CLAUDE_PLUGIN_ROOT}/skills/write-book/PROMPT_WRITE_SAMPLE_CHAPTER.md`. Requiere `BOOK_INDEX`
    aprobado en la fase anterior. Output: `SAMPLE_CHAPTER` +
    `STYLE_GUIDE_LIBRO` — este último se convierte en la referencia de
    estilo para todas las fases siguientes de escritura de capítulos.
 
 3. **Capítulos centrales** — trigger: "escribir el capítulo N", "Write
    Book Chapters", "Write Book Chapter N". Prompt:
-   `${CLAUDE_PLUGIN_ROOT}/writing/book/PROMPT_WRITE_CHAPTER.md`. Requiere `STYLE_GUIDE_LIBRO`
+   `${CLAUDE_PLUGIN_ROOT}/skills/write-book/PROMPT_WRITE_CHAPTER.md`. Requiere `STYLE_GUIDE_LIBRO`
    fijado en la fase anterior. El propio prompt define sus dos modos de
    invocación, el proceso secuencial (un capítulo a la vez) y el manejo
    de capítulos ya existentes — no los reproduzcas aquí, léelo cuando
    corresponda.
 
 4. **Capítulos especiales** — una vez escritos los capítulos centrales:
-   - Introducción: `${CLAUDE_PLUGIN_ROOT}/writing/book/PROMPT_WRITE_INTRODUCTION.md`.
-   - Prólogo: `${CLAUDE_PLUGIN_ROOT}/writing/book/PROMPT_WRITE_PROLOGUE.md` (voz personal del
+   - Introducción: `${CLAUDE_PLUGIN_ROOT}/skills/write-book/PROMPT_WRITE_INTRODUCTION.md`.
+   - Prólogo: `${CLAUDE_PLUGIN_ROOT}/skills/write-book/PROMPT_WRITE_PROLOGUE.md` (voz personal del
      editor — el propio prompt explica por qué difiere del
      `STYLE_GUIDE_LIBRO`, no lo reproduzcas aquí).
    Ambos requieren los capítulos centrales ya validados; pueden
    invocarse en cualquier orden entre sí.
 
 5. **Cierre del libro** — consolidación final:
-   - `${CLAUDE_PLUGIN_ROOT}/writing/book/PROMPT_CONSOLIDATE_REFERENCES.md` — bibliografía.
-   - `${CLAUDE_PLUGIN_ROOT}/writing/book/PROMPT_CREATE_BOOK_SHEET.md` — ficha técnica.
+   - `${CLAUDE_PLUGIN_ROOT}/skills/write-book/PROMPT_CONSOLIDATE_REFERENCES.md` — bibliografía.
+   - `${CLAUDE_PLUGIN_ROOT}/skills/write-book/PROMPT_CREATE_BOOK_SHEET.md` — ficha técnica.
 
 ## CHECKPOINT OBLIGATORIO — NO AVANZAR SIN CONFIRMACIÓN
 
@@ -92,7 +92,7 @@ Al completar el output de cualquiera de las fases anteriores (`BOOK_INDEX`,
 
 ## EVALUACIÓN — invocación soft, no bloqueante
 
-`${CLAUDE_PLUGIN_ROOT}/writing/book/PROMPT_WRITE_CHAPTER.md` invoca auto-evaluación de estilo
+`${CLAUDE_PLUGIN_ROOT}/skills/write-book/PROMPT_WRITE_CHAPTER.md` invoca auto-evaluación de estilo
 en su PASO 5, referenciando `${CLAUDE_PLUGIN_ROOT}/evaluation/PROMPT_EVALUATE_BOOK_STYLE.md`.
 El cierre del libro contempla además una evaluación de contenido vía
 `${CLAUDE_PLUGIN_ROOT}/evaluation/PROMPT_EVALUATE_BOOK_CONTENT.md` (ver
@@ -112,7 +112,7 @@ real (`PROMPT_EVALUATE_BOOK_STYLE.md`).
 
 ## FUERA DE SCOPE DE ESTE SKILL
 
-- Modificar el contenido de cualquier prompt de `${CLAUDE_PLUGIN_ROOT}/writing/book/` o de
+- Modificar el contenido de cualquier prompt de `${CLAUDE_PLUGIN_ROOT}/skills/write-book/` o de
   `${CLAUDE_PLUGIN_ROOT}/writing/WORKFLOW_WRITING.md`.
 - La skill `evaluation` (S7-06) — solo se referencia, no se construye
   aquí.
