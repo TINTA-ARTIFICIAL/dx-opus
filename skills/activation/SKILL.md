@@ -92,7 +92,7 @@ currently written in the workflow document.
 
 No new structures. `ACTIVATION_CONTEXT`, `BOOK_BRIEF`, `POST_PLAN` and
 `CONTENT_STRATEGY` already have their path and naming defined in
-`${CLAUDE_PLUGIN_ROOT}/_system/resources/AUTO_SAVE_CONFIG.yaml`, section `ACTIVATION` — read that
+`_system/resources/AUTO_SAVE_CONFIG.yaml`, section `ACTIVATION` — read that
 file, do not reproduce its naming rules here.
 
 ## Out of scope

@@ -20,7 +20,9 @@ API de Google Drive. La sincronización/colaboración vía Drive queda
 diferida (no es responsabilidad de este skill).
 
 Fuente única de verdad para cualquier ruta o naming que este skill
-necesite: `${CLAUDE_PLUGIN_ROOT}/_system/resources/AUTO_SAVE_CONFIG.yaml`. Este archivo no
+necesite: `_system/resources/AUTO_SAVE_CONFIG.yaml` (relativo a la carpeta
+de trabajo — copia local sembrada ahí por la skill `editor-onboarding` en
+el primer arranque; no depende de `${CLAUDE_PLUGIN_ROOT}`). Este archivo no
 reproduce ninguna tabla de rutas/naming — siempre lee ese YAML en el
 momento de ejecutar, para no arriesgarse a quedar desincronizado si el
 YAML cambia (la razón exacta por la que `TOOL_CREATE_PROJECT.gs` y
@@ -62,7 +64,7 @@ Si el editor no los ha dado explícitamente en su mensaje, pregúntaselos
 antes de continuar — no los inventes ni los infieras de contexto parcial.
 
 - `project_code`: código corto en mayúsculas. Formato exacto —
-  `NAMING_RULES.project_code` en `${CLAUDE_PLUGIN_ROOT}/_system/resources/AUTO_SAVE_CONFIG.yaml`
+  `NAMING_RULES.project_code` en `_system/resources/AUTO_SAVE_CONFIG.yaml`
   (máx. 10 caracteres, `A-Z0-9_`). Si el editor propone un código que no
   cumple el formato, pídele uno válido explicando por qué el suyo no vale.
 - `project_name`: nombre descriptivo del proyecto, en texto libre (se usa
@@ -81,7 +83,7 @@ de este skill).
 ### PASO 3: Crear las subcarpetas estándar del proyecto
 
 Las subcarpetas de nivel superior de un proyecto son los valores del
-campo `folder` que aparecen en `${CLAUDE_PLUGIN_ROOT}/_system/resources/AUTO_SAVE_CONFIG.yaml`
+campo `folder` que aparecen en `_system/resources/AUTO_SAVE_CONFIG.yaml`
 para artefactos de proyecto:
 
 - las secciones `SYSTEM.PROJECT_NOTES` y `SYSTEM.PROJECT_CONFIG`,
@@ -130,7 +132,7 @@ project_path: projects/{project_code}_{project_name}/
 ## AUTO-SAVE
 
 Las rutas y el naming de cada tipo de artefacto de este proyecto se
-definen en `${CLAUDE_PLUGIN_ROOT}/_system/resources/AUTO_SAVE_CONFIG.yaml` — no se reproducen
+definen en `_system/resources/AUTO_SAVE_CONFIG.yaml` — no se reproducen
 en este archivo. Consulta ese YAML como fuente única de verdad antes de
 guardar o buscar cualquier artefacto de este proyecto.
 
@@ -169,7 +171,7 @@ flujo.
 
 ### Manejo de errores
 
-Sigue exactamente `ERROR_HANDLING` de `${CLAUDE_PLUGIN_ROOT}/_system/resources/AUTO_SAVE_CONFIG.yaml`
+Sigue exactamente `ERROR_HANDLING` de `_system/resources/AUTO_SAVE_CONFIG.yaml`
 (v1.3) — no un criterio distinto:
 
 - **Carpeta destino no encontrada:** créala antes de escribir. Nunca
@@ -226,7 +228,7 @@ generado), **para aquí.**
   formato nuevo.
 - Crear o validar `EDITOR_CONFIG` en profundidad — el PASO 0 solo
   comprueba que existe, no valida su contenido según
-  `${CLAUDE_PLUGIN_ROOT}/_system/templates/TEMPLATE_EDITOR_CONFIG.md`; su creación sigue siendo
+  `_system/templates/TEMPLATE_EDITOR_CONFIG.md`; su creación sigue siendo
   responsabilidad de `editor-onboarding`.
 - Contenido de `knowledge-base` (SAH/CVC) — no lo copies ni lo
   referencies en detalle aquí.
