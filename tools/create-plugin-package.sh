@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # create-plugin-package.sh
-# D-X-OPUS Plugin Package Creation Script v1.0
+# D-X-OPUS Plugin Package Creation Script v1.3
 #
 # Usage:   tools/create-plugin-package.sh
 #          tools/create-plugin-package.sh --output /path/to/dx-opus.plugin
@@ -17,6 +17,7 @@
 #   Incluido:
 #     - .claude-plugin/
 #     - skills/
+#     - commands/
 #     - hooks/
 #     - Contenido de producción de cada subsistema (research/, writing/,
 #       evaluation/, activation/, editorial-profile/, knowledge-base/)
@@ -61,6 +62,12 @@
 #          llamándose dx-opus.plugin — indicio de que el mecanismo de
 #          "añadir desde archivo" identifica/cachea plugins por el nombre
 #          del archivo subido, no solo por el contenido del manifest.
+#   v1.3 - Añadido commands/ a INCLUDE_PATHS (S9-05, carpeta commands/*.md
+#          para invocación explícita /comando, formato confirmado contra
+#          la documentación oficial de Claude Code — "Plugins reference",
+#          sección "Standard plugin layout"). Sin este cambio, los
+#          archivos de commands/ quedarían fuera del .plugin instalable y
+#          el comando tecleado seguiría sin funcionar tras instalar.
 
 set -euo pipefail
 IFS=$'\n\t'
@@ -82,6 +89,7 @@ OUTPUT_PATH="${REPO_ROOT}/${OUTPUT_NAME}"
 INCLUDE_PATHS=(
     ".claude-plugin"
     "skills"
+    "commands"
     "hooks"
     "research"
     "writing"
