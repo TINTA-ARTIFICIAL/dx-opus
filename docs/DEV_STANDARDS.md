@@ -2,7 +2,7 @@
 id:          DEV_STANDARDS
 type:        SCHEMA
 subsystem:   SYSTEM
-version:     1.2
+version:     1.3
 status:      ACTIVE
 created:     2026-09-03
 updated:     2026-09-10
@@ -16,6 +16,7 @@ owner_chat:  system-architecture
 | v1.0 | 2026-09-03 | system-architecture | Creación inicial — estándar vinculante para D-dispatcher/D-developer al implementar el backlog de `docs/backlog/`. |
 | v1.1 | 2026-09-10 | system-architecture | §4: exige el prefijo `${CLAUDE_PLUGIN_ROOT}/` en toda ruta fuera de la propia carpeta de la skill — hallazgo real de instalación (Sprint 8, ticket S8-08) que bloqueaba la ejecución de todas las skills en un plugin instalado. |
 | v1.2 | 2026-09-10 | system-architecture | §4 reescrito tras Sprint 9: sustituye la regla "nunca mover" por el patrón real aplicado (S9-01/02/03/04) — contenido exclusivo se mueve dentro de `skills/{nombre}/`, contenido compartido se delega invocando la skill dueña, datos de referencia puros se siembran en la carpeta de trabajo del editor. |
+| v1.3 | 2026-09-10 | system-architecture | Nueva §6 (renumera 6→11 a 7→11): al hablar con el editor, nombrar la tarea en lenguaje llano, no el identificador interno del artefacto (`WRITING_CONTEXT`, `POST_SEED`, etc.) — hallazgo de la primera instalación real funcionando de punta a punta (Sprint 9, v0.4.0), ver ticket S9-11. |
 
 ---
 
@@ -85,7 +86,17 @@ metadata:
 
 Cuerpo: instrucciones **para Claude**, en imperativo/infinitivo ("Lee el archivo...", no "Deberías leer..."). No es documentación para que la lea un humano.
 
-## 6. El patrón de checkpoint obligatorio
+## 6. Al hablar con el editor, nombra la tarea, no el artefacto interno
+
+Confirmado en la primera instalación real que funcionó de punta a punta (Sprint 9, v0.4.0): cuando una skill le explica al editor qué falta o qué va a hacer, no debe nombrar el identificador interno del artefacto (`WRITING_CONTEXT`, `POST_SEED`, `PROJECT_NOTES`, etc.) como si el editor ya supiera qué es — debe describir la tarea en lenguaje llano, la misma que usaría un colega, no un nombre de variable del sistema.
+
+- En vez de "No veo que tengas todavía un `WRITING_CONTEXT`" → "Necesitamos definir el contexto de lo que vamos a escribir".
+- En vez de "Arrancamos el primer `POST_SEED`" → "Arrancamos definiendo las ideas básicas del post".
+- En vez de "Ya tengo bastante para armar el `PROJECT_NOTES`" → "Ya tengo bastante para empezar a tomar notas sobre el proyecto".
+
+Los nombres de artefacto (`WRITING_CONTEXT`, `POST_SEED`, etc.) siguen siendo la referencia técnica correcta dentro del propio prompt/skill — para leer, escribir y encontrar archivos — y no hay que dejar de usarlos ahí. La regla es solo sobre lo que se le **dice al editor**: la prosa dirigida a él debe explicar qué representa ese artefacto (la tarea, la decisión, el contenido), no exponerle el nombre interno como si fuera autoexplicativo. Si un prompt o `SKILL.md` presenta al editor un resumen, una pregunta de checkpoint, o un "esto es lo que voy a hacer ahora", revisa que esté en términos de tarea, no de nombre de artefacto.
+
+## 7. El patrón de checkpoint obligatorio
 
 Cualquier skill o prompt que pueda decidir autónomamente "cuál es el siguiente paso" en nombre del editor debe pararse y preguntar, nunca inferir y ejecutar. Este patrón ya está implementado dos veces en el repo — úsalo como referencia exacta de tono y estructura, no reinventes el formato:
 
@@ -94,13 +105,13 @@ Cualquier skill o prompt que pueda decidir autónomamente "cuál es el siguiente
 
 Si tu ticket implica que la skill podría continuar sola hacia otro paso del workflow, necesita este mismo tipo de bloque explícito.
 
-## 7. Hooks
+## 8. Hooks
 
 - Prefiere hooks **prompt-based** (`type: "prompt"`) cuando la decisión requiere juicio (¿esta edición toca una sección protegida?). Usa **command-based** (`type: "command"`) solo para checks deterministas que no requieren interpretación.
 - Nunca hardcodees rutas absolutas — usa `${CLAUDE_PLUGIN_ROOT}`.
 - Un hook `PreToolUse` con matcher `Write|Edit` se dispara para **cualquier** escritura de la sesión, no solo las relacionadas con tu ticket. El prompt del hook debe comprobar explícitamente la ruta del archivo objetivo (viene en `$TOOL_INPUT`) y solo bloquear/preguntar cuando corresponda — `approve` en cualquier otro caso. Un hook que bloquea de más es tan grave como uno que no protege nada.
 
-## 8. Verificación (no hay suite de tests automatizada)
+## 9. Verificación (no hay suite de tests automatizada)
 
 Este repo no tiene tests ejecutables tradicionales — es contenido en Markdown/YAML/JSON más lógica de skills. La verificación es manual, pero **no es opcional ni informal**. Por tipo de ticket:
 
@@ -109,7 +120,7 @@ Este repo no tiene tests ejecutables tradicionales — es contenido en Markdown/
 - **Hook** → validar el JSON, y trazar manualmente el escenario que el hook debe capturar (ej.: simular una edición a una sección protegida y confirmar, leyendo el prompt del hook, que llevaría a `block` o `ask_user`).
 - **Contenido de prompt** (cuando un ticket sea escribir/editar un `PROMPT_*.md`) → seguir tú mismo el proceso descrito paso a paso con un caso de ejemplo y confirmar que el resultado es el esperado.
 
-## 9. Commits y ramas
+## 10. Commits y ramas
 
 - Rama por ticket: `feat/{id}-{slug}` (ej. `feat/s6-01-plugin-manifest`).
 - Mensaje de commit sigue la convención ya activa en este repo (ver `README.md`):
@@ -118,6 +129,6 @@ Este repo no tiene tests ejecutables tradicionales — es contenido en Markdown/
   ```
   Tipos: `feat | fix | refactor | docs | chore`. Para tickets de Sprint 6, el subsistema es `SYSTEM`.
 
-## 10. Cuándo hace falta una DL entry
+## 11. Cuándo hace falta una DL entry
 
 Si tu implementación se desvía de lo que `_system/SPEC_PLUGIN_ARCHITECTURE.md` ya decidió — no solo lo completa, sino que lo contradice o añade una decisión nueva no prevista — no lo hagas en silencio. Repórtalo en tu entrega para que `D-dispatcher` lo escale; no crees tú mismo la DL entry sin que el editor la apruebe (ver `_system/SCHEMA_DECISION_LOG.md`).

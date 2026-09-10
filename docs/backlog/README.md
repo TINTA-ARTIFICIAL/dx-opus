@@ -94,9 +94,13 @@ Objetivo: cerrar la brecha entre "funciona en local" y "funciona en cloud" halla
 | S9-07 | Ampliar frases disparadoras de `description` en los 10 `SKILL.md` | P1 | DONE | — |
 | S9-08 | Renombrar skills a forma de comando (`write-book`, `write-post`, `setup`, `new-project`) | P2 | DONE | — |
 | S9-09 | Nota de limitación conocida (primer mensaje) en el hook de bienvenida | P2 | DONE | — |
+| S9-10 | Envolver `hooks.json` en el objeto `"hooks"` que exige el esquema real | P0 | DONE | — |
+| S9-11 | Auditar prompts/skills — hablar con el editor en tarea, no en nombre de artefacto | P2 | TODO | — |
 
 **S9-06 — reportar a Anthropic el bug de `${CLAUDE_PLUGIN_ROOT}` en cloud — no es un ticket D-team** (acción externa, sin código que implementar ni tests que correr). Issues ya verificados uno a uno y citados en `_system/SPEC_CLOUD_COMPATIBILITY.md` §3: #59713, #43380, #66557, #24529, #63028, #47179, #61485 — todos cerrados por inactividad (`NOT_PLANNED`), nunca resueltos por Anthropic. Pendiente de que el editor decida el canal (`/feedback` dentro de la app, o reabrir alguno de los issues).
 
 **Orden de despacho recomendado:** S9-08 primero (renombrado, toca las mismas carpetas que S9-01/02/03 y conviene no duplicar el `git mv`), luego S9-01, luego S9-02/S9-03 en paralelo (tocan archivos distintos entre sí), S9-04/S9-05/S9-07/S9-09 son independientes y pueden ir en paralelo con cualquiera de los anteriores.
 
 **Hallazgo importante que motiva todo el sprint (2026-09-10):** la carpeta de trabajo del editor (Drive, `_editor/`, `projects/`) ya funciona de forma fiable en cloud — confirmado contra la documentación oficial de arquitectura de Cowork, no hace falta rediseñarla. El problema está acotado al mecanismo de sincronización del propio contenido del plugin (`${CLAUDE_PLUGIN_ROOT}`), que es un bug externo conocido y nunca resuelto por Anthropic, no un error de este repo.
+
+**Confirmado por el editor (2026-09-10): la instalación de v0.4.0 funciona correctamente** — primera vez que el plugin completo se valida en uso real, de punta a punta. De ahí nace S9-11 (feedback directo sobre estilo de comunicación con el editor, no un bug de funcionamiento).
