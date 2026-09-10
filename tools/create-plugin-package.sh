@@ -54,6 +54,13 @@
 #          project-setup en su checkpoint de cierre), no documentación de
 #          desarrollo. Hallado durante la validación real de instalación
 #          de Sprint 8, ver ticket S8-08.
+#   v1.2 - OUTPUT_NAME cambiado de dx-opus.plugin a dxopus.plugin.
+#          Evidencia real de instalación (Sprint 8): tras renombrar el
+#          campo "name" del manifest a "dxopus", Cowork seguía instalando
+#          la versión vieja (0.1.1) al subir un archivo que seguía
+#          llamándose dx-opus.plugin — indicio de que el mecanismo de
+#          "añadir desde archivo" identifica/cachea plugins por el nombre
+#          del archivo subido, no solo por el contenido del manifest.
 
 set -euo pipefail
 IFS=$'\n\t'
@@ -63,7 +70,7 @@ IFS=$'\n\t'
 # ═══════════════════════════════════════════════════════════════
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-OUTPUT_NAME="dx-opus.plugin"
+OUTPUT_NAME="dxopus.plugin"
 OUTPUT_PATH="${REPO_ROOT}/${OUTPUT_NAME}"
 
 # Rutas incluidas — el límite instalable/desarrollo, por carpeta.
