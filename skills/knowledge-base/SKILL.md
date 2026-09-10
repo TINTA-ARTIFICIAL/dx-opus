@@ -4,7 +4,8 @@ description: >
   This skill should be used when a research or evaluation task needs the
   system's authoritative source hierarchy or claim validation criteria —
   trigger phrases like "verificar la autoridad de esta fuente", "validar
-  esta afirmación", or invoked internally by the research and evaluation
+  esta afirmación", "¿esta fuente es confiable?", "¿cómo decido si esto es
+  una fuente válida?", or invoked internally by the research and evaluation
   skills rather than requested directly by the editor.
 metadata:
   version: "0.1.0"

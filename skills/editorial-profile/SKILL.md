@@ -3,7 +3,10 @@ name: editorial-profile
 description: >
   This skill should be used when an editor wants to define or update their
   editorial voice and style — trigger phrases like "quiero definir mi perfil
-  editorial", "crear mi EDITOR_PROFILE", "actualizar mi estilo editorial".
+  editorial", "crear mi EDITOR_PROFILE", "actualizar mi estilo editorial",
+  "cómo debería sonar mi contenido", "quiero que esto suene más como yo",
+  "definamos mi voz como autor", "trabajemos en cómo escribo",
+  "necesito que reconozcas mi estilo antes de seguir".
 metadata:
   version: "0.1.0"
 ---

@@ -4,7 +4,9 @@ description: >
   This skill should be used when the user wants to write a non-fiction
   book — trigger phrases like "quiero escribir un libro sobre X", "crear
   el índice de mi libro", "escribir el capítulo N", "necesito un capítulo
-  de muestra".
+  de muestra", "sigamos con mi libro", "quiero avanzar en el capítulo",
+  "vamos a escribir la siguiente parte del libro", "retomemos el libro
+  donde lo dejamos".
 metadata:
   version: "0.1.0"
 ---

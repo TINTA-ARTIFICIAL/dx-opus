@@ -4,7 +4,9 @@ description: >
   This skill should be used when the user wants quality feedback on
   research, a book, a post, or activation content — trigger phrases like
   "evalúa este capítulo", "revisa el estilo de este post", "¿esta
-  investigación es sólida?", "dame feedback de calidad".
+  investigación es sólida?", "dame feedback de calidad", "¿esto está bien
+  escrito?", "necesito una segunda opinión sobre esto", "revísame esto
+  antes de publicar", "¿qué le falta a este texto?".
 metadata:
   version: "0.1.0"
 ---

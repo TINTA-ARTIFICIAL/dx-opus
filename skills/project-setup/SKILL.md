@@ -4,7 +4,9 @@ description: >
   This skill should be used when the user wants to start a new writing
   project — trigger phrases like "crear un proyecto nuevo", "empezar un
   libro sobre X", "quiero escribir una serie de posts sobre Y", "arrancar
-  un proyecto".
+  un proyecto", "vamos a trabajar en el proyecto X", "tengo una idea para
+  un libro nuevo", "quiero montar algo nuevo", "necesito arrancar con
+  esto", "abramos un proyecto para Y".
 metadata:
   version: "0.1.0"
 ---

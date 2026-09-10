@@ -4,7 +4,9 @@ description: >
   This skill should be used when the user wants to research a topic for a
   book or post — trigger phrases like "quiero investigar sobre X", "necesito
   hacer research para mi libro", "procesa estas referencias", "profundiza en
-  este tema".
+  este tema", "sigamos investigando esto", "necesito más información sobre
+  este tema", "vamos a profundizar un poco más antes de escribir", "busca
+  qué se sabe de X", "quiero entender mejor este tema antes de seguir".
 metadata:
   version: "0.1.0"
 ---
