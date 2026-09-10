@@ -27,28 +27,28 @@ Do not copy, summarize into this file, or duplicate the content of any of
 these prompts — read them directly, in full, at the point of the workflow
 where they apply:
 
-1. `${CLAUDE_PLUGIN_ROOT}/writing/post/PROMPT_POST_BRIEF.md` — entry point of every POST session.
+1. `${CLAUDE_PLUGIN_ROOT}/skills/write-post/PROMPT_POST_BRIEF.md` — entry point of every POST session.
    Loads or creates the `WRITING_CONTEXT`, inventories the editor's material,
    and declares the session's starting state. **This prompt already includes
    (v1.1) PASO 3B — the mandatory research-prerequisite checkpoint — and the
    Q&A skip checkpoint. Do not repeat, summarize or weaken either checkpoint
    here; follow the prompt exactly as written.**
-2. `${CLAUDE_PLUGIN_ROOT}/writing/post/PROMPT_POST_EXPLORE.md` — used only when the editor's input
+2. `${CLAUDE_PLUGIN_ROOT}/skills/write-post/PROMPT_POST_EXPLORE.md` — used only when the editor's input
    is scarce, to develop the topic before processing sources.
-3. `${CLAUDE_PLUGIN_ROOT}/writing/post/PROMPT_SUMMARIZE_REF.md` — processes sources, distinguishing
+3. `${CLAUDE_PLUGIN_ROOT}/skills/write-post/PROMPT_SUMMARIZE_REF.md` — processes sources, distinguishing
    example-sources from argument-sources and protecting the editor's own
    material.
-4. `${CLAUDE_PLUGIN_ROOT}/writing/post/PROMPT_VERIFY_RESEARCH.md` — verifies claims, data and
+4. `${CLAUDE_PLUGIN_ROOT}/skills/write-post/PROMPT_VERIFY_RESEARCH.md` — verifies claims, data and
    attributions flagged in the SOURCE_MAP.
 5. `${CLAUDE_PLUGIN_ROOT}/writing/post/PROMPT_QA_IDEAS.md` — sequential positioning Q&A, always
    active unless explicitly skipped. This same file is also exposed by
    `skills/shared-writing` (S7-03) — it is the same real artifact in both
    cases, referenced here by its actual path (`${CLAUDE_PLUGIN_ROOT}/writing/post/`), not copied.
-6. `${CLAUDE_PLUGIN_ROOT}/writing/post/PROMPT_POST_ANGLES.md` — proposes angles and narrative seeds
+6. `${CLAUDE_PLUGIN_ROOT}/skills/write-post/PROMPT_POST_ANGLES.md` — proposes angles and narrative seeds
    over the full post-Q&A material.
-7. `${CLAUDE_PLUGIN_ROOT}/writing/post/PROMPT_PLAN_POST.md` — fixes the post's architecture and
+7. `${CLAUDE_PLUGIN_ROOT}/skills/write-post/PROMPT_PLAN_POST.md` — fixes the post's architecture and
    produces the `POST_SEED`, the canonical input for the final draft.
-8. `${CLAUDE_PLUGIN_ROOT}/writing/post/PROMPT_SPLIT_POST.md` — invocable at any phase of the
+8. `${CLAUDE_PLUGIN_ROOT}/skills/write-post/PROMPT_SPLIT_POST.md` — invocable at any phase of the
    workflow to split a post into two autonomous units.
 
 ## Final draft — delegate, do not reimplement
@@ -84,7 +84,9 @@ guidance gets bypassed.
 
 ## Out of scope
 
-- Modifying the content of any prompt in `${CLAUDE_PLUGIN_ROOT}/writing/post/`.
+- Modifying the content of any prompt in `${CLAUDE_PLUGIN_ROOT}/skills/write-post/`
+  (this skill's own folder) or of `PROMPT_QA_IDEAS.md`, still shared via
+  `${CLAUDE_PLUGIN_ROOT}/writing/post/`.
 - The `shared-writing` skill (S7-03) — only invoked here, not built here.
 - `SPEC_LEARNING_SIGNALS.md` — the `EDITOR_PROFILE`'s progressive learning
   mechanism, out of scope for all of Sprint 7, not just this ticket.
