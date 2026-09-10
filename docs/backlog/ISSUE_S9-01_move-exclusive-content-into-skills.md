@@ -4,14 +4,14 @@ title: Mover contenido exclusivo de subsistema dentro de su carpeta de skill
 type: refactor
 subsystem: SYSTEM
 sprint: 9
-status: TODO
+status: IN_PROGRESS
 priority: P0
 depends_on: [S9-08]
 blocks: [S9-02, S9-03]
-assignee: null
-started: null
+assignee: D-developer
+started: 2026-09-10
 completed: null
-branch: null
+branch: feat/s9-01-move-exclusive-content
 ---
 
 # S9-01 — Mover contenido exclusivo de subsistema dentro de su carpeta de skill
