@@ -2,7 +2,7 @@
 id:          DEV_STANDARDS
 type:        SCHEMA
 subsystem:   SYSTEM
-version:     1.1
+version:     1.2
 status:      ACTIVE
 created:     2026-09-03
 updated:     2026-09-10
@@ -15,6 +15,7 @@ owner_chat:  system-architecture
 |---------|------|--------|---------|
 | v1.0 | 2026-09-03 | system-architecture | Creación inicial — estándar vinculante para D-dispatcher/D-developer al implementar el backlog de `docs/backlog/`. |
 | v1.1 | 2026-09-10 | system-architecture | §4: exige el prefijo `${CLAUDE_PLUGIN_ROOT}/` en toda ruta fuera de la propia carpeta de la skill — hallazgo real de instalación (Sprint 8, ticket S8-08) que bloqueaba la ejecución de todas las skills en un plugin instalado. |
+| v1.2 | 2026-09-10 | system-architecture | §4 reescrito tras Sprint 9: sustituye la regla "nunca mover" por el patrón real aplicado (S9-01/02/03/04) — contenido exclusivo se mueve dentro de `skills/{nombre}/`, contenido compartido se delega invocando la skill dueña, datos de referencia puros se siembran en la carpeta de trabajo del editor. |
 
 ---
 
@@ -49,14 +50,17 @@ Sprint 5 completo se fue en gran parte en arreglar registros duplicados que se d
 
 Si tu ticket te pide crear una skill que necesita ese dato, el `SKILL.md` debe decir "lee `_system/resources/AUTO_SAVE_CONFIG.yaml`", nunca reproducir su contenido.
 
-## 4. Dónde vive el plugin — no dupliques contenido en `skills/*/references/`
+## 4. Dónde vive el plugin — contenido dentro de la skill que lo posee, sin duplicar
 
-Ver `_system/SPEC_PLUGIN_ARCHITECTURE.md` §8 para el razonamiento completo. Regla operativa:
+Regla revisada en Sprint 9 (`_system/SPEC_CLOUD_COMPATIBILITY.md`) — reemplaza la versión anterior, que asumía que todo el contenido de un subsistema quedaba fijo en una carpeta de nivel superior (`research/`, `evaluation/`, etc.) y solo se referenciaba por ruta cruzada. Esa versión seguía siendo arquitectónicamente correcta (root del plugin = root del repo, sin duplicación), pero resultó frágil en la práctica: cada referencia cruzada a otra carpeta depende de que `${CLAUDE_PLUGIN_ROOT}` se sustituya correctamente, y eso no es fiable en todos los entornos de ejecución (ver hallazgo real de Sprint 8/9, tickets S8-08/S9-01/S9-02/S9-03).
 
-- El root del plugin es el root de este repo. `research/`, `writing/`, `evaluation/`, `activation/`, `editorial-profile/`, `knowledge-base/` **no se mueven ni se copian**.
-- Un `SKILL.md` es un archivo nuevo y corto: metadata (`name`, `description` con frases disparadoras concretas en tercera persona) + instrucciones de cuándo usar cada prompt existente **por su ruta real** (no una copia en `skills/research/references/PROMPT_CREATE_RESEARCH_PLAN.md`).
-- Si un ticket de skill te pide crear una carpeta `references/` con contenido copiado de otro sitio del repo, es una señal de que el ticket está mal escrito — para y pregunta antes de duplicar.
-- **Toda ruta a un archivo fuera de la propia carpeta de la skill (`skills/{nombre}/`) debe llevar el prefijo `${CLAUDE_PLUGIN_ROOT}/`** — p. ej. `` `${CLAUDE_PLUGIN_ROOT}/research/PROMPT_CREATE_RESEARCH_PLAN.md` ``, nunca `` `research/PROMPT_CREATE_RESEARCH_PLAN.md` `` a secas. Hallazgo real de instalación (Sprint 8, ver ticket S8-08): sin ese prefijo, Claude resuelve la ruta contra el directorio de trabajo de la sesión del editor (donde esos archivos no existen), no contra la raíz real del plugin instalado — aunque el contenido esté correctamente empaquetado. `${CLAUDE_PLUGIN_ROOT}` se sustituye tanto en el cuerpo markdown de un `SKILL.md` como en comandos de `hooks/hooks.json` (documentado en la referencia oficial de Claude Code, sección "Available string substitutions" de `skills.md`). Excepción: citas a documentación de desarrollo no empaquetada (`_system/SPEC_*.md`, `_system/SCHEMA_*.md`, etc.) — esas quedan sin prefijo porque no son instrucciones de lectura en tiempo de ejecución, son referencias de contexto para quien desarrolla.
+Regla operativa vigente:
+
+- **Contenido exclusivo o "propiedad" de una sola skill** (nadie más lo lee) **vive físicamente dentro de `skills/{nombre}/`** — se mueve con `git mv`, no se copia. Ejemplos ya aplicados: `research/*` → `skills/research/`, `evaluation/*` → `skills/evaluation/` (aunque varias skills lo *invoquen*, solo `evaluation` lo *lee* — ver punto siguiente).
+- **Contenido que necesitan varias skills** no se duplica en cada una — la skill dueña del contenido lo mantiene en su propia carpeta, y las demás la **invocan con la herramienta `Skill`** (pidiéndole la función/artefacto que necesitan) en vez de leer sus archivos por ruta directa. Este es el patrón ya establecido por `shared-writing` desde Sprint 7, y extendido en Sprint 9 a `evaluation` y `knowledge-base`. Si estás construyendo o modificando una skill que necesita algo de otra, pregúntate primero: "¿esto es una capacidad que puedo pedirle a la otra skill, o un dato de configuración/plantilla que necesito leer directamente?" — lo primero se delega, lo segundo puede seguir siendo una ruta (ver punto siguiente).
+- **Datos de referencia puros compartidos por casi todas las skills** (no son una "capacidad" invocable — p. ej. `_system/resources/AUTO_SAVE_CONFIG.yaml`, `_system/templates/`) se siembran una vez en la carpeta de trabajo del editor en el primer arranque (`setup`, S9-04) y se leen ahí por ruta relativa a esa carpeta, sin prefijo — la carpeta de trabajo es fiable en cualquier entorno de ejecución (confirmado contra la documentación oficial de arquitectura de Cowork), a diferencia del contenido propio del plugin.
+- Si un ticket de skill te pide crear una carpeta `references/` con contenido **copiado** de otro sitio del repo (no movido, con un único dueño), es una señal de que el ticket está mal escrito — para y pregunta antes de duplicar.
+- **Toda ruta a un archivo fuera de la propia carpeta de la skill (`skills/{nombre}/`) que SÍ siga viviendo en otra carpeta del plugin instalado debe llevar el prefijo `${CLAUDE_PLUGIN_ROOT}/`** — p. ej. `` `${CLAUDE_PLUGIN_ROOT}/writing/WORKFLOW_WRITING.md` ``, nunca a secas. Hallazgo real de instalación (Sprint 8, ticket S8-08): sin ese prefijo, Claude resuelve la ruta contra el directorio de trabajo de la sesión del editor (donde esos archivos no existen), no contra la raíz real del plugin instalado — aunque el contenido esté correctamente empaquetado. `${CLAUDE_PLUGIN_ROOT}` se sustituye tanto en el cuerpo markdown de un `SKILL.md` como en comandos de `hooks/hooks.json` (documentado en la referencia oficial de Claude Code, sección "Available string substitutions" de `skills.md`) — pero esa sustitución en sí puede fallar en sesiones cloud (bugs externos confirmados, ver `_system/SPEC_CLOUD_COMPATIBILITY.md` §3); por eso Sprint 9 prioriza mover/delegar por encima de referenciar cuando es posible, y reserva `${CLAUDE_PLUGIN_ROOT}` para lo que de verdad no tiene otra opción (`writing/` de nivel superior, que conserva contenido no movido). Excepción: citas a documentación de desarrollo no empaquetada (`_system/SPEC_*.md`, `_system/SCHEMA_*.md`, etc.) — esas quedan sin prefijo porque no son instrucciones de lectura en tiempo de ejecución, son referencias de contexto para quien desarrolla.
 
 ## 5. Formato de skill (Cowork plugin)
 
