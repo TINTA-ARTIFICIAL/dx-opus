@@ -80,17 +80,21 @@ or hook here that would block on the evaluation result.
 `${CLAUDE_PLUGIN_ROOT}/skills/activation/WORKFLOW_ACTIVATION.md` still tags `PROMPT_QA_IDEAS` as
 `[Writing/shared]` in several places (its `DEPENDENCIES` block, the Fase 4
 header, and older changelog entries), which is inconsistent with the
-artifact's real path, `${CLAUDE_PLUGIN_ROOT}/writing/post/PROMPT_QA_IDEAS.md`. This has already
+artifact's real path — `${CLAUDE_PLUGIN_ROOT}/skills/shared-writing/PROMPT_QA_IDEAS.md` as of
+S9-03 (previously `${CLAUDE_PLUGIN_ROOT}/writing/post/`). This has already
 been resolved conceptually in `_system/SPEC_PLUGIN_ARCHITECTURE.md` §5.2 —
 `PROMPT_QA_IDEAS` is shared by design (`DL_20260411_ACTIVATION_022`,
 correction applied to `DL_20260416_SYSTEM_025`) and is exposed through the
 `shared-writing` skill — but the physical-location tag inside
 `WORKFLOW_ACTIVATION.md` itself has not been corrected as of this writing.
 This skill does not rewrite `WORKFLOW_ACTIVATION.md` to fix that tag — out
-of scope for this ticket (S7-08). When orienting the editor to that prompt,
-always use its real path via `shared-writing`
-(`${CLAUDE_PLUGIN_ROOT}/writing/post/PROMPT_QA_IDEAS.md`), not the `[Writing/shared]` tag as
-currently written in the workflow document.
+of scope for this ticket (S7-08, and still out of scope for S9-03, which
+only moved the file and updated this `SKILL.md`, not `WORKFLOW_ACTIVATION.md`
+itself). Regardless of what `WORKFLOW_ACTIVATION.md` says, do not read
+`PROMPT_QA_IDEAS.md` directly by any path — always reach it by invoking
+`shared-writing` and asking for its `QA_IDEAS` function, as the "Delegate to
+shared-writing" section above already instructs; the `[Writing/shared]` tag
+in the workflow document is stale documentation, not a routing instruction.
 
 ## Reusable data structures
 

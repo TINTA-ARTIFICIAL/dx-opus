@@ -31,27 +31,26 @@ or cache its instructions here. Each file is the single source of truth for
 its own workflow and is versioned independently of this skill.
 
 1. **`WRITE_POST`** — drafts a post from a `POST_SEED`.
-   Read `${CLAUDE_PLUGIN_ROOT}/writing/shared/PROMPT_WRITE_POST.md` and follow it as written. Its
+   Read `${CLAUDE_PLUGIN_ROOT}/skills/shared-writing/PROMPT_WRITE_POST.md` and follow it as written. Its
    canonical input is a `POST_SEED` and, depending on the workflow stage, a
    `POST_BRIEFING` — see "Data structures consumed" below for where those are
    defined.
 
 2. **`CREATE_TIMELINE`** — builds a chronology.
-   Read `${CLAUDE_PLUGIN_ROOT}/writing/shared/PROMPT_CREATE_TIMELINE.md` and follow it as written.
+   Read `${CLAUDE_PLUGIN_ROOT}/skills/shared-writing/PROMPT_CREATE_TIMELINE.md` and follow it as written.
 
 3. **`CREATE_CAST`** — builds a cast of characters.
-   Read `${CLAUDE_PLUGIN_ROOT}/writing/shared/PROMPT_CREATE_CAST.md` and follow it as written.
+   Read `${CLAUDE_PLUGIN_ROOT}/skills/shared-writing/PROMPT_CREATE_CAST.md` and follow it as written.
 
 4. **`QA_IDEAS`** — runs the editor's positioning Q&A.
-   Read `${CLAUDE_PLUGIN_ROOT}/writing/post/PROMPT_QA_IDEAS.md` and follow it as written. **This
-   file lives in `${CLAUDE_PLUGIN_ROOT}/writing/post/`, not `${CLAUDE_PLUGIN_ROOT}/writing/shared/`** — its physical
-   location is known technical debt (flagged in the correction applied to
-   `DL_20260416_SYSTEM_025`) that is out of scope for this skill to fix; the
-   path above is where the file actually is today, not an assumption based
-   on the other three functions. The prompt is already at v1.1 and includes
-   PASO 6B (mandatory auto-save of the `INVENTARIO_IDEAS`) — follow it in
-   full, including that step; do not skip it, summarize it, or re-implement
-   a weaker version of it here.
+   Read `${CLAUDE_PLUGIN_ROOT}/skills/shared-writing/PROMPT_QA_IDEAS.md` and follow it as written.
+   **S9-03 update:** this file used to live in `${CLAUDE_PLUGIN_ROOT}/writing/post/` while the
+   other three functions lived in `${CLAUDE_PLUGIN_ROOT}/writing/shared/` — that split-location
+   technical debt (flagged in the correction applied to `DL_20260416_SYSTEM_025`) is now
+   resolved: all four prompts live together in this skill's own folder. The prompt is
+   already at v1.1 and includes PASO 6B (mandatory auto-save of the `INVENTARIO_IDEAS`) —
+   follow it in full, including that step; do not skip it, summarize it, or re-implement a
+   weaker version of it here.
 
 ## How to use this skill
 
@@ -67,14 +66,12 @@ its own workflow and is versioned independently of this skill.
 ## Data structures consumed
 
 No new data structures are defined by this skill. `WRITE_POST` reads and
-produces the structures defined in `${CLAUDE_PLUGIN_ROOT}/writing/post/TEMPLATE_POST_SEED.md` and
-`${CLAUDE_PLUGIN_ROOT}/writing/post/TEMPLATE_POST_BRIEFING.md` — read those files directly when
+produces the structures defined in `${CLAUDE_PLUGIN_ROOT}/skills/shared-writing/TEMPLATE_POST_SEED.md` and
+`${CLAUDE_PLUGIN_ROOT}/skills/shared-writing/TEMPLATE_POST_BRIEFING.md` — read those files directly when
 their structure is needed, do not copy their fields here.
 
 ## Out of scope
 
 - Deciding when `write-post` or `activation` should invoke each of the four
   functions — that logic belongs to those skills, not to this one.
-- Moving `PROMPT_QA_IDEAS.md` into `${CLAUDE_PLUGIN_ROOT}/writing/shared/` — that is separate,
-  not-yet-scheduled technical debt.
 - Modifying the content of any of the four wrapped prompts.

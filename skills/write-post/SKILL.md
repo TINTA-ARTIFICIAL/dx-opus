@@ -40,10 +40,11 @@ where they apply:
    material.
 4. `${CLAUDE_PLUGIN_ROOT}/skills/write-post/PROMPT_VERIFY_RESEARCH.md` — verifies claims, data and
    attributions flagged in the SOURCE_MAP.
-5. `${CLAUDE_PLUGIN_ROOT}/writing/post/PROMPT_QA_IDEAS.md` — sequential positioning Q&A, always
-   active unless explicitly skipped. This same file is also exposed by
-   `skills/shared-writing` (S7-03) — it is the same real artifact in both
-   cases, referenced here by its actual path (`${CLAUDE_PLUGIN_ROOT}/writing/post/`), not copied.
+5. **`QA_IDEAS`** — sequential positioning Q&A, always active unless explicitly
+   skipped. Do not read `PROMPT_QA_IDEAS.md` directly — invoke the
+   `shared-writing` skill (S9-03) and ask it for its `QA_IDEAS` function, the
+   same delegation pattern used below for the final draft. `shared-writing`
+   owns this prompt and is the single point of access to it.
 6. `${CLAUDE_PLUGIN_ROOT}/skills/write-post/PROMPT_POST_ANGLES.md` — proposes angles and narrative seeds
    over the full post-Q&A material.
 7. `${CLAUDE_PLUGIN_ROOT}/skills/write-post/PROMPT_PLAN_POST.md` — fixes the post's architecture and
@@ -55,17 +56,22 @@ where they apply:
 
 Once a `POST_SEED` exists, invoke the `shared-writing` skill (S7-03) to
 produce the final draft — do not reimplement `PROMPT_WRITE_POST.md`
-(`${CLAUDE_PLUGIN_ROOT}/writing/shared/`) here. Ask `shared-writing` for its `WRITE_POST` function,
-passing the `POST_SEED`.
+(now in `${CLAUDE_PLUGIN_ROOT}/skills/shared-writing/`, per S9-03) here. Ask `shared-writing`
+for its `WRITE_POST` function, passing the `POST_SEED`.
 
 ## Reusable data structures
 
-No new structures. Reuse these as-is (all in `${CLAUDE_PLUGIN_ROOT}/writing/post/`):
+No new structures.
 
-- `TEMPLATE_POST_SEED.md` — canonical structure of the `POST_SEED`.
-- `TEMPLATE_POST_BRIEFING.md` — cross-session continuation template.
-- `RESOURCE_WRITING_CONTEXT.md` — schema of the `WRITING_CONTEXT` artifact.
-- `RESOURCE_PUBLICATION_PROFILE.md` — schema of the publication profile.
+- `TEMPLATE_POST_SEED.md` (canonical structure of the `POST_SEED`) and
+  `TEMPLATE_POST_BRIEFING.md` (cross-session continuation template) now live
+  in `${CLAUDE_PLUGIN_ROOT}/skills/shared-writing/` (S9-03) — read them there.
+- `RESOURCE_WRITING_CONTEXT.md` (schema of the `WRITING_CONTEXT` artifact) and
+  `RESOURCE_PUBLICATION_PROFILE.md` (schema of the publication profile) remain
+  in `${CLAUDE_PLUGIN_ROOT}/writing/post/` — `_system/SPEC_CLOUD_COMPATIBILITY.md` §5.c only
+  lists `PROMPT_QA_IDEAS.md`, `TEMPLATE_POST_SEED.md` and `TEMPLATE_POST_BRIEFING.md` for
+  the S9-03 move into `shared-writing`; these two were intentionally left out of that list
+  and were not moved.
 
 ## Integrity hook — research prerequisite before the final draft
 
@@ -85,8 +91,8 @@ guidance gets bypassed.
 ## Out of scope
 
 - Modifying the content of any prompt in `${CLAUDE_PLUGIN_ROOT}/skills/write-post/`
-  (this skill's own folder) or of `PROMPT_QA_IDEAS.md`, still shared via
-  `${CLAUDE_PLUGIN_ROOT}/writing/post/`.
+  (this skill's own folder) or of any of the four prompts wrapped by
+  `shared-writing` (S9-03).
 - The `shared-writing` skill (S7-03) — only invoked here, not built here.
 - `SPEC_LEARNING_SIGNALS.md` — the `EDITOR_PROFILE`'s progressive learning
   mechanism, out of scope for all of Sprint 7, not just this ticket.
