@@ -1,3 +1,5 @@
 _system/.DS_Store
+.DS_Store
 *.zip
+*.plugin
 dx-opus-system-*/
