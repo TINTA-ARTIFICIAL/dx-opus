@@ -88,7 +88,7 @@ Objetivo: cerrar la brecha entre "funciona en local" y "funciona en cloud" halla
 |---|---|---|---|---|
 | S9-01 | Mover contenido exclusivo de subsistema dentro de su carpeta de skill | P0 | DONE | S9-08 |
 | S9-02 | `evaluation`/`knowledge-base` invocadas por skill, no por ruta | P0 | DONE | S9-01 |
-| S9-03 | Confirmar y aplicar el patrón a `shared-writing`/`editorial-profile` | P1 | IN_PROGRESS | S9-01 |
+| S9-03 | Confirmar y aplicar el patrón a `shared-writing`/`editorial-profile` | P1 | DONE | S9-01 |
 | S9-04 | Copiar `AUTO_SAVE_CONFIG.yaml`/templates a la carpeta de trabajo en el primer arranque | P0 | DONE | — |
 | S9-05 | Carpeta `commands/` para invocación explícita `/comando` | P1 | DONE | — |
 | S9-07 | Ampliar frases disparadoras de `description` en los 10 `SKILL.md` | P1 | DONE | — |
