@@ -6,7 +6,7 @@ subsystem: SYSTEM
 sprint: 9
 status: TODO
 priority: P0
-depends_on: []
+depends_on: [S9-08]
 blocks: [S9-02, S9-03]
 assignee: null
 started: null
