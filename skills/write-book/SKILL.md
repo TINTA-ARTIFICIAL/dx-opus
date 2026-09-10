@@ -28,13 +28,21 @@ corresponde a cada fase y en qué orden se ejecutan.
 
 ## SUPUESTO DE ENTRADA — EDITOR_PROFILE
 
-Todos los prompts de esta rama requieren un `EDITOR_PROFILE` (voz y
-estilo del editor) con el formato de
-`${CLAUDE_PLUGIN_ROOT}/editorial-profile/TEMPLATE_EDITOR_PROFILE.md`. Esta skill asume que ya
-existe — no lo crea ni lo valida. Si el editor no tiene uno, redirige a
-la skill `editorial-profile` (o al prompt
-`${CLAUDE_PLUGIN_ROOT}/editorial-profile/PROMPT_CREATE_EDITOR_PROFILE.md`) antes de continuar
-con cualquier fase de RAMA BOOK.
+Todos los prompts de esta rama requieren un `EDITOR_PROFILE` ya existente como contexto de
+estilo — la instancia real del editor actual, `_editor/profiles/EDITOR_PROFILE_{editor_name}.md`
+(vive en la carpeta de trabajo del editor, no en el plugin — ver
+`${CLAUDE_PLUGIN_ROOT}/skills/editorial-profile/SKILL.md`, sección "Decisión de diseño: ubicación de
+EDITOR_PROFILE"). Esta skill asume que esa instancia ya existe — no la crea ni la valida, y no
+necesita leer `${CLAUDE_PLUGIN_ROOT}/skills/editorial-profile/TEMPLATE_EDITOR_PROFILE.md` en tiempo de
+ejecución para usar el perfil: la plantilla solo importa para *generar* un `EDITOR_PROFILE`
+nuevo (tarea de la skill `editorial-profile`), no para *consumir* uno ya generado como contexto
+de voz y estilo aquí (S9-03 — decisión documentada en el ticket).
+
+Si `_editor/profiles/EDITOR_PROFILE_{editor_name}.md` no existe para el editor actual, invoca
+la skill `editorial-profile` (herramienta `Skill`) para que lo cree — no leas
+`${CLAUDE_PLUGIN_ROOT}/skills/editorial-profile/PROMPT_CREATE_EDITOR_PROFILE.md` directamente ni
+reimplementes su metodología aquí — y espera a que el editor complete ese flujo antes de
+continuar con cualquier fase de RAMA BOOK.
 
 ## SECUENCIA DE FASES — RAMA BOOK
 
@@ -116,9 +124,11 @@ real (`PROMPT_EVALUATE_BOOK_STYLE.md`).
   `${CLAUDE_PLUGIN_ROOT}/writing/WORKFLOW_WRITING.md`.
 - La skill `evaluation` (S7-06) — solo se referencia, no se construye
   aquí.
-- La skill `editorial-profile` (S7-02) — esta skill asume que existe un
-  `EDITOR_PROFILE` según `${CLAUDE_PLUGIN_ROOT}/editorial-profile/TEMPLATE_EDITOR_PROFILE.md`,
-  pero no lo crea ni lo valida.
+- La skill `editorial-profile` (S7-02) — esta skill asume que ya existe un
+  `EDITOR_PROFILE` para el editor actual
+  (`_editor/profiles/EDITOR_PROFILE_{editor_name}.md`); no lo crea, no lo valida, y (desde
+  S9-03) no necesita leer su plantilla (`TEMPLATE_EDITOR_PROFILE.md`) en tiempo de ejecución
+  — solo se invoca la skill `editorial-profile` cuando el `EDITOR_PROFILE` no existe.
 - Rutas y naming de los artefactos que produce esta rama (`BOOK_INDEX`,
   `SAMPLE_CHAPTER`, `CHAPTER_DRAFT`, etc.) — ya están definidos en
   `_system/resources/AUTO_SAVE_CONFIG.yaml`, sección `WRITING_BOOK`; lee

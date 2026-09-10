@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # create-plugin-package.sh
-# D-X-OPUS Plugin Package Creation Script v1.4
+# D-X-OPUS Plugin Package Creation Script v1.5
 #
 # Usage:   tools/create-plugin-package.sh
 #          tools/create-plugin-package.sh --output /path/to/dx-opus.plugin
@@ -20,12 +20,13 @@
 #     - commands/
 #     - hooks/
 #     - Contenido de producción de los subsistemas que aún conservan
-#       contenido a nivel de repo (writing/, evaluation/, editorial-profile/,
-#       knowledge-base/) excepto sus subcarpetas dev/ — research/ y
-#       activation/ ya no aparecen aquí: todo su contenido exclusivo se
-#       movió dentro de skills/research/ y skills/activation/ (S9-01), y lo
-#       único que queda en esas dos carpetas de nivel superior es README.md
-#       y dev/, ambos excluidos de todas formas
+#       contenido a nivel de repo (writing/, evaluation/, knowledge-base/)
+#       excepto sus subcarpetas dev/ — research/, activation/ y
+#       editorial-profile/ ya no aparecen aquí: todo su contenido exclusivo
+#       se movió dentro de skills/research/, skills/activation/ (S9-01) y
+#       skills/editorial-profile/ (S9-03), y lo único que queda en esas tres
+#       carpetas de nivel superior es README.md y/o dev/, ambos excluidos de
+#       todas formas
 #     - _system/resources/
 #     - _system/templates/
 #     - _system/PROMPT_PROJECT_DISCOVERY.md (prompt operativo real, no
@@ -82,6 +83,20 @@
 #          este cambio esas dos entradas de INCLUDE_PATHS seguirían siendo
 #          válidas (las carpetas existen) pero no aportarían nada al
 #          paquete.
+#   v1.5 - Quitada "editorial-profile" de INCLUDE_PATHS (S9-03, delegación
+#          de contenido compartido — ver
+#          _system/SPEC_CLOUD_COMPATIBILITY.md §5.c). Todo el contenido de
+#          editorial-profile/ (antes leído por ruta directa también desde
+#          write-book) se movió (git mv) dentro de skills/editorial-profile/,
+#          que ya se empaqueta vía la entrada "skills". Lo único que queda
+#          en editorial-profile/ es dev/, siempre excluido. También se
+#          movieron writing/shared/* y tres archivos de writing/post/
+#          (PROMPT_QA_IDEAS.md, TEMPLATE_POST_SEED.md,
+#          TEMPLATE_POST_BRIEFING.md) a skills/shared-writing/ — la entrada
+#          "writing" de INCLUDE_PATHS se mantiene porque writing/ conserva
+#          contenido de producción no movido (WORKFLOW_WRITING.md,
+#          writing/post/README.md, RESOURCE_WRITING_CONTEXT.md,
+#          RESOURCE_PUBLICATION_PROFILE.md, SPEC_LEARNING_SIGNALS.md).
 
 set -euo pipefail
 IFS=$'\n\t'
@@ -107,7 +122,6 @@ INCLUDE_PATHS=(
     "hooks"
     "writing"
     "evaluation"
-    "editorial-profile"
     "knowledge-base"
     "_system/resources"
     "_system/templates"
