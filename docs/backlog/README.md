@@ -76,4 +76,27 @@ Objetivo: probar el plugin en uso real y retirar el sistema Apps Script/Drive.
 
 **S8-07 (2026-09-09):** nace de la traza de validación E2E del plugin (`_system/test-records/TEST_PLUGIN_20260909.md`, TC-6.1 ⚠️ PARCIAL) — `WORKFLOW_ACTIVATION.md` tiene 11 checkpoints completamente desarrollados pero el "CHECKPOINT DE ROUTING" (elección de Ruta P/L/P+L) solo existe como una anotación en un diagrama, con un pendiente de Sprint 4 nunca resuelto. No bloquea la instalación de hoy — se despachará junto con S8-01/S8-03.
 
-**S8-08 (2026-09-10) — bloqueante, resuelto en vivo:** primera validación humana real de instalación (no la traza estática de S8-04). Se agotaron y descartaron metódicamente: contenido del paquete, campo `skills` del manifiesto, caché de Cowork por nombre de archivo, y estado de sesión desactualizado — cada uno con su propio fix intermedio (ver commits `e0d3ad6`, `8d2bc1f`, `730027b`). La causa raíz real: los `SKILL.md` referencian archivos de otras carpetas del plugin con rutas planas, que en un plugin instalado se resuelven contra el directorio de trabajo del editor, no contra la raíz del plugin. Corregido con el prefijo `${CLAUDE_PLUGIN_ROOT}/` en los 10 `SKILL.md` y en `activation/WORKFLOW_ACTIVATION.md`, y documentado como regla vinculante en `docs/DEV_STANDARDS.md` §4 (v1.1). Pendiente de confirmación final del editor tras la siguiente instalación real.
+**S8-08 (2026-09-10) — bloqueante, resuelto en vivo:** primera validación humana real de instalación (no la traza estática de S8-04). Se agotaron y descartaron metódicamente: contenido del paquete, campo `skills` del manifiesto, caché de Cowork por nombre de archivo, y estado de sesión desactualizado — cada uno con su propio fix intermedio (ver commits `e0d3ad6`, `8d2bc1f`, `730027b`). La causa raíz real: los `SKILL.md` referencian archivos de otras carpetas del plugin con rutas planas, que en un plugin instalado se resuelven contra el directorio de trabajo del editor, no contra la raíz del plugin. Corregido con el prefijo `${CLAUDE_PLUGIN_ROOT}/` en los 10 `SKILL.md` y en `activation/WORKFLOW_ACTIVATION.md`, y documentado como regla vinculante en `docs/DEV_STANDARDS.md` §4 (v1.1). Confirmado funcionando en sesión local (2026-09-10) — sigue expuesto en sesiones cloud a un bug externo de la herramienta (ver Sprint 9).
+
+---
+
+## Sprint 9 — Compatibilidad cloud y ergonomía de invocación
+
+Objetivo: cerrar la brecha entre "funciona en local" y "funciona en cloud" hallada en la validación de S8-08, y arreglar los gaps de invocación (comandos, frases disparadoras, nombres) detectados en la misma sesión. Diseño completo en `_system/SPEC_CLOUD_COMPATIBILITY.md`.
+
+| ID | Título | Prioridad | Status | Depende de |
+|---|---|---|---|---|
+| S9-01 | Mover contenido exclusivo de subsistema dentro de su carpeta de skill | P0 | TODO | — |
+| S9-02 | `evaluation`/`knowledge-base` invocadas por skill, no por ruta | P0 | TODO | S9-01 |
+| S9-03 | Confirmar y aplicar el patrón a `shared-writing`/`editorial-profile` | P1 | TODO | S9-01 |
+| S9-04 | Copiar `AUTO_SAVE_CONFIG.yaml`/templates a la carpeta de trabajo en el primer arranque | P0 | TODO | — |
+| S9-05 | Carpeta `commands/` para invocación explícita `/comando` | P1 | TODO | — |
+| S9-07 | Ampliar frases disparadoras de `description` en los 10 `SKILL.md` | P1 | TODO | — |
+| S9-08 | Renombrar skills a forma de comando (`write-book`, `write-post`, `setup`, `new-project`) | P2 | TODO | — |
+| S9-09 | Nota de limitación conocida (primer mensaje) en el hook de bienvenida | P2 | TODO | — |
+
+**S9-06 — reportar a Anthropic el bug de `${CLAUDE_PLUGIN_ROOT}` en cloud — no es un ticket D-team** (acción externa, sin código que implementar ni tests que correr). Issues ya verificados uno a uno y citados en `_system/SPEC_CLOUD_COMPATIBILITY.md` §3: #59713, #43380, #66557, #24529, #63028, #47179, #61485 — todos cerrados por inactividad (`NOT_PLANNED`), nunca resueltos por Anthropic. Pendiente de que el editor decida el canal (`/feedback` dentro de la app, o reabrir alguno de los issues).
+
+**Orden de despacho recomendado:** S9-08 primero (renombrado, toca las mismas carpetas que S9-01/02/03 y conviene no duplicar el `git mv`), luego S9-01, luego S9-02/S9-03 en paralelo (tocan archivos distintos entre sí), S9-04/S9-05/S9-07/S9-09 son independientes y pueden ir en paralelo con cualquiera de los anteriores.
+
+**Hallazgo importante que motiva todo el sprint (2026-09-10):** la carpeta de trabajo del editor (Drive, `_editor/`, `projects/`) ya funciona de forma fiable en cloud — confirmado contra la documentación oficial de arquitectura de Cowork, no hace falta rediseñarla. El problema está acotado al mecanismo de sincronización del propio contenido del plugin (`${CLAUDE_PLUGIN_ROOT}`), que es un bug externo conocido y nunca resuelto por Anthropic, no un error de este repo.
