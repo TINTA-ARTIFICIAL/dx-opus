@@ -25,8 +25,17 @@
 #   parseo del EDITOR_CONFIG.md cae al mensaje de "no existe" en vez de
 #   asumir que el archivo es válido.
 #
+#   Ambos mensajes (config existente o no) incluyen además una nota breve
+#   sobre una limitación conocida en sesiones cloud (issue de GitHub #63028,
+#   ver docs/backlog/ISSUE_S9-09_session-welcome-cloud-warning.md): un
+#   plugin declarado puede no tener sus skills disponibles en el primer
+#   mensaje. No hay forma fiable de detectar "estoy en cloud" documentada,
+#   así que la nota es genérica y no condicional a ningún chequeo de
+#   entorno.
+#
 # CHANGELOG:
 #   v1.0 - Versión inicial (S8-05)
+#   v1.1 - Añadida nota genérica de limitación conocida en cloud (S9-09)
 
 set -uo pipefail
 
@@ -43,6 +52,8 @@ Instrucciones para Claude en este primer mensaje:
 2. Explica en una sola frase qué hace el sistema.
 3. Ofrece iniciar la skill `editor-onboarding` para configurar su entorno — NO la ejecutes automáticamente, ni asumas que el editor ya quiere hacerlo.
 4. Si el editor pide otra cosa directamente en su primer mensaje, responde a eso primero — esta bienvenida no tiene prioridad sobre una petición explícita del editor.
+
+Nota: si el primer intento de usar una skill de DXOPUS falla o no se reconoce, prueba de nuevo con un segundo mensaje antes de asumir que algo está roto.
 EOF
 }
 
@@ -52,6 +63,8 @@ print_existing_config() {
 Contexto de sesión — D-X-OPUS (SessionStart hook, session-welcome.sh):
 
 Editor ya configurado: ${editor_name}. No hace falta repetir bienvenida ni onboarding salvo que el editor lo pida explícitamente.
+
+Nota: si el primer intento de usar una skill de DXOPUS falla o no se reconoce, prueba de nuevo con un segundo mensaje antes de asumir que algo está roto.
 EOF
 }
 
