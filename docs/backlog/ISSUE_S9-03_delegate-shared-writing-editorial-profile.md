@@ -4,14 +4,14 @@ title: Confirmar y aplicar el patrón de delegación a shared-writing y editoria
 type: refactor
 subsystem: SYSTEM
 sprint: 9
-status: TODO
+status: IN_PROGRESS
 priority: P1
 depends_on: [S9-01]
 blocks: []
-assignee: null
-started: null
+assignee: D-developer
+started: 2026-09-10
 completed: null
-branch: null
+branch: feat/s9-03-delegate-shared-writing-editorial-profile
 ---
 
 # S9-03 — Confirmar y aplicar el patrón de delegación a `shared-writing` y `editorial-profile`
