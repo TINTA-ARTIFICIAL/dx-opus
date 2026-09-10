@@ -4,13 +4,13 @@ title: writing-book/writing-post/activation/research invocan evaluation y knowle
 type: refactor
 subsystem: SYSTEM
 sprint: 9
-status: IN_PROGRESS
+status: DONE
 priority: P0
 depends_on: [S9-01]
 blocks: []
 assignee: D-developer
 started: 2026-09-10
-completed: null
+completed: 2026-09-10
 branch: feat/s9-02-delegate-evaluation-knowledge-base
 ---
 
