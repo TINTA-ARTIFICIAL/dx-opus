@@ -95,7 +95,7 @@ Objetivo: cerrar la brecha entre "funciona en local" y "funciona en cloud" halla
 | S9-08 | Renombrar skills a forma de comando (`write-book`, `write-post`, `setup`, `new-project`) | P2 | DONE | — |
 | S9-09 | Nota de limitación conocida (primer mensaje) en el hook de bienvenida | P2 | DONE | — |
 | S9-10 | Envolver `hooks.json` en el objeto `"hooks"` que exige el esquema real | P0 | DONE | — |
-| S9-11 | Auditar prompts/skills — hablar con el editor en tarea, no en nombre de artefacto | P2 | IN_PROGRESS | — |
+| S9-11 | Auditar prompts/skills — hablar con el editor en tarea, no en nombre de artefacto | P2 | DONE | — |
 | S9-12 | Spike — plantilla de maquetación para artefactos valiosos del proceso | P3 | TODO | — |
 | S9-13 | Spike — evaluar integración con Claude Docs para anotación de artefactos | P3 | TODO | — |
 
