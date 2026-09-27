@@ -44,8 +44,8 @@ redefinas aquí) antes de continuar.
 que primero hace falta configurar su entorno, por ejemplo:
 
 ```
-No encuentro EDITOR_CONFIG.md (_editor/config/EDITOR_CONFIG.md) en este
-entorno.
+No encuentro todavía una configuración de editor guardada
+(_editor/config/EDITOR_CONFIG.md) en este entorno.
 
 Antes de crear un proyecto nuevo hace falta configurar tu entorno de
 editor.
@@ -212,7 +212,7 @@ generado), **para aquí.**
    Proyecto {project_code} creado en projects/{project_code}_{project_name}/.
 
    ¿Cómo quieres continuar?
-   a) Arrancar la primera sesión del proyecto (PROMPT_PROJECT_DISCOVERY)
+   a) Arrancar la primera sesión de trabajo del proyecto
    b) Configurar primero el editor (setup), si aún no lo has hecho
    c) Nada más por ahora
    ```

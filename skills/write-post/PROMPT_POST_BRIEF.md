@@ -122,7 +122,8 @@ Cargarlo y confirmar de la misma forma.
 Inferir lo que sea posible del EDITOR_PROFILE y del material aportado. Declarar las suposiciones en un bloque compacto y pedir confirmación o corrección:
 
 ```
-No encuentro un WRITING_CONTEXT configurado. He inferido lo siguiente:
+Necesitamos definir el contexto de lo que vamos a escribir — todavía no
+tengo uno guardado para ti. He inferido lo siguiente:
 
   Editor:      [nombre del editor desde EDITOR_PROFILE]
   Publicación: [nombre inferido o "no identificada"]
@@ -253,13 +254,13 @@ Siguiente paso:
 
 [UNA de estas opciones según el estado:]
 
-→ El material es escaso para planificar el post. Propongo arrancar con
-  PROMPT_POST_EXPLORE para desarrollar el tema antes de procesar fuentes.
+→ El material es escaso para planificar el post. Propongo arrancar
+  explorando el tema a fondo antes de procesar fuentes.
 
-→ Hay fuentes que procesar. Continuamos con PROMPT_SUMMARIZE_REF.
+→ Hay fuentes que procesar. Continuamos resumiendo esas fuentes.
 
 → Es una continuación de sesión. El borrador está en la sección [N].
-  Continuamos con PROMPT_WRITE_POST cargando el POST_BRIEFING.
+  Continuamos escribiendo el post desde ahí.
 ```
 
 ---
