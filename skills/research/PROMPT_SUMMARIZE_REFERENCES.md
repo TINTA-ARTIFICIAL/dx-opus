@@ -250,7 +250,7 @@ generated_by: PROMPT_SUMMARIZE_REFERENCES v4.2
 ⏰ **Tiempo de procesamiento:** {duración}
 
 Los tres artefactos están listos para la siguiente fase.
-¿Continuar con PROMPT_UPDATE_VALIDATION_CHECKLIST?
+¿Continuamos actualizando la jerarquía de fuentes y los criterios de validación (SAH/CVC)?
 ```
 
 ---
@@ -277,29 +277,29 @@ Al finalizar, informar sobre el auto-save múltiple:
 ```
 🎯 FASE 1 DE INVESTIGACIÓN COMPLETADA
 
-✅ **ARTEFACTOS GENERADOS Y GUARDADOS:**
+✅ **LISTO Y GUARDADO:**
 
-📋 **REFERENCE_SUMMARY**
+📋 **Resumen de las fuentes**
    └─ {project_code}_R_REF_SUM_v{version}.md
    └─ {N referencias} procesadas y estructuradas
 
-📋 **RESEARCH_PLAN**  
+📋 **Plan de investigación**
    └─ {project_code}_R_PLAN_v{version}.md
    └─ {N áreas} de investigación identificadas
 
-📋 **NARRATIVE_BRIDGE**
+📋 **Puente hacia la escritura**
    └─ {project_code}_R_BRIDGE_v{version}.md
    └─ Elementos narrativos para escritura
 
 📁 **Todos los archivos en:** R_research/ de tu proyecto Drive
 
-🔄 **SIGUIENTE PASO RECOMENDADO:** PROMPT_UPDATE_VALIDATION_CHECKLIST
-   └─ Actualizar SAH y CVC con las fuentes procesadas
+🔄 **SIGUIENTE PASO RECOMENDADO:** actualizar la jerarquía de fuentes y los
+   criterios de validación (SAH/CVC) con lo que acabamos de procesar
 
 ¿Cómo quieres continuar?
-a) Actualizar SAH/CVC ahora (PROMPT_UPDATE_VALIDATION_CHECKLIST)
-b) Anotar tú mismo estos artefactos (TASK:/LINE:/COMMENT:) antes de seguir
-c) Ya los anoté externamente — aquí están las versiones anotadas
+a) Actualizar la jerarquía de fuentes y los criterios de validación ahora
+b) Anotar tú mismo este material (TASK:/LINE:/COMMENT:) antes de seguir
+c) Ya lo anoté externamente — aquí están las versiones anotadas
 d) Otra cosa
 ```
 

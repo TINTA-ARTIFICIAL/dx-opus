@@ -78,8 +78,8 @@ Al terminar (perfil creado o actualizado), **para aquí**. No inicies tú mismo 
 Presenta un resumen breve:
 
 ```
-✅ EDITOR_PROFILE configurado en _editor/profiles/EDITOR_PROFILE_{editor_name}.md
-[Nota breve: recuerda a TEMPLATE_EDITOR_NOTES.md/GUIDE_EDITOR_NOTES.md como mecanismo de notas durante producción]
+✅ Perfil editorial configurado en _editor/profiles/EDITOR_PROFILE_{editor_name}.md
+[Nota breve: recuerda al editor que durante la producción del libro puede ir capturando sus reflexiones y decisiones editoriales — ese material luego alimenta el prólogo y la introducción]
 ```
 
 Espera a que el editor decida cómo quiere continuar — no asumas ni ejecutes ningún otro paso del workflow en su nombre.

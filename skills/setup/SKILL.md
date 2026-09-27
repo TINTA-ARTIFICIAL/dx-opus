@@ -107,7 +107,7 @@ Al terminar el setup (`EDITOR_CONFIG.md` creado o actualizado, `EDITOR_PROFILE` 
 Presenta un resumen breve:
 
 ```
-✅ EDITOR_CONFIG configurado en _editor/config/EDITOR_CONFIG.md
+✅ Configuración de editor guardada en _editor/config/EDITOR_CONFIG.md
 [Si no había EDITOR_PROFILE: nota de que puede crearlo con la skill `editorial-profile` cuando quiera]
 ✅ _system/resources/AUTO_SAVE_CONFIG.yaml [creado ahora | ya existía, no modificado]
 ✅ _system/templates/ [creado ahora | ya existía, no modificado]
