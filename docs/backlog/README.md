@@ -106,3 +106,24 @@ Objetivo: cerrar la brecha entre "funciona en local" y "funciona en cloud" halla
 **Hallazgo importante que motiva todo el sprint (2026-09-10):** la carpeta de trabajo del editor (Drive, `_editor/`, `projects/`) ya funciona de forma fiable en cloud — confirmado contra la documentación oficial de arquitectura de Cowork, no hace falta rediseñarla. El problema está acotado al mecanismo de sincronización del propio contenido del plugin (`${CLAUDE_PLUGIN_ROOT}`), que es un bug externo conocido y nunca resuelto por Anthropic, no un error de este repo.
 
 **Confirmado por el editor (2026-09-10): la instalación de v0.4.0 funciona correctamente** — primera vez que el plugin completo se valida en uso real, de punta a punta. De ahí nace S9-11 (feedback directo sobre estilo de comunicación con el editor, no un bug de funcionamiento).
+
+---
+
+## Sprint 10 — Correcciones de uso real tras v0.4.0
+
+Origen: reporte de bugs del editor tras varios días de uso real (sesión 2026-10-03). Cada afirmación del reporte se verificó contra el repo antes de abrir tickets; dos de los cuatro puntos resultaron ser un diagnóstico distinto del descrito (ver S10-04).
+
+| ID | Título | Prioridad | Status | Depende de |
+|---|---|---|---|---|
+| S10-01 | El hook de bienvenida busca `EDITOR_CONFIG` en la carpeta de trabajo, no en la raíz del plugin | P1 | TODO (pendiente de aprobación) | — |
+| S10-02 | `new-project` registra el proyecto creado en `EDITOR_CONFIG.md` | P1 | TODO (pendiente de aprobación) | — |
+| S10-03 | Registrar en `EDITOR_CONFIG.md` los proyectos ya existentes | P2 | TODO (pendiente de aprobación) | S10-02 |
+| S10-04 | Documentar la semántica de `template`/`prefix` en `AUTO_SAVE_CONFIG.yaml` | P3 | TODO (pendiente de aprobación) | — |
+
+**Verificación del reporte (2026-10-03):**
+- *Hook busca en la carpeta equivocada* → **confirmado** (`session-welcome.sh:42`). → S10-01. El hook sí se dispara en instalación real: efecto del fix de S9-10.
+- *`new-project` no registra el proyecto* → **confirmado**; la plantilla asigna esa tarea a `TOOL_CREATE_PROJECT` y la migración no la heredó. → S10-02 y S10-03 (proyectos ya existentes).
+- *Falta la plantilla `PROJECT_NOTES.md`* → **diagnóstico erróneo.** `template:` en `AUTO_SAVE_CONFIG.yaml` es el patrón de nombre del archivo de salida, no un archivo de `_system/templates/`; la estructura vive en `PROMPT_PROJECT_DISCOVERY` PASO 5A. No falta nada. → S10-04.
+- *`prefix: NOTES` vs ruta fija* → **real pero más amplio:** nada en el repo consume `prefix:` en ninguna entrada; manda `folder` + `template`, que coinciden con la ruta del discovery. → S10-04.
+
+Los cuatro tickets quedan con "Estado de revisión: PENDIENTE" a propósito: `D-dispatcher` no los despachará hasta que el editor los apruebe.
