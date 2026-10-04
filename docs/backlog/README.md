@@ -119,6 +119,7 @@ Origen: reporte de bugs del editor tras varios días de uso real (sesión 2026-1
 | S10-02 | `new-project` registra el proyecto creado en `EDITOR_CONFIG.md` | P1 | TODO (pendiente de aprobación) | — |
 | S10-03 | Registrar en `EDITOR_CONFIG.md` los proyectos ya existentes | P2 | TODO (pendiente de aprobación) | S10-02 |
 | S10-04 | Documentar la semántica de `template`/`prefix` en `AUTO_SAVE_CONFIG.yaml` | P3 | TODO (pendiente de aprobación) | — |
+| S10-05 | Hooks `PreToolUse` de tipo prompt: contrato de respuesta real y filtro por ruta | P0 | TODO (pendiente de aprobación) | — |
 
 **Verificación del reporte (2026-10-03):**
 - *Hook busca en la carpeta equivocada* → **confirmado** (`session-welcome.sh:42`). → S10-01. El hook sí se dispara en instalación real: efecto del fix de S9-10.
@@ -127,3 +128,5 @@ Origen: reporte de bugs del editor tras varios días de uso real (sesión 2026-1
 - *`prefix: NOTES` vs ruta fija* → **real pero más amplio:** nada en el repo consume `prefix:` en ninguna entrada; manda `folder` + `template`, que coinciden con la ruta del discovery. → S10-04.
 
 Los cuatro tickets quedan con "Estado de revisión: PENDIENTE" a propósito: `D-dispatcher` no los despachará hasta que el editor los apruebe.
+
+**S10-05 (2026-10-04) — el más urgente del sprint.** Los 3 hooks `PreToolUse` de tipo prompt piden `approve`/`ask_user` cuando el contrato real es `{"ok": true|false, "reason": ...}` (verificado en la guía oficial de hooks), y se evalúan en cada escritura. Nunca se habían ejecutado en una instalación real: hasta S9-10 `hooks.json` no se cargaba. La propuesta del reporte (filtrar con un hook `command`) se sustituye por el campo `if` de la documentación, que hace lo mismo sin script; el hook `command` queda como plan B. Ver el ticket para la mitigación inmediata (v0.4.1 sin esos hooks).
